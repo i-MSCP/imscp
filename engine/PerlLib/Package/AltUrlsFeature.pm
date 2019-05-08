@@ -26,7 +26,6 @@ package Package::AltUrlsFeature;
 use strict;
 use warnings;
 use iMSCP::Boolean;
-use iMSCP::Dialog::InputValidation 'isStringNotInList';
 use iMSCP::EventManager;
 use Servers::httpd;
 use Servers::named;
@@ -68,7 +67,8 @@ sub registerSetupListeners
     my ( $self, $events ) = @_;
 
     $events->registerOne( 'beforeSetupDialog', sub {
-        push @{ $_[0] }, sub { $self->_dialogForAltUrlsFeature( @_ ); };
+        push @{ $_[0] },
+            sub { $self->_dialogForAltUrlsFeature( @_ ); };
         0;
     } );
 }
@@ -238,7 +238,7 @@ sub _init
  Setup dialog
 
  Param iMSCP::Dialog \%dialog
- Return int 0 NEXT, 30 BACKUP, 50 ESC
+ Return int 0 (Next), 20 (Skip), 30 (Back)
 
 =cut
 
@@ -248,28 +248,28 @@ sub _dialogForAltUrlsFeature
 
     my $value = ::setupGetQuestion( 'CLIENT_WEBSITES_ALT_URLS' );
 
-    if ( $::reconfigure =~ /^(?:alt_urls_feature|all|forced)$/
-        || isStringNotInList( $value, 'yes', 'no' )
+    if ( !grep ( $::reconfigure eq $_, qw/ alt_urls_feature all / )
+        && grep ( $value eq $_, qw/ yes no / )
     ) {
-        my $rs = $dialog->yesno( <<"EOF", $value eq 'no' );
+        return 20
+    }
 
+    my $ret = $dialog->boolean( <<"EOF", $value eq 'no' );
 Do you want to enable the alternative URLs feature for the client websites?
 
 Alternative URLs make the clients able to access their websites through control panel subdomains such as:
 
-  \\Zbdmn1.@{ [ ::setupGetQuestion( 'BASE_SERVER_VHOST') ] }\\ZB
+ \\Zbdmn1.@{ [ ::setupGetQuestion( 'BASE_SERVER_VHOST') ] }\\ZB
 
 This feature is useful for clients who have not yet configured their DNS.
         
 If you make use of an external DNS server for the control panel domain, don't forget to add a wildcard DNS such as:
 
-  \\Zb*.@{ [ ::setupGetQuestion( 'BASE_SERVER_VHOST') ] }. IN A @{ [ ::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP') ] }\\ZB
+ \\Zb*.@{ [ ::setupGetQuestion( 'BASE_SERVER_VHOST') ] }. IN A @{ [ ::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP') ] }\\ZB
 EOF
-        return $rs unless $rs < 30;
-        $value = $rs ? 'no' : 'yes';
-    }
+    return 30 if $ret == 30;
 
-    ::setupSetQuestion( 'CLIENT_WEBSITES_ALT_URLS', $value );
+    ::setupSetQuestion( 'CLIENT_WEBSITES_ALT_URLS', $ret ? 'no' : 'yes' );
     0;
 }
 

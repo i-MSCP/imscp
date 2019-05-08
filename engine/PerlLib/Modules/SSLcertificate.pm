@@ -75,8 +75,7 @@ sub process
         $rs = $self->add();
         @sql = ( 'UPDATE ssl_certs SET status = ? WHERE cert_id = ?', undef,
             ( $rs
-                ? ( getMessageByType( 'error', { amount => 1, remove => 1 } )
-                || 'Unknown error' ) =~ s/iMSCP::OpenSSL::validateCertificate:\s+//r
+                ? getMessageByType( 'error', { amount => 1, remove => TRUE } )
                 : 'ok'
             ),
             $data->{'id'} );
@@ -87,23 +86,25 @@ sub process
             getLastError( 'error' ) || 'Unknown error', $data->{'id'} )
             : ( 'DELETE FROM ssl_certs WHERE cert_id = ?', undef, $data->{'id'} );
     } else {
-        warning( sprintf( 'Unknown action (%s) for SSL certificate (ID %d)', $self->{'status'}, $data->{'id'} ));
+        warning( sprintf(
+            'Unknown action (%s) for SSL certificate (ID %d)',
+            $self->{'status'},
+            $data->{'id'}
+        ));
         return 0;
     }
 
     local $@;
-    eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-        $self->{'_dbh'}->do( @sql );
-    };
+    eval { $self->{'_dbh'}->do( @sql ); };
     if ( $@ ) {
         error( $@ );
         return 1;
     }
 
     # (since 1.2.16 - See #IP-1500)
-    # On toadd and to change actions, return 0 to avoid any failure on update when a customer's SSL certificate is
-    # expired or invalid. It is the customer responsability to update the certificate throught his interface
+    # On toadd and to change actions, return 0 to avoid failure on update when
+    # a customer's SSL certificate is expired or invalid. It is the customer
+    # responsibility to update the certificate through his interface
     ( $self->{'status'} =~ /^to(?:add|change)$/ ) ? 0 : $rs;
 }
 
@@ -126,13 +127,11 @@ sub add
     # Private key
     my $privateKeyContainer = File::Temp->new( UNLINK => TRUE );
     print $privateKeyContainer $self->{'private_key'};
-    $privateKeyContainer->flush();
     $privateKeyContainer->close();
 
     # Certificate
     my $certificateContainer = File::Temp->new( UNLINK => TRUE );
     print $certificateContainer $self->{'certificate'};
-    $certificateContainer->flush();
     $certificateContainer->close();
 
     # CA Bundle (intermediate certificate(s))
@@ -140,7 +139,6 @@ sub add
     if ( $self->{'ca_bundle'} ) {
         $caBundleContainer = File::Temp->new( UNLINK => TRUE );
         print $caBundleContainer $self->{'ca_bundle'};
-        $caBundleContainer->flush();
         $caBundleContainer->close();
     }
 
@@ -148,16 +146,16 @@ sub add
     my $openSSL = iMSCP::OpenSSL->new(
         certificate_chains_storage_dir => $self->{'certsDir'},
         certificate_chain_name         => $self->{'domain_name'},
-        private_key_container_path     => $privateKeyContainer->filename,
-        certificate_container_path     => $certificateContainer->filename,
-        ca_bundle_container_path       => $caBundleContainer ? $caBundleContainer->filename : ''
+        private_key_container_path     => $privateKeyContainer->filename(),
+        certificate_container_path     => $certificateContainer->filename(),
+        ca_bundle_container_path       => $caBundleContainer
+            ? $caBundleContainer->filename() : ''
     );
 
-    # Check certificate chain
-    $rs = $openSSL->validateCertificateChain();
-
-    # Create certificate chain (private key, certificate and CA bundle)
-    $rs ||= $openSSL->createCertificateChain();
+    # Validate certificate chain
+    # Create Certificate chain
+    $openSSL->validateCertificateChain()
+        && $openSSL->createCertificateChain() ? 0 : 1;
 }
 
 =item delete( )
@@ -173,7 +171,9 @@ sub delete
     my ( $self ) = @_;
 
     return 0 unless -f "$self->{'certsDir'}/$self->{'domain_name'}.pem";
-    iMSCP::File->new( filename => "$self->{'certsDir'}/$self->{'domain_name'}.pem" )->delFile();
+    iMSCP::File->new(
+        filename => "$self->{'certsDir'}/$self->{'domain_name'}.pem"
+    )->delFile();
 }
 
 =item _init( )
@@ -212,20 +212,31 @@ sub _loadData
 
     local $@;
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
         my $row = $self->{'_dbh'}->selectrow_hashref(
-            'SELECT * FROM ssl_certs WHERE cert_id = ?', undef, $certificateId
+            'SELECT * FROM ssl_certs WHERE cert_id = ?',
+            undef,
+            $certificateId
         );
-        $row or die( sprintf( 'Data not found for SSL certificate (ID %d)', $certificateId ));
+        $row or die( sprintf(
+            'Data not found for SSL certificate (ID %d)', $certificateId
+        ));
         %{ $self } = ( %{ $self }, %{ $row } );
 
         if ( $self->{'domain_type'} eq 'dmn' ) {
             $row = $self->{'_dbh'}->selectrow_hashref(
-                'SELECT domain_name FROM domain WHERE domain_id = ?', undef, $self->{'domain_id'}
+                'SELECT domain_name FROM domain WHERE domain_id = ?',
+                undef,
+                $self->{'domain_id'}
             );
         } elsif ( $self->{'domain_type'} eq 'als' ) {
             $row = $self->{'_dbh'}->selectrow_hashref(
-                'SELECT alias_name AS domain_name FROM domain_aliasses WHERE alias_id = ?', undef, $self->{'domain_id'}
+                '
+                    SELECT alias_name AS domain_name
+                    FROM domain_aliasses
+                    WHERE alias_id = ?
+                ',
+                undef,
+                $self->{'domain_id'}
             );
         } elsif ( $self->{'domain_type'} eq 'sub' ) {
             $row = $self->{'_dbh'}->selectrow_hashref(
@@ -251,7 +262,11 @@ sub _loadData
 
         unless ( $row ) {
             # Delete orphaned SSL certificate
-            $self->{'_dbh'}->do( 'DELETE FROM ssl_certs WHERE cert_id = ?', undef, $certificateId );
+            $self->{'_dbh'}->do(
+                'DELETE FROM ssl_certs WHERE cert_id = ?',
+                undef,
+                $certificateId
+            );
         } else {
             %{ $self } = ( %{ $self }, %{ $row } );
         }

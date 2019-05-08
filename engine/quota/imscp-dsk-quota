@@ -6,7 +6,7 @@
 
 =head1 SYNOPSIS
 
- imscp-dsk-quota [options]...
+ imscp-dsk-quota [OPTION]...
 
 =cut
 
@@ -62,8 +62,6 @@ sub quotaFiles
 {
     eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
-        local $dbh->{'RaiseError'} = 1;
-
         my $rows = $dbh->selectall_hashref(
             "SELECT domain_id, domain_name FROM domain WHERE domain_status NOT IN ('disabled', 'todelete')", 'domain_id'
         );
@@ -169,8 +167,6 @@ sub quotaSql
 {
     eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
-        local $dbh->{'RaiseError'} = 1;
-
         my $rows = $dbh->selectall_hashref(
             "
                 SELECT domain_id, domain_name, domain_disk_usage

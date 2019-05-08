@@ -54,7 +54,7 @@ vlogger - flexible log rotation and usage tracking in perl
 
 =head1 SYNOPSIS
 
-vlogger [OPTIONS]... [LOGDIR]
+vlogger [OPTION]... [LOGDIR]
 
 =head1 DESCRIPTION
 
@@ -552,7 +552,7 @@ sub usage
 {
     print <<'EOF';
 
-Usage: vlogger [OPTIONS]... [LOGDIR]
+Usage: vlogger [OPTION]... [LOGDIR]
 Handles a piped logfile from a webserver, splitting it into it's
 host components, and rotates the files daily.
 

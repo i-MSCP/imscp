@@ -6,7 +6,7 @@
 
 =head1 SYNOPSIS
 
- imscp-disable-accounts [options]...
+ imscp-disable-accounts [OPTION]...
 
 =cut
 
@@ -47,8 +47,6 @@ sub run
 
     local $@;
     eval {
-        local $dbh->{'RaiseError'} = 1;
-
         my $row = $dbh->selectrow_hashref( "SELECT value FROM config WHERE name = 'HARD_MAIL_SUSPENSION'" );
         $row = { value => 0 } unless $row;
 

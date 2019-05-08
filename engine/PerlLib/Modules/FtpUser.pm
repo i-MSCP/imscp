@@ -88,7 +88,6 @@ sub process
 
     local $@;
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
         $self->{'_dbh'}->do( @sql );
     };
     if ( $@ ) {
@@ -120,7 +119,6 @@ sub _loadData
 
     local $@;
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
         my $row = $self->{'_dbh'}->selectrow_hashref( 'SELECT * FROM ftp_users WHERE userid = ?', undef, $ftpUserId );
         $row or die( sprintf( 'Data not found for ftp user (ID %d)', $ftpUserId ));
         %{ $self } = ( %{ $self }, %{ $row } );

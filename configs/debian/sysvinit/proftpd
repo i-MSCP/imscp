@@ -20,11 +20,11 @@ DAEMON=/usr/sbin/proftpd
 NAME=proftpd
 
 # Defaults
-RUN="no"
+RUN="yes"
 OPTIONS=""
 CONFIG_FILE=/etc/proftpd/proftpd.conf
 
-PIDFILE=`grep -i 'pidfile' $CONFIG_FILE|sed -e 's/pidfile[\t ]\+//i'`
+PIDFILE=`grep -i 'pidfile' $CONFIG_FILE|sed -e 's/[\t ]*pidfile[\t ]\+//i'`
 if [ "x$PIDFILE" = "x" ];
 then
 	PIDFILE=/run/proftpd.pid
@@ -75,7 +75,7 @@ then
 	fi
 fi
 
-# /var/run could be on a tmpfs
+# /run could be on a tmpfs
 
 [ ! -d /run/proftpd ] && mkdir /run/proftpd
 

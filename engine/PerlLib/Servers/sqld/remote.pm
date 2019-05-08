@@ -150,7 +150,6 @@ sub createUser
 
     eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
-        local $dbh->{'RaiseError'} = TRUE;
         $dbh->do(
             'CREATE USER ?@? IDENTIFIED BY ?'
                 . ( $self->getType() ne 'mariadb'

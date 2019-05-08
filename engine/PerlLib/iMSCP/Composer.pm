@@ -170,7 +170,7 @@ sub installComposer
         timeout   => 30,
         env_proxy => TRUE
     );
-    my $installer = File::Temp->new();
+    my $installer = File::Temp->new( UNLINK => TRUE );
     $installer->close();
 
     # Download composer installer

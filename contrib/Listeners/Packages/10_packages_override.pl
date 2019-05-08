@@ -1,5 +1,5 @@
 # i-MSCP Listener::Packages::Override listener file
-# Copyright (C) 2010-2017 Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -16,7 +16,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Replaces package file with custom one.
+## This listener file make it possible to override default distribution
+# packages file.
 #
 
 package Listener::Packages::Override;
@@ -26,18 +27,15 @@ use warnings;
 use iMSCP::EventManager;
 
 # Path to your own package file
-my $DISTRO_PACKAGES_FILE = '/path/to/your/own/package/file';
+my $DISTRO_PACKAGES_FILE = '';
 
 # Please don't edit anything below this line
 
-iMSCP::EventManager->getInstance()->register(
-    'onBuildPackageList',
-    sub {
-        my $pkgFile = shift;
-        $$pkgFile = $DISTRO_PACKAGES_FILE;
-        0;
-    }
-);
+iMSCP::EventManager->getInstance()->register( 'onLoadPackagesFile', sub {
+    my $packagesFile = shift;
+    ${ $packagesFile } = $DISTRO_PACKAGES_FILE;
+    0;
+} ) if length $DISTRO_PACKAGES_FILE;
 
 1;
 __END__

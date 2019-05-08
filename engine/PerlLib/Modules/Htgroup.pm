@@ -88,10 +88,7 @@ sub process
     }
 
     local $@;
-    eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-        $self->{'_dbh'}->do( @sql );
-    };
+    eval { $self->{'_dbh'}->do( @sql ); };
     if ( $@ ) {
         error( $@ );
         return 1;
@@ -121,7 +118,6 @@ sub _loadData
 
     local $@;
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
         my $row = $self->{'_dbh'}->selectrow_hashref(
             "
                 SELECT t2.id, t2.ugroup, t2.status, t2.users,

@@ -60,216 +60,41 @@ sub registerSetupListeners
 {
     my ( $self, $events ) = @_;
 
-    $events->register( 'beforeSetupDialog', sub {
+    $events->registerOne( 'beforeSetupDialog', sub {
         push @{ $_[0] },
-            sub { $self->askDnsServerMode( @_ ) },
-            sub { $self->askIPv6Support( @_ ) },
-            sub { $self->askLocalDnsResolver( @_ ) };
+            sub { $self->_dialogForDnsServerType( @_ ) },
+            sub { $self->_dialogForMasterDnsServerIps( @_ ) },
+            sub { $self->_dialogForSlaveDnsServerIps( @_ ) },
+            sub { $self->_dialogForDnsServerIpv6Support( @_ ) },
+            sub { $self->_dialogForLocalResolving( @_ ) };
         0;
     } );
 }
 
-=item askDnsServerMode( \%dialog )
+=item preinstall( )
 
- Ask user for DNS server type to configure
+ Pre-installation tasks
 
- Param iMSCP::Dialog \%dialog
  Return int 0 on success, other on failure
 
 =cut
 
-sub askDnsServerMode
+sub preinstall
 {
-    my ( $self, $dialog ) = @_;
+    my ( $self ) = @_;
 
-    my $dnsServerMode = ::setupGetQuestion(
-        'BIND_MODE', $self->{'config'}->{'BIND_MODE'}
-    );
-    my $rs = 0;
-
-    if ( $::reconfigure =~ /^(?:named|servers|all|forced)$/
-        || $dnsServerMode !~ /^(?:master|slave)$/
+    for my $configVar (
+        qw/ BIND_IPV6 BIND_MODE LOCAL_DNS_RESOLVER PRIMARY_DNS SECONDARY_DNS /
     ) {
-        ( $rs, $dnsServerMode ) = $dialog->radiolist(
-            <<"EOF", [ 'master', 'slave' ], $dnsServerMode eq 'slave' ? 'slave' : 'master' );
-
-PLease select the DNS server type to configure
-EOF
+        $self->{'config'}->{$configVar} = ::setupGetQuestion( $configVar );
     }
 
-    if ( $rs < 30 ) {
-        $self->{'config'}->{'BIND_MODE'} = $dnsServerMode;
-        $rs = $self->askDnsServerIps( $dialog );
-    }
-
-    $rs;
-}
-
-=item askDnsServerIps( \%dialog )
-
- Ask user for DNS server adresses IP
-
- Param iMSCP::Dialog \%dialog
- Return int 0 on success, other on failure
-
-=cut
-
-sub askDnsServerIps
-{
-    my ( $self, $dialog ) = @_;
-
-    my $dnsServerMode = $self->{'config'}->{'BIND_MODE'};
-
-    my @masterDnsIps = split /(?:[;,]| )/, ::setupGetQuestion(
-        'PRIMARY_DNS', $self->{'config'}->{'PRIMARY_DNS'}
-    );
-    my @slaveDnsIps = split /(?:[;,]| )/, ::setupGetQuestion(
-        'SECONDARY_DNS', $self->{'config'}->{'SECONDARY_DNS'}
-    );
-
-    my ( $rs, $answer, $msg ) = ( 0, '', '' );
-
-    if ( $dnsServerMode eq 'master' ) {
-        if ( $::reconfigure =~ /^(?:named|servers|all|forced)$/
-            || "@slaveDnsIps" eq ''
-            || ( "@slaveDnsIps" ne 'no' && !$self->_checkIps( @slaveDnsIps ) )
-        ) {
-            ( $rs, $answer ) = $dialog->radiolist(
-                <<"EOF", [ 'no', 'yes' ], grep ($_ eq "@slaveDnsIps", ( '', 'no' )) ? 'no' : 'yes' );
-
-Do you want to add slave DNS servers?
-EOF
-            if ( $rs < 30 && $answer eq 'yes' ) {
-                @slaveDnsIps = () if "@slaveDnsIps" eq 'no';
-
-                do {
-                    ( $rs, $answer ) = $dialog->inputbox(
-                        <<"EOF", "@slaveDnsIps" );
-
-Please enter the IP addresses for the slave DNS servers, each separated by a space:$msg
-EOF
-                    $msg = '';
-                    if ( $rs < 30 ) {
-                        @slaveDnsIps = split ' ', $answer;
-                        if ( "@slaveDnsIps" eq '' ) {
-                            $msg = "\n\n\\Z1You must enter at least one IP address.\\Zn\n\nPlease try again:";
-                        } elsif ( !$self->_checkIps( @slaveDnsIps ) ) {
-                            $msg = "\n\n\\Z1Wrong or disallowed IP address found.\\Zn\n\nPlease try again:";
-                        }
-                    }
-                } while $rs < 30 && $msg;
-            } else {
-                @slaveDnsIps = ( 'no' );
-            }
-        }
-    } elsif ( $::reconfigure =~ /^(?:named|servers|all|forced)$/
-        || grep ($_ eq "@masterDnsIps", ( '', 'no' ))
-        || !$self->_checkIps( @masterDnsIps )
-    ) {
-        @masterDnsIps = () if "@masterDnsIps" eq 'no';
-
-        do {
-            ( $rs, $answer ) = $dialog->inputbox( <<"EOF", "@masterDnsIps" );
-
-Please enter the master DNS server IP addresses, each separated by space:$msg
-EOF
-            $msg = '';
-            if ( $rs < 30 ) {
-                @masterDnsIps = split ' ', $answer;
-                if ( "@masterDnsIps" eq '' ) {
-                    $msg = "\n\n\\Z1You must enter a least one IP address.\\Zn\n\nPlease try again:";
-                } elsif ( !$self->_checkIps( @masterDnsIps ) ) {
-                    $msg = "\n\n\\Z1Wrong or disallowed IP address found.\\Zn\n\nPlease try again:";
-                }
-            }
-        } while $rs < 30 && $msg;
-    }
-
-    if ( $rs < 30 ) {
-        if ( $dnsServerMode eq 'master' ) {
-            $self->{'config'}->{'PRIMARY_DNS'} = 'no';
-            $self->{'config'}->{'SECONDARY_DNS'} = "@slaveDnsIps" ne 'no' ? join ' ', @slaveDnsIps : 'no';
-        } else {
-            $self->{'config'}->{'PRIMARY_DNS'} = join ' ', @masterDnsIps;
-            $self->{'config'}->{'SECONDARY_DNS'} = 'no';
-        }
-    }
-
-    $rs;
-}
-
-=item askIPv6Support( \%dialog )
-
- Ask user for DNS server IPv6 support
-
- Param iMSCP::Dialog \%dialog
- Return int 0 on success, other on failure
-
-=cut
-
-sub askIPv6Support
-{
-    my ( $self, $dialog ) = @_;
-
-    unless ( ::setupGetQuestion( 'IPV6_SUPPORT' ) ) {
-        $self->{'config'}->{'BIND_IPV6'} = 'no';
-        return 0;
-    }
-
-    my $ipv6 = ::setupGetQuestion(
-        'BIND_IPV6', $self->{'config'}->{'BIND_IPV6'}
-    );
-    my $rs = 0;
-
-    if ( $::reconfigure =~ /^(?:named|servers|all|forced)$/
-        || $ipv6 !~ /^(?:yes|no)$/
-    ) {
-        ( $rs, $ipv6 ) = $dialog->radiolist(
-            <<"EOF", [ 'yes', 'no' ], $ipv6 eq 'yes' ? 'yes' : 'no' );
-
-Do you want enable IPv6 support for your DNS server?
-EOF
-    }
-
-    $self->{'config'}->{'BIND_IPV6'} = $ipv6 if $rs < 30;
-    $rs;
-}
-
-=item askLocalDnsResolver( \%dialog )
-
- Ask user for local DNS resolver
-
- Param iMSCP::Dialog \%dialog
- Return int 0 on success, other on failure
-
-=cut
-
-sub askLocalDnsResolver
-{
-    my ( $self, $dialog ) = @_;
-
-    my $localDnsResolver = ::setupGetQuestion(
-        'LOCAL_DNS_RESOLVER', $self->{'config'}->{'LOCAL_DNS_RESOLVER'}
-    );
-    my $rs = 0;
-
-    if ( $::reconfigure =~ /^(?:resolver|named|all|forced)$/
-        || $localDnsResolver !~ /^(?:yes|no)$/
-    ) {
-        ( $rs, $localDnsResolver ) = $dialog->radiolist(
-            <<"EOF", [ 'yes', 'no' ], $localDnsResolver ne 'no' ? 'yes' : 'no' );
-
-Do you want use the local DNS resolver?
-EOF
-    }
-
-    $self->{'config'}->{'LOCAL_DNS_RESOLVER'} = $localDnsResolver if $rs < 30;
-    $rs;
+    0;
 }
 
 =item install( )
 
- Process install tasks
+ Installation tasks
 
  Return int 0 on success, other on failure
 
@@ -321,6 +146,273 @@ sub _init
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'config'} = $self->{'named'}->{'config'};
     $self;
+}
+
+=item _dialogForDnsServerType( \%dialog )
+
+ Dialog for DNS server type
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 (Next), 20 (Skip), 30 (Back)
+
+=cut
+
+sub _dialogForDnsServerType
+{
+    my ( $self, $dialog ) = @_;
+
+    my $value = ::setupGetQuestion(
+        'BIND_MODE', $self->{'config'}->{'BIND_MODE'}
+    );
+
+    if ( !grep ( $::reconfigure eq $_, qw/ named servers all / )
+        && grep ( $value eq $_, qw/ master slave / )
+    ) {
+        ::setupSetQuestion( 'BIND_MODE', $value );
+        return 20;
+    }
+
+    my %choices = (
+        master => 'Master',
+        slave => 'Slave'
+    );
+
+    ( my $ret, $value ) = $dialog->select(
+        <<"EOF", \%choices, $value eq 'slave' ? 'slave' : 'master' );
+Please select the DNS server type to configure
+EOF
+    return 30 if $ret == 30;
+
+    ::setupSetQuestion( 'BIND_MODE', $value );
+    0;
+}
+
+=item _dialogForMasterDnsServerIps( \%dialog )
+
+ Dialog for master DNS server IP addresses
+
+ In master mode, the base server public IP will be set.
+ In slave mode, user will be asked for master DNS server IP addresses.
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 (Next), 20 (Skip), 30 (Back)
+
+=cut
+
+sub _dialogForMasterDnsServerIps
+{
+    my ( $self, $dialog ) = @_;
+
+    if ( 'master' eq ::setupGetQuestion(
+        'BIND_MODE', $self->{'config'}->{'BIND_MODE'}
+    ) ) {
+        # In master DNS mode, the local DNS server is the master DNS server
+        ::setupSetQuestion(
+            'PRIMARY_DNS', ::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' )
+        );
+        return 20;
+    }
+
+    my @values = split /(?:[;,]| )/, ::setupGetQuestion(
+        'PRIMARY_DNS', $self->{'config'}->{'PRIMARY_DNS'}
+    );
+
+    # IF the local DNS server was previously the master DNS server, we
+    # need remove the base server public IP from the list of master DNS
+    # server IP addresses. In slave mode, the local DNS server MUST not
+    # act as master DNS server.
+    if ( "@values" eq ::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' ) ) {
+        @values = ();
+    }
+
+    if ( !grep ( $::reconfigure eq $_, qw/ named servers all /)
+        && length "@values"
+        && ( "@values" eq 'no' || $self->_checkIps( @values ) )
+    ) {
+        ::setupSetQuestion( 'PRIMARY_DNS', "@values" );
+        return 20;
+    }
+
+    my $slaveDnsIp = ::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' );
+    my ( $ret, $msg ) = ( 0, '' );
+    do {
+        ( $ret, my $value ) = $dialog->string( <<"EOF", "@values" );
+${msg}Please enter the master DNS server IP addresses, each space separated:
+EOF
+        if ( $ret != 30 ) {
+            @values = grep /\S/, split ' ', $value;
+
+            unless ( @values ) {
+                $msg = "\\Z1You must enter at least one IP address.\\Zn\n\n";
+            } elsif ( grep ( $slaveDnsIp eq $_, @values ) ) {
+                $msg = sprintf(
+                    "\\Z1TThe %s IP address is that of the slave DNS server.\\Zn\n\n",
+                    $slaveDnsIp
+                );
+            } elsif ( !$self->_checkIps( @values ) ) {
+                $msg = "\\Z1Invalid or disallowed IP address found.\\Zn\n\n";
+            } else {
+                $msg = '';
+            }
+        }
+    } while $ret != 30 && length $msg;
+
+    ::setupSetQuestion( 'PRIMARY_DNS', "@values" );
+    0;
+}
+
+=item _dialogForSlaveDnsServerIps( \%dialog )
+
+ Dialog for slave DNS server IP addresses
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 (Next), 20 (Skip), 30 (Back)
+
+=cut
+
+sub _dialogForSlaveDnsServerIps
+{
+    my ( $self, $dialog ) = @_;
+
+    if ( 'slave' eq ::setupGetQuestion(
+        'BIND_MODE', $self->{'config'}->{'BIND_MODE'}
+    ) ) {
+        # In slave DNS mode, the local DNS server is one of slave DNS servers
+        ::setupSetQuestion(
+            'SECONDARY_DNS', ::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' )
+        );
+        return 20;
+    }
+
+    my @values = split /(?:[;,]| )/, ::setupGetQuestion(
+        'SECONDARY_DNS', $self->{'config'}->{'SECONDARY_DNS'}
+    );
+
+    # IF the local DNS server was previously the slave DNS server, we
+    # need remove the base server public IP from the list of slave DNS
+    # server IP addresses. In master mode, the local DNS server MUST not
+    # act as slave DNS server.
+    if ( "@values" eq ::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' ) ) {
+        @values = ();
+    }
+
+    if ( !grep ( $::reconfigure eq $_, qw/ named servers all /)
+        && length "@values"
+        && ( "@values" eq 'no' || $self->_checkIps( @values ) )
+    ) {
+        ::setupSetQuestion( 'SECONDARY_DNS', "@values" );
+        return 20;
+    }
+
+    FIRST_DIALOG:
+    my $ret = $dialog->boolean( <<"EOF", !!grep ( "@values" eq $_, '', 'no' ));
+Do you want to add slave DNS servers?
+EOF
+    return 30 if $ret == 30;
+
+    if ( $ret ) {
+        ::setupSetQuestion( 'SECONDARY_DNS', 'no' );
+        return 0;
+    }
+
+    my $masterDnsIp = ::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' );
+    my $msg = '';
+    do {
+        ( $ret, my $value ) = $dialog->string( <<"EOF", "@values" );
+${msg}Please enter the slave DNS server IP addresses, each separated by space:
+EOF
+        if ( $ret != 30 ) {
+            @values = grep /\S/, split ' ', $value;
+
+            unless ( length $value ) {
+                $msg = "\\Z1You must enter at least one IP address.\\Zn\n\n";
+            } elsif ( grep ( $masterDnsIp eq $_, @values ) ) {
+                $msg = sprintf(
+                    "\\Z1TThe %s IP address is that of the master DNS server.\\Zn\n\n",
+                    $masterDnsIp
+                );
+            } elsif ( !$self->_checkIps( @values ) ) {
+                $msg = "\\Z1Wrong or disallowed IP address found.\\Zn\n\n";
+            } else {
+                $msg = '';
+            }
+        }
+    } while $ret != 30 && length $msg;
+    goto FIRST_DIALOG if $ret == 30;
+
+    ::setupSetQuestion( 'SECONDARY_DNS', "@values" );
+    0;
+}
+
+=item _dialogForDnsServerIpv6Support( \%dialog )
+
+ Dialog for DNS server IPv6 support
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 (Next), 20 (Skip), 30 (Back)
+
+=cut
+
+sub _dialogForDnsServerIpv6Support
+{
+    my ( $self, $dialog ) = @_;
+
+    unless ( $::imscpConfig{'IPV6_SUPPORT'} ) {
+        ::setupSetQuestion( 'BIND_IPV6', 'no' );
+        return 20;
+    }
+
+    my $value = ::setupGetQuestion(
+        'BIND_IPV6', $self->{'config'}->{'BIND_IPV6'}
+    );
+
+    if ( !grep ( $::reconfigure eq $_, qw/ named servers all / )
+        && grep ( $value eq $_, qw/ yes no / )
+    ) {
+        ::setupSetQuestion( 'BIND_IPV6', $value );
+        return 20;
+    }
+
+    my $ret = $dialog->boolean( <<"EOF", $value ne 'yes' );
+Do you want to enable the IPv6 support for your DNS server?
+EOF
+    return 30 if $ret == 30;
+
+    ::setupSetQuestion( 'BIND_IPV6', $ret ? 'no' : 'yes' );
+    0;
+}
+
+=item _dialogForLocalResolving( \%dialog )
+
+ Dialog for local resolving
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 (Next), 20 (Skip), 30 (Back)
+
+=cut
+
+sub _dialogForLocalResolving
+{
+    my ( $self, $dialog ) = @_;
+
+    my $value = ::setupGetQuestion(
+        'LOCAL_DNS_RESOLVER', $self->{'config'}->{'LOCAL_DNS_RESOLVER'}
+    );
+
+    if ( !grep ( $::reconfigure eq $_, qw/ resolver named all / )
+        && grep ( $value eq $_, qw/ yes no /)
+    ) {
+        ::setupSetQuestion( 'LOCAL_DNS_RESOLVER', $value );
+        return 20;
+    }
+
+    my $ret = $dialog->boolean( <<"EOF", $value eq 'no' );
+Do you want to use the local DNS server for local resolving?
+EOF
+    return 30 if $ret == 30;
+
+    ::setupSetQuestion( 'LOCAL_DNS_RESOLVER', $ret ? 'no' : 'yes' );
+    0;
 }
 
 =item _bkpConfFile( $cfgFile )

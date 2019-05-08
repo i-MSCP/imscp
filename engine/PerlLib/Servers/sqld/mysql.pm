@@ -207,7 +207,6 @@ sub createUser
 
     eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
-        local $dbh->{'RaiseError'} = TRUE;
         $dbh->do(
             'CREATE USER ?@? IDENTIFIED BY ?'
                 . ( version->parse( $self->getVersion()) >= version->parse( '5.7.6' )
@@ -245,7 +244,6 @@ sub dropUser
     local $@;
     eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
-        local $dbh->{'RaiseError'} = TRUE;
         return unless $dbh->selectrow_hashref(
             'SELECT 1 FROM mysql.user WHERE user = ? AND host = ?',
             undef,

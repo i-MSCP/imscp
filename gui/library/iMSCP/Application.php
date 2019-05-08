@@ -629,7 +629,7 @@ class Application
             }
 
             $this->database = Database::connect(
-                $config['DATABASE_USER'], $plainPasswd, $config['DATABASE_TYPE'], $config['DATABASE_HOST'],
+                $config['DATABASE_USER'], $plainPasswd, 'mysql', $config['DATABASE_HOST'],
                 $config['DATABASE_NAME']
             );
         } catch (\PDOException $e) {

@@ -6,7 +6,7 @@
 
 =head1 SYNOPSIS
 
- imscp-srv-traff [options]...
+ imscp-srv-traff [OPTION]...
 
 =cut
 
@@ -56,22 +56,16 @@ sub run
            SELECT domain_id AS upper_domain_id, domain_name
            FROM domain
            WHERE domain_status <> 'todelete'
-
            UNION ALL
-
            SELECT domain_id AS upper_domain_id, alias_name
            FROM domain_aliasses
            WHERE alias_status <> 'todelete'
-
            UNION ALL
-
            SELECT domain_id AS upper_domain_id, CONCAT(subdomain_name, '.', domain_name)
            FROM subdomain
            JOIN domain USING (domain_id)
            WHERE subdomain_status <> 'todelete'
-
            UNION ALL
-
            SELECT domain_id AS upper_domain_id, CONCAT(subdomain_alias_name, '.', alias_name)
            FROM subdomain_alias
            JOIN domain_aliasses USING (alias_id)
@@ -127,8 +121,7 @@ sub run
                     dtraff_web = dtraff_web + ?, dtraff_ftp = dtraff_ftp + ?, dtraff_mail = dtraff_mail + ?,
                     dtraff_pop = dtraff_pop + ?
             ',
-            undef, $domainData->{'upper_domain_id'}, $halfTimestamp, $trafficDb{'Servers::httpd'}->{$domainName}
-            ,
+            undef, $domainData->{'upper_domain_id'}, $halfTimestamp, $trafficDb{'Servers::httpd'}->{$domainName},
             $trafficDb{'Servers::ftpd'}->{$domainName}, $trafficDb{'Servers::mta'}->{$domainName},
             $trafficDb{'Servers::po'}->{$domainName}, $trafficDb{'Servers::httpd'}->{$domainName},
             $trafficDb{'Servers::ftpd'}->{$domainName}, $trafficDb{'Servers::mta'}->{$domainName},

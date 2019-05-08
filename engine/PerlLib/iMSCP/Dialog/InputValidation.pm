@@ -38,9 +38,10 @@ our @EXPORT = qw/
     isValidUsername isValidPassword isValidEmail isValidHostname isValidDomain
     isValidIpAddr isValidTimezone isValidDbName isNumber isNumberInRange
     isStringNotInList isValidNumberRange isNotEmpty isAvailableSqlUser
+    isValidSqlUserHostname $LAST_VALIDATION_ERROR
 /;
 
-our $lastValidationError = '';
+our $LAST_VALIDATION_ERROR = '';
 
 =head1 DESCRIPTION
 
@@ -66,21 +67,17 @@ sub isValidUsername( $ )
     defined $username or die( 'Missing $username parameter' );
     my $length = length $username;
 
-    return 1 if $length >= 3 && $length <= 16
+    return TRUE if $length >= 3 && $length <= 16
         && $username =~ /^[\x30-\x39\x41-\x5a\x61-\x7a\x5f]+$/;
 
-    $lastValidationError = <<"EOF";
-
-
+    $LAST_VALIDATION_ERROR = <<"EOF";
 \\Z1Invalid or unauthorized username.\\Zn
 
  - Username must be between 3 and 16 characters long.
  - Only ASCII alphabet, number and underscore characters are allowed.
 
-Please try again:
 EOF
-
-    0;
+    FALSE;
 }
 
 =item isValidPassword( $password )
@@ -99,21 +96,17 @@ sub isValidPassword( $ )
     defined $password or die( 'Missing $password parameter' );
     my $length = length $password;
 
-    return 1 if $length >= 6 && $length <= 32
+    return TRUE if $length >= 6 && $length <= 32
         && $password =~ /^[\x30-\x39\x41-\x5a\x61-\x7a]+$/;
 
-    $lastValidationError = <<"EOF";
-
-
+    $LAST_VALIDATION_ERROR = <<"EOF";
 \\Z1Invalid password.\\Zn
 
  - Password must be between 6 and 32 characters long.
  - Only ASCII alphabet and number characters are allowed.
 
-Please try again:
 EOF
-
-    0;
+    FALSE;
 }
 
 =item isValidEmail( $email )
@@ -131,17 +124,13 @@ sub isValidEmail( $ )
 
     defined $email or die( 'Missing $email parameter' );
 
-    return 1 if Email::Valid->address( $email );
+    return TRUE if Email::Valid->address( $email );
 
-    $lastValidationError = <<"EOF";
-
-
+    $LAST_VALIDATION_ERROR = <<"EOF";
 \\Z1Invalid email address.\\Zn
 
-Please try again:
 EOF
-
-    0;
+    FALSE;
 }
 
 =item isValidHostname( $hostname )
@@ -159,21 +148,55 @@ sub isValidHostname( $ )
 
     defined $hostname or die( 'Missing $hostname parameter' );
 
-    return 1 if $hostname !~ /\.$/ && ( $hostname =~ tr/.// ) >= 2
+    return TRUE if $hostname !~ /\.$/ && ( $hostname =~ tr/.// ) >= 2
         && is_hostname( idn_to_ascii( $hostname, 'utf-8' ));
 
-    $lastValidationError = <<"EOF";
-
-
+    $LAST_VALIDATION_ERROR = <<"EOF";
 \\Z1Invalid hostname.\\Zn
 
  - Hostname must comply to RFC 1123 and 5890
  - The hostname must be a fully qualified hostname (FQHN).
 
-Please try again:
 EOF
+    FALSE;
+}
 
-    0;
+=item isValidSqlUserHostname( $hostname )
+
+ Is the given SQL user hostname valid?
+ 
+ Param string $hostname SQL user hostname
+ Return bool TRUE if the given hostname is valid, FALSE otherwise
+
+=cut
+
+sub isValidSqlUserHostname( $ )
+{
+    my ( $hostname ) = @_;
+
+    defined $hostname or die( 'Missing $hostname parameter' );
+
+    return 0 unless length $hostname;
+
+    # Strip out $hostname of '%' and '_' characters
+    my $tmpHostname = $hostname =~ s/[%_]//g;
+    # Cover case of wildcard only hostname
+    return TRUE unless length $tmpHostname;
+
+    # Strip out leading and trailing dots
+    $tmpHostname =~ s/^[.]|[.]$//g;
+    return 0 unless length $hostname;
+
+    return TRUE if isValidIpAddr( $tmpHostname ) ||
+        is_hostname( idn_to_ascii( $tmpHostname, 'utf-8' ));
+
+    $LAST_VALIDATION_ERROR = <<"EOF";
+\\Z1Invalid SQL user hostname.\\Zn
+
+See https://dev.mysql.com/doc/refman/5.7/en/account-names.html
+
+EOF
+    FALSE;
 }
 
 =item isValidDomain( $domainName )
@@ -191,22 +214,18 @@ sub isValidDomain( $ )
 
     defined $domainName or die( 'Missing $domainName parameter' );
 
-    return 1 if $domainName !~ /\.$/ && is_domain(
+    return TRUE if $domainName !~ /\.$/ && is_domain(
         idn_to_ascii( $domainName, 'utf-8' ),
         { domain_disable_tld_validation => TRUE }
     );
 
-    $lastValidationError = <<"EOF";
-
-
+    $LAST_VALIDATION_ERROR = <<"EOF";
 \\Z1Invalid domain name.\\Zn
 
  - Domain name must comply to RFC 1123 and 5890
 
-Please try again:
 EOF
-
-    0;
+    FALSE;
 }
 
 =item isValidIpAddr( $ipAddr [, $typeReg = ANY ] )
@@ -226,18 +245,14 @@ sub isValidIpAddr( $;$ )
     defined $ipAddr or die( 'Missing $ipAddr parameter' );
 
     my $net = iMSCP::Net->getInstance();
-    return 1 if $net->isValidAddr( $ipAddr )
+    return TRUE if $net->isValidAddr( $ipAddr )
         && ( !defined $typeReg || $net->getAddrType( $ipAddr ) =~ /^$typeReg$/ );
 
-    $lastValidationError = <<"EOF";
-
-
+    $LAST_VALIDATION_ERROR = <<"EOF";
 \\Z1Invalid or unauthorized IP address.\\Zn
 
-Please try again:
 EOF
-
-    0;
+    FALSE;
 }
 
 =item isValidDbName( $dbName )
@@ -256,21 +271,17 @@ sub isValidDbName( $ )
     defined $dbName or die( 'Missing $dbName parameter' );
     my $length = length $dbName;
 
-    return 1 if $length >= 3 && $length <= 16
+    return TRUE if $length >= 3 && $length <= 16
         && $dbName =~ /^[\x30-\x39\x41-\x5a\x61-\x7a\x5f]+$/;
 
-    $lastValidationError = <<"EOF";
-
-
+    $LAST_VALIDATION_ERROR = <<"EOF";
 \\Z1Invalid or unauthorized database name.\\Zn
 
  - Database name must be between 3 and 16 characters long.
  - Only ASCII alphabet, number and underscore characters are allowed.
 
-Please try again:
 EOF
-
-    0;
+    FALSE;
 }
 
 =item isValidTimezone( $timezone )
@@ -288,19 +299,15 @@ sub isValidTimezone
 
     defined $timezone or die( 'Missing $timezone parameter' );
 
-    return 1 if DateTime::TimeZone->is_valid_name( $timezone );
+    return TRUE if DateTime::TimeZone->is_valid_name( $timezone );
 
-    $lastValidationError = <<"EOF";
-
-
+    $LAST_VALIDATION_ERROR = <<"EOF";
 \\Z1Invalid timezone.\\Zn
 
  - Consult http://php.net/manual/en/timezones.php for a list of valid timezones.
 
-Please try again:
 EOF
-
-    0;
+    FALSE;
 }
 
 =item isNumber( $number )
@@ -316,19 +323,15 @@ sub isNumber( $ )
 {
     my ( $number ) = @_;
 
-    defined $number or die( 'Missing $timezone parameter' );
+    defined $number or die( 'Missing $number parameter' );
 
-    return 1 if $number =~ /^[\x30-\x39]+$/;
+    return TRUE if $number =~ /^[\x30-\x39]+$/;
 
-    $lastValidationError = <<"EOF";
-
-
+    $LAST_VALIDATION_ERROR = <<"EOF";
 \\Z1Invalid number.\\Zn
 
-Please try again:
 EOF
-
-    0;
+    FALSE;
 }
 
 =item isValidNumberRange( $numberRange, \$n1, \$n2 )
@@ -347,23 +350,19 @@ sub isValidNumberRange( $$$ )
     my ( $numberRange, $n1, $n2 ) = @_;
 
     defined $numberRange or die( 'Missing $numberRange parameter' );
-    defined $n1 or die( 'Missing $n1 parameter' );
-    defined $n2 or die( 'Missing $n2 parameter' );
+    ref $n1 eq 'SCALAR' or die( 'Missing or invalid $n1 parameter' );
+    ref $n2 eq 'SCALAR' or die( 'Missing or invalid $n2 parameter' );
 
-    return 1 if ( ${ $n1 }, ${ $n2 } ) = $numberRange
-        =~ /^([\x30-\x39]+)\s+([\x30-\x39]+)$/;
+    return TRUE if ( ${ $n1 }, ${ $n2 } ) = $numberRange
+        =~ /^\s*([\x30-\x39]+)\s+([\x30-\x39]+)\s*$/;
 
-    $lastValidationError = <<"EOF";
-
-
+    $LAST_VALIDATION_ERROR = <<"EOF";
 \\Z1Invalid number range.\\Zn
 
 - Number range must be two numbers separated by a space.
 
-Please try again:
 EOF
-
-    0;
+    FALSE;
 }
 
 =item isNumberInRange( $number, $start, $end )
@@ -381,24 +380,25 @@ sub isNumberInRange( $$$ )
 {
     my ( $number, $start, $end ) = @_;
 
-    defined $number or die( 'Missing $number parameter' );
-    defined $start or die( 'Missing $start parameter' );
-    defined $end or die( 'Missing $end parameter' );
+    defined $number && $number =~ /^\d+$/ or die(
+        'Missing or invalid $number parameter'
+    );
+    defined $start && $start =~ /^\d+$/ or die(
+        'Missing or invalid $start parameter'
+    );
+    defined $end && $end =~ /^\d+$/ or die(
+        'Missing or invalid $end parameter'
+    );
 
-    no warnings;
-    return 1 if defined $number && $number >= $start && $number <= $end;
+    return TRUE if $number >= $start && $number <= $end;
 
-    $lastValidationError = <<"EOF";
-
-
+    $LAST_VALIDATION_ERROR = <<"EOF";
 \\Z1Invalid number.\\Zn
 
  - Number $number must be in range from $start to $end.
 
-Please try again:
 EOF
-
-    0;
+    FALSE;
 }
 
 =item isStringNotInList( $string, @stringList )
@@ -419,20 +419,16 @@ sub isStringNotInList( $@ )
 
     defined $string or die( 'Missing $string parameter' );
 
-    return 1 unless grep { lc $string eq lc $_ } @stringList;
+    return TRUE unless grep { lc $string eq lc $_ } @stringList;
 
     my $entries = join ', ', @stringList;
-    $lastValidationError = <<"EOF";
-
-
+    $LAST_VALIDATION_ERROR = <<"EOF";
 \\Z1Invalid entry.\\Zn
 
  - Following entries are not allowed: $entries
 
-Please try again:
 EOF
-
-    0;
+    FALSE;
 }
 
 =item isNotEmpty( $string )
@@ -450,17 +446,13 @@ sub isNotEmpty( $ )
 
     defined $string or die( 'Missing $string parameter' );
 
-    return 1 if !$string || $string =~ /[^\s]/;
+    return TRUE if !$string || $string =~ /[^\s]/;
 
-    $lastValidationError = <<"EOF";
-
-
+    $LAST_VALIDATION_ERROR = <<"EOF";
 \\Z1Entry cannot be empty.\\Zn
 
-Please try again:
 EOF
-
-    0;
+    FALSE;
 }
 
 =item isAvailableSqlUser( $username )
@@ -488,31 +480,26 @@ sub isAvailableSqlUser( $ )
     };
     if ( $@ ) {
         # On fresh installation, there is no database yet
-        return 1 if $@ =~ /unknown database/i;
+        return TRUE if $@ =~ /unknown database/i;
         die;
     }
 
     my $dbh = $db->getRawDb();
-    local $dbh->{'RaiseError'} = 1;
     my $row = $dbh->selectrow_hashref(
         'SELECT 1 FROM sql_user WHERE sqlu_name = ? LIMIT 1', undef, $username
     );
 
     $db->useDatabase( $oldDbName ) if $oldDbName;
 
-    return 1 unless $row;
+    return TRUE unless $row;
 
-    $lastValidationError = <<"EOF";
-
-
+    $LAST_VALIDATION_ERROR = <<"EOF";
 \\Z1Invalid SQL username.\\Zn
 
  - The given SQL user is already used by one of your customers.
 
-Please try again:
 EOF
-
-    0;
+    FALSE;
 }
 
 =back

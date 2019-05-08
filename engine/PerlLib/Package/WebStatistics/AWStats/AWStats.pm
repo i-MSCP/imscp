@@ -583,7 +583,6 @@ sub _addAwstatsConfig
     local $@;
     my $row = eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
-        local $dbh->{'RaiseError'} = TRUE;
         $dbh->selectrow_hashref( 'SELECT admin_name FROM admin WHERE admin_id = ?', undef, $data->{'DOMAIN_ADMIN_ID'} );
     };
     if ( $@ ) {

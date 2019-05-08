@@ -303,8 +303,6 @@ sub _setupSqlUser
 
     my $rs = eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
-        local $dbh->{'RaiseError'} = TRUE;
-
         my %config = @{ $dbh->selectcol_arrayref(
             "
                 SELECT `name`, `value`
@@ -414,7 +412,6 @@ sub _buildConf
     ( my $dbPass = $self->{'_dovecot_sql_user_passwd'} ) =~ s%('|"|\\)%\\$1%g;
 
     my $data = {
-        DATABASE_TYPE                 => ::setupGetQuestion( 'DATABASE_TYPE' ),
         DATABASE_HOST                 => ::setupGetQuestion( 'DATABASE_HOST' ),
         DATABASE_PORT                 => ::setupGetQuestion( 'DATABASE_PORT' ),
         DATABASE_NAME                 => $dbName,

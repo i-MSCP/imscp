@@ -64,95 +64,36 @@ sub registerSetupListeners
 {
     my ( $self, $events ) = @_;
 
-    $events->register( 'beforeSetupDialog', sub {
+    $events->registerOne( 'beforeSetupDialog', sub {
         push @{ $_[0] },
-            sub { $self->showPhpConfigLevelDialog( @_ ) },
-            sub { $self->showListenModeDialog( @_ ) };
+            sub { $self->_dialogForPhpConfLevel( @_ ); },
+            sub { $self->_dialogForPhpListenMode( @_ ); };
         0;
     } );
 }
 
-=item showPhpConfigLevelDialog( \%dialog )
+=item install( )
 
- Ask for PHP configuration level to use
+ Pre-installation tasks
 
- Param iMSCP::Dialog \%dialog
- Return int 0 NEXT, 30 BACKUP, 50 ESC
+ Return int 0 on success, other on failure
 
 =cut
 
-sub showPhpConfigLevelDialog
+sub preinstall
 {
-    my ( $self, $dialog ) = @_;
+    my ( $self ) = @_;
 
-    my $confLevel = ::setupGetQuestion(
-        'PHP_CONFIG_LEVEL', $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'}
-    );
-
-    if ( $::reconfigure =~ /^(?:httpd|php|servers|all|forced)$/
-        || $confLevel !~ /^per_(?:site|domain|user)$/
-    ) {
-        $confLevel =~ s/_/ /;
-        ( my $rs, $confLevel ) = $dialog->radiolist(
-            <<"EOF", [ 'per_site', 'per_domain', 'per_user' ], $confLevel =~ /^per (?:user|domain)$/ ? $confLevel : 'per site' );
-
-\\Z4\\Zb\\ZuPHP configuration level\\Zn
-
-Please choose the PHP configuration level you want use. Available levels are:
-
-\\Z4Per domain:\\Zn One pool configuration file per domain (including subdomains)
-\\Z4Per user:\\Zn One pool configuration file per user
-\\Z4Per site:\\Zn One pool configuration per domain
-EOF
-        return $rs if $rs >= 30;
+    for my $confVar ( qw/ PHP_CONFIG_LEVEL PHP_FPM_LISTEN_MODE / ) {
+        $self->{'phpConfig'}->{$confVar} = ::setupGetQuestion( $confVar );
     }
 
-    ( $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} = $confLevel ) =~ s/ /_/;
     0;
-}
-
-=item showListenModeDialog( )
-
- Ask for FPM listen mode
-
- Param iMSCP::Dialog \%dialog
- Return int 0 NEXT, 30 BACKUP, 50 ESC
-
-=cut
-
-sub showListenModeDialog
-{
-    my ( $self, $dialog ) = @_;
-
-    my $rs = 0;
-    my $listenMode = ::setupGetQuestion(
-        'PHP_FPM_LISTEN_MODE', $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'}
-    );
-
-    if ( $::reconfigure =~ /^(?:httpd|php|servers|all|forced)$/
-        || $listenMode !~ /^(?:uds|tcp)$/
-    ) {
-        ( $rs, $listenMode ) = $dialog->radiolist(
-            <<"EOF", [ 'uds', 'tcp' ], $listenMode =~ /^(?:tcp|uds)$/ ? $listenMode : 'uds' );
-
-\\Z4\\Zb\\ZuPHP-FPM - FastCGI address type\\Zn
-
-Please, choose the FastCGI address type that you want use. Available types are:
-
-\\Z4tcp:\\Zn TCP/IP (e.g. 127.0.0.1:9000)
-\\Z4uds:\\Zn Unix domain socket (e.g. /run/php/php<version>-fpm-domain.tld.sock)
-
-Be aware that for high traffic sites, TCP/IP can require a tweaking of your kernel parameters (sysctl).
-EOF
-    }
-
-    $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} = $listenMode if $rs < 30;
-    $rs;
 }
 
 =item install( )
 
- Process install tasks
+ Installation tasks
 
  Return int 0 on success, other on failure
 
@@ -199,6 +140,96 @@ sub _init
     $self->{'phpConfig'} = $self->{'httpd'}->{'phpConfig'};
     $self->_guessSystemPhpVariables();
     $self;
+}
+
+=item _dialogForPhpConfLevel( \%dialog )
+
+ Dialog for PHP configuration level
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 (Next), 20 (Skip), 30 (Back)
+
+=cut
+
+sub _dialogForPhpConfLevel
+{
+    my ( $self, $dialog ) = @_;
+
+    my $value = ::setupGetQuestion(
+        'PHP_CONFIG_LEVEL', $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'}
+    );
+
+    if ( !grep ( $::reconfigure eq $_, qw/ php servers all /)
+        && grep ( $value eq $_, qw/ per_site per_domain per_user / )
+    ) {
+        ::setupSetQuestion( 'PHP_CONFIG_LEVEL', $value );
+        return 20;
+    }
+
+    my %choices = (
+        per_site   => 'Per site',
+        per_domain => 'Per domain',
+        per_user   => 'Per user'
+    );
+
+    ( my $ret, $value ) = $dialog->select(
+        <<"EOF", \%choices, ( grep ( $value eq $_, qw/ per_site per_domain per_user /) )[0] // 'per_site' );
+Please choose the PHP configuration level you want use. Available levels are:
+
+\\Z4Per domain:\\Zn One pool configuration file per domain (including subdomains)
+\\Z4Per user:\\Zn One pool configuration file per user
+\\Z4Per site:\\Zn One pool configuration per domain
+
+If you make use of the PhpSwitcher plugin, you \\ZbMUST\\ZB choose the 'per site' option.
+EOF
+    return 30 if $ret == 30;
+
+    ::setupSetQuestion( 'PHP_CONFIG_LEVEL', $value );
+    0;
+}
+
+=item _dialogForPhpListenMode( )
+
+ Dialog for PHP listen mode
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 (Next), 20 (Skip), 30 (Back)
+
+=cut
+
+sub _dialogForPhpListenMode
+{
+    my ( $self, $dialog ) = @_;
+
+    my $value = ::setupGetQuestion(
+        'PHP_FPM_LISTEN_MODE', $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'}
+    );
+
+    if ( !grep ( $::reconfigure eq $_, qw/ php servers all /)
+        && grep ( $value eq $_, qw/ tcp uds /)
+    ) {
+        ::setupSetQuestion( 'PHP_FPM_LISTEN_MODE', $value );
+        return 20;
+    }
+
+    my %choices = (
+        tcp => 'TCP/IP socket',
+        uds => 'UDS (Unix Domain Socket)'
+    );
+
+    ( my $ret, $value ) = $dialog->select(
+        <<"EOF", \%choices, ( grep ( $value eq $_ ) )[0] // 'uds' );
+Please choose the FastCGI address type that you want use. Available types are:
+
+\\Z4tcp:\\Zn TCP/IP (e.g. 127.0.0.1:9000)
+\\Z4uds:\\Zn Unix domain socket (e.g. /run/php/php<version>-fpm-domain.tld.sock)
+
+The UDS choice is highly recommended. For high traffic sites, TCP/IP can require a tweaking of your kernel parameters (sysctl).
+EOF
+    return 30 if $ret == 30;
+
+    ::setupSetQuestion( 'PHP_FPM_LISTEN_MODE', $value );
+    0;
 }
 
 =item _guessSystemPhpVariables
@@ -557,8 +588,6 @@ sub _setupVlogger
 
     my $rs = eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
-        local $dbh->{'RaiseError'} = TRUE;
-
         my %config = @{ $dbh->selectcol_arrayref(
             "
                 SELECT `name`, `value`

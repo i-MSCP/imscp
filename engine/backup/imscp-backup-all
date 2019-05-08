@@ -6,7 +6,7 @@
 
 =head1 SYNOPSIS
 
- imscp-backup-all [options]...
+ imscp-backup-all [OPTION]...
 
 =cut
 
@@ -33,6 +33,7 @@ use File::Basename;
 use File::Spec;
 use FindBin;
 use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use iMSCP::Boolean;
 use iMSCP::Bootstrapper;
 use iMSCP::Debug qw/ debug error getMessageByType newDebug setVerbose warning /;
 use iMSCP::Dir;
@@ -145,8 +146,6 @@ sub backupDatabases
     my $db = iMSCP::Database->factory();
     my $rows = eval {
         my $dbh = $db->getRawDb();
-        local $dbh->{'RaiseError'} = 1;
-
         $dbh->selectall_hashref(
             'SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = ?', 'sqld_name', undef, $mainDmnId
         );
@@ -202,32 +201,24 @@ sub backupMaildirs
 
     my $rows = eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
-        local $dbh->{'RaiseError'} = 1;
-
         $dbh->selectall_hashref(
             "
                 SELECT domain_name
                 FROM domain
                 WHERE domain_id = ?
                 AND domain_status <> 'todelete'
-    
                 UNION ALL
-    
                 SELECT CONCAT(subdomain_name, '.', domain_name)
                 FROM subdomain
                 JOIN domain USING(domain_id)
                 WHERE domain_id = ?
                 AND subdomain_status <> 'todelete'
-    
                 UNION ALL
-    
                 SELECT alias_name
                 FROM domain_aliasses
                 WHERE domain_id = ?
                 AND alias_status <> 'todelete'
-    
                 UNION ALL
-    
                 SELECT CONCAT(subdomain_alias_name, '.', alias_name)
                 FROM subdomain_alias
                 JOIN domain_aliasses USING(alias_id)
@@ -290,8 +281,6 @@ sub backupAll
 
     my $rows = eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
-        local $dbh->{'RaiseError'} = 1;
-
         $dbh->selectall_hashref(
             "
                 SELECT domain_id, domain_name, domain_admin_id, allowbackup, admin_sys_name, admin_sys_gname
@@ -379,8 +368,8 @@ exit unless $bootstrapper->lock( '/var/lock/imscp-backup-all.lock', 'nowait' );
 
 $bootstrapper->boot(
     {
-        config_readonly => 1,
-        nolock          => 1
+        config_readonly => TRUE,
+        nolock          => TRUE
     }
 );
 

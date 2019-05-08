@@ -35,8 +35,6 @@ sub uninstall
 
     my $rs = eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
-        local $dbh->{'RaiseError'} = TRUE;
-
         my ( $vloggerSqlUser ) = @{ $dbh->selectcol_arrayref(
             "
                 SELECT `value`

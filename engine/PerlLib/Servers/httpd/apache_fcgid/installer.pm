@@ -66,53 +66,33 @@ sub registerSetupListeners
     my ( $self, $events ) = @_;
 
     $events->registerOne( 'beforeSetupDialog', sub {
-        push @{ $_[0] }, sub { $self->setupDialog( @_ ) };
+        push @{ $_[0] },
+            sub { $self->_dialogForPhpConfLevel( @_ ); };
         0;
     } );
 }
 
-=item setupDialog( \%dialog )
+=item install( )
 
- Setup dialog
+ Pre-installation tasks
 
- Param iMSCP::Dialog \%dialog
- Return int 0 NEXT, 30 BACKUP, 50 ESC
+ Return int 0 on success, other on failure
 
 =cut
 
-sub setupDialog
+sub preinstall
 {
-    my ( $self, $dialog ) = @_;
+    my ( $self ) = @_;
 
-    my $confLevel = ::setupGetQuestion(
-        'PHP_CONFIG_LEVEL', $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'}
+    $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} = ::setupGetQuestion(
+        'PHP_CONFIG_LEVEL'
     );
-
-    if ( $::reconfigure =~ /^(?:httpd|php|servers|all|forced)$/
-        || $confLevel !~ /^per_(?:site|domain|user)$/
-    ) {
-        $confLevel =~ s/_/ /;
-        ( my $rs, $confLevel ) = $dialog->radiolist(
-            <<"EOF", [ 'per_site', 'per_domain', 'per_user' ], $confLevel =~ /^per (?:user|domain)$/ ? $confLevel : 'per site' );
-
-\\Z4\\Zb\\ZuPHP configuration level\\Zn
-
-Please choose the PHP configuration level you want use. Available levels are:
-
-\\Z4Per domain:\\Zn One php.ini file per domain (including subdomains)
-\\Z4Per user:\\Zn One php.ini file per user
-\\Z4Per site:\\Zn One php.ini file per domain
-EOF
-        return $rs if $rs >= 30;
-    }
-
-    ( $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} = $confLevel ) =~ s/ /_/;
     0;
 }
 
 =item install( )
 
- Process install tasks
+ Installation tasks
 
  Return int 0 on success, other on failure
 
@@ -158,6 +138,52 @@ sub _init
     $self->{'phpConfig'} = $self->{'httpd'}->{'phpConfig'};
     $self->_guessSystemPhpVariables();
     $self;
+}
+
+=item _dialogForPhpConfLevel( \%dialog )
+
+ Dialog for PHP configuration level
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 (Next), 20 (Skip), 30 (Back)
+
+=cut
+
+sub _dialogForPhpConfLevel
+{
+    my ( $self, $dialog ) = @_;
+
+    my $value = ::setupGetQuestion(
+        'PHP_CONFIG_LEVEL', $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'}
+    );
+
+    if ( !grep ( $::reconfigure eq $_, qw/ php servers all /)
+        && grep ( $value eq $_, qw/ per_site per_domain per_user / )
+    ) {
+        ::setupSetQuestion( 'PHP_CONFIG_LEVEL', $value );
+        return 20;
+    }
+
+    my %choices = (
+        per_site   => 'Per site',
+        per_domain => 'Per domain',
+        per_user   => 'Per user'
+    );
+
+    ( my $ret, $value ) = $dialog->select(
+        <<"EOF", \%choices, ( grep ( $value eq $_, qw/ per_site per_domain per_user /) )[0] // 'per_site' );
+Please choose the PHP configuration level you want use. Available levels are:
+
+\\Z4Per domain:\\Zn One php.ini file per domain (including subdomains)
+\\Z4Per user:\\Zn One php.ini file per user
+\\Z4Per site:\\Zn One php.ini file per domain
+
+If you make use of the PhpSwitcher plugin, you \\ZbMUST\\ZB choose the 'per site' option.
+EOF
+    return 30 if $ret == 30;
+
+    ::setupSetQuestion( 'PHP_CONFIG_LEVEL', $value );
+    0;
 }
 
 =item _guessSystemPhpVariables( )
@@ -508,8 +534,6 @@ sub _setupVlogger
 
     my $rs = eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
-        local $dbh->{'RaiseError'} = TRUE;
-
         my %config = @{ $dbh->selectcol_arrayref(
             "
                 SELECT `name`, `value`

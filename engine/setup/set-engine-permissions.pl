@@ -6,7 +6,7 @@
 
 =head1 SYNOPSIS
 
- set-engine-permissions [options]...
+ set-engine-permissions [OPTION]...
 
 =cut
 

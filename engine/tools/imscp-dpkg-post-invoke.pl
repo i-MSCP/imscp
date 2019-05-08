@@ -2,11 +2,11 @@
 
 =head1 NAME
 
- imscp-dpkg-post-invoke.pl - Process dpkg post invoke tasks
+ imscp-dpkg-post-invoke.pl - Process dpkg(1) post-invoke tasks
 
 =head1 SYNOPSIS
 
- imscp-dpkg-post-invoke [options]...
+ imscp-dpkg-post-invoke [OPTION]...
 
 =cut
 
@@ -30,22 +30,32 @@
 use strict;
 use warnings;
 use FindBin;
-use lib "/var/www/imscp/engine/PerlLib", "/var/www/imscp/engine/PerlVendor"; # FIXME: shouldn't be hardcoded
+use lib '/var/www/imscp/engine/PerlLib', '/var/www/imscp/engine/PerlVendor';
 use File::Basename;
-use iMSCP::Debug;
+use iMSCP::Boolean;
 use iMSCP::Bootstrapper;
+use iMSCP::Debug qw/
+    debug error getMessageByType getLastError newDebug setVerbose
+/;
 use iMSCP::Getopt;
 use iMSCP::Servers;
 use iMSCP::Packages;
 
-$ENV{'LANG'} = 'C.UTF-8';
-$ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
+@{ENV}{qw/ LANG PATH /} = (
+    'C.UTF-8',
+    '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+);
+
+# Set execution context
+# Need to be setup as some post-invoke tasks could have to write
+# in configuration files which are readonly in default (backend) context.
+$::execmode = 'setup';
 
 newDebug( 'imscp-dpkg-post-invoke.log' );
 
 iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq{
 
-Process dpkg post invoke tasks
+Execute dpkg(1) post-invoke tasks from i-MSCP servers and packages
 
 OPTIONS:
  -d,    --debug         Enable debug mode.
@@ -56,33 +66,41 @@ OPTIONS:
 
 setVerbose( iMSCP::Getopt->verbose );
 
-my $bootstrapper = iMSCP::Bootstrapper->getInstance();
-exit unless $bootstrapper->lock( '/var/lock/imscp-dpkg-post-invoke.lock', 'nowait' );
-
-$bootstrapper->getInstance()->boot( {
-    config_readonly => 1,
-    mode            => 'backend',
-    nolock          => 1
+iMSCP::Bootstrapper->getInstance()->boot( {
+    config_readonly => FALSE,
+    mode            => $::execmode,
+    nodatabase      => TRUE,
+    nolock          => TRUE,
+    nokeys          => TRUE,
+    norequirements  => TRUE
 } );
 
-my $rs = 0;
-my @items = ();
+eval {
+    my $server = $_;
 
-for my $server ( iMSCP::Servers->getInstance()->getList() ) {
-    next unless $server->can( 'dpkgPostInvokeTasks' );
-    push @items, $server->factory();
-}
+    if ( my $sub = $server->can( 'dpkgPostInvokeTasks' ) ) {
+        debug( sprintf( '%s dpkg(1) post-invoke tasks', $server ), FALSE );
+        $sub->( $server->factory()) == 0 or die( getMessageByType(
+            'error', { amount => 1, remove => TRUE }
+        ));
+    }
 
-for my $package ( iMSCP::Packages->getInstance()->getList() ) {
-    next unless $package->can( 'dpkgPostInvokeTasks' );
-    push @items, $package->getInstance();
-}
+    TRUE;
+} or error( $@ ) for iMSCP::Servers->getInstance()->getList();
 
-for my $item( @items ) {
-    $rs |= $item->dpkgPostInvokeTasks();
-}
+eval {
+    my $package = $_;
 
-exit $rs;
+    if ( my $sub = $package->can( 'dpkgPostInvokeTasks' ) ) {
+        debug( sprintf( '%s dpkg(1) post-invoke tasks', $package ), FALSE );
+        $sub->( $package->getInstance()) == 0 or die( getMessageByType(
+            'error', { amount => 1, remove => TRUE }
+        ));
+    }
+    TRUE;
+} or error( $@ ) for iMSCP::Packages->getInstance()->getList();
+
+exit 1 if getLastError();
 
 =head1 AUTHOR
 

@@ -26,7 +26,6 @@ package iMSCP::Getopt;
 use strict;
 use warnings;
 use iMSCP::Boolean;
-use iMSCP::Debug qw/ debugRegisterCallBack /;
 use Text::Wrap;
 use fields qw/
     clearComposerCache debug fixPermissions noprompt preseed reconfigure
@@ -86,7 +85,6 @@ $usage
 
 $optionHelp
 EOF
-        debugRegisterCallBack( sub { exit $exitCode; } );
         exit $exitCode;
     };
 
@@ -143,7 +141,6 @@ $usage
  -?,-h  --help          Show this help.
 
 EOF
-        debugRegisterCallBack( sub { exit $exitCode; } );
         exit $exitCode;
     };
 
@@ -185,11 +182,12 @@ sub showUsage
 our @reconfigurationItems = sort(
     'all', 'servers', 'addons', 'httpd', 'mta', 'po', 'ftpd', 'named', 'sql',
     'hostnames', 'system_hostname', 'panel_hostname', 'panel_ports',
-    'primary_ip', 'admin', 'admin_credentials', 'admin_email', 'php',
-    'timezone', 'panel', 'panel_ssl', 'system_server', 'services_ssl', 'ssl',
-    'backup', 'alt_urls_feature', 'antirootkit_packages',
-    'sql_admin_tool_packages', 'web_ftp_client_packages',
-    'webmail_client_packages', 'web_statistic_packages'
+    'primary_ip', 'admin', 'admin_credentials', 'admin_email',
+    'admin_password', 'admin_username', 'php', 'timezone', 'panel',
+    'panel_ssl', 'system_server', 'services_ssl', 'ssl', 'backup',
+    'alt_urls_feature', 'antirootkit_packages', 'sql_admin_tool_packages',
+    'web_ftp_client_packages', 'webmail_client_packages',
+    'web_statistic_packages'
 );
 
 =item reconfigure( [ $item = 'none' ] )

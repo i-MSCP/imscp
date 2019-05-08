@@ -93,7 +93,8 @@ sub registerSetupListeners
     my ( $self, $events ) = @_;
 
     my $rs = $events->registerOne( 'beforeSetupDialog', sub {
-        push @{ $_[0] }, sub { $self->setupDialog( @_ ) };
+        push @{ $_[0] },
+            sub { $self->_dialogForPackages( @_ ); };
         0;
     } );
     $rs ||= $events->registerOne( 'beforeSetupServersAndPackages', sub {
@@ -137,55 +138,6 @@ sub registerSetupListeners
 
         $self->_purgeDistributionPackages( @distributionPackages );
     } );
-}
-
-=item setupDialog( \%dialog )
-
- Setup dialog
-
- Param iMSCP::Dialog \%dialog
- Return int 0 NEXT, 1 FAILURE, 30 BACKUP, 50 ESC
-
-=cut
-
-sub setupDialog
-{
-    my ( $self, $dialog ) = @_;
-
-    my @selectedPackages = split ',', ::setupGetQuestion( $self->getConfVarname());
-
-    if ( $::reconfigure =~ /^(?:@{ [ $self->getOptName() ] }|addons|all|forced)$/
-        || !@selectedPackages
-        || array_minus( @selectedPackages, @{ $self->{'PACKAGES'} } )
-    ) {
-        ( my $rs, my $packages ) = $dialog->checkbox(
-            <<"EOF", [ grep ( $_ ne 'No', @{ $self->{'PACKAGES'} } ) ], intersect( @{ $self->{'PACKAGES'} }, @selectedPackages ));
-
-Please select the @{ [ $self->getPackageHumanName() ] } you want to install:
-EOF
-        return $rs if $rs >= 30;
-        @selectedPackages = @{ $packages } ? @{ $packages } : 'No';
-    }
-
-    ::setupSetQuestion( $self->getConfVarname(), join ',', @selectedPackages );
-
-    for my $package ( @selectedPackages ) {
-        next if $package eq 'No';
-
-        local $@;
-        my $packageInstance = eval { $self->_getPackage( $package ); };
-        if ( $@ ) {
-            error( $@ );
-            return 1;
-        }
-
-        if ( my $sub = $packageInstance->can( 'setupDialog' ) ) {
-            my $rs = $sub->( $packageInstance, $dialog );
-            return $rs if $rs;
-        }
-    }
-
-    0;
 }
 
 =item preinstall( )
@@ -326,6 +278,61 @@ sub _init
     $self;
 }
 
+=item _dialogForPackages( \%dialog )
+
+ Dialog for packages
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 (Next), 20 (Skip), 30 (back)
+
+=cut
+
+sub _dialogForPackages
+{
+    my ( $self, $dialog ) = @_;
+
+    my @selectedPackages = split ',', ::setupGetQuestion( $self->getConfVarname());
+    my $ret = 20;
+
+    FIRST_DIALOG:
+
+    if ( grep( $::reconfigure eq $_, $self->getOptName(), 'addons', 'all' )
+        || !@selectedPackages
+        || array_minus( @selectedPackages, @{ $self->{'PACKAGES'} } )
+    ) {
+
+        ( $ret, my $packages ) = $dialog->multiselect(
+            <<"EOF", map { $_ => $_ } @{ $self->{'PACKAGES'} }, intersect( @{ $self->{'PACKAGES'} }, @selectedPackages ));
+Please select the @{ [ $self->getPackageHumanName() ] } you want to install:
+EOF
+        return 30 if $ret == 30;
+        @selectedPackages = @{ $packages } ? @{ $packages } : 'No';
+    };
+
+    ::setupSetQuestion( $self->getConfVarname(), join ',', @selectedPackages );
+
+    my @dialogStack;
+    for my $package ( @selectedPackages ) {
+        next if $package eq 'No';
+
+        local $@;
+        my $packageInstance = eval { $self->_getPackage( $package ); };
+        if ( $@ ) {
+            error( $@ );
+            return 1;
+        }
+
+        if ( my $sub = $packageInstance->can( 'setupDialog' ) ) {
+            push @dialogStack, sub { $sub->( $packageInstance, $dialog ); };
+        }
+    }
+
+    my $prevRet = $ret;
+    $ret = $dialog->execute( @dialogStack, TRUE ) if @dialogStack;
+    goto FIRST_DIALOG if $ret == 30 && $prevRet != 20;
+    $ret;
+}
+
 =item _installDistributionPackages( @packages )
 
  Install distribution packages
@@ -350,17 +357,30 @@ sub _installDistributionPackages
     my $stdout;
     my $rs = execute(
         [
-            ( !iMSCP::Getopt->noprompt ? ( 'debconf-apt-progress', '--logstderr', '--' ) : () ),
-            '/usr/bin/apt-get', '--assume-yes', '--option', 'DPkg::Options::=--force-confnew',
-            '--option', 'DPkg::Options::=--force-confmiss', '--option', 'Dpkg::Options::=--force-overwrite',
-            ( $::forcereinstall ? '--reinstall' : () ), '--auto-remove', '--purge', '--no-install-recommends',
-            ( ( version->parse( $aptVersion ) < version->parse( '1.1.0' ) ) ? '--force-yes' : '--allow-downgrades' ),
+            ( !iMSCP::Getopt->noprompt
+                ? ( 'debconf-apt-progress', '--logstderr', '--' ) : ()
+            ),
+            '/usr/bin/apt-get',
+            '--assume-yes',
+            '--option', 'DPkg::Options::=--force-confnew',
+            '--option', 'DPkg::Options::=--force-confmiss',
+            '--option', 'Dpkg::Options::=--force-overwrite',
+            '--auto-remove',
+            '--purge',
+            '--no-install-recommends',
+            ( version->parse( $aptVersion ) < version->parse( '1.1.0' )
+                ? '--force-yes' : '--allow-downgrades'
+            ),
             'install', @packages
         ],
-        ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef ),
+        ( iMSCP::Getopt->noprompt
+            && !iMSCP::Getopt->verbose ? \$stdout : undef
+        ),
         \my $stderr
     );
-    error( sprintf( "Couldn't install packages: %s", $stderr || 'Unknown error' )) if $rs;
+    error( sprintf(
+        "Couldn't install packages: %s", $stderr || 'Unknown error'
+    )) if $rs;
     $rs;
 }
 

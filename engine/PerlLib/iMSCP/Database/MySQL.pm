@@ -46,7 +46,7 @@ use parent 'Common::SingletonClass';
  Set properties
 
  Param string $prop Propertie name
- Param string $value Propertie value
+ Param string|undef $value Propertie value
  Return string|undef Value of propertie which has been set or undef in case the properties doesn't exist
 
 =cut
@@ -73,7 +73,7 @@ sub connect
     my ( $self ) = @_;
 
     my $dsn = join ';', (
-        "dbi:mysql:database=$self->{'db'}->{'DATABASE_NAME'",
+        "dbi:mysql:database=$self->{'db'}->{'DATABASE_NAME'}",
         'host=' . ( index( $self->{'db'}->{'DATABASE_HOST'}, ':' ) != -1
             ? '[' . $self->{'db'}->{'DATABASE_HOST'} . ']'
             : $self->{'db'}->{'DATABASE_HOST'}
@@ -107,10 +107,13 @@ sub connect
     };
     return $@ if $@;
 
-    @{ $self }{qw/ _dsn _currentUser _currentPassword connection /} = (
-        $dsn, $self->{'db'}->{'DATABASE_USER'},
-        $self->{'db'}->{'DATABASE_PASSWORD'}, FALSE
+    @{ $self }{qw/ _dsn _currentUser _currentPassword /} = (
+        $dsn,
+        $self->{'db'}->{'DATABASE_USER'},
+        $self->{'db'}->{'DATABASE_PASSWORD'}
     );
+    
+    0;
 }
 
 =item useDatabase( $dbName )
@@ -138,11 +141,8 @@ sub useDatabase
         $self->connect();
         $dbh = $self->getRawDb();
     }
-
-    {
-        local $dbh->{'RaiseError'} = TRUE;
-        $dbh->do( 'USE ' . $self->quoteIdentifier( $dbName ));
-    }
+    
+    $dbh->do( 'USE ' . $self->quoteIdentifier( $dbName ));
 
     $self->{'db'}->{'DATABASE_NAME'} = $dbName;
     $oldDbName;
@@ -257,7 +257,6 @@ sub getDbTables
     local $@;
     my @tables = eval {
         my $dbh = $self->getRawDb();
-        local $dbh->{'RaiseError'} = TRUE;
         keys %{ $dbh->selectall_hashref(
             '
                 SELECT TABLE_NAME
@@ -292,7 +291,6 @@ sub getTableColumns
     local $@;
     my @columns = eval {
         my $dbh = $self->getRawDb();
-        local $dbh->{'RaiseError'} = 1;
         keys %{ $dbh->selectall_hashref(
             '
                 SELECT COLUMN_NAME

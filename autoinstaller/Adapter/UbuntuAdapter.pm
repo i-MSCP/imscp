@@ -1,11 +1,11 @@
 =head1 NAME
 
- autoinstaller::Adapter::UbuntuAdapter - Ubuntu autoinstaller adapter
+ autoinstaller::Adapter::UbuntuAdapter - Ubuntu installer adapter
 
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@ use parent 'autoinstaller::Adapter::DebianAdapter';
 
 =head1 DESCRIPTION
 
- i-MSCP autoinstaller adapter implementation for Ubuntu.
+ Ubuntu installer adapter
 
 =head1 PRIVATE METHODS
 
@@ -41,7 +41,7 @@ use parent 'autoinstaller::Adapter::DebianAdapter';
 
 sub _init
 {
-    my $self = shift;
+    my ( $self ) = @_;
 
     $self->SUPER::_init();
     $self->{'repositorySections'} = [ 'main', 'universe', 'multiverse' ];

@@ -65,8 +65,8 @@ sub registerSetupListeners
 
     $events->registerOne( 'beforeSetupDialog', sub {
         push @{ $_[0] },
-            sub { $self->_dialogForCpBackup( @_ ) },
-            sub { $self->_dialogForClientBackup( @_ ) };
+            sub { $self->_dialogForCpBackup( @_ ); },
+            sub { $self->_dialogForClientBackup( @_ ); };
         0;
     } );
 }
@@ -151,10 +151,10 @@ sub uninstall
 
 =item _dialogForCpBackup( \%dialog )
 
- Setup dialog for control panel backup feature
+ Dialog for control panel backup
 
  Param iMSCP::Dialog \%dialog
- Return int 0 NEXT, 30 BACKUP, 50 ESC
+ Return int 0 (Next), 20 (Skip), 30 (Back)
 
 =cut
 
@@ -164,26 +164,27 @@ sub _dialogForCpBackup
 
     my $value = ::setupGetQuestion( 'BACKUP_IMSCP' );
 
-    if ( grep ($_ eq $::reconfigure, qw/ backup all forced /)
-        || !grep ($_ eq $value, 'yes', 'no')
+    if ( !grep ( $_ eq $::reconfigure, qw/ backup all / )
+        && grep ( $_ eq $value, qw/ yes no / )
     ) {
-        my $rs = $dialog->yesno( <<'EOF', $value eq 'no', TRUE );
-Do you want to enable daily backup feature for the control panel (database and configuration files)?
-EOF
-        return $rs unless $rs < 30;
-        $value = $rs ? 'no' : 'yes'
+        return 20;
     }
 
-    ::setupSetQuestion( 'BACKUP_IMSCP', $value );
+    my $ret = $dialog->boolean( <<'EOF', $value eq 'no', TRUE );
+Do you want to enable the daily backup feature for the control panel (database and configuration files)?
+EOF
+    return 30 if $ret == 30;
+
+    ::setupSetQuestion( 'BACKUP_IMSCP', $ret ? 'no' : 'yes' );
     0;
 }
 
 =item _dialogForClientBackup( \%dialog )
 
- Setup dialog for clent backup feature
+ Dialog for clent backup
 
  Param iMSCP::Dialog \%dialog
- Return int 0 NEXT, 30 BACKUP, 50 ESC
+ Return int 0 (Next), 20 (Skip), 30 (Back)
 
 =cut
 
@@ -193,19 +194,20 @@ sub _dialogForClientBackup
 
     my $value = ::setupGetQuestion( 'BACKUP_DOMAINS' );
 
-    if ( grep ($_ eq $::reconfigure, qw/ backup all forced /)
-        || !grep ($_ eq $value, 'yes', 'no')
+    if ( !grep ( $_ eq $::reconfigure, qw/ backup all / )
+        && grep ( $_ eq $value, qw/ yes no / )
     ) {
-        my $rs = $dialog->yesno( <<'EOF', $value eq 'no', TRUE );
+        return 20;
+    }
+
+    my $ret = $dialog->boolean( <<'EOF', $value eq 'no' );
 Do you want to enable the backup feature for the clients?
 
 When this feature is enabled, resellers can enable backup feature for their clients.
 EOF
-        return $rs unless $rs < 30;
-        $value = $rs ? 'no' : 'yes'
-    }
+    return 30 if $ret == 30;
 
-    ::setupSetQuestion( 'BACKUP_DOMAINS', $value );
+    ::setupSetQuestion( 'BACKUP_DOMAINS', $ret = 0 );
     0;
 }
 

@@ -238,8 +238,6 @@ sub _setupSqlUser
 
     my $rs = eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
-        local $dbh->{'RaiseError'} = TRUE;
-
         my %config = @{ $dbh->selectcol_arrayref(
             "
                 SELECT `name`, `value`
@@ -583,6 +581,7 @@ sub _buildDHparametersFile
 
             if ( iMSCP::ProgramFinder::find( 'certtool' ) ) {
                 $tmpFile = File::Temp->new( UNLINK => FALSE );
+                $tmpFile->close();
                 $cmd = "certtool --generate-dh-params --sec-param medium > $tmpFile";
             } else {
                 $cmd = 'DH_BITS=2048 mkdhparams';
@@ -611,7 +610,7 @@ EOF
                 filename => $tmpFile->filename()
             )->moveFile(
                 "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem"
-            ) if $tmpFile;
+            ) if defined $tmpFile;
             $rs;
         }, 'Generating DH parameter file', 1, 1
     );

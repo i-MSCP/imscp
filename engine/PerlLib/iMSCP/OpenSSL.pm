@@ -1,6 +1,6 @@
 =head1 NAME
 
-iMSCP::OpenSSL - i-MSCP OpenSSL library
+ iMSCP::OpenSSL - Library for validation and generation of SSL certificates
 
 =cut
 
@@ -36,7 +36,7 @@ use parent 'Common::Object';
 
 =head1 DESCRIPTION
 
- Library allowing to check and import SSL certificates in single container (PEM).
+ Library for validation and generation of SSL certificates
 
 =head1 PUBLIC METHODS
 
@@ -45,8 +45,10 @@ use parent 'Common::Object';
 =item validatePrivateKey( )
 
  Validate private key
+ 
+ On error, an error message isset through iMSCP::Debug::error()
 
- Return int 0 on success, other on failure
+ Return bool TRUE if the private key is valid, FALSE otherwise
 
 =cut
 
@@ -54,143 +56,12 @@ sub validatePrivateKey
 {
     my ( $self ) = @_;
 
-    unless ( $self->{'private_key_container_path'} ) {
-        error( 'Path to SSL private key is not set' );
-        return 1;
+    unless ( length $self->{'private_key_container_path'}
+        && -f $self->{'private_key_container_path'}
+    ) {
+        error( 'Invalid SSL private key path.', FALSE );
+        return FALSE;
     }
-
-    unless ( -f $self->{'private_key_container_path'} ) {
-        error( sprintf(
-            "%s SSL private key doesn't exists",
-            $self->{'private_key_container_path'}
-        ));
-        return 1;
-    }
-
-    my $passphraseFile;
-    if ( $self->{'private_key_passphrase'} ) {
-        # Write SSL private key passphrase into temporary file, which is only
-        # readable by root
-        $passphraseFile = File::Temp->new( UNLINK => 1 );
-        print $passphraseFile $self->{'private_key_passphrase'};
-        $passphraseFile->flush();
-        $passphraseFile->close();
-    }
-
-    my $cmd = [
-        'openssl', 'pkey',
-        '-in', $self->{'private_key_container_path'}, '-noout',
-        ( $passphraseFile
-            ? ( '-passin', 'file:' . $passphraseFile->filename ) : ()
-        )
-    ];
-
-    my $rs = execute( $cmd, \my $stdout, \my $stderr );
-    debug( $stdout ) if $stdout;
-    error(
-        sprintf(
-            "Couldn't import SSL private key from %s file: %s",
-            $self->{'private_key_container_path'},
-            $stderr || 'unknown error'
-        )
-    ) if $rs;
-    $rs;
-}
-
-=item validateCertificate( )
-
- Validate certificate
-
- If a CA Bundle (intermediate certificate(s)) is set, the whole certificate chain will be checked
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub validateCertificate
-{
-    my ( $self ) = @_;
-
-    unless ( $self->{'certificate_container_path'} ) {
-        error( 'Path to SSL certificate is not set' );
-        return 1;
-    }
-
-    unless ( -f $self->{'certificate_container_path'} ) {
-        error( sprintf(
-            "%s SSL certificate doesn't exists",
-            $self->{'certificate_container_path'}
-        ));
-        return 1;
-    }
-
-    my $caBundle = 0;
-
-    if ( $self->{'ca_bundle_container_path'} ) {
-        unless ( -f $self->{'ca_bundle_container_path'} ) {
-            error( sprintf(
-                "%s SSL CA Bundle doesn't exists",
-                $self->{'ca_bundle_container_path'}
-            ));
-            return 1;
-        }
-
-        $caBundle = 1;
-    } else {
-        # We asssume a self-signed SSL certificate.
-        # We need trust the self-signed SSL certificate for validation time, else
-        # the 18 at 0 depth lookup: self signed certificate' error is raised (openssl >= 1.1.0)
-        $self->{'ca_bundle_container_path'}
-            = $self->{'certificate_container_path'};
-    }
-
-    my $cmd = [
-        'openssl', 'verify',
-        ( $self->{'ca_bundle_container_path'} ne ''
-            ? ( '-CAfile', $self->{'ca_bundle_container_path'} ) : ()
-        ),
-        '-purpose', 'sslserver', $self->{'certificate_container_path'}
-    ];
-
-    my $rs = execute( $cmd, \my $stdout, \my $stderr );
-    debug( $stdout ) if $stdout;
-    error( sprintf(
-        "SSL certificate is not valid: %s",
-        ( $stderr || $stdout || 'Unknown error' )
-            =~ s/$self->{'certificate_container_path'}:\s+//r
-    )) if $rs;
-
-    $self->{'ca_bundle_container_path'} = '' unless $caBundle;
-    $rs;
-}
-
-=item validateCertificateChain( )
-
- Validate certificate chain
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub validateCertificateChain
-{
-    my ( $self ) = @_;
-
-    my $rs = $self->validatePrivateKey();
-    $rs ||= $self->validateCertificate();
-}
-
-=item importPrivateKey( )
-
- Import private key in certificate chain container
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub importPrivateKey
-{
-    my ( $self ) = @_;
 
     my $passphraseFile;
     if ( $self->{'private_key_passphrase'} ) {
@@ -198,31 +69,232 @@ sub importPrivateKey
         # readable by root
         $passphraseFile = File::Temp->new( UNLINK => TRUE );
         print $passphraseFile $self->{'private_key_passphrase'};
-        $passphraseFile->flush();
         $passphraseFile->close();
     }
 
     my $cmd = [
-        'openssl', 'pkey', '-in', $self->{'private_key_container_path'},
+        '/usr/bin/openssl',
+        'pkey',
+        '-in', $self->{'private_key_container_path'},
+        '-noout',
+        ( defined $passphraseFile
+            ? ( '-passin', 'file:' . $passphraseFile->filename() ) : ()
+        )
+    ];
+
+    my $rs = execute( $cmd, \my $stdout, \my $stderr );
+    if ( $rs ) {
+        debug( $stdout ) if length $stdout;
+        debug( $stderr ) if length $stderr;
+        error( 'Invalid SSL private key or passphrase.', FALSE );
+        return FALSE;
+    }
+
+    TRUE;
+}
+
+=item validateCertificate( )
+
+ Validate certificate
+ 
+ On error, an error message isset through iMSCP::Debug::error()
+
+ Return bool TRUE if the SSL certificate is valid, FALSE otherwise
+
+=cut
+
+sub validateCertificate
+{
+    my ( $self ) = @_;
+
+    unless ( length $self->{'certificate_container_path'}
+        && -f $self->{'certificate_container_path'}
+    ) {
+        error( 'Invalid SSL certificate path.', FALSE );
+        return FALSE;
+    }
+
+    my $caBundle = FALSE;
+
+    if ( length $self->{'ca_bundle_container_path'}
+        && -f $self->{'ca_bundle_container_path'}
+    ) {
+        $caBundle = TRUE;
+    } elsif ( !-f _ ) {
+        error( 'Invalid SSL CA bundle path.', FALSE );
+        return FALSE;
+    } else {
+        # We assume a self-signed SSL certificate.
+        # We need trust the self-signed SSL certificate for validation time,
+        # else the 18 at 0 depth lookup: self signed certificate' error is
+        # raised (openssl >= 1.1.0)
+        $self->{'ca_bundle_container_path'}
+            = $self->{'certificate_container_path'};
+    }
+
+    my $cmd = [
+        '/usr/bin/openssl',
+        'verify',
+        ( length $self->{'ca_bundle_container_path'}
+            ? ( '-CAfile', $self->{'ca_bundle_container_path'} ) : ()
+        ),
+        '-purpose', 'sslserver',
+        $self->{'certificate_container_path'}
+    ];
+
+    my $rs = execute( $cmd, \my $stdout, \my $stderr );
+    if ( $rs ) {
+        debug( $stdout ) if length $stdout;
+        debug( $stderr ) if length $stderr;
+        error( 'Invalid SSL certificate.', FALSE );
+        return FALSE;
+    }
+
+    $self->{'ca_bundle_container_path'} = undef $caBundle;
+    TRUE;
+}
+
+=item validateCertKeyMatching( )
+
+ Validate certificate key matching
+ 
+ On error, an error message isset through iMSCP::Debug::error()
+
+ Return bool TRUE if the SSL certificate private key matches the SSL
+        certificate, FALSE otherwise
+=cut
+
+sub validateCertKeyMatching
+{
+    my ( $self ) = @_;
+
+    unless ( length $self->{'certificate_container_path'}
+        && -f $self->{'certificate_container_path'}
+    ) {
+        error( 'Invalid SSL certificate path.', FALSE );
+        return FALSE;
+    }
+
+    unless ( length $self->{'private_key_container_path'}
+        && -f $self->{'private_key_container_path'}
+    ) {
+        error( 'Invalid SSL private key path.', FALSE );
+        return FALSE;
+    }
+
+    my @cmd = (
+        '/usr/bin/openssl',
+        'pkey',
+        '-in', escapeShell( $self->{'private_key_container_path'} ),
+        '-pubout',
+        '-outform', 'pem'
+    );
+
+    my $rs = execute( "@cmd", \my $pkey, \my $stderr );
+    if ( $rs ) {
+        debug( $stderr ) if length $stderr;
+        error( "Couldn't export public key from SSL private key.", FALSE );
+        return FALSE;
+    }
+
+    @cmd = (
+        '/usr/bin/openssl',
+        'x509',
+        '-in', escapeShell( $self->{'certificate_container_path'} ),
+        '-pubkey',
+        '-noout',
+        '-outform', 'pem'
+    );
+    $rs = execute( "@cmd", \my $x509, \$stderr );
+    if ( $rs ) {
+        debug( $stderr ) if length $stderr;
+        error( "Couldn't export public key from SSL certificate.", FALSE );
+        return FALSE;
+    }
+
+    return TRUE if $pkey eq $x509;
+
+    error( "The SSL certificate private key doesn't match with the SSL certificate.", FALSE );
+    FALSE;
+}
+
+=item validateCertificateChain( )
+
+ Validate the certificate chain
+ 
+ On error, an error message isset through iMSCP::Debug::error()
+
+ Return bool TRUE if the certificate chain is valid, FALSE otherwise
+
+=cut
+
+sub validateCertificateChain
+{
+    my ( $self ) = @_;
+
+    $self->validatePrivateKey()
+        && $self->validateCertificate()
+        && $self->validateCertKeyMatching();
+}
+
+=item importPrivateKey( )
+
+ Import private key in certificate chain container
+
+ On error, an error message isset through iMSCP::Debug::error()
+
+ Return bool TRUE on success, FALSE on error
+
+=cut
+
+sub importPrivateKey
+{
+    my ( $self ) = @_;
+
+    unless ( length $self->{'private_key_container_path'}
+        && -f $self->{'private_key_container_path'}
+    ) {
+        error( 'Invalid SSL private key path.', FALSE );
+        return FALSE;
+    }
+
+    my $passphraseFile;
+    if ( length $self->{'private_key_passphrase'} ) {
+        # Write SSL private key passphrase into temporary file which is only
+        # readable by root user
+        $passphraseFile = File::Temp->new( UNLINK => TRUE );
+        print $passphraseFile $self->{'private_key_passphrase'};
+        $passphraseFile->close();
+    }
+
+    my $cmd = [
+        '/usr/bin/openssl',
+        'pkey',
+        '-in', $self->{'private_key_container_path'},
         '-out', "$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem",
-        ( ( $passphraseFile )
+        ( defined $passphraseFile
             ? ( '-passin', 'file:' . $passphraseFile->filename ) : ()
         )
     ];
 
     my $rs = execute( $cmd, \my $stdout, \my $stderr );
-    debug( $stdout ) if $stdout;
-    error( sprintf(
-        "Couldn't import SSL private key: %s", $stderr || 'unknown error'
-    )) if $rs;
-    $rs;
+    if ( $rs ) {
+        debug( $stdout ) if length $stdout;
+        debug( $stderr ) if length $stderr;
+        error( "Couldn't import SSL private key in SSL certificate chain.", FALSE );
+        return FALSE;
+    }
+
+    TRUE;
 }
 
 =item importCertificate( )
 
  Import certificate in certificate chain container
 
- Return int 0 on success, other on failure
+ On error, an error message isset through iMSCP::Debug::error()
+
+ Return bool TRUE on success, FALSE on error
 
 =cut
 
@@ -230,35 +302,47 @@ sub importCertificate
 {
     my ( $self ) = @_;
 
+    unless ( length $self->{'certificate_container_path'}
+        && -f $self->{'certificate_container_path'}
+    ) {
+        error( 'Invalid SSL certificate path.', FALSE );
+        return FALSE;
+    }
+
     my $file = iMSCP::File->new(
         filename => $self->{'certificate_container_path'}
     );
-    return 1 unless defined( my $certificateRef = $file->getAsRef());
+    return FALSE unless defined( my $certificateRef = $file->getAsRef());
 
     ${ $certificateRef } =~ s/^(?:\015?\012)+|(?:\015?\012)+$//g;
     ${ $certificateRef } .= "\n";
 
-    my $rs = $file->save();
-    return $rs if $rs;
+    return FALSE if $file->save();
 
     my @cmd = (
-        'cat', escapeShell( $self->{'certificate_container_path'} ),
+        '/usr/bin/cat',
+        escapeShell( $self->{'certificate_container_path'} ),
         '>>', escapeShell( "$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem" )
     );
 
-    $rs = execute( "@cmd", \my $stdout, \my $stderr );
-    debug( $stdout ) if $stdout;
-    error( sprintf(
-        "Couldn't import SSL certificate: %s", $stderr || 'unknown error'
-    )) if $rs;
-    $rs;
+    my $rs = execute( "@cmd", \my $stdout, \my $stderr );
+    if ( $rs ) {
+        debug( $stdout ) if length $stdout;
+        debug( $stderr ) if length $stderr;
+        error( "Couldn't import SSL certificate in SSL certificate chain.", FALSE );
+        return FALSE;
+    }
+
+    TRUE;
 }
 
 =item importCaBundle( )
 
  Import the CA Bundle in certificate chain container if any
 
- Return int 0 on success, other on failure
+ On error, an error message isset through iMSCP::Debug::error()
+
+ Return bool TRUE on success, FALSE on error
 
 =cut
 
@@ -266,39 +350,52 @@ sub importCaBundle
 {
     my ( $self ) = @_;
 
-    return 0 unless $self->{'ca_bundle_container_path'};
+    return TRUE unless length $self->{'ca_bundle_container_path'};
+
+    unless ( -f $self->{'certificate_container_path'} ) {
+        error( 'Invalid SSL CA bundle.', FALSE );
+        return FALSE;
+    }
 
     my $file = iMSCP::File->new(
         filename => $self->{'ca_bundle_container_path'}
     );
-    return 1 unless defined( my $caBundleRef = $file->getAsRef());
+    return FALSE unless defined( my $caBundleRef = $file->getAsRef());
 
     ${ $caBundleRef } =~ s/^(?:\015?\012)+|(?:\015?\012)+$//g;
     ${ $caBundleRef } .= "\n";
 
-    my $rs = $file->save();
-    return $rs if $rs;
+    return FALSE if $file->save();
 
     my @cmd = (
-        'cat', escapeShell( $self->{'ca_bundle_container_path'} ),
+        '/usr/bin/cat',
+        escapeShell( $self->{'ca_bundle_container_path'} ),
         '>>', escapeShell( "$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem" )
     );
 
-    $rs = execute( "@cmd", \my $stdout, \my $stderr );
-    debug( $stdout ) if $stdout;
-    error( sprintf(
-        "Couldn't import SSL CA Bundle: %s", $stderr || 'unknown error'
-    )) if $rs;
-    $rs;
+    my $rs = execute( "@cmd", \my $stdout, \my $stderr );
+    if ( $rs ) {
+        debug( $stdout ) if length $stdout;
+        debug( $stderr ) if length $stderr;
+        error( "Couldn't import SSL CA bundle in SSL certificate chain.", FALSE );
+        return FALSE;
+    }
+
+    TRUE;
 }
 
 =item createSelfSignedCertificate( \%data )
 
  Generate a self-signed SSL certificate
+ 
+ On error, an error message isset through iMSCP::Debug::error()
 
- Param hash \%data Certificate data (common_name, email, wildcard = false)
- Param bool $wildcardSSL OPTIONAL Does a wildcard SSL certificate must be generated (default FALSE)
- Return int 0 on success, other on failure
+ Param hash \%data Certificate data:
+  - common_name: SSL certificate common name
+  - email: SSL certificate email address
+  - wildcard Flag indicating whether or not a wildcard SSL certificate must be
+             generated
+ Return bool TRUE on success, FALSE on error, die on failure
 
 =cut
 
@@ -312,10 +409,11 @@ sub createSelfSignedCertificate
 
     my $openSSLConffileTpl = "$::imscpConfig{'CONF_DIR'}/openssl/openssl.cnf.tpl";
     my $commonName = $data->{'wildcard'}
-        ? '*.' . $data->{'common_name'} : $data->{'common_name'};
+        ? '*.' . $data->{'common_name'}
+        : $data->{'common_name'};
 
     # Load openssl configuration template file for self-signed SSL certificates
-    return 1 unless defined(
+    return FALSE unless defined(
         my $openSSLConffileTplContent = iMSCP::File->new(
             filename => $openSSLConffileTpl
         )->get()
@@ -327,37 +425,44 @@ sub createSelfSignedCertificate
         {
             COMMON_NAME   => $commonName,
             EMAIL_ADDRESS => $data->{'email'},
-            ALT_NAMES     => ( $data->{'wildcard'}
+            ALT_NAMES     => $data->{'wildcard'}
                 ? "DNS.1 = $commonName\n"
                 : "DNS.1 = $commonName\nDNS.2 = www.$commonName\n"
-            )
         },
         $openSSLConffileTplContent
     );
-    $openSSLConffile->flush();
     $openSSLConffile->close();
 
     my $cmd = [
-        'openssl', 'req', '-x509', '-nodes', '-days', '365',
-        '-config', $openSSLConffile->filename(), '-newkey', 'rsa',
+        'openssl',
+        'req',
+        '-x509',
+        '-nodes',
+        '-days', '365',
+        '-config', $openSSLConffile->filename(),
+        '-newkey', 'rsa',
         '-keyout', "$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem",
         '-out', "$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem"
     ];
 
     my $rs = execute( $cmd, \my $stdout, \my $stderr );
-    debug( $stdout ) if $stdout;
-    error( sprintf(
-        "Couldn't generate self-signed certificate: %s",
-        $stderr || 'unknown error'
-    )) if $rs;
-    $rs
+    if ( $rs ) {
+        debug( $stdout ) if length $stdout;
+        debug( $stderr ) if length $stderr;
+        error( "Couldn't generate self-signed SSL certificate.", FALSE );
+        return FALSE;
+    }
+
+    TRUE;
 }
 
 =item createCertificateChain( )
 
  Create certificate chain (import private key, certificate and CA Bundle)
 
- Return 0 on success, other on failure
+ On error, an error message isset through iMSCP::Debug::error()
+
+ Return bool TRUE on succes, FALSE on error
 
 =cut
 
@@ -365,32 +470,39 @@ sub createCertificateChain
 {
     my ( $self ) = @_;
 
-    my $rs = $self->importPrivateKey();
-    $rs ||= $self->importCertificate();
-    $rs ||= $self->importCaBundle();
+    $self->importPrivateKey() && $self->importCertificate()
+        && $self->importCaBundle();
 }
 
 =item getCertificateExpiryTime( [ certificatePath = $self->{'certificate_container_path'} ] )
 
  Get SSL certificate expiry time
+ 
+ On error, an error message isset through iMSCP::Debug::error()
 
- Param string certificatePath Path to SSL certificate (default: $self->{'certificate_container_path'})
- Return timestamp on success, undef
+ Param string certificatePath Path to SSL certificate
+ Return timestamp on success, undef on error
 
 =cut
 
 sub getCertificateExpiryTime
 {
     my ( $self, $certificatePath ) = @_;
-    $certificatePath ||= $self->{'certificate_container_path'};
+    $certificatePath //= $self->{'certificate_container_path'};
 
-    unless ( $certificatePath ) {
-        error( 'Invalide SSL certificate path provided' );
+    unless ( ref \$certificatePath eq 'SCALAR' && length $certificatePath ) {
+        error( 'Invalid SSL certificate path provided.', FALSE );
         return undef;
     }
 
     my $rs = execute(
-        [ 'openssl', 'x509', '-enddate', '-noout', '-in', $certificatePath ],
+        [
+            '/usr/bin/openssl',
+            'x509',
+            '-enddate',
+            '-noout',
+            '-in', $certificatePath
+        ],
         \my $stdout,
         \my $stderr
     );
@@ -400,7 +512,7 @@ sub getCertificateExpiryTime
         error( sprintf(
             "Couldn't get SSL certificate expiry time: %s",
             $stderr || 'unknown error'
-        ));
+        ), FALSE );
         return undef;
     }
 
@@ -426,29 +538,17 @@ sub _init
     my ( $self ) = @_;
 
     # Full path to the certificate chains storage directory
-    $self->{'certificate_chains_storage_dir'} = ''
-        unless $self->{'certificate_chains_storage_dir'};
-
+    $self->{'certificate_chains_storage_dir'} //= '';
     # Certificate chain name
-    $self->{'certificate_chain_name'} = ''
-        unless $self->{'certificate_chain_name'};
-
+    $self->{'certificate_chain_name'} //= undef;
     # Full path to the private key container
-    $self->{'private_key_container_path'} = ''
-        unless $self->{'private_key_container_path'};
-
+    $self->{'private_key_container_path'} //= undef;
     # Private key passphrase if any
-    $self->{'private_key_passphrase'} = ''
-        unless $self->{'private_key_passphrase'};
-
+    $self->{'private_key_passphrase'} //= undef;
     # Full path to the SSL certificate container
-    $self->{'certificate_container_path'} = ''
-        unless $self->{'certificate_container_path'};
-
-    # Full path to the CA Bundle container (Container which contain one or many
-    # intermediate certificates)
-    $self->{'ca_bundle_container_path'} = ''
-        unless $self->{'ca_bundle_container_path'};
+    $self->{'certificate_container_path'} //= undef;
+    # Full path to the CA Bundle container
+    $self->{'ca_bundle_container_path'} //= undef;
 
     $self;
 }

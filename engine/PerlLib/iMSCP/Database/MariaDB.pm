@@ -51,7 +51,7 @@ sub connect
     my ( $self ) = @_;
 
     my $dsn = join ';', (
-        "dbi:MariaDB:database=$self->{'db'}->{'DATABASE_NAME'",
+        "dbi:MariaDB:database=$self->{'db'}->{'DATABASE_NAME'}",
         'host=' . ( index( $self->{'db'}->{'DATABASE_HOST'}, ':' ) != -1
             ? '[' . $self->{'db'}->{'DATABASE_HOST'} . ']'
             : $self->{'db'}->{'DATABASE_HOST'}
@@ -85,10 +85,13 @@ sub connect
     };
     return $@ if $@;
 
-    @{ $self }{qw/ _dsn _currentUser _currentPassword connection /} = (
-        $dsn, $self->{'db'}->{'DATABASE_USER'},
-        $self->{'db'}->{'DATABASE_PASSWORD'}, FALSE
+    @{ $self }{qw/ _dsn _currentUser _currentPassword /} = (
+        $dsn,
+        $self->{'db'}->{'DATABASE_USER'},
+        $self->{'db'}->{'DATABASE_PASSWORD'}
     );
+    
+    0;
 }
 
 =item endTransaction( )

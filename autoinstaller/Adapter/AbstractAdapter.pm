@@ -1,11 +1,11 @@
 =head1 NAME
 
- autoinstaller::Adapter::AbstractAdapter - Abstract class for autoinstaller distro adapters
+ autoinstaller::Adapter::AbstractAdapter - Abstract installer adapter
 
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright 2010-2017 by internet Multi Server Control Panel
+# Copyright 2010-2019 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -29,103 +29,55 @@ use parent 'Common::Object';
 
 =head1 DESCRIPTION
 
- Abstract class for distro autoinstaller adapters. Any distro autoinstaller
- adapter class *should* implement methods of this class.
+ Abstract installer adapter
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item installPreRequiredPackages( )
 
- Install pre-required packages
+=item preinstall
+
+ Pre-installation tasks
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub installPreRequiredPackages
+sub preinstall
 {
+    my ( $self ) = @_;
+
     0;
 }
 
-=item preBuild( \@steps )
+=item preinstall
 
- Process preBuild tasks
+ Installation tasks
 
- Param array \@steps List of build steps
  Return int 0 on success, other on failure
 
 =cut
 
-sub preBuild
+sub install
 {
+    my ( $self ) = @_;
+
     0;
 }
 
-=item installPackages( )
+=item postinstall
 
- Install distribution packages
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub installPackages
-{
-    0;
-}
-
-=item uninstallPackages( )
-
- Uninstall distribution packages no longer needed
+ Post-installation tasks
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub uninstallPackages
+sub postinstall
 {
-    0;
-}
+    my ( $self ) = @_;
 
-=item postBuild( )
-
- Process postBuild tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub postBuild
-{
-    0;
-}
-
-=item preInstall( \@steps )
-
- Process preInstall tasks
-
- Param array \@steps List of install steps
- Return int 0 on success, other on failure
-
-=cut
-
-sub preInstall
-{
-    0;
-}
-
-=item postInstall( )
-
- Process postInstall tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub postInstall()
-{
     0;
 }
 

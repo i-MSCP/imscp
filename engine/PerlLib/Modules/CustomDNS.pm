@@ -73,7 +73,6 @@ sub process
     if ( $self->add() ) {
         local $@;
         eval {
-            local $self->{'_dbh'}->{'RaiseError'} = TRUE;
             $self->{'_dbh'}->do(
                 "
                     UPDATE domain_dns
@@ -96,8 +95,6 @@ sub process
 
     local $@;
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-
         $self->{'_dbh'}->begin_work();
         $self->{'_dbh'}->do(
             "
@@ -172,8 +169,6 @@ sub _loadData
     my ( $self, $domainId, $domainType ) = @_;
 
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-
         my $customDnsRR = $self->{'_dbh'}->selectall_hashref(
             "
                 SELECT

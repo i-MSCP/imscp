@@ -31,7 +31,7 @@ use File::stat ();
 use iMSCP::Debug qw/ debug error /;
 use iMSCP::File;
 use iMSCP::Syscall;
-use Scalar::Defer;
+use Scalar::Defer qw/ force lazy /;
 use parent 'Exporter';
 
 our @EXPORT_OK = qw/ addMountEntry getMounts isMountpoint mount setPropagationFlag removeMountEntry umount /;

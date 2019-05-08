@@ -6,7 +6,7 @@
 
 =head1 SYNOPSIS
 
- imscp-mountall [options]... start|stop
+ imscp-mountall [OPTION]... start|stop
 
 =cut
 

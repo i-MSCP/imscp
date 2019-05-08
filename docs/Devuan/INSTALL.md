@@ -2,7 +2,8 @@
 
 ## Supported Devuan versions
 
-- Devuan Jessie (1.0)
+- Devuan Jessie (1.x)
+- Devuan ASCII (2.x)
 
 ## Installation
 

@@ -108,7 +108,6 @@ sub process
             touninstall => ( $self->{'pluginData'}->{'info'}->{'__installable__'} ) ? 'uninstalled' : 'disabled'
         );
 
-        local $self->{'dbh'}->{'RaiseError'} = 1;
         $self->{'dbh'}->do(
             "UPDATE plugin SET " . ( $rs ? 'plugin_error' : 'plugin_status' ) . " = ? WHERE plugin_id = ?",
             undef,
@@ -168,7 +167,6 @@ sub _loadData
 
     local $@;
     my $pluginData = eval {
-        local $self->{'dbh'}->{'RaiseError'} = 1;
         $self->{'dbh'}->selectrow_hashref(
             '
                 SELECT plugin_id, plugin_name, plugin_info AS info, plugin_config AS config,
@@ -286,7 +284,6 @@ sub _change
 
         local $@;
         eval {
-            local $self->{'dbh'}->{'RaiseError'} = 1;
             $self->{'dbh'}->do(
                 'UPDATE plugin SET plugin_info = ?, plugin_config_prev = plugin_config WHERE plugin_id = ?',
                 undef,
@@ -326,7 +323,6 @@ sub _update
 
     local $@;
     eval {
-        local $self->{'dbh'}->{'RaiseError'} = 1;
         $self->{'dbh'}->do(
             'UPDATE plugin SET plugin_info = ? WHERE plugin_id = ?',
             undef,
@@ -351,7 +347,6 @@ sub _update
         $self->{'pluginData'}->{'info'}->{'__need_change__'} = JSON::false;
 
         eval {
-            local $self->{'dbh'}->{'RaiseError'} = 1;
             $self->{'dbh'}->do(
                 'UPDATE plugin SET plugin_info = ?, plugin_config_prev = plugin_config WHERE plugin_id = ?',
                 undef,

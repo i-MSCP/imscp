@@ -17,6 +17,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+# Make sure to declare symbols in main package, whenever from which location
+# this file is loaded from.
+package main;
+
 use strict;
 use warnings;
 use iMSCP::Boolean;
@@ -59,7 +63,9 @@ sub setupInstallFiles
             )->remove();
         }
 
-        iMSCP::Dir->new( dirname => $::{'INST_PREF'} )->rcopy( '/' );
+        my $dir = iMSCP::Dir->new( dirname => $::{'INST_PREF'} );
+        $dir->rcopy( '/' );
+        $dir->remove();
 
         iMSCP::EventManager->getInstance()->trigger(
             'afterSetupInstallFiles', $::{'INST_PREF'}
@@ -130,38 +136,15 @@ sub setupRegisterListeners
 
 sub setupDialog
 {
-    my $dialogStack = [];
+    my @dialogStack;
 
     my $rs = iMSCP::EventManager->getInstance()->trigger(
-        'beforeSetupDialog', $dialogStack
+        'beforeSetupDialog', \@dialogStack
     );
-    return $rs if $rs;
-
-    # Implements a simple state machine (backup capability)
-    # Any dialog subroutine *SHOULD* allow to step back by returning 30 when
-    # 'back' button is pushed.  In case of a 'yesno' dialog box, there is no
-    # back button. Instead, user can back up using the ESC keystroke
-    # In any other context, the ESC keystroke allows user to abort.
-    my ( $state, $nbDialog, $dialog ) = (
-        0, scalar @{ $dialogStack }, iMSCP::Dialog->getInstance()
+    $rs ||= iMSCP::Dialog->getInstance()->execute( \@dialogStack );
+    $rs ||=iMSCP::EventManager->getInstance()->trigger(
+        'afterSetupDialog'
     );
-    while ( $state < $nbDialog ) {
-        $dialog->set( 'no-cancel', $state == 0 ? '' : undef );
-        $rs = $dialogStack->[$state]->( $dialog );
-        exit( $rs ) if $rs > 30;
-        return $rs if $rs && $rs < 30;
-
-        if ( $rs == 30 ) {
-            $::reconfigure = 'forced' if $::reconfigure eq 'none';
-            $state--;
-            next;
-        }
-
-        $::reconfigure = 'none' if $::reconfigure eq 'forced';
-        $state++;
-    }
-
-    iMSCP::EventManager->getInstance()->trigger( 'afterSetupDialog' );
 }
 
 sub setupTasks
@@ -219,26 +202,6 @@ sub setupTasks
     iMSCP::Dialog->getInstance()->endGauge();
 
     $rs ||= iMSCP::EventManager->getInstance()->trigger( 'afterSetupTasks' );
-}
-
-sub setupDeleteBuildDir
-{
-    my $rs = iMSCP::EventManager->getInstance()->trigger(
-        'beforeSetupDeleteBuildDir', $::{'INST_PREF'}
-    );
-    return $rs if $rs;
-
-    eval {
-        iMSCP::Dir->new( dirname => $::{'INST_PREF'} )->remove();
-    };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    iMSCP::EventManager->getInstance()->trigger(
-        'afterSetupDeleteBuildDir', $::{'INST_PREF'}
-    );
 }
 
 sub setupSaveConfig
@@ -402,9 +365,7 @@ sub setupDbTasks
 
             my $db = iMSCP::Database->factory();
             my $oldDbName = $db->useDatabase( setupGetQuestion( 'DATABASE_NAME' ));
-
             my $dbh = $db->getRawDb();
-            local $dbh->{'RaiseError'} = TRUE;
 
             while ( my ( $table, $field ) = each %{ $tables } ) {
                 if ( ref $field eq 'ARRAY' ) {
@@ -483,7 +444,6 @@ sub setupRegisterPluginListeners
 
     eval {
         my $dbh = $db->getRawDb();
-        local $dbh->{'RaiseError'} = TRUE;
         $pluginNames = $dbh->selectcol_arrayref(
             "SELECT plugin_name FROM plugin WHERE plugin_status = 'enabled'"
         );
@@ -670,7 +630,8 @@ sub setupGetQuestion
     exists $::questions{$qname}
         ? $::questions{$qname}
         : ( exists $::imscpConfig{$qname} && $::imscpConfig{$qname} ne ''
-        ? $::imscpConfig{$qname} : $default );
+            ? $::imscpConfig{$qname} : $default
+    );
 }
 
 sub setupSetQuestion

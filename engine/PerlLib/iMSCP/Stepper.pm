@@ -25,17 +25,16 @@ package iMSCP::Stepper;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ error getLastError /;
 use iMSCP::Dialog;
 use iMSCP::Getopt;
-use Scalar::Defer;
+use Scalar::Defer 'lazy';
 use parent 'Exporter';
 
 our @EXPORT = qw/ startDetail endDetail step /;
 
 my @all = ();
 my $last = '';
-my $dialog = lazy { iMSCP::Dialog->getInstance(); };
 my $step = lazy { iMSCP::Getopt->noprompt ? \&_callback : \&_step; };
 
 =head1 DESCRIPTION
@@ -57,7 +56,7 @@ my $step = lazy { iMSCP::Getopt->noprompt ? \&_callback : \&_step; };
 sub startDetail
 {
     return 0 if iMSCP::Getopt->noprompt;
-    $dialog->endGauge();
+    iMSCP::Dialog->getInstance()->endGauge();
     push @all, $last;
     0;
 }
@@ -111,7 +110,7 @@ sub step
 
 sub _callback
 {
-    my ($callback) = @_;
+    my ( $callback ) = @_;
 
     return 0 unless defined $callback;
 
@@ -125,7 +124,7 @@ sub _callback
     $rs;
 }
 
-=item _dialogstep
+=item _step
  
  See step( )
  
@@ -133,30 +132,31 @@ sub _callback
 
 sub _step
 {
-    my ($callback, $text, $nSteps, $nStep) = @_;
+    my ( $callback, $text, $nSteps, $nStep ) = @_;
 
-    $last = sprintf( "\n\\ZbStep %s of %s\\Zn\n\n%s", $nStep, $nSteps, $text );
-    my $msg = @all ? join( "\n", @all ) . "\n" . $last : $last;
+    $last = sprintf( "\\ZbStep %s of %s\\Zn\n\n%s", $nStep, $nSteps, $text );
+    my $msg = @all ? join( "\n", @all ) . "\n\n" . $last : $last;
 
     use integer;
     my $percent = $nStep * 100 / $nSteps;
 
-    $dialog->hasGauge ? $dialog->setGauge( $percent, $msg ) : $dialog->startGauge( $msg, $percent );
-    my $rs = _callback( $callback );
+    my $dialog = iMSCP::Dialog->getInstance();
+    $dialog->setGauge( $percent, $msg );
 
-    return $rs unless defined $callback;
+    return 0 unless defined $callback;
+    my $rs = _callback( $callback );
+    #return $rs unless defined $callback;
     return $rs unless $rs && $rs != 50;
 
-    # Make error message free of any ANSI color and end of line codes
-    ( my $errorMessage = getLastError() ) =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
+    # Make error message free of any ANSI escape sequences and end of line codes
+    ( my $errorMessage = getLastError() ) =~ s/\x1b\[[0-9;]*[mGKH]//g;
     $errorMessage = 'An unexpected error occurred...' unless $errorMessage;
     $errorMessage =~ s/\n+$//;
 
     $dialog->endGauge();
-    $dialog->msgbox( <<"EOF" );
-\\Z1[ERROR]\\Zn
+    $dialog->error( <<"EOF" );
 
-Error while performing step:
+An unexpected error occurred during the following step:
 
 $text
 

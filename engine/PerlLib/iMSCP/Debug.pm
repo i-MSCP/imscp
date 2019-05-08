@@ -32,7 +32,7 @@ use parent 'Exporter';
 
 our @EXPORT = qw/
     debug warning error fatal newDebug endDebug getMessage getLastError
-    getMessageByType setVerbose setDebug debugRegisterCallBack output silent
+    getMessageByType setVerbose setDebug output silent
 /;
 
 BEGIN {
@@ -48,7 +48,6 @@ my $self;
 $self = {
     debug           => FALSE,
     verbose         => FALSE,
-    debug_callbacks => [],
     loggers         => [ iMSCP::Log->new( id => 'default' ) ],
     logger          => sub { $self->{'loggers'}->[$#{ $self->{'loggers'} }] }
 };
@@ -195,7 +194,7 @@ sub endDebug
 sub debug
 {
     my ( $message, $caller ) = @_;
-    $caller = !defined $caller || $caller ? getCaller() : '';
+    $caller //= getCaller();
 
     $self->{'logger'}()->store(
         message => $caller . $message, tag => 'debug'
@@ -217,7 +216,7 @@ sub debug
 sub warning
 {
     my ( $message, $caller ) = @_;
-    $caller = !defined $caller || $caller ? getCaller() : '';
+    $caller //= getCaller();
 
     $self->{'logger'}()->store( message => $caller . $message, tag => 'warn' );
     undef;
@@ -236,7 +235,7 @@ sub warning
 sub error
 {
     my ( $message, $caller ) = @_;
-    $caller = !defined $caller || $caller ? getCaller() : '';
+    $caller //= '';#getCaller();
 
     $self->{'logger'}()->store( message => $caller . $message, tag => 'error' );
     undef;
@@ -255,7 +254,7 @@ sub error
 sub fatal
 {
     my ( $message, $caller ) = @_;
-    $caller = !defined $caller || $caller ? getCaller() : '';
+    $caller //= '';# getCaller();
 
     $self->{'logger'}()->store( message => $caller . $message, tag => 'fatal' );
     exit 255;
@@ -335,23 +334,6 @@ sub output
     $output;
 }
 
-=item debugRegisterCallBack( $callback )
-
- Register the given debug callback
-
- Param callback Callback to register
- Return int 0
-
-=cut
-
-sub debugRegisterCallBack
-{
-    my ( $callback ) = @_;
-
-    push @{ $self->{'debug_callbacks'} }, $callback;
-    0;
-}
-
 =item getCaller()
 
  Return first subroutine caller or main, excluding eval and __ANON__
@@ -391,9 +373,9 @@ sub _writeLogfile
     my ( $logger, $logfilePath ) = @_;
 
     if ( open( my $fh, '>', $logfilePath ) ) {
-        # Make error message free of any ANSI color and end of line codes
+        # Make error message free of any ANSI escape sequences
         for my $log ( $logger->flush() ) {
-            $log =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
+            $log =~ s/\x1b\[[0-9;]*[mGKH]//g;
             print { $fh } "[$log->{'when'}] [$log->{'tag'}] $log->{'message'}\n";
         }
 
@@ -436,8 +418,6 @@ sub _getMessages
 
 END {
     my $exitCode = $?;
-
-    &{ $_ } for @{ $self->{'debug_callbacks'} };
 
     my $countLoggers = scalar @{ $self->{'loggers'} };
     while ( $countLoggers > 0 ) {

@@ -102,10 +102,7 @@ sub process
     }
 
     local $@;
-    eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-        $self->{'_dbh'}->do( @sql );
-    };
+    eval { $self->{'_dbh'}->do( @sql ); };
     if ( $@ ) {
         error( $@ );
         return 1;
@@ -139,8 +136,6 @@ sub add
 
     local $@;
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-
         $self->{'_dbh'}->begin_work();
         $self->{'_dbh'}->do(
             "
@@ -190,8 +185,6 @@ sub disable
 
     local $@;
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-
         $self->{'_dbh'}->do(
             "
                 UPDATE subdomain
@@ -229,8 +222,6 @@ sub restore
     local $@;
     eval {
         # Restore know databases only
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-
         my $rows = $self->{'_dbh'}->selectall_arrayref(
             'SELECT sqld_name FROM sql_database WHERE domain_id = ?', { Slice => {} }, $self->{'domain_id'}
         );
@@ -341,7 +332,6 @@ sub _loadData
 
     local $@;
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
         my $row = $self->{'_dbh'}->selectrow_hashref(
             "
                 SELECT t1.domain_id, t1.domain_admin_id, t1.domain_mailacc_limit, t1.domain_name, t1.domain_status,
@@ -396,8 +386,6 @@ sub _getData
             . ( $::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'} );
         my $homeDir = File::Spec->canonpath( "$::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}" );
         my $documentRoot = File::Spec->canonpath( "$homeDir/$self->{'document_root'}" );
-
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
         my $phpini = $self->{'_dbh'}->selectrow_hashref(
             "SELECT * FROM php_ini WHERE domain_id = ? AND domain_type = 'dmn'", undef, $self->{'domain_id'}
         ) || {};

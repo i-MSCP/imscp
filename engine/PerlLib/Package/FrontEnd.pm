@@ -91,11 +91,14 @@ sub registerSetupListeners
 
     my $rs = $events->registerOne( 'beforeSetupDialog', sub {
         push @{ $_[0] },
-            sub { $self->_dialogForMasterAdminCredentials( @_ ) },
-            sub { $self->_dialogForMasterAdminEmail( @_ ) },
-            sub { $self->_dialogForHostname( @_ ) },
-            sub { $self->_dialogForSSL( @_ ) },
-            sub { $self->_dialogForHttpPorts( @_ ) };
+            sub { $self->_dialogForMasterAdminUsername( @_ ); },
+            sub { $self->_dialogForMasterAdminPassword( @_ ); },
+            sub { $self->_dialogForMasterAdminEmail( @_ ); },
+            sub { $self->_dialogForCpHostname( @_ ); },
+            sub { $self->_dialogForCpSSL( @_ ); },
+            sub { $self->_dialogForCpHttpAccessMode( @_ ); },
+            sub { $self->_dialogForHttpPort( @_ ); },
+            sub { $self->_dialogForHttpsPort( @_ ); };
         0;
     } );
     $rs ||= $events->registerOne( 'beforeSetupPreInstallServers', sub {
@@ -951,20 +954,18 @@ sub _mergeConfig
 
 # Installation routines
 
-=item _dialogForMasterAdminCredentials( \%dialog )
+=item _dialogForMasterAdminUsername( \%dialog )
 
- Setup dialog for the master administrator credentials
+ Setup dialog for the master administrator username
 
  Param iMSCP::Dialog \%dialog
- Return int 0 NEXT, 30 BACKUP, 50 ESC
+ Return int 0 (Next), 20 (Skip), 30 (Back)
 
 =cut
 
-sub _dialogForMasterAdminCredentials
+sub _dialogForMasterAdminUsername
 {
     my ( undef, $dialog ) = @_;
-
-    my ( $username, $password ) = ( '', '' );
 
     my $db = iMSCP::Database->factory();
 
@@ -972,102 +973,126 @@ sub _dialogForMasterAdminCredentials
     eval { $db->useDatabase( ::setupGetQuestion( 'DATABASE_NAME' )); };
     $db = undef if $@;
 
+    my ( $value, $isset );
+
     if ( iMSCP::Getopt->preseed ) {
-        $username = ::setupGetQuestion( 'ADMIN_LOGIN_NAME' );
-        $password = ::setupGetQuestion( 'ADMIN_PASSWORD' );
+        $value = ::setupGetQuestion( 'ADMIN_LOGIN_NAME', 'admin' );
     } elsif ( $db ) {
         local $@;
         my $row = eval {
-            my $dbh = $db->getRawDb();
-            local $dbh->{'RaiseError'} = TRUE;
-            $dbh->selectrow_hashref(
-                "
-                    SELECT admin_name, admin_pass
-                    FROM admin
-                    WHERE created_by = 0
-                    AND admin_type = 'admin'
-                "
+            $db->getRawDb()->selectrow_hashref(
+                "SELECT admin_name FROM admin WHERE created_by = 0 AND admin_type = 'admin'"
             );
         };
-        if ( $@ ) {
-            error( $@ );
-            return 1;
-        } elsif ( $row ) {
-            $username = $row->{'admin_name'} // '';
-            $password = $row->{'admin_pass'} // '';
-        }
+
+        $value = $row ? $row->{'admin_name'} : '';
+        $isset = length $value ? TRUE : FALSE;
     }
 
-    ::setupSetQuestion( 'ADMIN_OLD_LOGIN_NAME', $username );
-
-    if ( $::reconfigure =~ /^(?:admin|admin_credentials|all|forced)$/
-        || !isValidUsername( $username )
-        || $password eq ''
+    if ( !grep ( $::reconfigure eq $_, qw/ admin admin_username admin_credentials all / )
+        && ( $isset || isValidUsername( $value ) )
     ) {
-        $password = '';
-        my ( $rs, $msg ) = ( 0, '' );
+        ::setupSetQuestion( 'ADMIN_LOGIN_NAME', $value );
+        ::setupSetQuestion( 'ADMIN_OLD_LOGIN_NAME', $value );
+        return 20;
+    }
 
-        do {
-            ( $rs, $username ) = $dialog->inputbox(
-                <<"EOF", $username || 'admin' );
+    ::setupSetQuestion( 'ADMIN_OLD_LOGIN_NAME', $value );
 
-Please enter a username for the master administrator:$msg
+    my ( $ret, $msg ) = ( 0, '' );
+
+    do {
+        ( $ret, $value ) = $dialog->string(
+            <<"EOF", $value || 'admin' );
+${msg}Please enter a username for the master administrator:
 EOF
-            $msg = '';
-            if ( !isValidUsername( $username ) ) {
-                $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
+        if ( $ret != 30 ) {
+            $value =~ s/^\s+|\s+$//g;
+
+            if ( !isValidUsername( $value ) ) {
+                $msg = $LAST_VALIDATION_ERROR;
             } elsif ( $db ) {
                 local $@;
                 my $row = eval {
-                    my $dbh = $db->getRawDb();
-                    local $dbh->{'RaiseError'} = TRUE;
-                    $dbh->selectrow_hashref(
-                        '
-                            SELECT 1
-                            FROM admin
-                            WHERE admin_name = ?
-                            AND created_by <> 0
-                        ',
-                        undef,
-                        $username
+                    $db->getRawDb()->selectrow_hashref(
+                        'SELECT 1 FROM admin WHERE admin_name = ?', undef, $value
                     );
                 };
-                if ( $@ ) {
-                    error( $@ );
-                    return 1;
-                } elsif ( $row ) {
-                    $msg = '\n\n\\Z1This username is not available.\\Zn\n\nPlease try again:'
-                }
+                $msg = $row ? '\\Z1This username is not available.\\Zn\n\n' : '';
+            } else {
+                $msg = '';
             }
-        } while $rs < 30 && $msg;
-        return $rs if $rs >= 30;
+        }
+    } while $ret != 30 && length $msg;
+    return 30 if $ret == 30;
 
-        do {
-            ( $rs, $password ) = $dialog->inputbox(
-                <<"EOF", randomStr( 16, iMSCP::Crypt::ALNUM ));
+    ::setupSetQuestion( 'ADMIN_LOGIN_NAME', $value );
+    0;
+}
 
-Please enter a password for the master administrator:$msg
-EOF
-            $msg = isValidPassword( $password )
-                ? ''
-                : $iMSCP::Dialog::InputValidation::lastValidationError;
-        } while $rs < 30 && $msg;
-        return $rs if $rs >= 30;
-    } else {
-        $password = '' unless iMSCP::Getopt->preseed
+=item _dialogForMasterAdminPassword( \%dialog )
+
+ Dialog for the master administrator password
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 (Next), 20 (Skip), 30 (Back)
+
+=cut
+
+sub _dialogForMasterAdminPassword
+{
+    my ( undef, $dialog ) = @_;
+
+    my $db = iMSCP::Database->factory();
+
+    local $@;
+    eval { $db->useDatabase( ::setupGetQuestion( 'DATABASE_NAME' )); };
+    $db = undef if $@;
+
+    my ( $value, $isset );
+
+    if ( iMSCP::Getopt->preseed ) {
+        $value = ::setupGetQuestion( 'ADMIN_PASSWORD' );
+    } elsif ( $db ) {
+        local $@;
+        my $row = eval {
+            $db->getRawDb()->selectrow_hashref(
+                "SELECT admin_pass FROM admin WHERE created_by = 0 AND admin_type = 'admin'"
+            );
+        };
+        $isset = $row ? TRUE : FALSE;
     }
 
-    ::setupSetQuestion( 'ADMIN_LOGIN_NAME', $username );
-    ::setupSetQuestion( 'ADMIN_PASSWORD', $password );
+    if ( !grep ( $::reconfigure eq $_, qw/ admin admin_password admin_credentials all / )
+        && ( $isset || isValidPassword( $value ) )
+    ) {
+        return 20;
+    }
+
+    my ( $ret, $msg ) = ( 0, '' );
+
+    do {
+        ( $ret, $value ) = $dialog->string(
+            <<"EOF", randomStr( 16, iMSCP::Crypt::ALNUM ));
+${msg}Please enter a password for the master administrator:
+EOF
+        if ( $ret != 30 ) {
+            $value =~ s/^\s+|\s+$//g;
+            $msg = isValidPassword( $value ) ? '' : $LAST_VALIDATION_ERROR;
+        }
+    } while $ret != 30 && length $msg;
+    return 30 if $ret == 30;
+
+    ::setupSetQuestion( 'ADMIN_PASSWORD', $value );
     0;
 }
 
 =item _dialogForMasterAdminEmail( \%dialog )
 
- Setup dialog for the master administrator email address
+ Dialog for the master administrator email address
 
  Param iMSCP::Dialog \%dialog
- Return int 0 NEXT, 30 BACKUP, 50 ESC
+ Return int 0 (Next), 20 (Skip), 30 (Back)
 
 =cut
 
@@ -1075,329 +1100,399 @@ sub _dialogForMasterAdminEmail
 {
     my ( undef, $dialog ) = @_;
 
-    my $email = ::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' );
+    my $value = ::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' );
 
-    if ( $::reconfigure =~ /^(?:admin|admin_email|all|forced)$/
-        || !isValidEmail( $email )
+    if ( !grep ( $::reconfigure eq $_, qw/ admin admin_email all / )
+        && isValidEmail( $value )
     ) {
-        my ( $rs, $msg ) = ( 0, '' );
-        do {
-            ( $rs, $email ) = $dialog->inputbox( <<"EOF", $email );
-
-Please enter an email address for the master administrator:$msg
-EOF
-            $msg = isValidEmail( $email )
-                ? ''
-                : $iMSCP::Dialog::InputValidation::lastValidationError;
-        } while $rs < 30 && $msg;
-        return $rs if $rs >= 30;
+        return 20;
     }
 
-    ::setupSetQuestion( 'DEFAULT_ADMIN_ADDRESS', $email );
-    0;
-}
-
-=item _dialogForHostname( \%dialog )
-
- Setup dialog for the frontEnd hostname
-
- Param iMSCP::Dialog \%dialog
- Return int 0 NEXT, 30 BACKUP, 50 ESC
-
-=cut
-
-sub _dialogForHostname
-{
-    my ( undef, $dialog ) = @_;
-
-    my $domainName = ::setupGetQuestion( 'BASE_SERVER_VHOST' );
-
-    if ( $::reconfigure =~ /^(?:panel|panel_hostname|hostnames|all|forced)$/
-        || !isValidDomain( $domainName )
-    ) {
-        unless ( $domainName ) {
-            my @domainLabels = split /\./, ::setupGetQuestion( 'SERVER_HOSTNAME' );
-            $domainName = 'panel.' . join( '.', @domainLabels[1 .. $#domainLabels] );
+    my ( $ret, $msg ) = ( 0, '' );
+    do {
+        ( $ret, $value ) = $dialog->string( <<"EOF", $value );
+${msg}Please enter an email address for the master administrator:
+EOF
+        if ( $ret != 30 ) {
+            $value =~ s/^\s+|\s+$//g;
+            $msg = isValidEmail( $value ) ? '' : $LAST_VALIDATION_ERROR;
         }
+    } while $ret != 30 && length $msg;
+    return 30 if $ret == 30;
 
-        $domainName = idn_to_unicode( $domainName, 'utf-8' );
-        my ( $rs, $msg ) = ( 0, '' );
-        do {
-            ( $rs, $domainName ) = $dialog->inputbox( <<"EOF", $domainName );
-
-Please enter a domain name for the control panel:$msg
-EOF
-            $msg = isValidDomain( $domainName )
-                ? ''
-                : $iMSCP::Dialog::InputValidation::lastValidationError;
-        } while $rs < 30 && $msg;
-        return $rs if $rs >= 30;
-    }
-
-    ::setupSetQuestion( 'BASE_SERVER_VHOST', idn_to_ascii( $domainName, 'utf-8' ));
+    ::setupSetQuestion( 'DEFAULT_ADMIN_ADDRESS', $value );
     0;
 }
 
-=item _dialogForSSL( \%dialog )
+=item _dialogForCpHostname( \%dialog )
 
- Setup dialog for SSL
+ Dialog for the control panel hostname
 
  Param iMSCP::Dialog \%dialog
- Return int 0 NEXT, 30 BACKUP, 50 ESC
+ Return int 0 (Next), 20 (Skip), 30 (Back)
 
 =cut
 
-sub _dialogForSSL
+sub _dialogForCpHostname
 {
     my ( undef, $dialog ) = @_;
 
-    my $domainName = ::setupGetQuestion( 'BASE_SERVER_VHOST' );
-    my $domainNameUnicode = idn_to_unicode( $domainName, 'utf-8' );
-    my $sslEnabled = ::setupGetQuestion( 'PANEL_SSL_ENABLED' );
-    my $selfSignedCertificate = ::setupGetQuestion(
-        'PANEL_SSL_SELFSIGNED_CERTIFICATE', 'no'
+    my $value = ::setupGetQuestion( 'BASE_SERVER_VHOST' );
+
+    if ( !grep ( $::reconfigure eq $_, qw/ panel panel_hostname hostnames all / )
+        && isValidDomain( $value )
+    ) {
+        return 20;
+    }
+
+    unless ( length $value ) {
+        my @domainLabels = split /\./, ::setupGetQuestion( 'SERVER_HOSTNAME' );
+        $value = 'panel.' . join( '.', @domainLabels[1 .. $#domainLabels] );
+    }
+
+    $value = idn_to_unicode( $value, 'utf-8' );
+
+    my ( $ret, $msg ) = ( 0, '' );
+    do {
+        ( $ret, $value ) = $dialog->string( <<"EOF", $value );
+${msg}Please enter a domain name for the control panel:
+EOF
+        if ( $ret != 30 ) {
+            $value =~ s/^\s+|\s+$//g;
+            $msg = isValidDomain( $value ) ? '' : $LAST_VALIDATION_ERROR;
+        }
+    } while $ret != 30 && length $msg;
+    return 30 if $ret == 30;
+
+    ::setupSetQuestion( 'BASE_SERVER_VHOST', idn_to_ascii( $value, 'utf-8' ));
+    0;
+}
+
+=item _dialogForCpSSL( \%dialog )
+
+ Dialof for the control panel SSL certificate
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 (Next), 20 (Skip), 30 (Back)
+
+=cut
+
+sub _dialogForCpSSL
+{
+    my ( undef, $dialog ) = @_;
+
+    my $hostname = ::setupGetQuestion( 'BASE_SERVER_VHOST' );
+    my $idn = idn_to_unicode( $hostname, 'utf-8' );
+    my $ssl = ::setupGetQuestion( 'PANEL_SSL_ENABLED' );
+    my $selfSignedCrt = ::setupGetQuestion(
+        'PANEL_SSL_SELFSIGNED_CERTIFICATE'
     );
-    my $privateKeyPath = ::setupGetQuestion(
-        'PANEL_SSL_PRIVATE_KEY_PATH', '/root'
+    my $pkPath = ::setupGetQuestion(
+        'PANEL_SSL_PRIVATE_KEY_PATH',
+        "$::imscpConfig{'CONF_DIR'}/$hostname.pem"
     );
-    my $passphrase = ::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PASSPHRASE' );
-    my $certificatePath = ::setupGetQuestion(
-        'PANEL_SSL_CERTIFICATE_PATH', '/root'
+    my $passphrase = ::setupGetQuestion(
+        'PANEL_SSL_PRIVATE_KEY_PASSPHRASE'
     );
-    my $caBundlePath = ::setupGetQuestion(
-        'PANEL_SSL_CA_BUNDLE_PATH', '/root'
+    my $crtPath = ::setupGetQuestion(
+        'PANEL_SSL_CERTIFICATE_PATH',
+        "$::imscpConfig{'CONF_DIR'}/$hostname.pem"
     );
-    my $baseServerVhostPrefix = ::setupGetQuestion(
-        'BASE_SERVER_VHOST_PREFIX', 'http://'
+    my $caPath = ::setupGetQuestion(
+        'PANEL_SSL_CA_BUNDLE_PATH', "$::imscpConfig{'CONF_DIR'}/$hostname.pem"
     );
     my $openSSL = iMSCP::OpenSSL->new();
 
-    if ( $::reconfigure =~ /^(?:panel|panel_ssl|ssl|all|forced)$/
-        || $sslEnabled !~ /^(?:yes|no)$/
-        || ( $sslEnabled eq 'yes' && $::reconfigure =~ /^(?:panel_hostname|hostnames)$/ )
-    ) {
-        my $rs = $dialog->yesno( <<'EOF', $sslEnabled eq 'no' ? TRUE : FALSE );
-
-Do you want to enable SSL for the control panel?
-EOF
-        if ( $rs == 0 ) {
-            $sslEnabled = 'yes';
-            $rs = $dialog->yesno(
-                <<"EOF", $selfSignedCertificate eq 'no' ? TRUE : FALSE );
-
-Do you have a SSL certificate for the $domainNameUnicode domain?
-EOF
-            if ( $rs == 0 ) {
-                my $msg = '';
-
-                do {
-                    $dialog->msgbox( <<'EOF' );
-
-$msg
-Please select your private key in next dialog.
-EOF
-                    do {
-                        ( $rs, $privateKeyPath ) = $dialog->fselect(
-                            $privateKeyPath
-                        );
-                    } while $rs < 30 && !(
-                        length $privateKeyPath && -f $privateKeyPath
-                    );
-                    return $rs if $rs >= 30;
-
-                    ( $rs, $passphrase ) = $dialog->passwordbox(
-                        <<'EOF', $passphrase );
-
-Please enter the passphrase for your private key if any:
-EOF
-                    return $rs if $rs >= 30;
-
-                    $openSSL->{'private_key_container_path'} = $privateKeyPath;
-                    $openSSL->{'private_key_passphrase'} = $passphrase;
-
-                    $msg = '';
-                    if ( $openSSL->validatePrivateKey() ) {
-                        getMessageByType( 'error', {
-                            amount => 1,
-                            remove => TRUE
-                        } );
-                        $msg = "\n\\Z1Invalid private key or passphrase.\\Zn\n\nPlease try again.";
-                    }
-                } while $rs < 30 && $msg;
-                return $rs if $rs >= 30;
-
-                $rs = $dialog->yesno( <<'EOF' );
-
-Do you have a SSL CA Bundle?
-EOF
-                if ( $rs == 0 ) {
-                    do {
-                        ( $rs, $caBundlePath ) = $dialog->fselect(
-                            $caBundlePath
-                        );
-                    } while $rs < 30 && !(
-                        length $caBundlePath && -f $caBundlePath
-                    );
-                    return $rs if $rs >= 30;
-
-                    $openSSL->{'ca_bundle_container_path'} = $caBundlePath;
-                } else {
-                    $openSSL->{'ca_bundle_container_path'} = '';
-                }
-
-                $dialog->msgbox( <<'EOF' );
-
-Please select your SSL certificate in next dialog.
-EOF
-                $rs = 1;
-                do {
-                    $dialog->msgbox( <<"EOF" ) unless $rs;
-                    
-\\Z1Invalid SSL certificate.\\Zn
-
-Please try again.
-EOF
-                    do {
-                        ( $rs, $certificatePath ) = $dialog->fselect(
-                            $certificatePath
-                        );
-                    } while $rs < 30 && !(
-                        length $certificatePath && -f $certificatePath
-                    );
-                    return $rs if $rs >= 30;
-
-                    getMessageByType( 'error', {
-                        amount => 1,
-                        remove => TRUE
-                    } );
-                    $openSSL->{'certificate_container_path'}
-                        = $certificatePath;
-                } while $rs < 30 && $openSSL->validateCertificate();
-                return $rs if $rs >= 30;
-            } else {
-                $selfSignedCertificate = 'yes';
-            }
-
-            if ( $sslEnabled eq 'yes' ) {
-                ( $rs, $baseServerVhostPrefix ) = $dialog->radiolist(
-                    <<'EOF', [ 'https', 'http' ], $baseServerVhostPrefix eq 'https://' ? 'https' : 'http' );
-
-Please choose the default HTTP access mode for the control panel:
-EOF
-                $baseServerVhostPrefix .= '://'
-            }
-        } else {
-            $sslEnabled = 'no';
-        }
-    } elsif ( $sslEnabled eq 'yes' && !iMSCP::Getopt->preseed ) {
-        $openSSL->{'private_key_container_path'} =
-            "$::imscpConfig{'CONF_DIR'}/$domainName.pem";
-        $openSSL->{'ca_bundle_container_path'} =
-            "$::imscpConfig{'CONF_DIR'}/$domainName.pem";
-        $openSSL->{'certificate_container_path'} =
-            "$::imscpConfig{'CONF_DIR'}/$domainName.pem";
-
-        if ( $openSSL->validateCertificateChain() ) {
-            getMessageByType( 'error', {
-                amount => 1,
-                remove => TRUE
-            } );
-            $dialog->msgbox( <<'EOF' );
-
-Your SSL certificate for the control panel is missing or invalid.
-EOF
-            ::setupSetQuestion( 'PANEL_SSL_ENABLED', '' );
-            goto &{_dialogForSSL};
-        }
-
-        # In case the certificate is valid, we skip SSL setup process
-        ::setupSetQuestion( 'PANEL_SSL_SETUP', 'no' );
+    if ( !grep ( $::reconfigure eq $_, qw/ panel panel_ssl ssl all / ) ) {
+        goto CHECK_SSL_CHAIN if $ssl eq 'yes';
+        return 20 if $ssl eq 'no';
     }
 
-    ::setupSetQuestion( 'PANEL_SSL_ENABLED', $sslEnabled );
-    ::setupSetQuestion(
-        'PANEL_SSL_SELFSIGNED_CERTIFICATE', $selfSignedCertificate
-    );
-    ::setupSetQuestion( 'PANEL_SSL_PRIVATE_KEY_PATH', $privateKeyPath );
+    SSL_DIALOG:
+    my $ret = $dialog->boolean( <<'EOF', $ssl eq 'no' );
+Do you want to enable secure connections (SSL) for the control panel?
+EOF
+    return 30 if $ret == 30;
+
+    if ( $ret == 1 ) {
+        ::setupSetQuestion( 'PANEL_SSL_ENABLED', 'no' );
+        return 0;
+    }
+
+    ::setupSetQuestion( 'PANEL_SSL_ENABLED', 'yes' );
+
+    SSL_SELF_SIGNED_DIALOG:
+    $ret = $dialog->boolean( <<"EOF", $selfSignedCrt eq 'no' );
+Do you have an SSL certificate for the $idn domain?
+    
+If you say 'no', a self-signed SSL certificate will be generated.
+EOF
+    goto SSL_DIALOG if $ret == 30;
+
+    if ( $ret == 1 ) {
+        ::setupSetQuestion( 'PANEL_SSL_SELFSIGNED_CERTIFICATE', 'yes' );
+        ::setupSetQuestion( 'PANEL_SSL_HAS_VALID_CHAIN', 'no' );
+        return 0;
+    }
+
+    ::setupSetQuestion( 'PANEL_SSL_SELFSIGNED_CERTIFICATE', 'no' );
+
+    my $msg = '';
+    SSL_PK_DIALOG:
+    do {
+        ( $ret, $pkPath ) = $dialog->string( <<"EOF", $pkPath );
+${msg}Please enter a path for the SSL certificate private key. Leave this field blank if you don't have one:
+EOF
+        if ( $ret != 30 ) {
+            $pkPath =~ s/^\s+|\s+$//g;
+            $msg = !length $pkPath || !-f $pkPath
+                ? "\\Z1Invalid SSL certificate private key path.\\Zn\n\n" : '';
+        }
+    } while $ret != 30 && length $msg;
+    goto SSL_SELF_SIGNED_DIALOG if $ret == 30;
+
+    ::setupSetQuestion( 'PANEL_SSL_PRIVATE_KEY_PATH', $pkPath );
+
+    SSL_PK_PASSPHRASE_DIALOG:
+    do {
+        ( $ret, $passphrase ) = $dialog->password( <<"EOF", $passphrase );
+${msg}Please enter the passphrase for the SSL certificate private key. Leave this field blank if you don't have one:
+EOF
+        if ( $ret != 30 ) {
+            $passphrase =~ s/^\s+|\s+$//g;
+            @{ $openSSL }{qw/
+                private_key_container_path private_key_passphrase
+            /} = (
+                $pkPath, $passphrase
+            );
+
+            unless ( $openSSL->validatePrivateKey() ) {
+                $msg = "\\Z1" . getMessageByType( 'error', {
+                    amount => 1,
+                    remove => TRUE
+                } ) . "\\Zn\n\n";
+            } else {
+                $msg = '';
+            }
+        }
+    } while $ret != 30 && length $msg;
+    goto SSL_PK_DIALOG if $ret == 30;
+
     ::setupSetQuestion( 'PANEL_SSL_PRIVATE_KEY_PASSPHRASE', $passphrase );
-    ::setupSetQuestion( 'PANEL_SSL_CERTIFICATE_PATH', $certificatePath );
-    ::setupSetQuestion( 'PANEL_SSL_CA_BUNDLE_PATH', $caBundlePath );
-    ::setupSetQuestion(
-        'BASE_SERVER_VHOST_PREFIX',
-        $sslEnabled eq 'yes' ? $baseServerVhostPrefix : 'http://'
+
+    SSL_CA_BUNDLE_DIALOG:
+    do {
+        ( $ret, $caPath ) = $dialog->string( <<"EOF", $caPath );
+${msg}Please enter a path for the SSL certificate CA bundle. Leave this field blank if you don't have one:
+EOF
+        if ( $ret != 30 ) {
+            $caPath =~ s/^\s+|\s+$//g;
+            $msg = length $caPath && !-f $caPath
+                ? "\\Z1Invalid SSL certificate CA bundle path.\\Zn\n\n" : '';
+        }
+    } while $ret != 30 && length $msg;
+    goto SSL_PK_PASSPHRASE_DIALOG if $ret == 30;
+
+    ::setupSetQuestion( 'PANEL_SSL_CA_BUNDLE_PATH', $caPath );
+
+    do {
+        ( $ret, $crtPath ) = $dialog->string( <<"EOF", $crtPath );
+${msg}Please enter a path for the SSL certificate:
+EOF
+        if ( $ret != 30 ) {
+            $crtPath =~ s/^\s+|\s+$//g;
+            @{ $openSSL }{qw/
+                ca_bundle_container_path certificate_container_path
+            /} = (
+                $caPath, $crtPath
+            );
+
+            unless ( $openSSL->validateCertificate()
+                && $openSSL->validateCertKeyMatching()
+            ) {
+                $msg = "\\Z1" . getMessageByType( 'error', {
+                    amount => 1,
+                    remove => TRUE
+                } ) . "\\Zn\n\n";
+            } else {
+                $msg = '';
+            }
+        }
+    } while $ret != 30 && length $msg;
+    goto SSL_CA_BUNDLE_DIALOG if $ret == 30;
+
+    ::setupSetQuestion( 'PANEL_SSL_CERTIFICATE_PATH', $crtPath );
+    ::setupSetQuestion( 'PANEL_SSL_HAS_VALID_CHAIN', 'no' );
+    goto END_SSL_DIALOG;
+
+    CHECK_SSL_CHAIN:
+
+    @{ $openSSL }{qw/
+        private_key_container_path
+        ca_bundle_container_path
+        certificate_container_path
+    /} = (
+        $pkPath, $caPath, $crtPath
     );
+
+    unless ( $openSSL->validateCertificateChain() ) {
+        local $dialog->{'_opts'}->{
+            $dialog->{'program'} eq 'dialog' ? 'ok-label' : 'ok-button'
+        } = 'Reconfigure';
+        $msg = getMessageByType( 'error', {
+            amount => 1,
+            remove => TRUE
+        } );
+        $dialog->error( <<"EOF" );
+Your SSL certificate chain for the control panel is missing or invalid.
+
+Error was: \\Z1$msg\\Zn
+EOF
+        ::setupSetQuestion( 'PANEL_SSL_ENABLED', '' );
+        goto &{_dialogForCpSSL};
+    }
+
+    ::setupSetQuestion( 'PANEL_SSL_HAS_VALID_CHAIN', iMSCP::Getopt->preseed()
+        ? 'no' : 'yes'
+    );
+
+    END_SSL_DIALOG:
     0;
 }
 
-=item _dialogForHttpPorts( \%dialog )
+=item _dialogForCpHttpAccessMode
 
- Setup dialog for HTTP ports
+ Dialog for the control panel HTTP access mode
 
- Param iMSCP::Dialog \%dialog
- Return int 0 NEXT, 30 BACKUP, 50 ESC
+ Return int 0 (Next), 20 (Skip), 30 (Back)
 
 =cut
 
-sub _dialogForHttpPorts
+sub _dialogForCpHttpAccessMode
 {
     my ( undef, $dialog ) = @_;
 
-    my $httpPort = ::setupGetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT' );
-    my $httpsPort = ::setupGetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT' );
-    my $ssl = ::setupGetQuestion( 'PANEL_SSL_ENABLED' );
-    my ( $rs, $msg ) = ( 0, '' );
+    if ( ::setupGetQuestion( 'PANEL_SSL_ENABLED' ) eq 'no' ) {
+        ::setupSetQuestion( 'BASE_SERVER_VHOST_PREFIX', 'http://' );
+        return 20;
+    }
 
-    if ( $::reconfigure =~ /^(?:panel|panel_ports|all|forced)$/
-        || !isNumber( $httpPort )
-        || !isNumberInRange( $httpPort, 1025, 65535 )
-        || !isStringNotInList( $httpPort, $httpsPort )
+    my $value = ::setupGetQuestion(
+        'BASE_SERVER_VHOST_PREFIX', 'http://'
+    );
+
+    if ( !grep ( $::reconfigure eq $_, qw/ panel panel_ssl ssl all / )
+        && grep ( $value eq $_, 'https://', 'http://' )
     ) {
-        do {
-            ( $rs, $httpPort ) = $dialog->inputbox(
-                <<"EOF", $httpPort ? $httpPort : 8880 );
+        return 20;
+    }
 
-Please enter the http port for the control panel:$msg
+    my %choices = (
+        https => 'Secure connection (SSL)',
+        http  => 'Insecure connection'
+    );
+
+    ( my $ret, $value ) = $dialog->select(
+        <<'EOF', \%choices, $value eq 'http://' ? 'http' : 'https' );
+Please choose the default access mode for the control panel:
 EOF
-            $msg = '';
-            if ( !isNumber( $httpPort )
-                || !isNumberInRange( $httpPort, 1025, 65535 )
-                || !isStringNotInList( $httpPort, $httpsPort )
+    return 30 if $ret == 30;
+
+    ::setupSetQuestion( 'BASE_SERVER_VHOST_PREFIX', $value . '://' );
+    0;
+}
+
+=item _dialogForHttpPort( \%dialog )
+
+ Setup dialog for HTTP port
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 (Next), 20 (Skip), 30 (Back)
+
+=cut
+
+sub _dialogForHttpPort
+{
+    my ( undef, $dialog ) = @_;
+
+    my $value = ::setupGetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT' );
+
+    if ( !grep ( $::reconfigure eq $_, qw/ panel panel_ports all / )
+        && isNumber( $value )
+        && isNumberInRange( $value, 1025, 65535 )
+        && isStringNotInList( $value, ::setupGetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT', 8443 ))
+    ) {
+        return 20;
+    }
+
+    my ( $ret, $msg ) = ( 0, '' );
+    do {
+        ( $ret, $value ) = $dialog->string( <<"EOF", $value || 8880 );
+${msg}Please enter the HTTP port for the control panel:
+EOF
+        if ( $ret != 30 ) {
+            $value =~ s/^\s+|\s+$//g;
+
+            if ( !isNumber( $value )
+                || !isNumberInRange( $value, 1025, 65535 )
+                || !isStringNotInList( $value, ::setupGetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT', 8443 ))
             ) {
-                $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
-            }
-        } while $rs < 30 && $msg;
-        return $rs if $rs >= 30;
-    }
-
-    ::setupSetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT', $httpPort );
-
-    if ( $ssl eq 'yes' ) {
-        if ( $::reconfigure =~ /^(?:panel|panel_ports|all|forced)$/
-            || !isNumber( $httpsPort )
-            || !isNumberInRange( $httpsPort, 1025, 65535 )
-            || !isStringNotInList( $httpsPort, $httpPort )
-        ) {
-            do {
-                ( $rs, $httpsPort ) = $dialog->inputbox(
-                    <<"EOF", $httpsPort ? $httpsPort : 8443 );
-
-Please enter the https port for the control panel:$msg
-EOF
+                $msg = $LAST_VALIDATION_ERROR;
+            } else {
                 $msg = '';
-                if ( !isNumber( $httpsPort )
-                    || !isNumberInRange( $httpsPort, 1025, 65535 )
-                    || !isStringNotInList( $httpsPort, $httpPort )
-                ) {
-                    $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
-                }
-            } while $rs < 30 && $msg;
-            return $rs if $rs >= 30;
+            }
         }
-    } else {
-        $httpsPort ||= 8443;
+    } while $ret != 30 && length $msg;
+    return 30 if $ret == 30;
+
+    ::setupSetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT', $value );
+    0;
+}
+
+=item _dialogForHttpsPort( \%dialog )
+
+ Setup dialog for HTTPs port
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 (Next), 20 (Skip), 30 (Back)
+
+=cut
+
+sub _dialogForHttpsPort
+{
+    my ( undef, $dialog ) = @_;
+
+    my $value = ::setupGetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT' );
+
+    if ( !grep ( $::reconfigure eq $_, qw/ panel panel_ports all / )
+        && isNumber( $value )
+        && isNumberInRange( $value, 1025, 65535 )
+        && isStringNotInList( $value, ::setupGetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT' ))
+    ) {
+        return 20;
     }
 
-    ::setupSetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT', $httpsPort );
+    my ( $ret, $msg ) = ( 0, '' );
+    do {
+        ( $ret, $value ) = $dialog->string( <<"EOF", $value || 8443 );
+${msg}Please enter the HTTPS port for the control panel:
+EOF
+        if ( $ret != 30 ) {
+            $value =~ s/^\s+|\s+$//g;
+
+            if ( !isNumber( $value )
+                || !isNumberInRange( $value, 1025, 65535 )
+                || !isStringNotInList( $value, ::setupGetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT' ))
+            ) {
+                $msg = $LAST_VALIDATION_ERROR;
+            } else {
+                $msg = '';
+            }
+        }
+    } while $ret != 30 && length $msg;
+    return 30 if $ret == 30;
+
+    ::setupSetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT', $value );
     0;
 }
 
@@ -1456,11 +1551,8 @@ sub _setupMasterAdmin
     my $login = ::setupGetQuestion( 'ADMIN_LOGIN_NAME' );
     my $loginOld = ::setupGetQuestion( 'ADMIN_OLD_LOGIN_NAME' );
     my $password = ::setupGetQuestion( 'ADMIN_PASSWORD' );
+    $password = apr1MD5( $password ) if length $password;
     my $email = ::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' );
-
-    return 0 if $password eq '';
-
-    $password = apr1MD5( $password );
 
     my $db = iMSCP::Database->factory();
     my $dbh = $db->getRawDb();
@@ -1472,26 +1564,23 @@ sub _setupMasterAdmin
         );
 
         {
-            local $dbh->{'RaiseError'} = TRUE;
             $dbh->begin_work();
 
-            my $row = $dbh->selectrow_hashref(
-                'SELECT admin_id FROM admin WHERE admin_name = ?',
-                undef,
-                $loginOld
-            );
-
-            if ( $row ) {
+            if ( $login eq $loginOld ) {
                 $dbh->do(
                     '
                         UPDATE admin
-                        SET admin_name = ?, admin_pass = ?, email = ?
-                        WHERE admin_id = ?',
+                        SET admin_name = ?,
+                            admin_pass = IF(length(?) > 0, ?, admin_pass),
+                            email = ?
+                        WHERE admin_name = ?
+                    ',
                     undef,
                     $login,
                     $password,
+                    $password,
                     $email,
-                    $row->{'admin_id'}
+                    $loginOld
                 );
             } else {
                 $dbh->do(
@@ -1536,48 +1625,53 @@ sub _setupMasterAdmin
 sub _setupSsl
 {
     my $sslEnabled = ::setupGetQuestion( 'PANEL_SSL_ENABLED' );
-    my $oldCertificate = $::imscpOldConfig{'BASE_SERVER_VHOST'};
-    my $domainName = ::setupGetQuestion( 'BASE_SERVER_VHOST' );
+    my $hostname = ::setupGetQuestion( 'BASE_SERVER_VHOST' );
+    my $oldHostname = $::imscpOldConfig{'BASE_SERVER_VHOST'};
 
-    # Remove old certificate if any (handle case where panel hostname has been changed)
-    if ( $oldCertificate ne ''
-        && $oldCertificate ne "$domainName.pem"
-        && -f "$::imscpConfig{'CONF_DIR'}/$oldCertificate"
+    # If the panel hostname has been updated, we need remove the old SSL
+    # certificate if one exists
+    if ( length $oldHostname
+        && $oldHostname ne $hostname
+        && -f "$::imscpConfig{'CONF_DIR'}/$oldHostname.pem"
     ) {
         my $rs = iMSCP::File->new(
-            filename => "$::imscpConfig{'CONF_DIR'}/$oldCertificate"
+            filename => "$::imscpConfig{'CONF_DIR'}/$oldHostname.pem"
         )->delFile();
         return $rs if $rs;
     }
 
-    if ( $sslEnabled eq 'no'
-        || ::setupGetQuestion( 'PANEL_SSL_SETUP', 'yes' ) eq 'no'
-    ) {
-        if ( $sslEnabled eq 'no'
-            && -f "$::imscpConfig{'CONF_DIR'}/$domainName.pem"
-        ) {
-            my $rs = iMSCP::File->new(
-                filename => "$::imscpConfig{'CONF_DIR'}/$domainName.pem"
+    # SSL is disabled. We need remove the SSL certificate if any and
+    # return early
+    if ( $sslEnabled eq 'no' ) {
+        if ( -f "$::imscpConfig{'CONF_DIR'}/$hostname.pem" ) {
+            return iMSCP::File->new(
+                filename => "$::imscpConfig{'CONF_DIR'}/$hostname.pem"
             )->delFile();
-            return $rs if $rs;
         }
 
         return 0;
     }
 
+    # If the current SSL certificate chain is valid, we return early
+    if ( ::setupGetQuestion( 'PANEL_SSL_HAS_VALID_CHAIN', 'no' ) eq 'yes' ) {
+        return 0;
+    }
+
+    # If no SSL certificate has been provided, we need generate a self-signed
+    # SSL certificate
     if ( ::setupGetQuestion( 'PANEL_SSL_SELFSIGNED_CERTIFICATE' ) eq 'yes' ) {
         return iMSCP::OpenSSL->new(
             certificate_chains_storage_dir => $::imscpConfig{'CONF_DIR'},
-            certificate_chain_name         => $domainName
+            certificate_chain_name         => $hostname
         )->createSelfSignedCertificate( {
-            common_name => $domainName,
+            common_name => $hostname,
             email       => ::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' )
-        } );
+        } ) ? 0 : 1;
     }
 
     iMSCP::OpenSSL->new(
         certificate_chains_storage_dir => $::imscpConfig{'CONF_DIR'},
-        certificate_chain_name         => $domainName,
+        certificate_chain_name         => $hostname,
         private_key_container_path     =>
             ::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PATH' ),
         private_key_passphrase         =>
@@ -1586,7 +1680,7 @@ sub _setupSsl
             ::setupGetQuestion( 'PANEL_SSL_CERTIFICATE_PATH' ),
         ca_bundle_container_path       =>
             ::setupGetQuestion( 'PANEL_SSL_CA_BUNDLE_PATH' )
-    )->createCertificateChain();
+    )->createCertificateChain() ? 0 : 1;
 }
 
 =item _setHttpdVersion( )
@@ -1639,7 +1733,6 @@ sub _addMasterWebUser
 
         my $db = iMSCP::Database->factory();
         my $dbh = $db->getRawDb();
-        local $dbh->{'RaiseError'} = TRUE;
 
         $db->useDatabase( ::setupGetQuestion( 'DATABASE_NAME' ));
 
@@ -1916,7 +2009,7 @@ sub _buildHttpdConfig
         return 0 unless grep ($_ eq $tplName, '00_master.nginx', '00_master_ssl.nginx');
 
         if ( $baseServerIpVersion eq 'ipv6'
-            || !::setupGetQuestion( 'IPV6_SUPPORT' )
+            || ::setupGetQuestion( 'IPV6_SUPPORT' )
         ) {
             ${ $cfgTpl } = replaceBloc(
                 '# SECTION IPv6 BEGIN.',

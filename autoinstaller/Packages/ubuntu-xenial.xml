@@ -1,202 +1,294 @@
 <packages>
-    <frontend>
+    <frontend
+            description="Http server for the control panel"
+            provides_alternatives="1"
+    >
         <nginx
-                default="1"
-                description="Nginx server"
                 class="Package::FrontEnd"
+                default="1"
+                description="Nginx"
                 repository_conflict="http://nginx.org/packages/ubuntu"
         >
             <package>nginx-full</package>
-            <package_conflict>nginx</package_conflict>
         </nginx>
     </frontend>
-    <httpd>
+    <httpd
+            description="Httpd server for customers"
+            provides_alternatives="1"
+    >
         <apache_fcgid
-                description="Apache2 (MPM Event) server and PHP with CGI/FastCGI SAPI"
                 class="Servers::httpd::apache_fcgid"
+                description="
+                    Apache2 (MPM Event) with PHP through CGI/FastCGI SAPI
+                "
         >
-            <package>apache2</package>
-            <package post_install_tasks="sh apache2_postinst.sh">apache2-bin</package>
-            <package>apache2-data</package>
+            <package
+                    post_install_tasks="sh apache2_postinst.sh"
+            >
+                apache2
+            </package>
             <package>apache2-dev</package>
-            <package post_install_tasks="update-alternatives --set suexec /usr/lib/apache2/suexec-pristine">
+            <package
+                    post_install_tasks="
+                        /usr/bin/update-alternatives --set suexec
+                        /usr/lib/apache2/suexec-pristine
+                    "
+            >
                 apache2-suexec-pristine
             </package>
             <package>libapache2-mod-fcgid</package>
         </apache_fcgid>
         <apache_itk
-                description="Apache2 (MPM ITK) server and PHP with Apache2 SAPI"
                 class="Servers::httpd::apache_itk"
+                description="Apache2 (MPM ITK) with PHP through Apache2 SAPI"
         >
-            <package>apache2</package>
-            <package post_install_tasks="sh apache2_postinst.sh">apache2-bin</package>
-            <package>apache2-data</package>
+            <package
+                    post_install_tasks="sh apache2_postinst.sh"
+            >
+                apache2
+            </package>
             <package>apache2-dev</package>
-            <package_delayed>libapache2-mpm-itk</package_delayed>
+            <package>libapache2-mpm-itk</package>
         </apache_itk>
         <apache_php_fpm
-                default="1"
-                description="Apache2 (MPM Event) server and PHP with FPM/FastCGI SAPI"
                 class="Servers::httpd::apache_php_fpm"
+                default="1"
+                description="
+                    Apache2 (MPM Event) with PHP through FPM/FastCGI SAPI
+                "
         >
-            <package>apache2</package>
-            <package post_install_tasks="sh apache2_postinst.sh">apache2-bin</package>
-            <package>apache2-data</package>
+            <package
+                    post_install_tasks="sh apache2_postinst.sh"
+            >
+                apache2
+            </package>
             <package>apache2-dev</package>
-            <package post_install_tasks="update-alternatives --set suexec /usr/lib/apache2/suexec-pristine">
+            <package
+                    post_install_tasks="
+                        /usr/bin/update-alternatives --set suexec
+                        /usr/lib/apache2/suexec-pristine
+                    "
+            >
                 apache2-suexec-pristine
             </package>
         </apache_php_fpm>
     </httpd>
     <php
-            repository_conflict="http://packages.dotdeb.org"
-            repository="http://ppa.launchpad.net/ondrej/php/ubuntu xenial main"
-            repository_key_id="0x4F4EA0AAE5267A6C"
-            repository_key_srv="keyserver.ubuntu.com"
+            description="PHP version for customers"
+            provides_alternatives="1"
             pinning_package="*"
             pinning_pin="release o=LP-PPA-ondrej-php"
             pinning_pin_priority="1001"
+            repository="http://ppa.launchpad.net/ondrej/php/ubuntu xenial main"
+            repository_conflict="http://packages.dotdeb.org"
+            repository_key_id="0x4F4EA0AAE5267A6C"
+            repository_key_srv="keyserver.ubuntu.com"
     >
-        <php5.6 description="PHP 5.6" class="Servers::php" install_always="1">
-            <package>php5.6</package>
+        <php5.6
+                always_installed="1"
+                class="Servers::php"
+                description="PHP 5.6"
+        >
+            <package
+                    post_install_tasks="
+                        /usr/sbin/phpenmod -v 5.6 -s ALL ctype fileinfo ftp
+                        gettext iconv pdo phar posix sockets bz2 curl gd gmp
+                        imap intl json mbstring mcrypt mysqlnd mysqli pdo_mysql
+                        opcache pspell dom xml xmlreader xmlwriter zip apcu
+                    "
+            >
+                php5.6
+            </package>
             <package>php5.6-cgi</package>
             <package>php5.6-cli</package>
             <package>php5.6-fpm</package>
-            <package post_install_tasks="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets">php5.6-common</package>
-            <package post_install_tasks="phpenmod bz2">php5.6-bz2</package>
-            <package post_install_tasks="phpenmod curl">php5.6-curl</package>
-            <package post_install_tasks="phpenmod gd">php5.6-gd</package>
-            <package post_install_tasks="phpenmod gmp">php5.6-gmp</package>
-            <package post_install_tasks="phpenmod imap">php5.6-imap</package>
-            <package post_install_tasks="phpenmod intl">php5.6-intl</package>
-            <package post_install_tasks="phpenmod json">php5.6-json</package>
-            <package post_install_tasks="phpenmod mbstring">php5.6-mbstring</package>
-            <package post_install_tasks="phpenmod mcrypt">php5.6-mcrypt</package>
-            <package post_install_tasks="phpenmod mysqlnd mysqli pdo_mysql">php5.6-mysql</package>
-            <package post_install_tasks="phpenmod opcache">php5.6-opcache</package>
-            <package post_install_tasks="phpenmod pspell">php5.6-pspell</package>
-            <package post_install_tasks="phpenmod dom xml xmlreader xmlwriter">php5.6-xml</package>
-            <package post_install_tasks="phpenmod zip">php5.6-zip</package>
-            <package post_install_tasks="phpenmod apcu">php-apcu</package>
-            <package>php-pear</package>
+            <package>php5.6-common</package>
+            <package>php5.6-bz2</package>
+            <package>php5.6-curl</package>
+            <package>php5.6-gd</package>
+            <package>php5.6-gmp</package>
+            <package>php5.6-imap</package>
+            <package>php5.6-intl</package>
+            <package>php5.6-json</package>
+            <package>php5.6-mbstring</package>
+            <package>php5.6-mcrypt</package>
+            <package>php5.6-mysql</package>
+            <package>php5.6-opcache</package>
+            <package>php5.6-pspell</package>
+            <package>php5.6-xml</package>
+            <package>php5.6-zip</package>
             <package>libapache2-mod-php5.6</package>
-            <package_conflict>php5-common</package_conflict>
-            <package_conflict>libapache2-mod-php5</package_conflict>
         </php5.6>
-        <php7.0 description="PHP 7.0" class="Servers::php" install_always="1">
-            <package>php7.0</package>
+        <php7.0
+                always_installed="1"
+                class="Servers::php"
+                description="PHP 7.0"
+        >
+            <package
+                    post_install_tasks="
+                        /usr/sbin/phpenmod -v 7.0 -s ALL ctype fileinfo ftp
+                        gettext iconv pdo phar posix sockets bz2 curl gd gmp
+                        imap intl json mbstring mcrypt mysqlnd mysqli pdo_mysql
+                        opcache pspell dom xml xmlreader xmlwriter zip
+                        apcu apcu_bc
+                    "
+            >
+                php7.0
+            </package>
             <package>php7.0-cli</package>
             <package>php7.0-cgi</package>
             <package>php7.0-fpm</package>
-            <package post_install_tasks="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets">php7.0-common</package>
-            <package post_install_tasks="phpenmod bz2">php7.0-bz2</package>
-            <package post_install_tasks="phpenmod curl">php7.0-curl</package>
-            <package post_install_tasks="phpenmod gd">php7.0-gd</package>
-            <package post_install_tasks="phpenmod gmp">php7.0-gmp</package>
-            <package post_install_tasks="phpenmod imap">php7.0-imap</package>
-            <package post_install_tasks="phpenmod intl">php7.0-intl</package>
-            <package post_install_tasks="phpenmod json">php7.0-json</package>
-            <package post_install_tasks="phpenmod mbstring">php7.0-mbstring</package>
-            <package post_install_tasks="phpenmod mcrypt">php7.0-mcrypt</package>
-            <package post_install_tasks="phpenmod mysqlnd mysqli pdo_mysql">php7.0-mysql</package>
-            <package post_install_tasks="phpenmod opcache">php7.0-opcache</package>
-            <package post_install_tasks="phpenmod pspell">php7.0-pspell</package>
-            <package post_install_tasks="phpenmod sodium">php7.0-sodium</package>
-            <package post_install_tasks="phpenmod dom xml xmlreader xmlwriter">php7.0-xml</package>
-            <package post_install_tasks="phpenmod zip">php7.0-zip</package>
-            <package post_install_tasks="phpenmod apcu">php-apcu</package>
-            <package post_install_tasks="phpenmod apcu_bc">php-apcu-bc</package>
-            <package>php-pear</package>
+            <package>php7.0-common</package>
+            <package>php7.0-bz2</package>
+            <package>php7.0-curl</package>
+            <package>php7.0-gd</package>
+            <package>php7.0-gmp</package>
+            <package>php7.0-imap</package>
+            <package>php7.0-intl</package>
+            <package>php7.0-json</package>
+            <package>php7.0-mbstring</package>
+            <package>php7.0-mcrypt</package>
+            <package>php7.0-mysql</package>
+            <package>php7.0-opcache</package>
+            <package>php7.0-pspell</package>
+            <package>php7.0-xml</package>
+            <package>php7.0-zip</package>
             <package>libapache2-mod-php7.0</package>
-            <package_conflict>php5-common</package_conflict>
-            <package_conflict>libapache2-mod-php5</package_conflict>
         </php7.0>
-        <php7.1 description="PHP 7.1" class="Servers::php" install_always="1">
-            <package>php7.1</package>
+        <php7.1
+                always_installed="1"
+                class="Servers::php"
+                description="PHP 7.1"
+        >
+            <package
+                    post_install_tasks="
+                        /usr/sbin/phpenmod -v 7.1 -s ALL ctype fileinfo ftp
+                        gettext iconv pdo phar posix sockets bz2 curl gd gmp
+                        imap intl json mbstring mcrypt mysqlnd mysqli pdo_mysql
+                        opcache pspell dom xml xmlreader xmlwriter zip
+                        apcu apcu_bc
+                    "
+            >
+                php7.1
+            </package>
             <package>php7.1-cli</package>
             <package>php7.1-cgi</package>
             <package>php7.1-fpm</package>
-            <package post_install_tasks="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets">php7.1-common</package>
-            <package post_install_tasks="phpenmod bz2">php7.1-bz2</package>
-            <package post_install_tasks="phpenmod curl">php7.1-curl</package>
-            <package post_install_tasks="phpenmod gd">php7.1-gd</package>
-            <package post_install_tasks="phpenmod gmp">php7.1-gmp</package>
-            <package post_install_tasks="phpenmod imap">php7.1-imap</package>
-            <package post_install_tasks="phpenmod intl">php7.1-intl</package>
-            <package post_install_tasks="phpenmod json">php7.1-json</package>
-            <package post_install_tasks="phpenmod mbstring">php7.1-mbstring</package>
-            <package post_install_tasks="phpenmod mcrypt">php7.1-mcrypt</package>
-            <package post_install_tasks="phpenmod mysqlnd mysqli pdo_mysql">php7.1-mysql</package>
-            <package post_install_tasks="phpenmod opcache">php7.1-opcache</package>
-            <package post_install_tasks="phpenmod pspell">php7.1-pspell</package>
-            <package post_install_tasks="phpenmod sodium">php7.1-sodium</package>
-            <package post_install_tasks="phpenmod dom xml xmlreader xmlwriter">php7.1-xml</package>
-            <package post_install_tasks="phpenmod zip">php7.1-zip</package>
-            <package post_install_tasks="phpenmod apcu">php-apcu</package>
-            <package post_install_tasks="phpenmod apcu_bc">php-apcu-bc</package>
-            <package>php-pear</package>
+            <package>php7.1-common</package>
+            <package>php7.1-bz2</package>
+            <package>php7.1-curl</package>
+            <package>php7.1-gd</package>
+            <package>php7.1-gmp</package>
+            <package>php7.1-imap</package>
+            <package>php7.1-intl</package>
+            <package>php7.1-json</package>
+            <package>php7.1-mbstring</package>
+            <package>php7.1-mcrypt</package>
+            <package>php7.1-mysql</package>
+            <package>php7.1-opcache</package>
+            <package>php7.1-pspell</package>
+            <package>php7.1-xml</package>
+            <package>php7.1-zip</package>
             <package>libapache2-mod-php7.1</package>
-            <package_conflict>php5-common</package_conflict>
-            <package_conflict>libapache2-mod-php5</package_conflict>
         </php7.1>
-        <php7.2 description="PHP 7.2" class="Servers::php" install_always="1">
-            <package>php7.2</package>
+        <php7.2
+                always_installed="1"
+                class="Servers::php"
+                description="PHP 7.2"
+        >
+            <package
+                    post_install_tasks="
+                        /usr/sbin/phpenmod -v 7.2 -s ALL ctype fileinfo ftp
+                        gettext iconv pdo phar posix sockets bz2 curl gd gmp
+                        imap intl json mbstring mysqlnd mysqli pdo_mysql
+                        opcache pspell dom xml xmlreader xmlwriter zip
+                        apcu apcu_bc
+                    "
+            >
+                php7.2
+            </package>
             <package>php7.2-cli</package>
             <package>php7.2-cgi</package>
             <package>php7.2-fpm</package>
-            <package post_install_tasks="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets">php7.2-common</package>
-            <package post_install_tasks="phpenmod bz2">php7.2-bz2</package>
-            <package post_install_tasks="phpenmod curl">php7.2-curl</package>
-            <package post_install_tasks="phpenmod gd">php7.2-gd</package>
-            <package post_install_tasks="phpenmod gmp">php7.2-gmp</package>
-            <package post_install_tasks="phpenmod imap">php7.2-imap</package>
-            <package post_install_tasks="phpenmod intl">php7.2-intl</package>
-            <package post_install_tasks="phpenmod json">php7.2-json</package>
-            <package post_install_tasks="phpenmod mbstring">php7.2-mbstring</package>
-            <package post_install_tasks="phpenmod mysqlnd mysqli pdo_mysql">php7.2-mysql</package>
-            <package post_install_tasks="phpenmod opcache">php7.2-opcache</package>
-            <package post_install_tasks="phpenmod pspell">php7.2-pspell</package>
-            <package post_install_tasks="phpenmod sodium">php7.1-sodium</package>
-            <package post_install_tasks="phpenmod dom xml xmlreader xmlwriter">php7.2-xml</package>
-            <package post_install_tasks="phpenmod zip">php7.2-zip</package>
-            <package post_install_tasks="phpenmod apcu">php-apcu</package>
-            <package post_install_tasks="phpenmod apcu_bc">php-apcu-bc</package>
-            <package>php-pear</package>
+            <package>php7.2-common</package>
+            <package>php7.2-bz2</package>
+            <package>php7.2-curl</package>
+            <package>php7.2-gd</package>
+            <package>php7.2-gmp</package>
+            <package>php7.2-imap</package>
+            <package>php7.2-intl</package>
+            <package>php7.2-json</package>
+            <package>php7.2-mbstring</package>
+            <package>php7.2-mysql</package>
+            <package>php7.2-opcache</package>
+            <package>php7.2-pspell</package>
+            <package>php7.2-xml</package>
+            <package>php7.2-zip</package>
             <package>libapache2-mod-php7.2</package>
         </php7.2>
-        <php7.3 default="1" description="PHP 7.3" class="Servers::php" install_always="1">
-            <package>php7.3</package>
-            <package post_install_tasks="update-alternatives --set php /usr/bin/php7.3">php7.3-cli</package>
+        <php7.3
+                always_installed="1"
+                class="Servers::php"
+                default="1"
+                description="PHP 7.3"
+        >
+            <package
+                    post_install_tasks="
+                        /usr/sbin/phpenmod -v 7.3 -s ALL ctype fileinfo ftp
+                        gettext iconv pdo phar posix sockets bz2 curl gd gmp
+                        imap intl json mbstring mysqlnd mysqli pdo_mysql
+                        opcache pspell dom xml xmlreader xmlwriter zip
+                        apcu apcu_bc
+                    "
+            >
+                php7.3
+            </package>
+            <package
+                    post_install_tasks="
+                        /usr/bin//usr/bin/update-alternatives
+                        --set php /usr/bin/php7.3
+                    "
+            >
+                php7.3-cli
+            </package>
             <package>php7.3-cgi</package>
             <package>php7.3-fpm</package>
             <package
-                    post_install_tasks="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets; update-alternatives --set phar /usr/bin/phar7.3; update-alternatives --set phar.phar /usr/bin/phar.phar7.3"
+                    post_install_tasks="
+                        /usr/bin//usr/bin/update-alternatives
+                        --set phar /usr/bin/phar7.3;
+                        /usr/bin//usr/bin/update-alternatives
+                        --set phar.phar /usr/bin/phar.phar7.3
+                    "
             >
                 php7.3-common
             </package>
-            <package post_install_tasks="phpenmod bz2">php7.3-bz2</package>
-            <package post_install_tasks="phpenmod curl">php7.3-curl</package>
-            <package post_install_tasks="phpenmod gd">php7.3-gd</package>
-            <package post_install_tasks="phpenmod gmp">php7.3-gmp</package>
-            <package post_install_tasks="phpenmod imap">php7.3-imap</package>
-            <package post_install_tasks="phpenmod intl">php7.3-intl</package>
-            <package post_install_tasks="phpenmod json">php7.3-json</package>
-            <package post_install_tasks="phpenmod mbstring">php7.3-mbstring</package>
-            <package post_install_tasks="phpenmod mysqlnd mysqli pdo_mysql">php7.3-mysql</package>
-            <package post_install_tasks="phpenmod opcache">php7.3-opcache</package>
-            <package post_install_tasks="phpenmod pspell">php7.3-pspell</package>
-            <package post_install_tasks="phpenmod dom xml xmlreader xmlwriter">php7.3-xml</package>
-            <package post_install_tasks="phpenmod zip">php7.3-zip</package>
-            <package post_install_tasks="phpenmod apcu">php-apcu</package>
-            <package post_install_tasks="phpenmod apcu_bc">php-apcu-bc</package>
-            <package>php-pear</package>
+            <package>php7.3-bz2</package>
+            <package>php7.3-curl</package>
+            <package>php7.3-gd</package>
+            <package>php7.3-gmp</package>
+            <package>php7.3-imap</package>
+            <package>php7.3-intl</package>
+            <package>php7.3-json</package>
+            <package>php7.3-mbstring</package>
+            <package>php7.3-mysql</package>
+            <package>php7.3-opcache</package>
+            <package>php7.3-pspell</package>
+            <package>php7.3-xml</package>
+            <package>php7.3-zip</package>
             <package>libapache2-mod-php7.3</package>
         </php7.3>
+        <package>php-apcu</package>
+        <package>php-apcu-bc</package>
+        <package>php-pear</package>
     </php>
-    <po>
+    <po
+            description="IMAP/POP servers"
+            provides_alternatives="1"
+    >
         <courier
-                description="Courier IMAP/POP3 servers"
                 class="Servers::po::courier"
+                description="Courier"
         >
             <package>courier-authlib-mysql</package>
             <package>courier-imap</package>
@@ -210,39 +302,49 @@
             <package_conflict>sasl2-bin</package_conflict>
         </courier>
         <dovecot
-                default="1"
-                description="Dovecot IMAP/POP3 servers"
                 class="Servers::po::dovecot"
+                default="1"
+                description="Dovecot"
         >
-            <package>dovecot-core</package>
             <package>dovecot-imapd</package>
             <package>dovecot-pop3d</package>
             <package>dovecot-mysql</package>
         </dovecot>
     </po>
-    <mta>
+    <mta
+            description="SMTP server"
+            provides_alternatives="1"
+    >
         <postfix
-                default="1"
-                description="Postfix server"
                 class="Servers::mta::postfix"
+                default="1"
+                description="Postfix"
         >
             <package>postfix</package>
             <package_conflict>procmail</package_conflict>
+            <package_conflict>sendmail</package_conflict>
+            <package_conflict>sendmail-base</package_conflict>
+            <package_conflict>sendmail-bin</package_conflict>
+            <package_conflict>sendmail-cf</package_conflict>
+            <package_conflict>sendmail-doc</package_conflict>
         </postfix>
     </mta>
-    <ftpd>
+    <ftpd
+            description="FTP server"
+            provides_alternatives="1"
+    >
         <proftpd
-                default="1"
-                description="ProFTPD server"
                 class="Servers::ftpd::proftpd"
+                default="1"
+                description="ProFTPD"
         >
             <package>proftpd-basic</package>
             <package>proftpd-mod-mysql</package>
             <package_conflict>vsftpd</package_conflict>
         </proftpd>
         <vsftpd
-                description="VsFTPD server"
                 class="Servers::ftpd::vsftpd"
+                description="VsFTPD"
         >
             <package
                     rebuild_with_patches="libpam-mysql/patches/dpatch"
@@ -255,188 +357,203 @@
             <package_conflict>proftpd-basic</package_conflict>
         </vsftpd>
     </ftpd>
-    <named>
+    <named
+            description="DNS server"
+            provides_alternatives="1"
+    >
         <bind
-                default="1"
-                description="Bind9 server"
                 class="Servers::named::bind"
+                default="1"
+                description="Bind9"
         >
             <package>resolvconf</package>
             <package>bind9</package>
         </bind>
         <external_server
-                description="No local DNS server"
                 class="Servers::noserver"
+                description="No local DNS server"
         >
             <package>resolvconf</package>
         </external_server>
     </named>
-    <sql>
+    <sql
+            description="SQL server"
+            provides_alternatives="1"
+    >
         <mysql_5.7
-                default="1"
-                description="MySQL 5.7 server"
+                allow_upgrade_from="remote_server,mysql_5.5,mysql_5.6"
                 class="Servers::sqld::mysql"
-                pinning_package="libmysqlclient20 mysql-client-5.7 mysql-common mysql-server-5.7"
+                default="1"
+                description="MySQL 5.7"
+                pinning_package="
+                    libmysqlclient20 mysql-client-5.7 mysql-common
+                    mysql-server-5.7
+                "
                 pinning_pin="release o=Ubuntu"
                 pinning_pin_priority="1001"
-                allow_switch="remote_server"
         >
             <package>libmysqlclient20</package>
             <package>mysql-client-5.7</package>
-            <package>mysql-common</package>
             <package>mysql-server-5.7</package>
         </mysql_5.7>
         <mariadb_10.0
-                description="MariaDB 10.0 server"
+                allow_upgrade_from="remote_server,mariadb_5.3,mariadb_5.5"
+                description="MariaDB 10.0"
                 class="Servers::sqld::mariadb"
-                pinning_package="libmysqlclient20 mariadb-client-10.0 mariadb-common mariadb-server-10.0 mysql-common"
+                pinning_package="
+                    libmysqlclient20 mariadb-client-10.0 mariadb-common
+                    mariadb-server-10.0 mysql-common
+                "
                 pinning_pin="release o=Ubuntu"
                 pinning_pin_priority="1001"
-                allow_switch="mariadb_10.1,mariadb_10.2,remote_server"
         >
             <package>libmysqlclient20</package>
             <package>mariadb-client-10.0</package>
             <package>mariadb-common</package>
-            <package pre_install_tasks="/bin/mkdir -p /etc/mysql/mariadb.conf.d">mariadb-server-10.0</package>
-            <package>mysql-common</package>
+            <package
+                    pre_install_tasks="
+                            /bin/mkdir -p /etc/mysql/mariadb.conf.d
+                        "
+            >
+                mariadb-server-10.0
+            </package>
         </mariadb_10.0>
         <mariadb_10.1
-                description="MariaDB 10.1 server"
+                allow_upgrade_from="
+                    remote_server,mariadb_5.3,mariadb_5.5,mariadb_10.0
+                "
                 class="Servers::sqld::mariadb"
-                repository="http://mirror.netcologne.de/mariadb/repo/10.1/ubuntu xenial main"
-                repository_key_id="0xF1656F24C74CD1D8"
-                repository_key_srv="keyserver.ubuntu.com"
+                description="MariaDB 10.1"
                 pinning_package="*"
                 pinning_pin="release o=MariaDB"
                 pinning_pin_priority="1001"
-                allow_switch="mariadb_10.2,remote_server"
+                repository="
+                    http://mirror.netcologne.de/mariadb/repo/10.1/ubuntu xenial
+                    main
+                "
+                repository_key_id="0xF1656F24C74CD1D8"
+                repository_key_srv="keyserver.ubuntu.com"
         >
             <package>libmariadbclient18</package>
             <package>libmysqlclient18</package>
             <package>libmysqlclient20</package>
             <package>mariadb-client-10.1</package>
             <package>mariadb-common</package>
-            <package pre_install_tasks="/bin/mkdir -p /etc/mysql/mariadb.conf.d">mariadb-server-10.1</package>
-            <package>mysql-common</package>
+            <package
+                    pre_install_tasks="
+                            /bin/mkdir -p /etc/mysql/mariadb.conf.d
+                        "
+            >
+                mariadb-server-10.1
+            </package>
         </mariadb_10.1>
         <mariadb_10.2
-                description="MariaDB 10.2 server"
+                allow_upgrade_from="
+                    remote_server,mariadb_5.3,mariadb_5.5,mariadb_10.0,mariadb_10.2
+                "
                 class="Servers::sqld::mariadb"
-                repository="http://mirror.netcologne.de/mariadb/repo/10.2/ubuntu xenial main"
-                repository_key_id="0xF1656F24C74CD1D8"
-                repository_key_srv="keyserver.ubuntu.com"
+                description="MariaDB 10.2"
                 pinning_package="*"
                 pinning_pin="release o=MariaDB"
                 pinning_pin_priority="1001"
-                allow_switch="remote_server"
+                repository="
+                    http://mirror.netcologne.de/mariadb/repo/10.2/ubuntu xenial
+                    main
+                "
+                repository_key_id="0xF1656F24C74CD1D8"
+                repository_key_srv="keyserver.ubuntu.com"
         >
             <package>libmariadbclient18</package>
             <package>libmysqlclient18</package>
             <package>libmysqlclient20</package>
             <package>mariadb-client-10.2</package>
             <package>mariadb-common</package>
-            <package pre_install_tasks="/bin/mkdir -p /etc/mysql/mariadb.conf.d">mariadb-server-10.2</package>
-            <package>mysql-common</package>
+            <package
+                    pre_install_tasks="
+                                /bin/mkdir -p /etc/mysql/mariadb.conf.d
+                        "
+            >
+                mariadb-server-10.2
+            </package>
         </mariadb_10.2>
         <percona_5.5
-                description="Percona 5.5 server"
+                allow_upgrade_from="remote_server"
                 class="Servers::sqld::percona"
+                description="Percona 5.5"
+                pinning_package="
+                    libperconaserverclient18 libperconaserverclient18-dev
+                    percona-server-client-5.5 percona-server-common-5.5
+                    percona-server-server-5.5
+                "
+                pinning_pin="origin repo.percona.com"
+                pinning_pin_priority="1001"
                 repository="http://repo.percona.com/apt xenial main"
                 repository_key_id="0x9334A25F8507EFA5"
                 repository_key_srv="keyserver.ubuntu.com"
-                pinning_package="libperconaserverclient18 libperconaserverclient18-dev percona-server-client-5.5 percona-server-common-5.5 percona-server-server-5.5"
-                pinning_pin="origin repo.percona.com"
-                pinning_pin_priority="1001"
-                allow_switch="percona_5.6,percona_5.7,remote_server"
         >
             <package>libmysqlclient20</package>
             <package>libperconaserverclient18</package>
-            <package>mysql-common</package>
             <package>percona-server-client-5.5</package>
             <package>percona-server-common-5.5</package>
             <package>percona-server-server-5.5</package>
         </percona_5.5>
         <percona_5.6
-                description="Percona 5.6 server"
+                allow_upgrade_from="remote_server,percona_5.5"
                 class="Servers::sqld::percona"
+                description="Percona 5.6"
+                pinning_package="
+                    libperconaserverclient18.1 libperconaserverclient18.1-dev
+                    percona-server-client-5.6 percona-server-common-5.6
+                    percona-server-server-5.6
+                "
+                pinning_pin="origin repo.percona.com"
+                pinning_pin_priority="1001"
                 repository="http://repo.percona.com/apt xenial main"
                 repository_key_id="0x9334A25F8507EFA5"
                 repository_key_srv="keyserver.ubuntu.com"
-                pinning_package="libperconaserverclient18.1 libperconaserverclient18.1-dev percona-server-client-5.6 percona-server-common-5.6 percona-server-server-5.6"
-                pinning_pin="origin repo.percona.com"
-                pinning_pin_priority="1001"
-                allow_switch="percona_5.7,remote_server"
         >
             <package>libmysqlclient20</package>
-            <package>mysql-common</package>
             <package>libperconaserverclient18.1</package>
             <package>percona-server-client-5.6</package>
             <package>percona-server-common-5.6</package>
             <package>percona-server-server-5.6</package>
         </percona_5.6>
         <percona_5.7
-                description="Percona 5.7 server"
+                allow_upgrade_from="remote_server,percona_5.5,percona_5.6"
                 class="Servers::sqld::percona"
+                description="Percona 5.7"
+                pinning_package="
+                    libperconaserverclient20 libperconaserverclient20-dev
+                    percona-server-client-5.7 percona-server-common-5.7
+                    percona-server-server-5.7
+                "
+                pinning_pin="origin repo.percona.com"
+                pinning_pin_priority="1001"
                 repository="http://repo.percona.com/apt xenial main"
                 repository_key_id="0x9334A25F8507EFA5"
                 repository_key_srv="keyserver.ubuntu.com"
-                pinning_package="libperconaserverclient20 libperconaserverclient20-dev percona-server-client-5.7 percona-server-common-5.7 percona-server-server-5.7"
-                pinning_pin="origin repo.percona.com"
-                pinning_pin_priority="1001"
-                allow_switch="remote_server"
         >
             <package>libmysqlclient20</package>
             <package>libperconaserverclient20</package>
-            <package>mysql-common</package>
             <package>percona-server-client-5.7</package>
             <package>percona-server-common-5.7</package>
             <package>percona-server-server-5.7</package>
         </percona_5.7>
         <remote_server
-                description="Remote MySQL server"
+                description="Remote SQL server"
                 class="Servers::sqld::remote"
-                pinning_package="libmysqlclient20 mysql-client-5.7 mysql-common"
+                pinning_package="
+                    libmysqlclient20 mysql-client-5.7 mysql-common
+                "
                 pinning_pin="release o=Ubuntu"
                 pinning_pin_priority="1001"
-                allow_switch="mysql_5.7,mariadb_10.0,mariadb_10.1,mariadb_10.2,percona_5.5,percona_5.6,percona_5.7"
         >
             <package>libmysqlclient20</package>
             <package>mysql-client-5.7</package>
-            <package>mysql-common</package>
         </remote_server>
+        <package>mysql-common</package>
     </sql>
-    <perl>
-        <package>perl</package>
-        <package>libcrypt-blowfish-perl</package>
-        <package>libcrypt-cbc-perl</package>
-        <package>libcrypt-eksblowfish-perl</package>
-        <package>libcrypt-rijndael-perl</package>
-        <package>libdata-validate-ip-perl</package>
-        <package>libdate-simple-perl</package>
-        <package>libdatetime-perl</package>
-        <package>libdbd-mysql-perl</package>
-        <package>libdbi-perl</package>
-        <package>libemail-valid-perl</package>
-        <package>libfile-copy-recursive-perl</package>
-        <package>libfile-homedir-perl</package>
-        <package>libhash-merge-perl</package>
-        <package>libjson-perl</package>
-        <package>libmailtools-perl</package>
-        <package>libmime-tools-perl</package>
-        <package>libnet-dns-perl</package>
-        <package>libnet-libidn-perl</package>
-        <package>libsort-naturally-perl</package>
-        <package>libtimedate-perl</package>
-        <package>libunix-mknod-perl</package>
-        <package>libwww-perl</package>
-        <package>libxml-parser-perl</package>
-        <package>libxml-simple-perl</package>
-    </perl>
-    <ssl>
-        <package>libssl-dev</package>
-        <package>openssl</package>
-    </ssl>
-    <other>
+    <requirements>
         <package>apt-src</package>
         <package>at</package>
         <package>bash</package>
@@ -458,26 +575,46 @@
         <package>iproute2</package>
         <package>ispell</package>
         <package>libc6-dev</package>
+        <package>libcrypt-blowfish-perl</package>
+        <package>libcrypt-cbc-perl</package>
+        <package>libcrypt-eksblowfish-perl</package>
+        <package>libcrypt-rijndael-perl</package>
+        <package>libdata-validate-ip-perl</package>
+        <package>libdate-simple-perl</package>
+        <package>libdatetime-perl</package>
+        <package>libdbd-mysql-perl</package>
+        <package>libdbi-perl</package>
+        <package>libemail-valid-perl</package>
+        <package>libfile-copy-recursive-perl</package>
+        <package>libfile-homedir-perl</package>
+        <package>libhash-merge-perl</package>
+        <package>libjson-perl</package>
+        <package>libmailtools-perl</package>
+        <package>libmime-tools-perl</package>
+        <package>libnet-dns-perl</package>
+        <package>libnet-libidn-perl</package>
+        <package>libsort-naturally-perl</package>
+        <package>libssl-dev</package>
+        <package>libtimedate-perl</package>
+        <package>libunix-mknod-perl</package>
+        <package>libwww-perl</package>
+        <package>libxml-parser-perl</package>
+        <package>libxml-simple-perl</package>
         <package>locales-all</package>
         <package>logrotate</package>
         <package>lzma</package>
         <package>make</package>
         <package>mawk</package>
         <package>ntp</package>
+        <package>openssl</package>
         <package>patch</package>
         <package>pbuilder</package>
         <package>pbzip2</package>
+        <package>perl</package>
         <package>pigz</package>
         <package>ssh</package>
         <package>sudo</package>
         <package>tar</package>
         <package>unzip</package>
-    </other>
-    <sendmail>
-        <package_conflict>sendmail</package_conflict>
-        <package_conflict>sendmail-base</package_conflict>
-        <package_conflict>sendmail-bin</package_conflict>
-        <package_conflict>sendmail-cf</package_conflict>
-        <package_conflict>sendmail-doc</package_conflict>
-    </sendmail>
+    </requirements>
 </packages>

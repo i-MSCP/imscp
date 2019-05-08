@@ -5,10 +5,12 @@ Git 1.5.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
+    Added: iMSCP::Database::mariadb adapter (for use with new DBD::MariaDB driver for DBI, in place of DBD::mysql when available)
     Added: Array::Utils library (PerlVendor)
     Enhancement: Make it possible to override any default DNS resource record (Bind9 server implementation)
     Fixed: Can't locate object method "remove" via package "iMSCP::File" (iMSCP::Service)
     Fixed: Error output is badly captured, leading to 'Unknown error' (named-compilezone / Bind9 server implementation)
+    Fixed: Missing check for SSL private key and SSL certificate matching (iMSCP::OpenSSL)
     Fixed: SysVinit script are always reported as enabled (Debian SysVinit init provider)
     Fixed: The 'imscp_panel' service is always restarted even when it should not (FrontEnd dpkg(1) post invoke tasks)
     Fixed: The 'is-enabled' support for SysVinit scripts isn't available in older systemd version (Debian Systemd init provider)
@@ -16,12 +18,14 @@ BACKEND
     Review: Pass the full item data row to backend modules
     Rewritten: Packages (addons)
 
+CONFIG
+    Removed: DATABASE_TYPE configuration parameter form master i-MSCP configuration file
+
 DISTRIBUTIONS
     Added: bz2 PHP extension (all distributions, all PHP versions)
     Added: Support for Debian Buster (10.x) - Experimental
     Added: Support for Devuan ASCII (2.x)
     Added: Support for PHP 7.2, 7.3
-    Added: sodium PHP extension (when available)
     Dropped: Support for Ubuntu Trusty Thar (14.04)
 
 FRONTEND
@@ -37,11 +41,14 @@ FRONTEND
 
 INSTALLER
     Added: 'gnupg' package to the list of pre-required packages (all distributions)
+    Added: WHIPTAIL(1) support (dialog)
     Changed: All PHP versions are now always installed
     Changed: Default selected PHP version for customers is now 7.3
     Changed: Required PHP version for the frontEnd is now 7.3
     Fixed: jessie-updates repository (previously known as debian-volatile repository) no longer available (pbuilder conffile / Debian)
     Fixed: Update from security repositories won't be pulled (APT pinning)
+    Removed: --build-only command line option from the imscp-autoinstall script
+    Removed: --force-reinstall command line option from the imscp-autoinstall script
     Removed: --listener command line option from both imscp-autoinstall and imscp-reconfigure scripts
     Review: SQL users for various services such as proftpd, vsftpd, dovecot, courier-authdaemon are now randomly generated
 

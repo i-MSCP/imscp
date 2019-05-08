@@ -65,7 +65,7 @@ sub registerSetupListeners
 
 =item preinstall( )
 
- Process preinstall tasks
+ Pre-installation tasks
 
  Return int 0 on success, other on failure
 
@@ -77,12 +77,13 @@ sub preinstall
 
     my $rs = $self->{'events'}->trigger( 'beforeFtpdPreinstall', 'vsftpd' );
     $rs ||= $self->stop();
+    $rs ||= Servers::ftpd::vsftpd::installer->getInstance()->preinstall();
     $rs ||= $self->{'events'}->trigger( 'afterFtpdPreinstall', 'vsftpd' );
 }
 
 =item install( )
 
- Process install tasks
+ Installation tasks
 
  Return int 0 on success, other on failure
 
@@ -99,7 +100,7 @@ sub install
 
 =item postinstall( )
 
- Process postinstall tasks
+ Post-installation tasks
 
  Return int 0 on success, die on failure
 
@@ -133,7 +134,7 @@ sub postinstall
 
 =item uninstall( )
 
- Process uninstall tasks
+ Uninstallation tasks
 
  Return int 0 on success, die on failure
 
@@ -206,8 +207,6 @@ sub addUser
 
     local $@;
     eval {
-        local $dbh->{'RaiseError'} = TRUE;
-
         $dbh->begin_work();
         $dbh->do(
             'UPDATE ftp_users SET uid = ?, gid = ? WHERE admin_id = ?',

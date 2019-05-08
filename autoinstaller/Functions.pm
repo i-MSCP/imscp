@@ -27,12 +27,12 @@ use strict;
 use warnings;
 use autouse 'iMSCP::Stepper' => qw/ step /;
 use File::Basename 'fileparse';
-use File::Find;
+use File::Find 'find';
 use iMSCP::Boolean;
 use iMSCP::Bootstrapper;
 use iMSCP::Config;
 use iMSCP::Cwd '$CWD';
-use iMSCP::Debug qw/ debug error endDebug newDebug /;
+use iMSCP::Debug qw/ debug error output /;
 use iMSCP::Dialog;
 use iMSCP::Dir;
 use iMSCP::EventManager;
@@ -45,9 +45,10 @@ use iMSCP::Rights 'setRights';
 use version;
 use parent 'Exporter';
 
-our @EXPORT_OK = qw/ loadConfig build install /;
-
-my $autoinstallerAdapterInstance;
+our @EXPORT_OK = qw/
+    loadConfig install buildDistFiles distributionCheckDialog
+    showGitVersionWarnDialog showWelcomeDialog writeMasterConfigFile
+/;
 
 =head1 DESCRIPTION
 
@@ -61,22 +62,21 @@ my $autoinstallerAdapterInstance;
 
  Load main i-MSCP configuration
 
- Return undef
+ Return void, die on failure
 
 =cut
 
 sub loadConfig
 {
-    my $lsbRelease = iMSCP::LsbRelease->getInstance();
-    my $distroConffile = "$FindBin::Bin/configs/"
-        . lc( $lsbRelease->getId( TRUE )) . '/imscp.conf';
-    my $defaultConffile = "$FindBin::Bin/configs/debian/imscp.conf";
-    my $newConffile = ( -f $distroConffile )
-        ? $distroConffile : $defaultConffile;
+    my $lsb = iMSCP::LsbRelease->getInstance();
+    my $distConf = "$FindBin::Bin/configs/" . lc( $lsb->getId( TRUE ))
+        . '/imscp.conf';
+    my $defaultConf = "$FindBin::Bin/configs/debian/imscp.conf";
+    my $newConf = -f $distConf ? $distConf : $defaultConf;
 
     # Load new configuration
     tie %::imscpConfig, 'iMSCP::Config',
-        fileName  => $newConffile,
+        fileName  => $newConf,
         readonly  => TRUE,
         temporary => TRUE;
 
@@ -108,7 +108,7 @@ sub loadConfig
             $::imscpConfig{$key} = $value;
         }
 
-        # Make sure that all configuration parameter exists
+        # Make sure that all configuration parameters exist
         while ( my ( $param, $value ) = each( %::imscpConfig ) ) {
             next if exists $::imscpOldConfig{$param};
             $::imscpOldConfig{$param} = $value;
@@ -116,148 +116,10 @@ sub loadConfig
     }
 
     # Set system based values
-    $::imscpConfig{'DISTRO_ID'} = lc(
-        iMSCP::LsbRelease->getInstance()->getId( TRUE )
+    @{main::imscpConfig}{qw/ DISTRO_ID DISTRO_CODENAME DISTRO_RELEASE /} = (
+        lc $lsb->getId( TRUE ), lc $lsb->getCodename( TRUE ),
+        $lsb->getRelease( TRUE, TRUE )
     );
-    $::imscpConfig{'DISTRO_CODENAME'} = lc(
-        iMSCP::LsbRelease->getInstance()->getCodename( TRUE )
-    );
-    $::imscpConfig{'DISTRO_RELEASE'} = iMSCP::LsbRelease
-        ->getInstance()
-        ->getRelease( TRUE, TRUE );
-}
-
-=item build( )
-
- Process build tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub build
-{
-    newDebug( 'imscp-build.log' );
-
-    if ( !iMSCP::Getopt->preseed
-        && !( $::imscpConfig{'FRONTEND_SERVER'}
-        && $::imscpConfig{'FTPD_SERVER'}
-        && $::imscpConfig{'HTTPD_SERVER'}
-        && $::imscpConfig{'NAMED_SERVER'}
-        && $::imscpConfig{'MTA_SERVER'}
-        && $::imscpConfig{'PHP_SERVER'}
-        && $::imscpConfig{'PO_SERVER'}
-        && $::imscpConfig{'SQL_SERVER'}
-    ) ) {
-        iMSCP::Getopt->noprompt( FALSE );
-        $::skippackages = FALSE;
-    }
-
-    my $rs = 0;
-    $rs = _installPreRequiredPackages() unless $::skippackages;
-    return $rs if $rs;
-
-    my $dialog = iMSCP::Dialog->getInstance();
-
-    unless ( iMSCP::Getopt->noprompt || $::reconfigure ne 'none' ) {
-        $rs = _showWelcomeMsg( $dialog );
-        return $rs if $rs;
-
-        if ( %::imscpOldConfig ) {
-            $rs = _showUpdateWarning( $dialog );
-            return $rs if $rs;
-        }
-
-        $rs = _confirmDistro( $dialog );
-        return $rs if $rs;
-    }
-
-    $rs = _askInstallerMode( $dialog ) unless iMSCP::Getopt->noprompt
-        || $::buildonly || $::reconfigure ne 'none';
-
-    my @steps = (
-        ( $::skippackages ? () : [
-            \&_installDistroPackages,
-            'Installing distribution packages'
-        ] ),
-        [
-            \&_checkRequirements,
-            'Checking for requirements'
-        ],
-        [
-            \&_buildDistributionFiles,
-            'Building distribution files'
-        ],
-        [
-            \&_compileDaemon,
-            'Compiling daemon'
-        ],
-        [
-            \&_removeObsoleteFiles,
-            'Removing obsolete files'
-        ],
-        [
-            \&_savePersistentData,
-            'Saving persistent data'
-        ]
-    );
-
-    $rs ||= iMSCP::EventManager->getInstance()->trigger( 'preBuild', \@steps );
-    $rs ||= _getDistroAdapter()->preBuild( \@steps );
-    return $rs if $rs;
-
-    my ( $step, $nbSteps ) = ( 1, scalar @steps );
-    for my $task( @steps ) {
-        $rs = step( @{ $task }, $nbSteps, $step );
-        error( 'An error occurred while performing build steps' )
-            if $rs && $rs != 50;
-        return $rs if $rs;
-        $step++;
-    }
-
-    iMSCP::Dialog->getInstance()->endGauge();
-
-    $rs = iMSCP::EventManager->getInstance()->trigger( 'postBuild' );
-    $rs ||= _getDistroAdapter()->postBuild();
-    return $rs if $rs;
-
-    undef $autoinstallerAdapterInstance;
-
-    # Clean build directory (remove any .gitkeep file)
-    find(
-        sub {
-            return unless $_ eq '.gitkeep';
-            unlink or die( sprintf(
-                "Couldn't remove %s file: %s", $File::Find::name, $!
-            ));
-        },
-        $::{'INST_PREF'}
-    );
-
-    $rs = iMSCP::EventManager->getInstance()->trigger( 'afterPostBuild' );
-    return $rs if $rs;
-
-    my %confMap = (
-        imscp    => \%::imscpConfig,
-        imscpOld => \%::imscpOldConfig
-    );
-
-    # Write configuration
-    while ( my ( $name, $config ) = each %confMap ) {
-        if ( $name eq 'imscpOld' ) {
-            local $UMASK = 027;
-            iMSCP::File->new(
-                filename => "$::{'SYSTEM_CONF'}/$name.conf"
-            )->save();
-        }
-
-        tie my %config, 'iMSCP::Config',
-            fileName => "$::{'SYSTEM_CONF'}/$name.conf";
-        @config{ keys %{ $config } } = values %{ $config };
-        untie %config;
-    }
-
-    endDebug();
 }
 
 =item install( )
@@ -270,119 +132,250 @@ sub build
 
 sub install
 {
-    newDebug( 'imscp-setup.log' );
-
-    {
-        package main;
-        require "$FindBin::Bin/engine/setup/imscp-setup-methods.pl";
-    }
-
-    # Not really the right place to do that job but we have not really choice
-    # because this must be done before installation of new files
-    my $serviceMngr = iMSCP::Service->getInstance();
-    if ( $serviceMngr->hasService( 'imscp_network' ) ) {
-        $serviceMngr->remove( 'imscp_network' );
-    }
-
-    my $bootstrapper = iMSCP::Bootstrapper->getInstance();
-    my @runningJobs = ();
-
-    for my $job ( qw/
-        imscp-backup-all
-        imscp-backup-imscp
-        imscp-dsk-quota
-        imscp-srv-traff
-        imscp-vrl-traff
-        awstats_updateall.pl
-        imscp-disable-accounts
-        imscp
-    / ) {
-        next if $bootstrapper->lock( "/var/lock/$job.lock", 'nowait' );
-        push @runningJobs, $job,
-    }
-
-    if ( @runningJobs ) {
-        iMSCP::Dialog->getInstance()->msgbox( <<"EOF" );
-
-There are jobs currently running on your system that can not be locked by the installer.
-
-You must wait until the end of these jobs.
-
-Running jobs are: @runningJobs
-EOF
+    #@type autoinstaller::Adapter::AbstractAdapter
+    my $distAdapter = eval {
+        my $distID = ucfirst $::imscpConfig{'DISTRO_ID'};
+        my $file = "$FindBin::Bin/autoinstaller/Adapter/${distID}Adapter.pm";
+        my $distAdapter = "autoinstaller::Adapter::${distID}Adapter";
+        require $file;
+        $distAdapter->new();
+    };
+    if ( $@ ) {
+        error( $@ );
         return 1;
     }
 
-    undef @runningJobs;
-
-    my @steps = (
-        [
-            \&::setupInstallFiles,
-            'Installing distribution files'
-        ],
-        [
-            \&::setupBoot,
-            'Bootstrapping installer'
-        ],
-        [
-            \&::setupRegisterListeners,
-            'Registering servers/packages event listeners'
-        ],
-        [
-            \&::setupDialog,
-            'Processing setup dialog'
-        ],
-        [
-            \&::setupTasks,
-            'Processing setup tasks'
-        ],
-        [
-            \&::setupDeleteBuildDir,
-            'Deleting build directory'
-        ]
-    );
-
-    my $rs = iMSCP::EventManager->getInstance()->trigger(
-        'preInstall', \@steps
-    );
-    $rs ||= _getDistroAdapter()->preInstall( \@steps );
+    # No event is triggered before/after the preinstall tasks as the required
+    # Perl packages might not be installed yet
+    my $rs = $distAdapter->preinstall();
     return $rs if $rs;
 
-    my $step = 1;
-    my $nbSteps = scalar @steps;
-    for my $task( @steps ) {
-        $rs = step( @{ $task }, $nbSteps, $step );
-        error( 'An error occurred while performing installation steps' ) if $rs;
-        return $rs if $rs;
-        $step++;
-    }
+    iMSCP::Requirements->new()->all();
 
-    iMSCP::Dialog->getInstance()->endGauge();
-
-    $rs = iMSCP::EventManager->getInstance()->trigger( 'postInstall' );
-    $rs ||= _getDistroAdapter()->postInstall();
+    my $events = iMSCP::EventManager->getInstance();
+    $rs = $events->trigger( 'beforeInstall' );
+    $rs ||= $distAdapter->install();
+    $rs ||= $events->trigger( 'afterInstall' );
+    $rs ||= $events->trigger( 'beforePostInstall' );
+    $rs ||= $distAdapter->postinstall();
+    $rs ||= $events->trigger( 'afterPostInstall' );
     return $rs if $rs;
 
     require Net::LibIDN;
     Net::LibIDN->import( 'idn_to_unicode' );
 
-    my $port = $::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'http://'
-        ? $::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}
-        : $::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
-    my $vhost = idn_to_unicode( $::imscpConfig{'BASE_SERVER_VHOST'}, 'utf-8' );
-
-    iMSCP::Dialog->getInstance()->infobox( <<"EOF" );
-
+    if ( iMSCP::Getopt->noprompt ) {
+        if ( iMSCP::Getopt->verbose ) {
+            print output( 'i-MSCP has been successfully installed/updated.', 'ok' );
+        }
+    } else {
+        iMSCP::Dialog->getInstance()->note( <<"EOF" );
 \\Z1Congratulations\\Zn
 
 i-MSCP has been successfully installed/updated.
 
-Please connect to $::imscpConfig{'BASE_SERVER_VHOST_PREFIX'}$vhost:$port and login with your administrator account.
+You can login at $::imscpConfig{'BASE_SERVER_VHOST_PREFIX'}@{ [
+    idn_to_unicode( $::imscpConfig{'BASE_SERVER_VHOST'}, 'utf-8' )
+] }:@{ [ $::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'http://'
+    ? $::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}
+    : $::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'}
+] } with the master administrator account credentials.
 
 Thank you for choosing i-MSCP.
 EOF
+        system( 'clear' );
+    }
+    
+    0;
+}
 
-    endDebug();
+=item showWelcomeDialog( \%dialog )
+
+ Show welcome dialog
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 (Next)
+
+=cut
+
+sub showWelcomeDialog
+{
+    my ( $dialog ) = @_;
+
+    $dialog->text( <<"EOF" );
+Welcome to the i-MSCP installer.
+
+i-MSCP (internet Multi Server Control Panel) is an open source software (OSS) for shared hosting environments management on Linux servers. It comes with a large choice of modules for various services such as Apache2, ProFTPd, Dovecot, Courier, Bind9, and can be easily extended through plugins, or listener files using its events-based API.
+
+i-MSCP has been designed for professional Hosting Service Providers (HSPs), Internet Service Providers (ISPs) and IT professionals.
+
+\\Zb\\Z4LICENSE\\Zn\\ZB
+
+Unless otherwise stated, all source code and material is licensed under LGPL 2.1 and has the following copyright:
+
+ \\Zb© 2010-@{[ (localtime)[5]+1900 ]}, Laurent Declercq (i-MSCP™)
+ All rights reserved\\ZB
+
+The design material and the "\\Zbi-MSCP\\ZB" trademark is the property of their authors. Reuse of them without prior consent of their respective authors is strictly prohibited.
+EOF
+}
+
+=item showGitVersionWarnDialog
+
+ Show warning dialog if Git version is detected
+
+ Return int 0 (Next), 20 (Skip), 30 (Back), 50 (Abort)
+
+=cut
+
+sub showGitVersionWarnDialog
+{
+    my ( $dialog ) = @_;
+
+    return 20 if iMSCP::Getopt->noprompt || $::reconfigure ne 'none'
+        || index( lc $::imscpConfig{'Version'}, 'git' ) == -1;
+
+    # Override default button labels
+    local @{ $dialog->{'_opts'} }{
+        $dialog->{'program'} eq 'dialog'
+            ? qw/ ok-label extra-label /
+            : qw/ yes-button no-button /
+    } = qw/ Continue Abort /;
+
+    my $ret = $dialog->boolean( <<"EOF", TRUE );
+\\Zb\\Z1i-MSCP Git (unstable) version has been detected\\Zn\\ZB
+
+The installer detected that you intends to @{ [ !%::imscpOldConfig ? 'install' : 'update your installation to' ]} the i-MSCP \\ZbGit\\ZB version.
+
+We would remind you that the Git version can be \\Zuhighly unstable\\ZU and that the i-MSCP team \\Zudoesn't provide any support\\ZU for it.
+
+You can now either continue or abort.
+EOF
+    return 50 if $ret == 1;
+    $ret;
+}
+
+=item distributionCheckDialog( \%dialog )
+
+ Distribution check dialog
+
+ Param iMSCP::Dialog \%dialog
+ Return 20 (Skip), 50 (Abort)
+
+=cut
+
+sub distributionCheckDialog
+{
+    my ( $dialog ) = @_;
+
+    if ( $::imscpConfig{'DISTRO_ID'} ne 'n/a'
+        && $::imscpConfig{'DISTRO_CODENAME'} ne 'n/a'
+        && $::imscpConfig{'DISTRO_ID'} =~ /^(?:de(?:bi|vu)an|ubuntu)$/
+    ) {
+        unless ( -f "$FindBin::Bin/autoinstaller/Packages/"
+            . $::imscpConfig{'DISTRO_ID'} . '-'
+            . $::imscpConfig{'DISTRO_CODENAME'} . '.xml'
+        ) {
+            $dialog->error( <<"EOF" );
+\\Z1Distribution not supported\\Zn
+
+We are sorry but your \\Zb@{ [ ucfirst $::imscpConfig{'DISTRO_ID'} ] }\\ZB version is not supported. This can be due to one of the following reasons:
+
+ - Your @{ [ ucfirst $::imscpConfig{'DISTRO_ID'} ] } version has reached its end of life and its support has been dropped
+ - Your @{ [ ucfirst $::imscpConfig{'DISTRO_ID'} ] } version has not been released yet and its support hasn't been added yet
+ - Your @{ [ ucfirst $::imscpConfig{'DISTRO_ID'} ] } version is a non-LTS Ubuntu version
+EOF
+            return 50;
+        }
+    } else {
+        $dialog->error( <<"EOF" );
+\\Z1Operating system not supported\\Zn
+
+We are sorry but your operating system is not supported.
+
+At this time, only \\ZuDebian\\Zn, \\ZuDevuan\\Zn and \\ZuUbuntu\\Zn operating systems are supported.
+EOF
+        return 50;
+    }
+
+    20;
+}
+
+=item buildDistFiles( )
+
+ Build distribution files
+ 
+ Return int 0 on success, other on failure
+
+=cut
+
+sub buildDistFiles
+{
+    my $rs = _buildLayout();
+    $rs ||= _buildConfigFiles();
+    $rs ||= _buildEngineFiles();
+    $rs ||= _buildFrontendFiles();
+    $rs ||= _compileDaemon();
+    $rs ||= _removeObsoleteFiles();
+    $rs ||= _savePersistentData();
+    return $rs if $rs;
+
+    eval {
+        # Clean build directory
+        find(
+            sub {
+                return unless $_ eq '.gitkeep';
+                unlink or die( sprintf(
+                    "Couldn't remove %s file: %s", $File::Find::name, $!
+                ));
+            },
+            $::{'INST_PREF'}
+        );
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    0;
+}
+
+=item writeMasterConfigFile( )
+
+ Write master configuration
+ 
+ Return int 0 on success, other on failure
+
+=cut
+
+sub writeMasterConfigFile
+{
+    eval {
+        my %confMap = (
+            imscp    => \%::imscpConfig,
+            imscpOld => \%::imscpOldConfig
+        );
+
+        # Write configuration
+        while ( my ( $name, $config ) = each %confMap ) {
+            if ( $name eq 'imscpOld' ) {
+                local $UMASK = 027;
+                iMSCP::File->new(
+                    filename => "$::{'SYSTEM_CONF'}/$name.conf"
+                )->save();
+            }
+
+            tie my %config, 'iMSCP::Config', fileName => "$::{'SYSTEM_CONF'}/$name.conf";
+            @config{ keys %{ $config } } = values %{ $config };
+            untie %config;
+        }
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    0;
 }
 
 =back
@@ -390,251 +383,6 @@ EOF
 =head1 PRIVATE FUNCTIONS
 
 =over 4
-
-=item _installPreRequiredPackages( )
-
- Trigger pre-required package installation tasks from distro autoinstaller adapter
-
- Return int 0 on success, other otherwise
-
-=cut
-
-sub _installPreRequiredPackages
-{
-    _getDistroAdapter()->installPreRequiredPackages();
-}
-
-=item _showWelcomeMsg( \%dialog )
-
- Show welcome message
-
- Param iMSCP::Dialog \%dialog
- Return int 0 on success, other otherwise
-
-=cut
-
-sub _showWelcomeMsg
-{
-    my ( $dialog ) = @_;
-
-    $dialog->msgbox( <<"EOF" );
-
-\\Zb\\Z4i-MSCP - internet Multi Server Control Panel
-============================================\\Zn\\ZB
-
-Welcome to the i-MSCP installer.
-
-i-MSCP (internet Multi Server Control Panel) is an open source software (OSS) easing shared hosting environments management on Linux servers. It comes with a large choice of modules for various services such as Apache2, ProFTPd, Dovecot, Courier, Bind9, and can be easily extended through plugins, or listener files using its events-based API.
-
-i-MSCP was designed for professional Hosting Service Providers (HSPs), Internet Service Providers (ISPs) and IT professionals.
-
-\\Zb\\Z4License\\Zn\\ZB
-
-Unless otherwise stated all source code and material is licensed under LGPL 2.1 and has the following copyright:
-
- \\Zb© 2010-@{[ (localtime)[5]+1900 ]}, Laurent Declercq (i-MSCP™)
- All rights reserved\\ZB
-
-The design material and the "i-MSCP" trademark is the property of their authors. Reuse of them without prior consent of their respective authors is strictly prohibited.
-EOF
-}
-
-=item _showUpdateWarning( \%dialog )
-
- Show update warning
-
- Return 0 on success, other on failure or when user is aborting
-
-=cut
-
-sub _showUpdateWarning
-{
-    my ( $dialog ) = @_;
-
-    my $warning = '';
-    if ( index( $::imscpConfig{'Version'}, 'Git') == -1 ) {
-        $warning = <<"EOF";
-
-Before continue, be sure to have read the errata file:
-
-    \\Zbhttps://github.com/i-MSCP/imscp/blob/1.5.3-maintenance/docs/1.5.x_errata.md\\ZB
-EOF
-
-    } else {
-        $warning = <<"EOF";
-
-The installer detected that you intends to install i-MSCP \\ZbGit\\ZB version.
-
-We would remind you that the Git version can be highly unstable and that the i-MSCP team do not provides any support for it.
-
-Before continue, be sure to have read the errata file:
-
-    \\Zbhttps://github.com/i-MSCP/imscp/blob/1.5.3-maintenance/docs/1.5.x_errata.md\\ZB
-EOF
-    }
-
-    return 0 if $warning eq '';
-
-    $dialog->set( 'yes-label', 'Continue' );
-    $dialog->set( 'no-label', 'Abort' );
-    return 50 if $dialog->yesno( <<"EOF", TRUE );
-
-\\Zb\\Z1WARNING - PLEASE READ CAREFULLY\\Zn\\ZB
-$warning
-You can now either continue or abort.
-EOF
-
-    $dialog->resetLabels();
-    0;
-}
-
-=item _confirmDistro( \%dialog )
-
- Distribution confirmation dialog
-
- Param iMSCP::Dialog \%dialog
- Return 0 on success, other on failure on when user is aborting
-
-=cut
-
-sub _confirmDistro
-{
-    my ( $dialog ) = @_;
-
-    $dialog->infobox( "\nDetecting target distribution..." );
-
-    my $lsbRelease = iMSCP::LsbRelease->getInstance();
-    my $distroID = $lsbRelease->getId( TRUE );
-    my $distroCodename = ucfirst( $lsbRelease->getCodename( TRUE ));
-    my $distroRelease = $lsbRelease->getRelease( TRUE );
-
-    if ( $distroID ne 'n/a' && $distroCodename ne 'n/a'
-        && $distroID =~ /^(?:de(?:bi|vu)an|ubuntu)$/i
-    ) {
-        unless ( -f "$FindBin::Bin/autoinstaller/Packages/" . lc( $distroID )
-            . '-' . lc( $distroCodename ) . '.xml'
-        ) {
-            $dialog->msgbox( <<"EOF" );
-
-\\Z1$distroID $distroCodename ($distroRelease) not supported yet\\Zn
-
-We are sorry but your $distroID version is not supported.
-
-Thanks for choosing i-MSCP.
-EOF
-
-            return 50;
-        }
-
-        my $rs = $dialog->yesno( <<"EOF" );
-
-$distroID $distroCodename ($distroRelease) has been detected. Is this ok?
-EOF
-
-        $dialog->msgbox( <<"EOF" ) if $rs;
-
-\\Z1Distribution not supported\\Zn
-
-We are sorry but the installer has failed to detect your distribution.
-
-Only \\ZuDebian-like\\Zn operating systems are supported.
-
-Thanks for choosing i-MSCP.
-EOF
-
-        return 50 if $rs;
-    } else {
-        $dialog->msgbox( <<"EOF" );
-
-\\Z1Distribution not supported\\Zn
-
-We are sorry but your distribution is not supported yet.
-
-Only \\ZuDebian-like\\Zn operating systems are supported.
-
-Thanks for choosing i-MSCP.
-EOF
-
-        return 50;
-    }
-
-    0;
-}
-
-=item _askInstallerMode( \%dialog )
-
- Asks for installer mode
-
- Param iMSCP::Dialog \%dialog
- Return int 0 on success, 50 otherwise
-
-=cut
-
-sub _askInstallerMode
-{
-    my ( $dialog ) = @_;
-
-    $dialog->set( 'cancel-label', 'Abort' );
-
-    my ( $rs, $mode ) = $dialog->radiolist(
-        <<"EOF", [ 'auto', 'manual' ], 'auto' );
-
-Please choose the installer mode:
-
-See https://wiki.i-mscp.net/doku.php?id=start:installer#installer_modes for a full description of the installer modes.
- 
-EOF
-
-    return 50 if $rs;
-
-    $::buildonly = $mode eq 'manual' ? TRUE : FALSE;
-    $dialog->set( 'cancel-label', 'Back' );
-    0;
-}
-
-=item _installDistroPackages( )
-
- Trigger packages installation/uninstallation tasks from distro autoinstaller
- adapter
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _installDistroPackages
-{
-    my $rs = _getDistroAdapter()->installPackages();
-    $rs ||= _getDistroAdapter()->uninstallPackages();
-}
-
-=item _checkRequirements( )
-
- Check for requirements
-
- Return undef if all requirements are met, die otherwise
-
-=cut
-
-sub _checkRequirements
-{
-    iMSCP::Requirements->new()->all();
-}
-
-=item _buildDistributionFiles( )
-
- Build distribution files
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _buildDistributionFiles
-{
-    my $rs = _buildLayout();
-    $rs ||= _buildConfigFiles();
-    $rs ||= _buildEngineFiles();
-    $rs ||= _buildFrontendFiles();
-}
 
 =item _buildLayout( )
 
@@ -647,8 +395,9 @@ sub _buildDistributionFiles
 sub _buildLayout
 {
     my $distroLayout = "$FindBin::Bin/autoinstaller/Layout/"
-        . iMSCP::LsbRelease->getInstance()->getId( TRUE ) . '.xml';
+        . $::imscpConfig{'DISTRO_ID'} . '.xml';
     my $defaultLayout = "$FindBin::Bin/autoinstaller/Layout/Debian.xml";
+
     _processXmlFile( -f $distroLayout ? $distroLayout : $defaultLayout );
 }
 
@@ -662,8 +411,7 @@ sub _buildLayout
 
 sub _buildConfigFiles
 {
-    my $distroConfigDir = "$FindBin::Bin/configs/"
-        . lc( iMSCP::LsbRelease->getInstance()->getId( TRUE ));
+    my $distroConfigDir = "$FindBin::Bin/configs/$::imscpConfig{'DISTRO_ID'}";
     my $defaultConfigDir = "$FindBin::Bin/configs/debian";
     my $confDir = -d $distroConfigDir ? $distroConfigDir : $defaultConfigDir;
 
@@ -937,7 +685,7 @@ sub _savePersistentData
 
 sub _removeObsoleteFiles
 {
-    for my $dir( "$::imscpConfig{'CACHE_DATA_DIR'}/addons",
+    for my $dir ( "$::imscpConfig{'CACHE_DATA_DIR'}/addons",
         "$::imscpConfig{'CONF_DIR'}/apache/backup",
         "$::imscpConfig{'CONF_DIR'}/apache/skel/alias/phptmp",
         "$::imscpConfig{'CONF_DIR'}/apache/skel/subdomain/phptmp",
@@ -966,7 +714,7 @@ sub _removeObsoleteFiles
         iMSCP::Dir->new( dirname => $dir )->remove();
     }
 
-    for my $file( "$::imscpConfig{'CONF_DIR'}/apache/parts/domain_disabled_ssl.tpl",
+    for my $file ( "$::imscpConfig{'CONF_DIR'}/apache/parts/domain_disabled_ssl.tpl",
         "$::imscpConfig{'CONF_DIR'}/apache/parts/domain_redirect.tpl",
         "$::imscpConfig{'CONF_DIR'}/apache/parts/domain_redirect_ssl.tpl",
         "$::imscpConfig{'CONF_DIR'}/apache/parts/domain_ssl.tpl",
@@ -1021,10 +769,12 @@ sub _processXmlFile
         return 1;
     }
 
-    eval "use XML::Simple; 1";
-    die( "Couldn't load the XML::Simple perl module" ) if $@;
-    my $xml = XML::Simple->new( ForceArray => TRUE, ForceContent => TRUE );
-    my $data = eval { $xml->XMLin( $file, VarAttr => 'export' ) };
+    my $data = eval {
+        require XML::Simple;
+        XML::Simple->new( ForceArray => TRUE, ForceContent => TRUE )->XMLin(
+            $file, VarAttr => 'export'
+        );
+    };
     if ( $@ ) {
         error( $@ );
         return 1;
@@ -1131,14 +881,11 @@ sub _processFolder
 
     $dir->make( {
         user  => defined $data->{'user'}
-            ? _expandVars( $data->{'owner'} )
-            : undef,
+            ? _expandVars( $data->{'owner'} ) : undef,
         group => defined $data->{'group'}
-            ? _expandVars( $data->{'group'} )
-            : undef,
+            ? _expandVars( $data->{'group'} ) : undef,
         mode  => defined $data->{'mode'}
-            ? oct( $data->{'mode'} )
-            : undef
+            ? oct( $data->{'mode'} ) : undef
     } );
 }
 
@@ -1163,20 +910,16 @@ sub _copyConfig
     }
 
     my ( $name, $path ) = fileparse( $data->{'content'} );
-    my $distribution = lc( iMSCP::LsbRelease->getInstance()->getId( TRUE ));
+    my $distribution = $::imscpConfig{'DISTRO_ID'};
     ( my $alternativeFolder = $CWD ) =~ s/$distribution/debian/;
     my $source = -f $name ? $name : "$alternativeFolder/$name";
 
     if ( -d $source ) {
-        iMSCP::Dir->new(
-            dirname => $source
-        )->rcopy(
+        iMSCP::Dir->new( dirname => $source )->rcopy(
             "$path/$name", { preserve => 'no' }
         );
     } else {
-        my $rs = iMSCP::File->new(
-            filename => $source
-        )->copyFile(
+        my $rs = iMSCP::File->new( filename => $source )->copyFile(
             $path, { preserve => 'no' }
         );
         return $rs if $rs;
@@ -1191,12 +934,8 @@ sub _copyConfig
 
     if ( defined $data->{'user'} || defined $data->{'group'} ) {
         my $rs = $file->owner(
-            ( defined $data->{'user'}
-                ? _expandVars( $data->{'user'} ) : -1
-            ),
-            ( defined $data->{'group'}
-                ? _expandVars( $data->{'group'} ) : -1
-            )
+            ( defined $data->{'user'} ? _expandVars( $data->{'user'} ) : -1 ),
+            ( defined $data->{'group'} ? _expandVars( $data->{'group'} ) : -1 )
         );
         return $rs if $rs;
     }
@@ -1308,41 +1047,11 @@ sub _chmodFile
     return 0 unless defined $data->{'mode'};
 
     my $rs = execute(
-        "chmod $data->{'mode'} $data->{'content'}",
-        \my $stdout,
-        \my $stderr
+        "chmod $data->{'mode'} $data->{'content'}", \my $stdout, \my $stderr
     );
     debug( $stdout ) if length $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     $rs;
-}
-
-=item _getDistroAdapter( )
-
- Return distro autoinstaller adapter instance
-
- Return autoinstaller::Adapter::Abstract
-
-=cut
-
-sub _getDistroAdapter
-{
-    CORE::state $adapter;
-
-    $adapter //= do {
-        eval {
-            my $distID = iMSCP::LsbRelease->getInstance()->getId( TRUE );
-            my $file = "$FindBin::Bin/autoinstaller/Adapter/${distID}Adapter.pm";
-            my $distAdapter = "autoinstaller::Adapter::${distID}Adapter";
-            require $file;
-            $distAdapter->new()
-        } or die( sprintf(
-            "Couldn't instantiate %s autoinstaller adapter: %s",
-            iMSCP::LsbRelease->getInstance()->getId( TRUE ),
-            $@
-        ));
-
-    };
 }
 
 =back

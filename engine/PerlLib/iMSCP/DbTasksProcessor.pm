@@ -379,8 +379,6 @@ sub processDbTasks
     );
 
     # Process software packages tasks
-    local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-
     my $rows = $self->{'_dbh'}->selectall_hashref(
         "
             SELECT domain_id, alias_id, subdomain_id, subdomain_alias_id,
@@ -528,8 +526,6 @@ sub _processModuleDbTasks
             ( caller( 2 ) )[3]
         );
 
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-
         my $sth = $self->{'_dbh'}->prepare( $sql );
         $sth->execute();
 
@@ -564,7 +560,7 @@ sub _processModuleDbTasks
 
             if ( $needStepper ) {
                 $rs = step(
-                    sub { $self->_processModuleTasks( $module, $row ); },
+                    sub { $module->new()->process( $row ); },
                     sprintf(
                         'Processing %s tasks for: %s (ID %s)',
                         $module,
@@ -575,7 +571,7 @@ sub _processModuleDbTasks
                     ++$nStep
                 );
             } else {
-                $rs = $self->_processModuleTasks( $module, $row );
+                $rs =  $module->new()->process( $row );
             }
 
             $rs == 0 or die( getMessageByType(
@@ -590,27 +586,6 @@ sub _processModuleDbTasks
     }
 
     1;
-}
-
-=item _processModuleTasks ( $module, $data )
-
- Process module tasks for the given db item
-
- Param string $module Module name
- Param int $data item data
- Return int 0 on success, other or die on failure
-
-=cut
-
-sub _processModuleTasks
-{
-    my ( $self, $module, $data ) = @_;
-
-    # Only for backward compatibility with 3rd-party software.
-    # Will be removed when RaiseError will be default
-    local $self->{'_dbh'}->{'RaiseError'} = FALSE;
-
-    $module->new()->process( $data );
 }
 
 =back

@@ -38,6 +38,7 @@ use iMSCP::TemplateParser 'process';
 use iMSCP::Umask '$UMASK';
 use Servers::ftpd::proftpd;
 use Servers::sqld;
+use version;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -63,68 +64,33 @@ sub registerSetupListeners
 
     $events->registerOne( 'beforeSetupDialog', sub {
         push @{ $_[0] },
-            sub { $self->passivePortRangeDialog( @_ ) };
+            sub { $self->_dialogForPassivePortRange( @_ ); };
         0;
     } );
 }
 
-=item passivePortRangeDialog( \%dialog )
+=item preinstall( )
 
- Ask for ProtFTPD port range to use for passive data transfers
+ Pre-installation task
 
- Param iMSCP::Dialog \%dialog
- Return int 0 NEXT, 30 BACKUP, 50 ESC
-
+ Return int 0 on success, other on failure
+ 
 =cut
 
-sub passivePortRangeDialog
+sub preinstall
 {
-    my ( $self, $dialog ) = @_;
+    my ( $self ) = @_;
 
-    my $passivePortRange = ::setupGetQuestion(
-        'FTPD_PASSIVE_PORT_RANGE',
-        $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'}
+    $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'} = ::setupGetQuestion(
+        'FTPD_PASSIVE_PORT_RANGE'
     );
-    my ( $startOfRange, $endOfRange );
 
-    if ( !isValidNumberRange( $passivePortRange, \$startOfRange, \$endOfRange )
-        || !isNumberInRange( $startOfRange, 32768, 60999 )
-        || !isNumberInRange( $endOfRange, $startOfRange, 60999 )
-        || $::reconfigure =~ /^(?:ftpd|servers|all|forced)$/
-    ) {
-        $passivePortRange = '32768 60999' unless $startOfRange && $endOfRange;
-        my ( $rs, $msg ) = ( 0, '' );
-
-        do {
-            ( $rs, $passivePortRange ) = $dialog->inputbox(
-                <<"EOF", $passivePortRange );
-
-\\Z4\\Zb\\ZuProFTPD passive port range\\Zn
-
-Please choose the passive port range for ProFTPD.
-
-Note that if you're behind a NAT, you must forward those ports to this server.$msg
-EOF
-            $msg = '';
-            if ( !isValidNumberRange( $passivePortRange, \$startOfRange, \$endOfRange )
-                || !isNumberInRange( $startOfRange, 32768, 60999 )
-                || !isNumberInRange( $endOfRange, $startOfRange, 60999 )
-            ) {
-                $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
-            }
-        } while $rs < 30 && $msg;
-        return $rs if $rs >= 30;
-
-        $passivePortRange = "$startOfRange $endOfRange";
-    }
-
-    $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'} = $passivePortRange;
     0;
 }
 
 =item install( )
 
- Process install tasks
+ Installation tasks
 
  Return int 0 on success, other on failure
 
@@ -166,6 +132,59 @@ sub _init
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'config'} = $self->{'ftpd'}->{'config'};
     $self;
+}
+
+=item _dialogForPassivePortRange( \%dialog )
+
+ Dialog for passive port range
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 (Next), 20 (Skip), 30 (Back)
+
+=cut
+
+sub _dialogForPassivePortRange
+{
+    my ( $self, $dialog ) = @_;
+
+    my $value = ::setupGetQuestion(
+        'FTPD_PASSIVE_PORT_RANGE',
+        $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'}
+    );
+    my ( $startOfRange, $endOfRange );
+
+    if ( !grep ( $::reconfigure eq $_, qw/ ftpd servers all /)
+        && length $value
+        && isValidNumberRange( $value, \$startOfRange, \$endOfRange )
+        && isNumberInRange( $startOfRange, 32768, 60999 )
+        && isNumberInRange( $endOfRange, $startOfRange, 60999 )
+    ) {
+        ::setupSetQuestion( 'FTPD_PASSIVE_PORT_RANGE', $value );
+        return 20;
+    }
+
+    my ( $ret, $msg ) = ( 0, '' );
+    do {
+        ( $ret, $value ) = $dialog->string( <<"EOF", length $value ? $value : '32768 60999' );
+${msg}Please choose the passive port range for the FTP server.
+
+If the FTP server is behind a NAT, you \\ZbMUST\\Zb not forget to forward the ports.
+EOF
+        if ( $ret != 30 ) {
+            if ( !isValidNumberRange( $value, \$startOfRange, \$endOfRange )
+                || !isNumberInRange( $startOfRange, 32768, 60999 )
+                || !isNumberInRange( $endOfRange, $startOfRange, 60999 )
+            ) {
+                $msg = $LAST_VALIDATION_ERROR;
+            } else {
+                $msg = ''
+            }
+        }
+    } while $ret != 30 && length $msg;
+    return 30 if $ret == 30;
+
+    ::setupSetQuestion( 'FTPD_PASSIVE_PORT_RANGE', "$startOfRange $endOfRange" );
+    0;
 }
 
 =item _bkpConfFile( )
@@ -246,8 +265,6 @@ sub _setupDatabase
 
     my $rs = eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
-        local $dbh->{'RaiseError'} = TRUE;
-
         my %config = @{ $dbh->selectcol_arrayref(
             "
                 SELECT `name`, `value`
@@ -385,7 +402,13 @@ sub _buildConfigFile
         CONF_DIR                => $::imscpConfig{'CONF_DIR'},
         CERTIFICATE             => 'imscp_services',
         SERVER_IDENT_MESSAGE    => '"[' . ::setupGetQuestion( 'SERVER_HOSTNAME' ) . '] i-MSCP FTP server."',
-        TLSOPTIONS              => 'NoCertRequest NoSessionReuseRequired',
+        TLSOPTIONS              => join( ' ', (
+            # The 'NoCertRequest' option is deprecated since v1.3.6rc2.
+            # See http://www.proftpd.org/docs/RELEASE_NOTES-1.3.6rc2
+            version->parse( $self->{'config'}->{'PROFTPD_VERSION'} )
+                < version->parse( '1.3.6' ) ? 'NoCertRequest ' : (),
+            'NoSessionReuseRequired'
+        )),
         MAX_INSTANCES           => $self->{'config'}->{'MAX_INSTANCES'},
         MAX_CLIENT_PER_HOST     => $self->{'config'}->{'MAX_CLIENT_PER_HOST'}
     };
@@ -433,14 +456,11 @@ EOF
     my $baseServerPublicIp = ::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' );
 
     if ( $baseServerIp ne $baseServerPublicIp ) {
-        my @virtualHostIps = grep (
-            $_ ne '0.0.0.0',
-            (
-                '127.0.0.1',
-                ( ::setupGetQuestion( 'IPV6_SUPPORT' ) ? '::1' : () ),
-                $baseServerIp
-            )
-        );
+        my @virtualHostIps = grep ($_ ne '0.0.0.0', (
+            '127.0.0.1',
+            ( ::setupGetQuestion( 'IPV6_SUPPORT' ) ? '::1' : () ),
+            $baseServerIp
+        ));
         $cfgTpl .= <<"EOF";
 
 # Server behind NAT - Advertise public IP address

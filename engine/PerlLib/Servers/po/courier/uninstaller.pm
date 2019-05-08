@@ -112,8 +112,6 @@ sub _uninstall
     local $@;
     my $rs = eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
-        local $dbh->{'RaiseError'} = TRUE;
-
         my ( $courierAuthdaemonSqlUser ) = @{ $dbh->selectcol_arrayref(
             "
                 SELECT `value`

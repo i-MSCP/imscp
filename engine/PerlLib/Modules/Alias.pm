@@ -96,10 +96,7 @@ sub process
     }
 
     local $@;
-    eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-        $self->{'_dbh'}->do( @sql );
-    };
+    eval { $self->{'_dbh'}->do( @sql ); };
     if ( $@ ) {
         error( $@ );
         return 1;
@@ -133,8 +130,6 @@ sub add
 
     local $@;
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-
         $self->{'_dbh'}->begin_work();
         $self->{'_dbh'}->do(
             "
@@ -183,8 +178,6 @@ sub disable
 
     local $@;
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-
         $self->{'_dbh'}->do(
             "
                 UPDATE subdomain_alias
@@ -225,7 +218,6 @@ sub _loadData
 
     local $@;
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
         my $row = $self->{'_dbh'}->selectrow_hashref(
             "
                 SELECT t1.*,
@@ -281,8 +273,6 @@ sub _getData
         my $webDir = File::Spec->canonpath( "$homeDir/$self->{'alias_mount'}" );
         my $documentRoot = File::Spec->canonpath( "$webDir/$self->{'alias_document_root'}" );
         my $confLevel = $httpd->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} eq 'per_user' ? 'dmn' : 'als';
-
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
         my $phpini = $self->{'_dbh'}->selectrow_hashref(
             'SELECT * FROM php_ini WHERE domain_id = ? AND domain_type = ?', undef,
             ( $confLevel eq 'dmn' ? $self->{'domain_id'} : $self->{'alias_id'} ), $confLevel
@@ -358,8 +348,6 @@ sub _getData
 sub _sharedMountPoint
 {
     my ( $self ) = @_;
-
-    local $self->{'_dbh'}->{'RaiseError'} = TRUE;
 
     my $regexp = "^$self->{'alias_mount'}(/.*|\$)";
     my ( $nbSharedMountPoints ) = $self->{'_dbh'}->selectrow_array(

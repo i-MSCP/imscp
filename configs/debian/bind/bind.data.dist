@@ -21,15 +21,14 @@ BIND_DB_FORMAT = raw=0
 # Mode in which the server should acts (master|slave)
 BIND_MODE =
 
-# List of IP addresses for master server(s)
-# Only relevant in slave mode
+# Master DNS(s) IP addresses
 PRIMARY_DNS =
 
-# List of IP addresses for slave server(s)
-# Only relevant in master mode
+# Slave DNS(s) IP addresses
 SECONDARY_DNS =
 
+# IPv6 support
 BIND_IPV6 =
 
-# DNS Resolver
+# Local DNS Resolver
 LOCAL_DNS_RESOLVER =

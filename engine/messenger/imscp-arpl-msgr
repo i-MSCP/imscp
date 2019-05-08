@@ -36,7 +36,6 @@ iMSCP::Bootstrapper->getInstance()->boot(
 
 eval {
     my $dbh = iMSCP::Database->factory()->getRawDb();
-    local $dbh->{'RaiseError'} = 1;
     $dbh->do( "DELETE FROM `autoreplies_log` WHERE ADDTIME(`time`, '24:00:00') < NOW()" );
 
     ( my $from = $ARGV[0] ) =~ s/imscp-arpl\.//;

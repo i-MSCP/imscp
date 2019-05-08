@@ -96,10 +96,7 @@ sub process
     }
 
     local $@;
-    eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-        $self->{'_dbh'}->do( @sql );
-    };
+    eval { $self->{'_dbh'}->do( @sql ); };
     if ( $@ ) {
         error( $@ );
         return 1;
@@ -129,7 +126,6 @@ sub _loadData
 
     local $@;
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
         my $row = $self->{'_dbh'}->selectrow_hashref(
             "
                 SELECT t1.*,
@@ -188,7 +184,6 @@ sub _getData
         my $confLevel = $httpd->{'phpConfig'}->{'PHP_CONFIG_LEVEL'};
         $confLevel = $confLevel =~ /^per_(?:user|domain)$/ ? 'dmn' : 'sub';
 
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
         my $phpini = $self->{'_dbh'}->selectrow_hashref(
             'SELECT * FROM php_ini WHERE domain_id = ? AND domain_type = ?',
             undef, ( $confLevel eq 'dmn' ? $self->{'domain_id'} : $self->{'subdomain_id'} ), $confLevel
@@ -264,8 +259,6 @@ sub _getData
 sub _sharedMountPoint
 {
     my ( $self ) = @_;
-
-    local $self->{'_dbh'}->{'RaiseError'} = TRUE;
 
     my $regexp = "^$self->{'subdomain_mount'}(/.*|\$)";
     my ( $nbSharedMountPoints ) = $self->{'_dbh'}->selectrow_array(

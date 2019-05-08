@@ -25,6 +25,9 @@ package Servers::server::local;
 
 use strict;
 use warnings;
+use iMSCP::Boolean;
+use iMSCP::Debug 'debug';
+use iMSCP::LsbRelease;
 use Class::Autouse qw/ :nostat Servers::server::local::installer /;
 use parent 'Common::SingletonClass';
 
@@ -56,7 +59,7 @@ sub registerSetupListeners
 
 =item preinstall( )
 
- Process preinstall tasks
+ Pre-installation tasks
 
  Return int 0 on success, other on failure
 
@@ -73,7 +76,7 @@ sub preinstall
 
 =item install( )
 
- Process install tasks
+ Installation tasks
 
  Return int 0 on success, other on failure
 
@@ -86,6 +89,36 @@ sub install
     my $rs = $self->{'events'}->trigger( 'beforeServerInstall', 'local' );
     $rs ||= Servers::server::local::installer->getInstance()->install();
     $rs ||= $self->{'events'}->trigger( 'afterServerInstall', 'local' );
+}
+
+=item dpkgPostInvokeTasks( )
+
+ dpkg(1) post-invoke tasks
+ 
+ - Update LSB info in the master configuration file
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub dpkgPostInvokeTasks
+{
+    my ( $self ) = @_;
+
+    my $lsb = iMSCP::LsbRelease->getInstance();
+
+    return 0 if lc $lsb->getId( TRUE ) eq $::imscpConfig{'DISTRO_ID'}
+        && lc $lsb->getCodename( TRUE ) eq $::imscpConfig{'DISTRO_CODENAME'}
+        && $lsb->getRelease( TRUE, TRUE ) eq $::imscpConfig{'DISTRO_RELEASE'};
+
+    debug( 'Updating LSB info in master configuration file' );
+    @{main::imscpConfig}{qw/ DISTRO_ID DISTRO_CODENAME DISTRO_RELEASE /} = (
+        lc $lsb->getId( TRUE ),
+        lc $lsb->getCodename( TRUE ),
+        $lsb->getRelease( TRUE, TRUE )
+    );
+
+    0;
 }
 
 =back

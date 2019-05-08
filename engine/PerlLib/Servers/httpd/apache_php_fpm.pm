@@ -79,7 +79,7 @@ sub registerSetupListeners
 
 =item preinstall( )
 
- Process preinstall tasks
+ Pre-installation tasks
 
  Return int 0 on success, other on failure
 
@@ -93,6 +93,9 @@ sub preinstall
         'beforeHttpdPreInstall', 'apache_php_fpm'
     );
     $rs ||= $self->stop();
+    $rs ||= Servers::httpd::apache_php_fpm::installer
+        ->getInstance()
+        ->preinstall();
     $rs ||= $self->{'events'}->trigger(
         'afterHttpdPreInstall', 'apache_php_fpm'
     );
@@ -100,7 +103,7 @@ sub preinstall
 
 =item install( )
 
- Process install tasks
+ Installation tasks
 
  Return int 0 on success, other on failure
 
@@ -123,7 +126,7 @@ sub install
 
 =item postinstall( )
 
- Process postinstall tasks
+ Uninstallation tasks
 
  Return int 0 on success, other on failure
 
@@ -1186,8 +1189,6 @@ sub getTraffic
 
     local $@;
     eval {
-        local $dbh->{'RaiseError'} = TRUE;
-
         $dbh->begin_work();
 
         my $sth = $dbh->prepare(

@@ -6,7 +6,7 @@
 
 =head1 SYNOPSIS
 
- imscp-rqst-mngr [options]...
+ imscp-rqst-mngr [OPTION]...
 
 =cut
 
@@ -42,7 +42,7 @@ $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 
 newDebug( 'imscp-rqst-mngr.log' );
 
-iMSCP::Getopt->parseNoDefault( sprintf( "Usage: perl %s [OPTIONS]...", basename( $0 )) . qq {
+iMSCP::Getopt->parseNoDefault( sprintf( "Usage: perl %s [OPTION]...", basename( $0 )) . qq {
 
 Script that processes i-MSCP backend requests.
 

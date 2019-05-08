@@ -85,10 +85,7 @@ sub process
         return 0;
     }
 
-    eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-        $self->{'_dbh'}->do( @sql );
-    };
+    eval { $self->{'_dbh'}->do( @sql ); };
     if ( $@ ) {
         error( $@ );
         return 1;
@@ -179,7 +176,6 @@ sub _loadData
     my ( $self, $ipId ) = @_;
 
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
         $self->{'_data'} = $self->{'_dbh'}->selectrow_hashref(
             'SELECT ip_id, ip_card, ip_number AS ip_address, ip_netmask, ip_config_mode, ip_status FROM server_ips WHERE ip_id = ?', undef, $ipId
         );

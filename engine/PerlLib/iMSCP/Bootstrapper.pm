@@ -62,7 +62,7 @@ $ENV{'HOME'} = ( getpwuid $> )[7] or die(
 
 sub boot
 {
-    my ($self, $options) = @_;
+    my ( $self, $options ) = @_;
 
     setDebug( 1 ); # Set debug mode for booting time
 
@@ -73,7 +73,7 @@ sub boot
     $self->loadMainConfig( $options );
 
     # Set timezone unless we are in setup or uninstall modes
-    unless ( grep($mode eq $_, ( 'setup', 'uninstall' ) ) ) {
+    unless ( grep ($mode eq $_, ( 'setup', 'uninstall' ) ) ) {
         $ENV{'TZ'} = $::imscpConfig{'TIMEZONE'} || 'UTC';
         tzset;
     }
@@ -106,7 +106,7 @@ sub boot
 
 sub loadMainConfig
 {
-    my (undef, $options) = @_;
+    my ( undef, $options ) = @_;
 
     require iMSCP::Config;
     untie %::imscpConfig;
@@ -133,7 +133,7 @@ sub loadMainConfig
 
 sub lock
 {
-    my ($self, $lockFile, $nowait) = @_;
+    my ( $self, $lockFile, $nowait ) = @_;
     $lockFile = File::Spec->canonpath( $lockFile ||= '/var/lock/imscp.lock' );
 
     return 1 if exists $self->{'locks'}->{$lockFile};
@@ -157,7 +157,7 @@ sub lock
 
 sub unlock
 {
-    my ($self, $lockFile) = @_;
+    my ( $self, $lockFile ) = @_;
     $lockFile = File::Spec->canonpath( $lockFile ||= '/var/lock/imscp.lock' );
 
     return $self unless exists $self->{'locks'}->{$lockFile};
@@ -267,7 +267,7 @@ sub _setDbSettings
 
 END {
     my $self = __PACKAGE__->getInstance();
-    $self->{'locks'}->{$_}->release() for keys %{$self->{'locks'}};
+    $self->{'locks'}->{$_}->release() for keys %{ $self->{'locks'} };
 }
 
 =back

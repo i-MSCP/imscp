@@ -82,6 +82,7 @@ sub preinstall
     my ( $self ) = @_;
 
     my $rs = $self->{'events'}->trigger( 'beforeNamedPreInstall', 'bind' );
+    $rs ||= Servers::named::bind::installer->getInstance()->preinstall();
     $rs ||= $self->{'events'}->trigger( 'afterNamedPreInstall', 'bind' );
 }
 
@@ -104,7 +105,7 @@ sub install
 
 =item postinstall( )
 
- Post-installationt tasks
+ Post-installation tasks
 
  Return int 0 on success, other on failure
 
@@ -578,9 +579,9 @@ EOF
     );
     return $rs if $rs;
 
-    $file = File::Temp->new();
+    $file = File::Temp->new( UNLINK => TRUE );
     print $file ${ $fileC };
-    $file->flush();
+    $file->close();
 
     $rs = $self->_compileZone( $data->{'ZONE_NAME'}, $file );
     $self->{'reload'} = TRUE unless $rs;

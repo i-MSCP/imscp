@@ -6,7 +6,7 @@ imscp-backup-imscp backup i-MSCP configuration files and database.
 
 =head1 SYNOPSIS
 
- imscp-backup-imscp [options]...
+ imscp-backup-imscp [OPTION]...
 
 =cut
 

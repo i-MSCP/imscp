@@ -23,7 +23,7 @@
 
 =head1 SYNOPSIS
 
- imscp-uninstall [options]...
+ imscp-uninstall [OPTION]...
 
 =cut
 
@@ -76,7 +76,6 @@ sub process
     local $@;
     my $row = eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
-        local $dbh->{'RaiseError'} = TRUE;
         $dbh->selectrow_hashref(
             "SELECT 1 FROM `plugin` WHERE `plugin_status` <> 'uninstalled'"
         );
@@ -114,7 +113,9 @@ EOF
         $step++;
     }
 
-    $rs ||= iMSCP::Dialog->getInstance()->endGauge();
+    iMSCP::Dialog->getInstance()->endGauge();
+
+    $rs;
 }
 
 sub shutDown
@@ -135,10 +136,16 @@ EOF
 sub _userDialog
 {
     my $dialog = iMSCP::Dialog->getInstance();
-    $dialog->set( 'title', 'i-MSCP Uninstaller Dialog' );
 
-    exit 0 if $dialog->yesno( <<"EOF", TRUE );
+    local $dialog->{'_opts'}->{'title'} = 'Uninstaller dialog';
+    # Override default button labels
+    local @{ $dialog->{'_opts'} }{
+        $_[0]->{'program'} eq 'dialog'
+            ? qw/ ok-label extra-label /
+            : qw/ yes-button no-button /
+    } = qw/ Continue Abort /;
 
+    exit 0 if $dialog->boolean( <<"EOF", TRUE );
 Welcome to the \\Z4i-MSCP $::imscpConfig{'Version'}\\Zn uninstaller dialog.
 
 This program will uninstall i-MSCP from your server.
@@ -170,9 +177,7 @@ sub _removeCustomers
 
             my $db = iMSCP::Database->factory();
             my $oldDbName = $db->useDatabase( $::imscpConfig{'DATABASE_NAME'} );
-
             my $dbh = $db->getRawDb();
-            local $dbh->{'RaiseError'} = TRUE;
 
             while ( my ( $table, $field ) = each %{ $tables } ) {
                 if ( ref $field eq 'ARRAY' ) {
