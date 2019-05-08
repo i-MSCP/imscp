@@ -42,6 +42,7 @@ FRONTEND
 INSTALLER
     Added: 'gnupg' package to the list of pre-required packages (all distributions)
     Added: WHIPTAIL(1) support (dialog)
+    Changed: Abort installation/update process if the distribution is not up-to-date
     Changed: All PHP versions are now always installed
     Changed: Default selected PHP version for customers is now 7.3
     Changed: Required PHP version for the frontEnd is now 7.3

@@ -89,11 +89,37 @@ sub preinstall
         $rs ||= $self->_updatePackagesIndex();
         return $rs if $rs;
 
+        # Make sure that the distribution is up-to-date, else inform the user
+        # and abort.
+        $rs = execute(
+            "/usr/bin/apt-get --simulate --assume-yes dist-upgrade | grep '^[[:digit:]]\\+ upgraded'",
+            \my $stdout,
+            \my $stderr
+        );
+        debug( $stdout ) if length $stdout;
+        error( $stderr || 'Unknown error' ) if $rs;
+        return $rs if $rs;
+
+        if ( length $stdout ) {
+            if ( iMSCP::ProgramFinder::find( 'dialog' ) ) {
+                iMSCP::Dialog->getInstance()->error( <<"EOF" );
+\\Zb\\Z1The distribution is not up-to-date\\Zn
+                
+There are distribution packages available for update.
+
+Please update your distribution before running the i-MSCP installer.
+EOF
+            } else {
+                print output( 'Distribution is not up-to date. You need first update it.', 'error' );
+            }
+
+            exit 1;
+        }
+
         local @ENV{qw/ UCF_FORCE_CONFFNEW UCF_FORCE_CONFFMISS /} = (
             TRUE, TRUE
         );
 
-        my $stdout;
         $rs = execute(
             [
                 ( !iMSCP::Getopt->noprompt && iMSCP::ProgramFinder::find(
@@ -111,7 +137,7 @@ sub preinstall
             ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose
                 ? \$stdout : undef
             ),
-            \my $stderr
+            \$stderr
         );
         error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
@@ -195,7 +221,7 @@ EOF
 sub install
 {
     my ( $self ) = @_;
-    
+
     require "$FindBin::Bin/engine/setup/imscp-setup-functions.pl";
 
     # Not really the right place to do that job but we have not really choice
