@@ -1137,11 +1137,14 @@ sub _dialogForCpHostname
 {
     my ( undef, $dialog ) = @_;
 
-    my $value = ::setupGetQuestion( 'BASE_SERVER_VHOST' );
+    my $value = ::setupGetQuestion( 'BASE_SERVER_VHOST', iMSCP::Getopt->preseed
+        ? 'panel.' . ::setupGetQuestion( 'SERVER_HOSTNAME' ) : ''
+    );
 
     if ( !grep ( $::reconfigure eq $_, qw/ panel panel_hostname hostnames all / )
         && isValidDomain( $value )
     ) {
+        ::setupSetQuestion( 'BASE_SERVER_VHOST', $value );
         return 20;
     }
 

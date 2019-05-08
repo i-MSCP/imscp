@@ -93,11 +93,14 @@ sub dialogForServerHostname
 {
     my ( undef, $dialog ) = @_;
 
-    my $value = ::setupGetQuestion( 'SERVER_HOSTNAME' );
+    my $value = ::setupGetQuestion( 'SERVER_HOSTNAME', iMSCP::Getopt->preseed
+        ? ( `hostname --fqdn 2>/dev/null` || '' ) =~ s/\n+$//r : '' 
+    );
 
     if ( !grep ( $::reconfigure eq $_, qw/ local_server system_hostname hostnames all /)
         && isValidHostname( $value )
     ) {
+        ::setupSetQuestion( 'SERVER_HOSTNAME', $value );
         return 20;
     }
 
@@ -221,7 +224,7 @@ sub dialogForBaseServerPublicIP
         my ( $ret, $msg ) = ( 0, '' );
         do {
             ( $ret, $value ) = $dialog->string( <<"EOF", $value );
-${msg}The IP address that you have selected is inside private IP range.
+${msg}The selected IP address is inside the private IP range.
 
 Please enter your public IP address (WAN IP), or leave blank to force usage of the private IP address if your server is behind a NAT router.
 
@@ -320,12 +323,15 @@ sub preinstall
         # Don't catch any error here to avoid permission denied error on some
         # vps due to restrictions set by provider
         $rs = execute(
-            "$::imscpConfig{'CMD_SYSCTL'} -p $::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf",
+            [
+                $::imscpConfig{'CMD_SYSCTL'},
+                '-p', "$::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf"
+            ],
             \my $stdout,
             \my $stderr
         );
-        debug( $stdout ) if $stdout;
-        debug( $stderr ) if $stderr;
+        debug( $stdout ) if length $stdout;
+        debug( $stderr ) if length $stderr;
     }
 
     $self->{'events'}->trigger( 'afterSetupKernel' );
@@ -441,7 +447,7 @@ EOF
     return $rs if $rs;
 
     $rs = execute( 'hostname -F /etc/hostname', \my $stdout, \my $stderr );
-    debug( $stdout ) if $stdout;
+    debug( $stdout ) if length $stdout;
     error( $stderr || "Couldn't set server hostname" ) if $rs;
     $rs ||= $self->{'events'}->trigger( 'afterSetupServerHostname' );
 }
@@ -465,8 +471,7 @@ sub _setupPrimaryIP
     local $@;
     eval {
         my $netCard = ( $primaryIP eq '0.0.0.0' )
-            ? 'any'
-            : iMSCP::Net->getInstance()->getAddrDevice( $primaryIP
+            ? 'any' : iMSCP::Net->getInstance()->getAddrDevice( $primaryIP
         );
         defined $netCard or die( sprintf(
             "Couldn't find network card for the '%s' IP address", $primaryIP
@@ -486,7 +491,13 @@ sub _setupPrimaryIP
             $netCard,
             $primaryIP
         ) : $dbh->do(
-            'INSERT INTO server_ips (ip_number, ip_card, ip_config_mode, ip_status) VALUES(?, ?, ?, ?)',
+            '
+                INSERT INTO server_ips (
+                    ip_number, ip_card, ip_config_mode, ip_status
+                ) VALUES(
+                    ?, ?, ?, ?
+                )
+            ',
             undef,
             $primaryIP,
             $netCard,

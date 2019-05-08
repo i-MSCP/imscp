@@ -147,15 +147,20 @@ sub _dialogForMasterSqlUser
     }
 
     # If user didn't asked for reconfiguration, and if the currently set data
-    # make us able to connect, we skip dialog.
+    # make us able to connect or if we are in preseed mode, we skip dialog.
     if ( !grep ( $::reconfigure eq $_, qw/ sql server all / )
         && isNotEmpty( $dbHost )
         && isNotEmpty( $dbPort )
         && isNotEmpty( $dbUser )
         && isStringNotInList( $dbUser, qw/ debian-sys-maint mysql.user root / )
         && isNotEmpty( $dbPasswd )
-        && !$self->_tryDbConnect( $dbHost, $dbPort, $dbUser, $dbPasswd )
+        && ( iMSCP::Getopt->preseed
+            || !$self->_tryDbConnect( $dbHost, $dbPort, $dbUser, $dbPasswd )
+        )
     ) {
+        ::setupSetQuestion( 'DATABASE_PASSWORD', encryptRijndaelCBC(
+            $::imscpDBKey, $::imscpDBiv, $dbPasswd
+        ));
         return 20;
     }
 
@@ -168,9 +173,9 @@ sub _dialogForMasterSqlUser
     my $msg = '';
     do {
         ( $ret, $dbUser ) = $dialog->string( <<"EOF", $dbUser );
-${$msg}Please enter a username for the master i-MSCP SQL user:
+${msg}Please enter a username for the master i-MSCP SQL user:
 EOF
-        if( $ret != 30 ) {
+        if ( $ret != 30 ) {
             $dbUser =~ s/^\s+|\s+$//g;
 
             if ( !isValidUsername( $dbUser )
@@ -189,9 +194,9 @@ EOF
     do {
         ( $ret, $dbPasswd ) = $dialog->string(
             <<"EOF", $dbPasswd || randomStr( 16, iMSCP::Crypt::ALNUM ));
-${$msg}Please enter a password for the master i-MSCP SQL user:
+${msg}Please enter a password for the master i-MSCP SQL user:
 EOF
-        if( $ret != 30 ) {
+        if ( $ret != 30 ) {
             $dbPasswd =~ s/^\s+|\s+$//g;
             $msg = isValidPassword( $dbPasswd ) ? '' : $LAST_VALIDATION_ERROR;
         }
@@ -244,7 +249,7 @@ sub _dialogForSqlUserHost
             <<"EOF", idn_to_unicode( $value, 'utf-8' ));
 ${msg}Please enter the hostname from which SQL users created by i-MSCP can connect to the SQL server:
 EOF
-        if( $ret != 30 ) {
+        if ( $ret != 30 ) {
             $value =~ s/^\s+|\s+$//g;
             $msg = isValidSqlUserHostname( $value )
                 ? '' : $LAST_VALIDATION_ERROR;
@@ -285,7 +290,7 @@ sub _dialogForDatabaseName
         ( $ret, $value ) = $dialog->string( <<"EOF", $value );
 ${msg}Please enter a database name for i-MSCP:
 EOF
-        if( $ret != 30 ) {
+        if ( $ret != 30 ) {
             $value =~ s/^\s+|\s+$//g;
 
             if ( !isValidDbName( $value ) ) {
@@ -415,7 +420,7 @@ sub _dialogForSqlRootUser
         ( $ret, $dbHost ) = $dialog->string( <<"EOF", $dbHost );
 ${msg}Please enter your SQL server hostname:
 EOF
-        if( $ret != 30 ) {
+        if ( $ret != 30 ) {
             $dbHost =~ s/^\s+|\s+$//g;
 
             if ( $isRemoteSqlSrv &&
@@ -439,7 +444,7 @@ EOF
         ( $ret, $dbPort ) = $dialog->string( <<"EOF", $dbPort );
 ${msg}Please enter your SQL server port:
 EOF
-        if( $ret != 30 ) {
+        if ( $ret != 30 ) {
             $dbPort =~ s/^\s+|\s+$//g;
 
             if ( !isNumber( $dbPort )
@@ -462,7 +467,7 @@ This user must have full privileges on the SQL server.
 
 The installer only make use of that user while installation.
 EOF
-        if( $ret != 30 ) {
+        if ( $ret != 30 ) {
             $dbUser =~ s/^\s+|\s+$//g;
             $msg = isNotEmpty( $dbUser ) ? '' : $LAST_VALIDATION_ERROR;
         }
@@ -473,7 +478,7 @@ EOF
         ( $ret, $dbPasswd ) = $dialog->password( <<"EOF" );
 ${msg}Please enter your SQL root user password:
 EOF
-        if( $ret != 30 ) {
+        if ( $ret != 30 ) {
             $dbPasswd =~ s/^\s+|\s+$//g;
             $msg = isNotEmpty( $dbPasswd ) ? '' : $LAST_VALIDATION_ERROR;
         }
@@ -632,17 +637,15 @@ max_connections = 500
 max_allowed_packet = 500M
 EOF
 
-    ( my $user = ::setupGetQuestion( 'DATABASE_USER' ) ) =~ s/"/\\"/g;
-    ( my $pwd = decryptRijndaelCBC(
-        $::imscpDBKey,
-        $::imscpDBiv,
+    ( my $dbUser = ::setupGetQuestion( 'DATABASE_USER' ) ) =~ s/"/\\"/g;
+    ( my $dbPasswd = decryptRijndaelCBC( $::imscpDBKey, $::imscpDBiv,
         ::setupGetQuestion( 'DATABASE_PASSWORD' )
     ) ) =~ s/"/\\"/g;
     my $variables = {
         DATABASE_HOST     => ::setupGetQuestion( 'DATABASE_HOST' ),
         DATABASE_PORT     => ::setupGetQuestion( 'DATABASE_PORT' ),
-        DATABASE_USER     => $user,
-        DATABASE_PASSWORD => $pwd,
+        DATABASE_USER     => $dbUser,
+        DATABASE_PASSWORD => $dbPasswd,
         SQLD_SOCK_DIR     => $self->{'config'}->{'SQLD_SOCK_DIR'}
     };
 
@@ -706,7 +709,7 @@ sub _updateServerConfig
     ) {
         my $rs = execute(
             '/usr/bin/dpkg -l mysql-community* percona-server-* | '
-                ."cut -d' ' -f1 | grep -q 'ii'",
+                . "cut -d' ' -f1 | grep -q 'ii'",
             \my $stdout,
             \my $stderr
         );
@@ -720,7 +723,7 @@ sub _updateServerConfig
             # errors as the command is designed to be idempotent.
             $rs = execute(
                 '/usr/bin/mysql_upgrade 2>&1 | '
-                    ." egrep -v '^(1|\@had|ERROR (1054|1060|1061))'",
+                    . " egrep -v '^(1|\@had|ERROR (1054|1060|1061))'",
                 \$stdout
             );
             error( sprintf(
@@ -773,25 +776,26 @@ sub _setupMasterSqlUser
 {
     my ( $self ) = @_;
 
-    my $user = ::setupGetQuestion( 'DATABASE_USER' );
-    my $userHost = ::setupGetQuestion( 'DATABASE_USER_HOST' );
-    my $oldUserHost = $::imscpOldConfig{'DATABASE_USER_HOST'};
-    my $pwd = decryptRijndaelCBC(
+    my $dbUser = ::setupGetQuestion( 'DATABASE_USER' );
+    my $dbUserHost = ::setupGetQuestion( 'DATABASE_USER_HOST' );
+    my $oldDbUserHost = $::imscpOldConfig{'DATABASE_USER_HOST'};
+    my $dbPasswd = decryptRijndaelCBC(
         $::imscpDBKey, $::imscpDBiv, ::setupGetQuestion( 'DATABASE_PASSWORD' )
     );
-    my $oldUser = $::imscpOldConfig{'DATABASE_USER'};
+    my $oldDbUser = $::imscpOldConfig{'DATABASE_USER'};
 
     # Remove old user if any
-    for my $sqlUser ( $oldUser, $user ) {
-        next unless length $sqlUser;
-        for my $host ( $userHost, $oldUserHost ) {
+    for my $user ( $oldDbUser, $dbUser ) {
+        next unless length $user;
+
+        for my $host ( $dbUserHost, $oldDbUserHost ) {
             next unless length $host;
-            $self->{'sqld'}->dropUser( $sqlUser, $host );
+            $self->{'sqld'}->dropUser( $user, $host );
         }
     }
 
     # Create user
-    $self->{'sqld'}->createUser( $user, $userHost, $pwd );
+    $self->{'sqld'}->createUser( $dbUser, $dbUserHost, $dbPasswd );
 
     # Grant all privileges to that user (including GRANT option)
     local $@;
@@ -800,8 +804,8 @@ sub _setupMasterSqlUser
         $dbh->do(
             'GRANT ALL PRIVILEGES ON *.* TO ?@? WITH GRANT OPTION',
             undef,
-            $user,
-            $userHost
+            $dbUser,
+            $dbUserHost
         );
     };
     if ( $@ ) {
@@ -977,7 +981,7 @@ sub _isInsideContainer
     debug( $stdout ) if length $stdout;
     debug( $stderr ) if $rs && length $stderr;
 
-    return $stdout =~ /envID:\s+(\d+)/ && $1 > 0 ? TRUE :FALSE;
+    return $stdout =~ /envID:\s+(\d+)/ && $1 > 0 ? TRUE : FALSE;
 }
 
 =item _setupIsImscpDb( $dbName )

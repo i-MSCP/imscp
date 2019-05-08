@@ -944,7 +944,7 @@ sub _getPackagesDialog
 
         # Whether or not user must be asked for alternative
         my $needDialog = !length $sAlt || grep (
-            $_ eq $::reconfigure, ( $section, 'servers', 'all' )
+            $_ eq $::reconfigure, $section, 'servers', 'all'
         );
 
         # If a dialog is needed, prepare it, unless there is only one
@@ -953,21 +953,36 @@ sub _getPackagesDialog
             my %choices;
             for my $alt ( @alts ) {
                 $choices{$alt} = $data->{$alt}->{'description'} || $alt;
+
                 # If not alternative is set, and if current is marked as the
                 # default one in the packages file, set is as default selected
-                # alternative
+                # alternative 
                 if ( !length $sAlt && $data->{$alt}->{'default'} ) {
-                    $sAlt = $data->{$alt}->{'default'};
-                    $needDialog = TRUE;
+                    $sAlt = $alt;
+
+                    # In preseed mode, and if no alternative has been set in
+                    # the preseed file, we automatically select the default, as
+                    # set in the distribution packages file without asking user.
+                    # This affect only fresh installations.nano
+                    $needDialog = !iMSCP::Getopt->preseed;
                 }
             }
 
             @{main::imscpConfig}{
-                uc $section . '_SERVER', uc $section . '_PACKAGE'
-            } = ( $sAlt, $data->{$sAlt}->{'class'} || $sAlt );
+                uc( $section ) . '_SERVER', uc( $section ) . '_PACKAGE'
+            } = (
+                $sAlt,
+                $data->{$sAlt}->{'class'} // $sAlt
+            );
+            @{main::questions}{
+                uc( $section ) . '_SERVER', uc( $section ) . '_PACKAGE'
+            } = (
+                $::imscpConfig{uc( $section ) . '_SERVER'},
+                $::imscpConfig{uc( $section ) . '_PACKAGE'}
+            );
 
             # No need for dialog if there is only one alternative
-            next unless keys %{choices} > 1;
+            next unless $needDialog && keys %{choices} > 1;
 
             push @dialogStack, sub {
                 my ( $ret, $value ) = $_[0]->select(
@@ -977,14 +992,23 @@ EOF
                 return 30 if $ret == 30;
 
                 @{main::imscpConfig}{
-                    uc $section . '_SERVER', uc $section . '_PACKAGE'
-                } = ( $value, $data->{$value}->{'class'} || $value );
+                    uc( $section ) . '_SERVER', uc( $section ) . '_PACKAGE'
+                } = (
+                    $value,
+                    $data->{$value}->{'class'} // $value
+                );
+                @{main::questions}{
+                    uc( $section ) . '_SERVER', uc( $section ) . '_PACKAGE'
+                } = (
+                    $::imscpConfig{uc( $section ) . '_SERVER'},
+                    $::imscpConfig{uc( $section ) . '_PACKAGE'}
+                );
                 0;
             };
         }
     }
 
-    return() unless @dialogStack;
+    return @dialogStack unless @dialogStack;
 
     push @dialogStack, sub {
         # Override default button labels
@@ -1241,9 +1265,12 @@ sub _processPackagesFile
             exists $availablePackages{$_}, @{ $packages }
         );
     }
+    
+    #use Data::Dumper;
+    #print Dumper($self->{'_dist'});
+    #exit;
 
     iMSCP::Dialog->getInstance()->endGauge();
-
     0;
 }
 

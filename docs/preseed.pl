@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2019.05.04
+# Last update: 2019.05.08
 
 %::questions = (
     #
@@ -14,13 +14,15 @@
 
     # Server hostname
     #
-    # Possible values: A fully qualified hostname name
+    # Possible values: A fully qualified hostname name (FQHN)
+    #
+    # Leave this parameter empty for use of the configured server hostname.
     SERVER_HOSTNAME                     => '',
 
     # Server primary IP
     #
-    # Note: If you make use of a  Cloud computing service such as Scaleway or
-    # Amazon EC2, you should set the value to 0.0.0.0. Setting the value to
+    # Note: If you make use of a Cloud computing service such as Scaleway or
+    # Amazon EC2, you should set the value to '0.0.0.0'. Setting the value to
     # '0.0.0.0' means that i-MSCP will configures the services to listen on all
     # interfaces rather than a specific interface.
     #
@@ -29,19 +31,20 @@
 
     # WAN IP
     #
-    # You can force usage of a private IP by putting BASE_SERVER_IP value
-    # instead of a public IP. You can also leave this parameter empty for
-    # automatic detection of the public IP using a remote public IP API.
+    # You can force usage of a private IP by setting this parameter to the
+    # value of the 'BASE_SERVER_IP' parameter instead of a public IP. You
+    # can also leave this parameter empty for automatic detection of the
+    # public (WAN) IP.
     #
-    # If you have set the BASE_SERVER_IP value to '0.0.0.0', you should leave
-    # this parameter empty.
+    # If you have set the 'BASE_SERVER_IP' parameter value to '0.0.0.0', you
+    # should leave this parameter empty.
     #
     # Possible values: an Ipv4 or IPv6 address
     BASE_SERVER_PUBLIC_IP               => '',
 
     # Server timezone
     #
-    # Possible values: A valid timezone such as Europe/Paris
+    # Possible values: A valid timezone such as 'Europe/Berlin'
     # (see http://php.net/manual/en/timezones.php)
     #
     # Leave this parameter empty for automatic timezone detection.
@@ -51,12 +54,17 @@
     ## Backup configuration parameters
     #
 
-    # i-MSCP backup feature (database and configuration files)
+    # Enable/Disable backup feature for the control panel database and
+    # configuration files
     #
     # Possible values: yes, no
     BACKUP_IMSCP                        => 'yes',
 
-    # Enable backup feature for customers
+    # Enable/Disable the backup feature for client data (Web data, SQL data,
+    # and mail data)
+    #
+    # Enabling this feature will make the resellers able to enable/disable the
+    # backup feature on a per client basis.
     #
     # Possible values: yes, no
     BACKUP_DOMAINS                      => 'yes',
@@ -67,16 +75,14 @@
 
     # SQL server implementation
     #
-    # Available SQL server vendors and versions depend on your distribution.
+    # Available SQL server vendors/versions depend on your distribution.
     # Please consult the autoinstaller/Packages/<distro>-<codename>.xml file.
+    # Accepted values are the XML node names that describe SQL servers. For
+    # instance: 'mysql_5.7', 'mariadb_10.1', 'mariadb_10.2' ...
+    #
+    # Leave this parameter empty to automatically select the default SQL server
+    # implementation, as set in the distribution packages file.
     SQL_SERVER                          => '',
-
-    # Database name
-    DATABASE_NAME                       => 'imscp',
-
-    #
-    ## SQL server configuration
-    #
 
     # Database hostname
     #
@@ -137,7 +143,10 @@
     # See https://dev.mysql.com/doc/refman/5.7/en/account-names.html
     DATABASE_USER_HOST                  => 'localhost',
 
-    # Enable or disable prefix/suffix for customer SQL database names
+    # Database name (database for the control panel)
+    DATABASE_NAME                       => 'imscp',
+
+    # Enable/disable prefix/suffix for SQL databases and users names
     #
     # Possible values: behind, infront, none
     MYSQL_PREFIX                        => 'none',
@@ -148,9 +157,13 @@
 
     # Control panel hostname
     #
-    # Hostname from which the control panel will be reachable.
-    
-    # Possible values: A fully qualified hostname name
+    # Hostname from which the control panel must be reachable.
+    #
+    # Possible values: A fully qualified hostname name (FQHN)
+    #
+    #
+    # Leave this parameter empty for use of default value:
+    #    panel.<SERVER_HOSTNAME>
     BASE_SERVER_VHOST                   => '',
 
     # Control panel http port
@@ -159,12 +172,12 @@
     BASE_SERVER_VHOST_HTTP_PORT         => '8880',
 
     # Control panel https port (only relevant if SSL is enabled for the control
-    # panel (see below))
+    # panel)
     #
     # Possible values: A port in range 1025-65535
     BASE_SERVER_VHOST_HTTPS_PORT        => '8443',
 
-    # Enable or disable SSL for the control panel
+    # Enable/disable SSL for the control panel
     #
     # Possible values: yes, no
     PANEL_SSL_ENABLED                   => 'yes',
@@ -175,33 +188,48 @@
     # Possible values: yes, no
     PANEL_SSL_SELFSIGNED_CERTIFICATE    => 'yes',
 
-    # Path for the control panel SSL certificate private key (only relevant for
-    # trusted SSL certificate)
+    # Control panel SSL certificate private key (only relevant for a trusted
+    # SSL certificate)
+    #
+    # Possible value: SSL certificate private key path
     PANEL_SSL_PRIVATE_KEY_PATH          => '',
 
     # Passphrase for the control panel SSL certificate private key (only if the
     # private key is encrypted)
+    #
+    # Possible value: Passphrase for the SSL certificate private key
     PANEL_SSL_PRIVATE_KEY_PASSPHRASE    => '',
 
-    # Path for the control panel SSL CA bundle (only relevant for trusted SSL
+    # Control panel SSL certificate CA bundle (only relevant for a trusted SSL
     # certificate)
+    #
+    # Possible value: SSL certificate CA bundle path
     PANEL_SSL_CA_BUNDLE_PATH            => '',
 
-    # Path for the control panel SSL certificate path (only relevant for
-    # trusted SSL certificate)
+    # Control panel SSL certificate (only relevant for a trusted SSL
+    # certificate)
+    #
+    # Possible value: SSL certificate path
     PANEL_SSL_CERTIFICATE_PATH          => '',
 
-    # Alternative URLs feature for client websites
+    # Alternative URLs feature for the client websites
+    #
+    # When this feature is enabled, clients can access their Websites through
+    # an alternative URL which is a subdomain from the control panel domain.
+    #
+    # If you make use of an external DNS server, you must not forgot to add a
+    # wildcard DNS in the control panel domain zone such as *.<cp_domain>.tld.
     #
     # Possible values: yes, no
     CLIENT_WEBSITES_ALT_URLS            => 'yes',
 
-    # Control panel HTTP access mode (only relevant if SSL is enabled)
+    # Control panel access mode (only relevant if SSL is enabled for the control
+    # panel)
     #
     # Possible values: http://, https://
     BASE_SERVER_VHOST_PREFIX            => 'http://',
 
-    # Master administrator login
+    # Master administrator account credentials
     ADMIN_LOGIN_NAME                    => 'admin',
     # Only ASCII alphabet characters and numbers are allowed in password.
     ADMIN_PASSWORD                      => '',
@@ -221,46 +249,57 @@
     # DNS server implementation
     #
     # Possible values: bind, external_server
-    NAMED_SERVER                        => 'bind',
-
-    # DNS server mode
     #
-    # Only relevant with the 'bind' server implementation
+    # Leave this parameter empty to automatically select the default DNS
+    # server implementation, as set in the distribution packages file.
+    NAMED_SERVER                        => '',
+
+    #
+    # Bind server implementation configuration parameters
+    #
+    
+    # DNS server mode
     #
     # Possible values: master, slave
     BIND_MODE                           => 'master',
 
-    # Allow to specify IP addresses of your primary DNS servers (Only relevant
-    # if you set BIND_MODE to 'slave'
+    # Master DNS IP addresses (Only relevant when the value of the 'BIND_MODE'
+    # parameter is set to 'master')
     #
-    # Possible value: 'no' or a list of IPv4/IPv6 addresses, each separated by
+    # Possible value: 'no', or a list of IPv4/IPv6 addresses, each separated by
     # semicolon or space
     PRIMARY_DNS                         => 'no',
 
-    # Slave DNS server IP addresses (Only relevant with slave mode)
+    # Slave DNS IP addresses (Only relevant when the value of the 'BIND_MODE'
+    # parameter is set to 'slave')
     #
-    # Possible value: 'no' or a list of IPv4/IPv6 addresses, each separated by
+    # Possible value: 'no', or a list of IPv4/IPv6 addresses, each separated by
     # semicolon or space
     SECONDARY_DNS                       => 'no',
 
-    # IPv6 support (Only relevant with 'bind' server implementation)
+    # IPv6 support
     #
     # Possible values: yes, no
     BIND_IPV6                           => 'no',
 
-    # Local DNS resolver (only relevant with 'bind' server implementation)
+    # Local DNS resolver
+    #
+    # Make use of the local DNS server (bind9) for the local DNS resolution.
     #
     # Possible values: yes, no
     LOCAL_DNS_RESOLVER                  => 'yes',
 
     #
-    ## Web server configuration parameters
+    ## Httpd server configuration parameters
     #
 
-    # Web server implementation
+    # Httpd server implementation
     #
-    # Possible values: apache_itk, apache_fcgid, apache_php_fpm
-    HTTPD_SERVER                        => 'apache_php_fpm',
+    # Possible values: apache_itk, apache_fcgid or apache_php_fpm (recommended)
+    #
+    # Leave this parameter empty to automatically select the default httpd
+    # server implementation, as set in the distribution packages file.
+    HTTPD_SERVER                        => '',
 
     #
     ## PHP configuration parameters
@@ -268,21 +307,24 @@
 
     # PHP version for customers
     #
-    # Possible values: php5.6, php7.0, php7.1, php7.2, php7.3
-    PHP_SERVER                          => 'php7.3',
+    # Possible values: php5.6, php7.0, php7.1, php7.2, or php7.3 (recommended)
+    #
+    # Leave this parameter empty to automatically select the default PHP
+    # version, as set in the distribution packages file.
+    PHP_SERVER                          => '',
 
     # PHP configuration level
     #
-    # If you make use of the i-MSCP PhpSwitcher plugin, you need set
-    # the value to 'per_site'.
+    # If you make use of the PhpSwitcher plugin, you need set the value to
+    # 'per_site'.
     #
     # Possible values: per_user, per_domain, per_site
     PHP_CONFIG_LEVEL                    => 'per_site',
 
-    # PHP-FPM listen socket type (Only relevant with 'apache_php_fpm' sever
-    # implementation)
+    # PHP-FPM listen socket type (Only relevant with the 'apache_php_fpm'
+    # server implementation)
     #
-    # Possible values: uds, tcp
+    # Possible values: uds (recommended), tcp
     PHP_FPM_LISTEN_MODE                 => 'uds',
 
     #
@@ -292,7 +334,10 @@
     # FTPd server implementation
     #
     # Possible values: proftpd, vsftpd
-    FTPD_SERVER                         => 'proftpd',
+    #
+    # Leave this parameter empty to automatically select the default FTP server
+    # implementation, as set in the distribution packages file.
+    FTPD_SERVER                         => '',
 
     # Passive port range
     #
@@ -309,7 +354,10 @@
     # MTA server implementation
     #
     # Possible values: postfix
-    MTA_SERVER                          => 'postfix',
+    #
+    # Leave this parameter empty to automatically select the default MTA server
+    # implementation, as set in the distribution packages file.
+    MTA_SERVER                          => '',
 
     #
     ## IMAP, POP server configuration parameters
@@ -318,44 +366,45 @@
     # POP/IMAP servers implementation
     #
     # Possible values: courier, dovecot
-    PO_SERVER                           => 'dovecot',
+    # Leave this parameter empty to automatically select the default IMAP/POP
+    # server implementation, as set in the distribution packages file.
+    PO_SERVER                           => '',
 
     #
     ## SSL configuration for FTP, IMAP/POP and SMTP services
     #
 
-    # Enable or disable SSL for various services (FTP, IMAP/POP, SMTP)
+    # Enable/disable SSL for various services (FTP, IMAP/POP, SMTP)
     #
     # Possible values: yes, no
     SERVICES_SSL_ENABLED                => 'yes',
 
-    # Whether or not a self-signed SSL certificate must be generated (Only
-    # relevant if SSL is enabled for the services)
+    # Whether or not a self-signed SSL certificate must be generated
     #
     # Possible values: yes, no
     SERVICES_SSL_SELFSIGNED_CERTIFICATE => 'yes',
 
-    # Path for the services SSL private key (only relevant for trusted SSL
+    # Services SSL certificate private key (only relevant for a trusted SSL
     # certificate)
     #
-    # Possible values: Path to SSL private key
+    # Possible values: SSL certificate private key path
     SERVICES_SSL_PRIVATE_KEY_PATH       => '',
 
-    # Passphrase for the services SSL private key (only if the private key is
-    # encrypted)
+    # Passphrase for the services SSL certificate private key (only relevant if
+    # the private key is encrypted)
     #
-    # Possible values: SSL private key passphrase
+    # Possible values: passphrase for the SSL certificate private key
     SERVICES_SSL_PRIVATE_KEY_PASSPHRASE => '',
 
-    # Path to services SSL CA Bundle (only relevant for trusted SSL certificate)
-    #
-    # Possible values: Path to the SSL CA Bundle
-    SERVICES_SSL_CA_BUNDLE_PATH         => '',
-
-    # Path for the services SSL certificate (only relevant for trusted SSL
+    # Services SSL certificate CA Bundle (only relevant for a trusted SSL
     # certificate)
     #
-    # Possible values: Path to SSL certificate
+    # Possible values: SSL certificate CA bundle path
+    SERVICES_SSL_CA_BUNDLE_PATH         => '',
+
+    # Services SSL certificate (only relevant for trusted SSL certificate)
+    #
+    # Possible values: SSL certificate path
     SERVICES_SSL_CERTIFICATE_PATH       => '',
 
     #
@@ -364,35 +413,31 @@
 
     # Web statistic packages
     #
-    # Possible values: 'No' or a list of packages, each comma separated.
-    #
+    # Possible values: 'No', or a list of packages, each comma separated.
     # Available packages are: AWStats
-    # Warning: Package names are case-sensitive
     WEB_STATISTIC_PACKAGES              => 'AWStats',
 
     # Web FTP clients
     #
-    # Possible values: 'No' or a list of packages, each comma separated.
-    #
+    # Possible values: 'No', or a list of packages, each comma separated.
     # Available packages are: MonstaFTP
     WEB_FTP_CLIENT_PACKAGES             => 'MonstaFTP',
 
     # SQL administrator tool packages
     #
-    # Possible values: 'No' or a list of packages, each comma separated.
-    #
+    # Possible values: 'No', or a list of packages, each comma separated.
     # Available packages are: PhpMyAdmin
     SQL_ADMIN_TOOL_PACKAGES             => 'PhpMyAdmin',
 
     # Webmail client packages
-    # Possible values: 'No' or a list of packages, each comma separated.
     #
+    # Possible values: 'No', or a list of packages, each comma separated.
     # Available packages are: RainLoop, Roundcube
     WEB_MAIL_CLIENT_PACKAGES            => 'RainLoop,Roundcube',
 
     # Antirootkits packages
-    # Possible values: 'No' or a list of packages, each comma separated.
     #
+    # Possible values: 'No', or a list of packages, each comma separated.
     # Available packages are: Chkrootkit, Rkhunter
     ANTI_ROOTKIT_PACKAGES               => 'Chkrootkit,Rkhunter'
 );
