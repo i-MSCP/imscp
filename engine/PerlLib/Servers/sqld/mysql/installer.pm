@@ -155,8 +155,8 @@ sub _dialogForMasterSqlUser
         && isStringNotInList( $dbUser, qw/ debian-sys-maint mysql.user root / )
         && isNotEmpty( $dbPasswd )
         && ( iMSCP::Getopt->preseed
-            || !$self->_tryDbConnect( $dbHost, $dbPort, $dbUser, $dbPasswd )
-        )
+        || !$self->_tryDbConnect( $dbHost, $dbPort, $dbUser, $dbPasswd )
+    )
     ) {
         ::setupSetQuestion( 'DATABASE_PASSWORD', encryptRijndaelCBC(
             $::imscpDBKey, $::imscpDBiv, $dbPasswd
@@ -278,14 +278,24 @@ sub _dialogForDatabaseName
 
     my $value = ::setupGetQuestion( 'DATABASE_NAME', 'imscp' );
 
-    if ( ( iMSCP::Getopt->preseed && $self->_setupIsImscpDb( $value ) )
-        || ( !grep ( $::reconfigure eq $_, qw/ sql servers all /)
-        && $self->_setupIsImscpDb( $value )
-    ) ) {
+    if ( !grep ( $::reconfigure eq $_, qw/ sql servers all /)
+        && isValidDbName( $value )
+        && (
+            ( iMSCP::Getopt->preseed
+                && ( !$self->_setupIsDatabase( $value ) || $self->_setupIsImscpDb( $value ) )
+            )
+            || $self->_setupIsImscpDb( $value )
+        )
+    ) {
         return 20;
     }
 
     my ( $ret, $msg ) = ( 0, '' );
+
+    if ( iMSCP::Getopt->preseed ) {
+        $msg = "\\Z1Database '$value' exists but doesn't looks like an i-MSCP database.\\Zn\n\n"
+    }
+
     do {
         ( $ret, $value ) = $dialog->string( <<"EOF", $value );
 ${msg}Please enter a database name for i-MSCP:
@@ -295,12 +305,10 @@ EOF
 
             if ( !isValidDbName( $value ) ) {
                 $msg = $LAST_VALIDATION_ERROR;
+            } elsif ( $self->_setupIsImscpDb( $value ) ) {
+                $msg = "\\Z1Database '$value' exists but doesn't looks like an i-MSCP database.\\Zn\n\n"
             } else {
-                local $@;
-                eval { iMSCP::Database->factory()->useDatabase( $value ); };
-                $msg = !$@ && !$self->_setupIsImscpDb( $value )
-                    ? "\\Z1Database '$value' exists but doesn't looks like an i-MSCP database.\\Zn\n\n"
-                    : '';
+                $msg = '';
             }
         }
     } while $ret != 30 && length $msg;
@@ -984,6 +992,30 @@ sub _isInsideContainer
     return $stdout =~ /envID:\s+(\d+)/ && $1 > 0 ? TRUE : FALSE;
 }
 
+=item _setupIsDatabase( $dbName )
+
+ Is the given database an existent database?
+
+ Param string $dbName Database name
+ Return bool TRUE if database exists, FALSE otherwise, die on failure
+=cut
+
+sub _setupIsDatabase
+{
+    my ( undef, $dbName ) = @_;
+
+    ref \$dbName eq 'SCALAR' && length $dbName or die(
+        '$dbName parameter is missing or invalid'
+    );
+
+    return FALSE unless iMSCP::Database
+        ->factory()
+        ->getRawDb()
+        ->selectrow_hashref( 'SHOW DATABASES LIKE ?', undef, $dbName );
+
+    TRUE;
+}
+
 =item _setupIsImscpDb( $dbName )
 
  Is the given database an i-MSCP database?
@@ -995,20 +1027,15 @@ sub _isInsideContainer
 
 sub _setupIsImscpDb
 {
-    my ( undef, $dbName ) = @_;
+    my ( $self, $dbName ) = @_;
 
     ref \$dbName eq 'SCALAR' && length $dbName or die(
         '$dbName parameter is missing or invalid'
     );
 
-    my $db = iMSCP::Database->factory();
-    my $dbh = $db->getRawDb();
+    return FALSE unless $self->_setupIsDatabase( $dbName );
 
-    return FALSE unless $dbh->selectrow_hashref(
-        'SHOW DATABASES LIKE ?', undef, $dbName
-    );
-
-    my $tables = $db->getDbTables( $dbName );
+    my $tables = iMSCP::Database->factory()->getDbTables( $dbName );
     return FALSE unless @{ $tables };
 
     for my $table ( qw/ server_ips user_gui_props reseller_props / ) {

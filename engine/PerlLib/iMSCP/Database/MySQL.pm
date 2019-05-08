@@ -81,8 +81,8 @@ sub connect
         ( $self->{'db'}->{'DATABASE_HOST'} eq 'localhost'
             ? ()
             : ( length $self->{'db'}->{'DATABASE_PORT'}
-                ? "port=$self->{'db'}->{'DATABASE_PORT'}" : ()
-            )
+            ? "port=$self->{'db'}->{'DATABASE_PORT'}" : ()
+        )
         ),
         'mysql_init_command=SET NAMES utf8, SESSION sql_mode = '
             . "'NO_AUTO_CREATE_USER', SESSION group_concat_max_len = 65535"
@@ -112,7 +112,7 @@ sub connect
         $self->{'db'}->{'DATABASE_USER'},
         $self->{'db'}->{'DATABASE_PASSWORD'}
     );
-    
+
     0;
 }
 
@@ -141,7 +141,7 @@ sub useDatabase
         $self->connect();
         $dbh = $self->getRawDb();
     }
-    
+
     $dbh->do( 'USE ' . $self->quoteIdentifier( $dbName ));
 
     $self->{'db'}->{'DATABASE_NAME'} = $dbName;
@@ -240,12 +240,12 @@ sub doQuery
     $qrs;
 }
 
-=item getDbTables( [ $dbName ] )
+=item getDbTables( [ $dbName = $self->{'db'}->{'DATABASE_NAME'} ] )
 
- Return list of table for the current selected database
+ Return list of table for the given database
 
  Param string $dbName Database name
- Return arrayref on success, error string on failure
+ Return array on success, die on failure
 
 =cut
 
@@ -254,32 +254,29 @@ sub getDbTables
     my ( $self, $dbName ) = @_;
     $dbName //= $self->{'db'}->{'DATABASE_NAME'};
 
-    local $@;
-    my @tables = eval {
-        my $dbh = $self->getRawDb();
-        keys %{ $dbh->selectall_hashref(
-            '
-                SELECT TABLE_NAME
-                FROM INFORMATION_SCHEMA.COLUMNS
-                WHERE TABLE_SCHEMA = ?
-            ',
-            'TABLE_NAME',
-            undef,
-            $dbName
-        ) };
-    };
+    my $dbh = $self->getRawDb();
 
-    return "$@" if $@;
-    \@tables;
+    my $tables = $dbh->selectall_hashref(
+        '
+            SELECT TABLE_NAME
+            FROM INFORMATION_SCHEMA.COLUMNS
+            WHERE TABLE_SCHEMA = ?
+        ',
+        'TABLE_NAME',
+        undef,
+        $dbName
+    );
+
+    [ keys %{ $tables } ];
 }
 
-=item getTableColumns( [$tableName [, dbName ] ] )
+=item getTableColumns( [$tableName [, dbName = $self->{'db'}->{'DATABASE_NAME'} ] ] )
 
- Return list of columns for the given table
+ Return list of columns for the given table in the given database
 
  Param string $tableName Table name
  Param string $dbName Database name
- Return arrayref on success, error string on failure
+ Return arrayref on success, die on failure
 
 =cut
 
@@ -288,25 +285,20 @@ sub getTableColumns
     my ( $self, $tableName, $dbName ) = @_;
     $dbName //= $self->{'db'}->{'DATABASE_NAME'};
 
-    local $@;
-    my @columns = eval {
-        my $dbh = $self->getRawDb();
-        keys %{ $dbh->selectall_hashref(
-            '
-                SELECT COLUMN_NAME
-                FROM INFORMATION_SCHEMA.COLUMNS
-                WHERE TABLE_SCHEMA = ?
-                AND TABLE_NAME = ?
-            ',
-            'COLUMN_NAME',
-            undef,
-            $dbName,
-            $tableName
-        ) };
-    };
+    my $columns = $self->getRawDb()->selectall_hashref(
+        '
+            SELECT COLUMN_NAME
+            FROM INFORMATION_SCHEMA.COLUMNS
+            WHERE TABLE_SCHEMA = ?
+            AND TABLE_NAME = ?
+        ',
+        'COLUMN_NAME',
+        undef,
+        $dbName,
+        $tableName
+    );
 
-    return "$@" if $@;
-    \@columns;
+    [ keys %{ $columns } ];
 }
 
 =item dumpdb( $dbName, $dbDumpTargetDir )
