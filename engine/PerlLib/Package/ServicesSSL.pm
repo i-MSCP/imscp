@@ -305,6 +305,10 @@ EOF
 
     unless ( $openSSL->validateCertificateChain() ) {
         if ( iMSCP::Getopt->preseed && $selfSignedCrt ) {
+            getMessageByType( 'error', {
+                amount => 1,
+                remove => TRUE
+            } );
             return 20;
         }
 
