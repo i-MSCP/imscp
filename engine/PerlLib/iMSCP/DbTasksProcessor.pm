@@ -28,8 +28,8 @@ use warnings;
 use Encode 'encode_utf8';
 use iMSCP::Boolean;
 use iMSCP::Database;
-use iMSCP::Debug;
-use iMSCP::Execute;
+use iMSCP::Debug qw/ debug error getMessageByType newDebug endDebug /;
+use iMSCP::Execute qw/ execute escapeShell /;
 use iMSCP::Stepper;
 use JSON;
 use MIME::Base64 qw/ encode_base64 /;
@@ -542,7 +542,7 @@ sub _processModuleDbTasks
         eval "require $module" or die;
 
         my ( $nStep, $rs ) = ( 0, 0 );
-        my $needStepper = grep ( $self->{'mode'} eq $_, 'setup', 'uninstall' );
+        my $needStepper = grep ( $self->{'mode'} eq $_, 'setup', 'uninstaller' );
 
         while ( my $row = $sth->fetchrow_hashref() ) {
             my $name = encode_utf8( $row->{'name'} );

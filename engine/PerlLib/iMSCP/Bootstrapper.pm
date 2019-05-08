@@ -73,7 +73,7 @@ sub boot
     $self->loadMainConfig( $options );
 
     # Set timezone unless we are in setup or uninstall modes
-    unless ( grep ($mode eq $_, ( 'setup', 'uninstall' ) ) ) {
+    unless ( grep ($mode eq $_, ( 'setup', 'uninstaller' ) ) ) {
         $ENV{'TZ'} = $::imscpConfig{'TIMEZONE'} || 'UTC';
         tzset;
     }

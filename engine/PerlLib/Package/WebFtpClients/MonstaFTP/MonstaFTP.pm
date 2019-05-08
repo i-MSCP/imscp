@@ -179,19 +179,23 @@ sub uninstall
         return $rs if $rs;
     }
 
-    eval {
-        iMSCP::Composer->new(
-            user          => $::imscpConfig{'SYSTEM_USER_PREFIX'}
-                . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
-            composer_home => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
-            composer_json => 'composer.json'
-        )
-            ->remove( 'imscp/monsta-ftp' )
-            ->dumpComposerJson();
-    };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
+    # No need to process composer in 'uninstaller' context as the whole gui
+    # directory will be removed by the FrontEnd package.
+    if ( !defined $::execmode || $::execmode ne 'uninstaller' ) {
+        eval {
+            iMSCP::Composer->new(
+                user          => $::imscpConfig{'SYSTEM_USER_PREFIX'}
+                    . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
+                composer_home => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
+                composer_json => 'composer.json'
+            )
+                ->remove( 'imscp/monsta-ftp' )
+                ->dumpComposerJson();
+        };
+        if ( $@ ) {
+            error( $@ );
+            return 1;
+        }
     }
 
     iMSCP::File->new(

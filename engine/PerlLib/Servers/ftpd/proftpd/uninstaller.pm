@@ -119,7 +119,7 @@ sub _uninstall
 
         if ( defined $proftpdSqlUser ) {
              $proftpdSqlUser = decryptRijndaelCBC(
-                $::imscpDBKey, $::imscpDBiv, ${ $proftpdSqlUser }
+                $::imscpDBKey, $::imscpDBiv, $proftpdSqlUser
             );
 
             for my $host (

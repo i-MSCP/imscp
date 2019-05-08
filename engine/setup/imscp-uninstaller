@@ -38,7 +38,7 @@ use iMSCP::Boolean;
 use iMSCP::Bootstrapper;
 use iMSCP::Database;
 use iMSCP::DbTasksProcessor;
-use iMSCP::Debug qw/ debug error /;
+use iMSCP::Debug qw/ debug error newDebug /;
 use iMSCP::Dialog;
 use iMSCP::Dir;
 use iMSCP::File;
@@ -49,23 +49,28 @@ use iMSCP::Service;
 use iMSCP::Stepper qw/ step endDetail startDetail /;
 use iMSCP::SystemUser;
 use Servers::sqld;
-use Servers::sqld;
 
-$ENV{'LANG'} = 'C.UTF-8';
-$ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
+@{ENV}{qw/ LANG PATH /} = (
+    'C.UTF-8',
+    '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+);
 
 # Set backend mode
-$::execmode = 'uninstall' unless defined $::execmode;
+$::execmode = 'uninstaller';
 
-# Required by servers un-installers
-%::oldConfig = () unless defined %::oldConfig;
+{
+    no warnings 'once';
+    %::oldConfig = ();
+}
 
-newDebug( 'imscp-uninstall.log' );
+newDebug( 'imscp-uninstaller.log' );
 
 sub startUp
 {
     iMSCP::Getopt->debug( TRUE ); # Enforce debug mode (logs)
-    iMSCP::Bootstrapper->getInstance()->boot();
+    iMSCP::Bootstrapper->getInstance()->boot( {
+        mode => $::execmode,
+    } );
     0;
 }
 
@@ -121,15 +126,11 @@ EOF
 sub shutDown
 {
 
-    iMSCP::Dialog->getInstance()->infobox( <<'EOF' );
-
-\Z1Congratulations\Zn
+    iMSCP::Dialog->getInstance()->note( <<"EOF" );
+\\Z1Congratulations\\Zn
 
 iMSCP has been successfully uninstalled.
-
-You can find uninstallation logs at /var/log/imscp/imscp-uninstall.log
 EOF
-
     0;
 }
 
@@ -140,7 +141,7 @@ sub _userDialog
     local $dialog->{'_opts'}->{'title'} = 'Uninstaller dialog';
     # Override default button labels
     local @{ $dialog->{'_opts'} }{
-        $_[0]->{'program'} eq 'dialog'
+        $dialog->{'program'} eq 'dialog'
             ? qw/ ok-label extra-label /
             : qw/ yes-button no-button /
     } = qw/ Continue Abort /;
@@ -199,7 +200,7 @@ sub _removeCustomers
 
         startDetail();
         iMSCP::DbTasksProcessor->getInstance(
-            mode => 'uninstall'
+            mode => $::execmode
         )->processDbTasks();
         endDetail();
     };
@@ -215,19 +216,22 @@ sub _uninstallPackages
 {
     startDetail();
 
-    my @packages = iMSCP::Packages->getInstance()->getList();
-    my $nbSteps = scalar @packages;
-    my ( $step, $rs ) = ( 1, 0 );
+    my @packages = iMSCP::Packages->getInstance( )->getList( TRUE );
+
+    my ( $rs, $steps, $step ) = ( 0, scalar @packages, 1 );
 
     for my $package ( @packages ) {
-        ( my $sub = $package->can( 'uninstall' ) ) or $step++ && next;
-        $rs = step(
-            sub { $sub->( $package->getInstance()) },
-            sprintf( 'Executing %s uninstallation tasks...', $package ),
-            $nbSteps,
-            $step
-        );
-        last if $rs;
+        if ( my $sub = $package->can( 'uninstall' ) ) {
+            $rs = step(
+                sub { $sub->( $package->getInstance()) },
+                sprintf( 'Executing %s uninstallation tasks...', $package ),
+                $steps,
+                $step
+            );
+            last if $rs;
+        }
+
+        $step++;
     }
 
     endDetail();
@@ -238,19 +242,20 @@ sub _uninstallServers
 {
     startDetail();
 
-    my @servers = iMSCP::Servers->getInstance()->getList();
-    my $nbSteps = scalar @servers;
-    my ( $step, $rs ) = ( 1, 0 );
+    my @servers = iMSCP::Servers->getInstance()->getList( TRUE );
+    my ( $rs, $steps, $step ) = ( 0, scalar @servers, 1 );
 
     for my $server ( @servers ) {
-        ( my $sub = $server->can( 'uninstall' ) ) or $step++ && next;
-        $rs = step(
-            sub { $sub->( $server->factory()) },
-            sprintf( 'Executing %s uninstallation tasks...', $server ),
-            $nbSteps,
-            $step
-        );
-        last if $rs;
+        if ( my $sub = $server->can( 'uninstall' ) ) {
+            $rs = step(
+                sub { $sub->( $server->factory()) },
+                sprintf( 'Executing %s uninstallation tasks...', $server ),
+                $steps,
+                $step
+            );
+            last if $rs;
+        }
+
         $step++;
     }
 
@@ -376,10 +381,8 @@ sub _removeFiles
     local $@;
     eval {
         for my $dir (
-            $::imscpConfig{'CONF_DIR'},
-            $::imscpConfig{'USER_WEB_DIR'},
-            $::imscpConfig{'LOG_DIR'},
-            $::imscpConfig{'ROOT_DIR'}
+            $::imscpConfig{'CONF_DIR'}, $::imscpConfig{'USER_WEB_DIR'},
+            $::imscpConfig{'LOG_DIR'}, $::imscpConfig{'ROOT_DIR'}
         ) {
             iMSCP::Dir->new( dirname => $dir )->remove();
         }

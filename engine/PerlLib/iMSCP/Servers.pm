@@ -40,14 +40,23 @@ use parent 'Common::SingletonClass';
 =item getList( )
 
  Get list of servers sorted in descending order of priority
+ 
+ By default, servers are sorted in descending order of priority. This order can
+ be reversed by setting the $reverseOrder flag to TRUE.
 
+ Param bool $reverseOrder Flag indicating whether or not list of servers must
+                          be returned in reverse order
  Return List of servers
 
 =cut
 
 sub getList
 {
-    @{ $_[0]->{'__servers__'} };
+    my ( $self, $reverseOrder ) = @_;
+
+    $reverseOrder
+        ? reverse @{ $self->{'__servers__'} }
+        : @{ $self->{'__servers__'} };
 }
 
 =back

@@ -968,7 +968,7 @@ sub _dialogForMasterAdminUsername
     my ( undef, $dialog ) = @_;
 
     my $db = iMSCP::Database->factory();
-
+    
     local $@;
     eval { $db->useDatabase( ::setupGetQuestion( 'DATABASE_NAME' )); };
     $db = undef if $@;

@@ -136,7 +136,7 @@ sub uninstall
     my $cron = Servers::cron->factory();
 
     for my $taskID ( qw/ ControlPanel ControlPanel::Gc Clients Servers::Gc / ) {
-        my $rs = ${ $cron }->deleteTask( { TASKID => __PACKAGE__ . "::${taskID}" } );
+        my $rs = $cron->deleteTask( { TASKID => __PACKAGE__ . "::${taskID}" } );
         return $rs if $rs;
     }
 

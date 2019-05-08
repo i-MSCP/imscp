@@ -37,17 +37,26 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item getList( )
+=item getList( [ $reverseOrder = FALSE ] )
 
- Get list of packages sorted in descending order of priority
+ Get list of packages
+ 
+ By default, packages are sorted in descending order of priority. This order
+ can be reversed by setting the $reverseOrder flag to TRUE.
 
+ Param bool $reverseOrder Flag indicating whether or not list of packages must
+                          be returned in reverse order
  Return List of packages
 
 =cut
 
 sub getList
 {
-    @{ $_[0]->{'__packages__'} };
+    my ( $self, $reverseOrder ) = @_;
+
+    $reverseOrder
+        ? reverse @{ $self->{'__packages__'} }
+        : @{ $self->{'__packages__'} };
 }
 
 =back
