@@ -81,10 +81,11 @@ sub preinstall
 
     eval {
         my $service = iMSCP::Service->getInstance();
+
         for my $version (
             iMSCP::Dir->new( dirname => '/etc/php' )->getDirs()
         ) {
-            next unless $version =~ /^[0-9.]+$/
+            next if $version !~ /^[0-9.]+$/
                 || $self->{'config'}->{'PHP_VERSION'} eq $version;
 
             $service->stop( sprintf( 'php%s-fpm', $version ));
