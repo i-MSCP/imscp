@@ -283,7 +283,7 @@ sub _init
  Dialog for packages
 
  Param iMSCP::Dialog \%dialog
- Return int 0 (Next), 20 (Skip), 30 (back)
+ Return int 0 (Next), 20 (Skip), 30 (Back)
 
 =cut
 
@@ -300,7 +300,6 @@ sub _dialogForPackages
         || !@selectedPackages
         || array_minus( @selectedPackages, @{ $self->{'PACKAGES'} } )
     ) {
-
         ( $ret, my $packages ) = $dialog->multiselect(
             <<"EOF", map { $_ => $_ } @{ $self->{'PACKAGES'} }, intersect( @{ $self->{'PACKAGES'} }, @selectedPackages ));
 Please select the @{ [ $self->getPackageHumanName() ] } you want to install:

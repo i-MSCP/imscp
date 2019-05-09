@@ -1,7 +1,7 @@
 <packages>
     <frontend
             description="Http server for the control panel"
-            provides_alternatives="1"
+            has_alternatives="1"
     >
         <nginx
                 class="Package::FrontEnd"
@@ -14,7 +14,7 @@
     </frontend>
     <httpd
             description="Httpd server for customers"
-            provides_alternatives="1"
+            has_alternatives="1"
     >
         <apache_fcgid
                 class="Servers::httpd::apache_fcgid"
@@ -74,7 +74,7 @@
     </httpd>
     <php
             description="PHP version for customers"
-            provides_alternatives="1"
+            has_alternatives="1"
             pinning_package="*"
             pinning_pin="origin packages.sury.org"
             pinning_pin_priority="1001"
@@ -281,7 +281,7 @@
     </php>
     <po
             description="IMAP/POP servers"
-            provides_alternatives="1"
+            has_alternatives="1"
     >
         <courier
                 class="Servers::po::courier"
@@ -310,7 +310,7 @@
     </po>
     <mta
             description="SMTP server"
-            provides_alternatives="1"
+            has_alternatives="1"
     >
         <postfix
                 default="1"
@@ -328,7 +328,7 @@
     </mta>
     <ftpd
             description="FTP server"
-            provides_alternatives="1"
+            has_alternatives="1"
     >
         <proftpd
                 class="Servers::ftpd::proftpd"
@@ -350,7 +350,7 @@
     </ftpd>
     <named
             description="DNS server"
-            provides_alternatives="1"
+            has_alternatives="1"
     >
         <bind
                 class="Servers::named::bind"

@@ -284,6 +284,7 @@ sub dialogForServerTimezone
     if ( !grep ( $::reconfigure eq $_, qw/ local_server timezone all / )
         && isValidTimezone( $value )
     ) {
+        ::setupSetQuestion( 'TIMEZONE', $value );
         return 20;
     }
 

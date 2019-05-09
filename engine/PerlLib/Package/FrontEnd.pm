@@ -967,43 +967,47 @@ sub _dialogForMasterAdminUsername
 {
     my ( undef, $dialog ) = @_;
 
-    my $db = iMSCP::Database->factory();
+    my ( $value, $db ) = (
+        ::setupGetQuestion( 'ADMIN_LOGIN_NAME' ),
+        iMSCP::Database->factory()
+    );
 
     local $@;
     eval { $db->useDatabase( ::setupGetQuestion( 'DATABASE_NAME' )); };
     $db = undef if $@;
 
-    my ( $value, $isset );
-
-    if ( iMSCP::Getopt->preseed ) {
-        $value = ::setupGetQuestion( 'ADMIN_LOGIN_NAME', 'admin' );
-    } elsif ( $db ) {
+    if ( $db ) {
         local $@;
         my $row = eval {
             $db->getRawDb()->selectrow_hashref(
-                "SELECT admin_name FROM admin WHERE created_by = 0 AND admin_type = 'admin'"
+                "
+                    SELECT `admin_name`
+                    FROM `admin`
+                    WHERE `admin_type` = 'admin'
+                    AND `created_by` = 0
+                    LIMIT 1
+                "
             );
         };
 
-        $value = $row ? $row->{'admin_name'} : '';
-        $isset = length $value ? TRUE : FALSE;
+        if ( $row ) {
+            ::setupSetQuestion( 'ADMIN_OLD_LOGIN_NAME', $row->{'admin_name'} );
+            $value = $row->{'admin_name'} unless length $value;
+        }
     }
 
     if ( !grep ( $::reconfigure eq $_, qw/ admin admin_username admin_credentials all / )
-        && ( $isset || isValidUsername( $value ) )
+        && isValidUsername( $value )
     ) {
         ::setupSetQuestion( 'ADMIN_LOGIN_NAME', $value );
-        ::setupSetQuestion( 'ADMIN_OLD_LOGIN_NAME', $value );
         return 20;
     }
-
-    ::setupSetQuestion( 'ADMIN_OLD_LOGIN_NAME', $value );
 
     my ( $ret, $msg ) = ( 0, '' );
 
     do {
         ( $ret, $value ) = $dialog->string(
-            <<"EOF", $value || 'admin' );
+            <<"EOF", length $value ? $value : 'admin' );
 ${msg}Please enter a username for the master administrator:
 EOF
         if ( $ret != 30 ) {
@@ -1043,24 +1047,32 @@ sub _dialogForMasterAdminPassword
 {
     my ( undef, $dialog ) = @_;
 
-    my $db = iMSCP::Database->factory();
+    my ( $value, $isset, $db ) = (
+        ::setupGetQuestion( 'ADMIN_PASSWORD' ),
+        FALSE,
+        iMSCP::Database->factory()
+    );
 
-    local $@;
-    eval { $db->useDatabase( ::setupGetQuestion( 'DATABASE_NAME' )); };
-    $db = undef if $@;
-
-    my ( $value, $isset );
-
-    if ( iMSCP::Getopt->preseed ) {
-        $value = ::setupGetQuestion( 'ADMIN_PASSWORD' );
-    } elsif ( $db ) {
+    unless ( length $value ) {
         local $@;
-        my $row = eval {
-            $db->getRawDb()->selectrow_hashref(
-                "SELECT admin_pass FROM admin WHERE created_by = 0 AND admin_type = 'admin'"
-            );
-        };
-        $isset = $row ? TRUE : FALSE;
+        eval { $db->useDatabase( ::setupGetQuestion( 'DATABASE_NAME' )); };
+        $db = undef if $@;
+
+        if ( $db ) {
+            local $@;
+            my $row = eval {
+                $db->getRawDb()->selectrow_hashref(
+                    "
+                        SELECT `admin_pass`
+                        FROM `admin`
+                        WHERE `admin_type` = 'admin'
+                        AND `created_by` = 0
+                        LIMIT 1
+                    "
+                );
+            };
+            $isset = $row ? TRUE : FALSE;
+        }
     }
 
     if ( !grep ( $::reconfigure eq $_, qw/ admin admin_password admin_credentials all / )
@@ -1557,10 +1569,9 @@ sub _createMasterWebUser
 
 sub _setupMasterAdmin
 {
-    my $login = ::setupGetQuestion( 'ADMIN_LOGIN_NAME' );
-    my $loginOld = ::setupGetQuestion( 'ADMIN_OLD_LOGIN_NAME' );
+    my $newLogin = ::setupGetQuestion( 'ADMIN_LOGIN_NAME' );
+    my $oldLogin = ::setupGetQuestion( 'ADMIN_OLD_LOGIN_NAME' );
     my $password = ::setupGetQuestion( 'ADMIN_PASSWORD' );
-    $password = apr1MD5( $password ) if length $password;
     my $email = ::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' );
 
     my $db = iMSCP::Database->factory();
@@ -1568,51 +1579,48 @@ sub _setupMasterAdmin
 
     local $@;
     eval {
-        my $oldDbName = $db->useDatabase(
+        my $oldDatabase = $db->useDatabase(
             ::setupGetQuestion( 'DATABASE_NAME' )
         );
 
         {
             $dbh->begin_work();
 
-            if ( $login eq $loginOld ) {
+            # Create or update master administrator account
+            $dbh->do(
+                '
+                    INSERT INTO `admin` (
+                        `admin_name`, `admin_pass`, `admin_type`, `email`
+                    ) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE
+                        `admin_id` = LAST_INSERT_ID(`admin_id`),
+                        `admin_name` = ?,
+                        `admin_pass` = IF(LENGTH(?) > 0, ?, `admin_pass`),
+                        `email` = ?
+                ',
+                undef,
+                # Insert parameters
+                $newLogin, apr1MD5( $password ), 'admin', $email,
+                # On duplicate parameters
+                $newLogin,
+                $password, length $password ? apr1MD5( $password ) : '',
+                $email,
+            );
+
+            if ( $newLogin ne $oldLogin ) {
                 $dbh->do(
                     '
-                        UPDATE admin
-                        SET admin_name = ?,
-                            admin_pass = IF(length(?) > 0, ?, admin_pass),
-                            email = ?
-                        WHERE admin_name = ?
-                    ',
-                    undef,
-                    $login,
-                    $password,
-                    $password,
-                    $email,
-                    $loginOld
-                );
-            } else {
-                $dbh->do(
+                        INSERT INTO `user_gui_props`
+                        SET `user_id` = LAST_INSERT_ID()
                     '
-                        INSERT INTO admin (
-                            admin_name, admin_pass, admin_type, email
-                        ) VALUES (?, ?, ?, ?)
-                    ',
-                    undef,
-                    $login,
-                    $password,
-                    'admin',
-                    $email
-                );
-                $dbh->do(
-                    'INSERT INTO user_gui_props SET user_id = LAST_INSERT_ID()'
                 );
             }
 
             $dbh->commit();
         }
 
-        $db->useDatabase( $oldDbName ) if $oldDbName;
+        if ( length $oldDatabase ) {
+            $db->useDatabase( $oldDatabase );
+        }
     };
     if ( $@ ) {
         $dbh->rollback();
@@ -1923,7 +1931,6 @@ sub _buildPhpConfig
     $rs ||= $self->buildConfFile(
         "$self->{'cfgDir'}/php.ini",
         {
-
             PEAR_DIR => $self->{'config'}->{'PHP_PEAR_DIR'},
             TIMEZONE => ::setupGetQuestion( 'TIMEZONE' )
         },

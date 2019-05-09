@@ -100,17 +100,19 @@ sub preinstall
         error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
 
-        if ( length $stdout && $stdout =~ /^(\d+)/ && $1 > 0 ) {
-            if ( iMSCP::ProgramFinder::find( 'dialog' ) ) {
+        if ( length $stdout && $stdout =~ /^(\d+)\s+upgraded/m && $1 > 0 ) {
+            if ( !iMSCP::Getopt->noprompt
+                && iMSCP::ProgramFinder::find( 'dialog' )
+            ) {
                 iMSCP::Dialog->getInstance()->error( <<"EOF" );
 \\Zb\\Z1The distribution is not up-to-date\\Zn
-                
+
 There are distribution packages available for update.
 
 Please update your distribution before running the i-MSCP installer.
 EOF
-            } else {
-                print output( 'Distribution is not up-to date. You need first update it.', 'error' );
+            } elsif ( iMSCP::Getopt->verbose ) {
+                print STDERR output( 'Your distribution is not up-to date. You need first update it.', 'error' );
             }
 
             exit 1;
@@ -167,7 +169,17 @@ EOF
 
     my @steps;
 
-    unless ( $::skippackages ) {
+    if ( $::skippackages ) {
+        @{main::questions}{qw/
+            FRONTEND_SERVER FTPD_SERVER HTTPD_SERVER MTA_SERVER
+            NAMED_SERVER PHP_SERVER PO_SERVER SQL_SERVER
+        /} = (
+            $::imscpConfig{'FRONTEND_SERVER'}, $::imscpConfig{'FTPD_SERVER'},
+            $::imscpConfig{'HTTPD_SERVER'}, $::imscpConfig{'MTA_SERVER'},
+            $::imscpConfig{'NAMED_SERVER'}, $::imscpConfig{'PHP_SERVER'},
+            $::imscpConfig{'PO_SERVER'}, $::imscpConfig{'SQL_SERVER'}
+        );
+    } else {
         push @steps,
             [
                 sub { $self->_processPackagesFile() },
@@ -944,12 +956,13 @@ sub _getPackagesDialog
 
     for my $section ( sort %{ $self->{'_packagesFileData'} } ) {
         my $data = $self->{'_packagesFileData'}->{$section};
-        next unless $data->{'provides_alternatives'};
+        next unless $data->{'has_alternatives'};
 
         # Retrieve selected alternative, either from preseed file, or from
-        # the  master configuration file
-        my $sAlt = $::questions{ uc( $section ) . '_SERVER' }
-            || $::imscpConfig{ uc( $section ) . '_SERVER' };
+        # the master configuration file
+        my $sAlt = length $::questions{ uc( $section ) . '_SERVER' }
+             ? $::questions{ uc( $section ) . '_SERVER' }
+             : $::imscpConfig{ uc( $section ) . '_SERVER' };
 
         # Resets alternative if the one currently set is not longer available
         $sAlt = '' if length $sAlt && !grep ( $sAlt eq $_, keys %{ $data } );
@@ -980,31 +993,22 @@ sub _getPackagesDialog
             for my $alt ( @alts ) {
                 $choices{$alt} = $data->{$alt}->{'description'} || $alt;
 
-                # If not alternative is set, and if current is marked as the
-                # default one in the packages file, set is as default selected
-                # alternative 
+                # If no alternative is set, either in the master configuration
+                # file or in the  preseed file (preseeding feature), and if the
+                # current one is set as  the default one in the distribution
+                # packages file, we set it as default selected alternative.
                 if ( !length $sAlt && $data->{$alt}->{'default'} ) {
                     $sAlt = $alt;
 
-                    # In preseed mode, and if no alternative has been set in
-                    # the preseed file, we automatically select the default, as
-                    # set in the distribution packages file without asking user.
-                    # This affect only fresh installations.
+                    # In preseeding mode, we skip setup dialog.
                     $needDialog = !iMSCP::Getopt->preseed;
                 }
             }
 
-            @{main::imscpConfig}{
-                uc( $section ) . '_SERVER', uc( $section ) . '_PACKAGE'
-            } = (
-                $sAlt,
-                $data->{$sAlt}->{'class'} // $sAlt
-            );
             @{main::questions}{
                 uc( $section ) . '_SERVER', uc( $section ) . '_PACKAGE'
             } = (
-                $::imscpConfig{uc( $section ) . '_SERVER'},
-                $::imscpConfig{uc( $section ) . '_PACKAGE'}
+                $sAlt, $data->{$sAlt}->{'class'} // $sAlt
             );
 
             # No need for dialog if there is only one alternative
@@ -1017,20 +1021,20 @@ Please make your choice for the @{ [ $data->{'description'} // "$section alterna
 EOF
                 return 30 if $ret == 30;
 
-                @{main::imscpConfig}{
-                    uc( $section ) . '_SERVER', uc( $section ) . '_PACKAGE'
-                } = (
-                    $value,
-                    $data->{$value}->{'class'} // $value
-                );
                 @{main::questions}{
                     uc( $section ) . '_SERVER', uc( $section ) . '_PACKAGE'
                 } = (
-                    $::imscpConfig{uc( $section ) . '_SERVER'},
-                    $::imscpConfig{uc( $section ) . '_PACKAGE'}
+                    $value, $data->{$value}->{'class'} // $value
                 );
                 0;
             };
+        } else {
+            @{main::questions}{
+                uc( $section ) . '_SERVER', uc( $section ) . '_PACKAGE'
+            } = (
+                $::imscpConfig{ uc( $section ) . '_SERVER' },
+                $::imscpConfig{ uc( $section ) . '_PACKAGE' }
+            );
         }
     }
 
@@ -1158,14 +1162,14 @@ sub _processPackagesFile
         # Jump to next section, unless the section defines alternatives
         next unless %{ $data };
 
-        my @selectedAlts = $::imscpConfig{ uc( $section ) . '_SERVER' };
+        my @selectedAlts = $::questions{ uc( $section ) . '_SERVER' };
         my @unselectedAlts;
 
         # Adds any alternative that must be always installed into the stack of
         # selected alternatives
         for my $alt ( keys %{ $data } ) {
             next if ref $data->{$alt} ne 'HASH'
-                || $alt eq $::imscpConfig{ uc( $section ) . '_SERVER' };
+                || $alt eq $::questions{ uc( $section ) . '_SERVER' };
             if ( $data->{$alt}->{'always_installed'} ) {
                 push @selectedAlts, $alt;
                 next;
@@ -1258,6 +1262,13 @@ sub _processPackagesFile
                 }
             }
         }
+
+        @{main::imscpConfig}{
+            uc( $section ) . '_SERVER', uc( $section ) . '_PACKAGE'
+        } = (
+            $::questions{ uc( $section ) . '_SERVER' },
+            $::questions{ uc( $section ) . '_PACKAGE' }
+        );
     }
 
     require List::MoreUtils;

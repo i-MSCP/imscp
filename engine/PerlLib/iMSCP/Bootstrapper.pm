@@ -72,8 +72,8 @@ sub boot
     $self->lock() unless $options->{'nolock'};
     $self->loadMainConfig( $options );
 
-    # Set timezone unless we are in setup or uninstall modes
-    unless ( grep ($mode eq $_, ( 'setup', 'uninstaller' ) ) ) {
+    # Set timezone unless we are in setup or uninstaller mode
+    unless ( grep ( $mode eq $_, qw/ setup uninstaller / ) ) {
         $ENV{'TZ'} = $::imscpConfig{'TIMEZONE'} || 'UTC';
         tzset;
     }
@@ -82,7 +82,7 @@ sub boot
 
     unless ( $options->{'norequirements'} ) {
         require iMSCP::Requirements;
-        my $test = ( $mode eq 'setup' ) ? 'all' : 'user';
+        my $test = $mode eq 'setup' ? 'all' : 'user';
         iMSCP::Requirements->new()->$test();
     }
 
@@ -90,7 +90,7 @@ sub boot
     $self->_setDbSettings() unless $options->{'nodatabase'};
 
     iMSCP::EventManager->getInstance()->trigger( 'onBoot', $mode ) == 0 or die(
-        getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+        getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error'
     );
     $self;
 }

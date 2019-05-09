@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2019.05.08
+# Last update: 2019.05.09
 
 %::questions = (
     #
@@ -155,6 +155,14 @@
     ## Control panel configuration parameters
     #
 
+    # FrontEnd httpd server
+    #
+    # Possible value: nginx
+    #
+    # Leave this parameter empty to automatically select the default DNS
+    # server implementation, as set in the distribution packages file.
+    FRONTEND_SERVER                     => '',
+
     # Control panel hostname
     #
     # Hostname from which the control panel must be reachable.
@@ -257,7 +265,7 @@
     #
     # Bind server implementation configuration parameters
     #
-    
+
     # DNS server mode
     #
     # Possible values: master, slave
