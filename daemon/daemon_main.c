@@ -171,11 +171,6 @@ int main(int argc, char **argv)
         close(servsockfd);
     }
 
-    if(unlink(pidfile) != 0) {
-        fprintf(stderr, "Missing i-MSCP backend script path option\n");
-        exit(EXIT_FAILURE);
-    }
-
     free(backendscriptpath);
     closelog();
     return 0;

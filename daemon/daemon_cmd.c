@@ -7,7 +7,7 @@ int helo_command(int sockfd, char *buffer, char *cliaddr)
     if(ptr != buffer) {
         return -2;
     } else {
-        char *answer = calloc(MAX_MSG_SIZE, sizeof(char *));
+        char *answer = (char *) calloc(MAX_MSG_SIZE, sizeof(char));
         strcat(answer, message(MSG_CMD_OK));
         strcat(answer, cliaddr);
         strcat(answer, "\n");
@@ -50,7 +50,7 @@ int backend_command(int sockfd, char *buffer)
             free(backendscriptname);
             break;
         default: { /* parent */
-            char *answer = calloc(MAX_MSG_SIZE, sizeof(char *));
+            char *answer = (char *) calloc(MAX_MSG_SIZE, sizeof(char));
             strcat(answer, message(MSG_CMD_OK));
             strcat(answer, message(MSG_CMD_ANSWER));
 

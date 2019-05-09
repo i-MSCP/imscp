@@ -3,7 +3,7 @@
 void handle_client_connection(int sockfd, struct sockaddr *cliaddr)
 {
     int retval;
-    char *welcome_msg = calloc(MAX_MSG_SIZE, sizeof(char *));
+    char *welcome_msg = (char *) calloc(MAX_MSG_SIZE, sizeof(char));
 
     strcat(welcome_msg, message(MSG_CMD_OK));
     strcat(welcome_msg, message(MSG_WELCOME));
