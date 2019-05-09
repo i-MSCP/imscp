@@ -2146,7 +2146,7 @@ function send_request()
 {
     if (
         ($socket = @socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) === false ||
-        @socket_connect($socket, '127.0.0.1', 9876) === false
+        @socket_connect($socket, '127.0.0.1', Registry::get('config')['DAEMON_LISTEN_PORT']) === false
     ) {
         write_log(
             sprintf("Couldn't connect to the i-MSCP daemon: %s", socket_strerror(socket_last_error())), E_USER_ERROR

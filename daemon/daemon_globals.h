@@ -7,8 +7,10 @@
 #define SYSLOG_MSG_PRIORITY         LOG_NOTICE
 
 /* Daemon parameters */
+#define DAEMON_BACKEND_SCRIPT       "/var/www/imscp/engine/imscp-rqst-mngr"
 #define DAEMON_LISTEN_ADDR          INADDR_LOOPBACK
 #define DAEMON_LISTEN_PORT          9876
+#define DAEMON_PIDFILE              "/run/imscp_daemon.pid"
 #define DAEMON_MAX_LISTENQ          256
 
 /* Max length for transferred messages */
@@ -18,9 +20,9 @@
 #define MSG_MAX_COUNT               21
 
 #define MSG_WELCOME                 101
-#define MSG_WELCOME_TXT             "i-MSCP Daemon v1.3.1\n"
+#define MSG_WELCOME_TXT             "i-MSCP Daemon v1.4.0\n"
 #define MSG_DAEMON_STARTED          102
-#define MSG_DAEMON_STARTED_TXT      "i-MSCP daemon v1.3.1 started."
+#define MSG_DAEMON_STARTED_TXT      "i-MSCP daemon v1.4.0 started."
 #define MSG_DAEMON_NAME             103
 #define MSG_DAEMON_NAME_TXT         "imscp_daemon"
 #define MSG_ERROR_LISTEN            104

@@ -5,17 +5,17 @@ int main(int argc, char **argv)
     /* parent process */
 
     int option;
-    char *backendscriptpathdup;
+    int listenport = DAEMON_LISTEN_PORT;
     char *pidfile = NULL;
 
     /* parse command line options */
-    while ((option = getopt(argc, argv, "hb:p:")) != -1) {
+    while ((option = getopt(argc, argv, "hb:l:p:")) != -1) {
         switch(option) {
             case 'b':
-                backendscriptpathdup = strdup(optarg);
-                backendscriptpath = strdup(backendscriptpathdup);
-                backendscriptname = basename(backendscriptpathdup);
-                free(backendscriptpathdup);
+                backendscriptpath = strdup(optarg);
+            break;
+            case 'l':
+                listenport = atoi(optarg);
             break;
             case 'p':
                 pidfile = strdup(optarg);
@@ -23,18 +23,24 @@ int main(int argc, char **argv)
             case 'h':
             default:
                 fprintf(stderr, "i-MSCP Daemon.\n\n");
-                fprintf(stderr, "Usage: %s [options]\n\n", argv[0]);
+                fprintf(stderr, "Usage: %s [OPTION]...\n\n", argv[0]);
                 fprintf(stderr, "Options:\n");
                 fprintf(stderr, "    -b FILE     i-MSCP backend script path\n");
+                fprintf(stderr, "    -l PORT     Listen port\n");
                 fprintf(stderr, "    -f FILE     Pid file path\n");
                 fprintf(stderr, "    -h          This help\n");
                 exit(EXIT_FAILURE);
         }
     }
 
+    /* Set default pidfile of none was provided */
+    if(pidfile == NULL) {
+        pidfile = strdup(DAEMON_PIDFILE);
+    }
+    
+    /* Set default backend script path if none was provided */
     if(backendscriptpath == NULL) {
-        fprintf(stderr, "Missing i-MSCP backend script path option\n");
-        exit(EXIT_FAILURE);
+        backendscriptpath = strdup(DAEMON_BACKEND_SCRIPT);
     }
 
     /* setup pipe for notification */
@@ -85,7 +91,7 @@ int main(int argc, char **argv)
         memset((void *) &servaddr, '\0', (size_t) sizeof(servaddr));
         servaddr.sin_family = AF_INET;
         servaddr.sin_addr.s_addr = htonl(DAEMON_LISTEN_ADDR);
-        servaddr.sin_port = htons(DAEMON_LISTEN_PORT);
+        servaddr.sin_port = htons(listenport);
 
         /* assign name to the socket */
         if (bind(servsockfd, (struct sockaddr *) &servaddr, sizeof(servaddr)) < 0) {
@@ -112,15 +118,15 @@ int main(int argc, char **argv)
         signal(SIGPIPE, handle_signal);
 
         /* write pidfile if needed */
-        if(pidfile != NULL) {
+        {
             FILE *file = fopen(pidfile, "w");
             fprintf(file, "%ld", (long)getpid());
             fclose(file);
+            free(pidfile);
         }
 
-        free(pidfile);
-
-        /* notify parent process that initialization is done and that pidfile has been written */
+        /* notify parent process that initialization is done and that pidfile
+           has been written */
         notify(0);
 
         say("%s", message(MSG_DAEMON_STARTED));
@@ -136,7 +142,6 @@ int main(int argc, char **argv)
                 }
 
                 say(message(MSG_ERROR_ACCEPT), strerror(errno));
-                free(backendscriptpath);
                 close(servsockfd);
                 exit(errno);
             }
@@ -145,25 +150,30 @@ int main(int argc, char **argv)
                 || setsockopt(clisockfd, SOL_SOCKET, SO_SNDTIMEO, (char *)&timeout_snd, sizeof(timeout_snd)) < 0
             ) {
                 say(message(MSG_ERROR_SOCKET_OPTION), strerror(errno));
-                free(backendscriptpath);
                 close(clisockfd);
                 exit(errno);
             }
 
             if (fork() == 0) {
+                /* child */
                 close(servsockfd);
                 say("%s", message(MSG_START_CHILD));
                 handle_client_connection(clisockfd, (struct sockaddr *) &cliaddr);
-                free(backendscriptpath);
                 close(clisockfd);
                 say("%s", message(MSG_END_CHILD));
                 exit(EXIT_SUCCESS);
             }
 
+            /* parent */
             close(clisockfd);
         }
 
         close(servsockfd);
+    }
+
+    if(unlink(pidfile) != 0) {
+        fprintf(stderr, "Missing i-MSCP backend script path option\n");
+        exit(EXIT_FAILURE);
     }
 
     free(backendscriptpath);

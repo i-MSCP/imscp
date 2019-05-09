@@ -7,7 +7,7 @@ int helo_command(int sockfd, char *buffer, char *cliaddr)
     if(ptr != buffer) {
         return -2;
     } else {
-        char *answer = (char *) calloc(MAX_MSG_SIZE, sizeof(char));
+        char *answer = calloc(MAX_MSG_SIZE, sizeof(char *));
         strcat(answer, message(MSG_CMD_OK));
         strcat(answer, cliaddr);
         strcat(answer, "\n");
@@ -26,6 +26,7 @@ int helo_command(int sockfd, char *buffer, char *cliaddr)
 int backend_command(int sockfd, char *buffer)
 {
     char *ptr = strstr(buffer, message(MSG_EQ_CMD));
+    char *backendscriptname = NULL;
 
     if (ptr != buffer) {
         return -2;
@@ -37,13 +38,19 @@ int backend_command(int sockfd, char *buffer)
         break;
         case 0: /* child */
             close(sockfd);
+
+            backendscriptname = basename(strdup(backendscriptpath));
+
             if(execl(backendscriptpath, backendscriptname, (char *)NULL) == -1) {
                 say("couldn't execute backend command: %s", strerror(errno));
+                free(backendscriptname);
                 exit(EXIT_FAILURE);
             }
+            
+            free(backendscriptname);
             break;
         default: { /* parent */
-            char *answer = (char *) calloc(MAX_MSG_SIZE, sizeof(char));
+            char *answer = calloc(MAX_MSG_SIZE, sizeof(char *));
             strcat(answer, message(MSG_CMD_OK));
             strcat(answer, message(MSG_CMD_ANSWER));
 

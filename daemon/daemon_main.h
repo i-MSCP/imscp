@@ -12,12 +12,10 @@
 #include <syslog.h>
 #include <netinet/in.h>
 #include <unistd.h>
-#include <libgen.h>
 
 #include "daemon_globals.h"
 
 char *backendscriptpath = NULL;
-char *backendscriptname = NULL;
 
 extern int notify_pipe[2];
 extern void daemon_init(void);

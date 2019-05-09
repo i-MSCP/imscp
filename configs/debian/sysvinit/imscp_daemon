@@ -12,8 +12,9 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 DESC="i-MSCP communication daemon"
 NAME=imscp_daemon
 DAEMON=/var/www/imscp/daemon/$NAME
-PIDFILE=/var/run/$NAME.pid
-DAEMON_ARGS="-b /var/www/imscp/engine/imscp-rqst-mngr -p /var/run/$NAME.pid"
+BACKEND_SCRIPT="/var/www/imscp/engine/imscp-rqst-mngr"
+LISTEN_PORT=9876
+PIDFILE=/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 
 # Exit if the package is not installed
@@ -50,7 +51,7 @@ do_start()
     #   2 if daemon couldn't be started
     start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON --test > /dev/null \
         || return 1
-    start-stop-daemon --nicelevel 10 --start --quiet --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_ARGS \
+    start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON -- -b $BACKEND_SCRIPT -l $LISTEN_PORT -p $PIDFILE \
         || return 2
 }
 
