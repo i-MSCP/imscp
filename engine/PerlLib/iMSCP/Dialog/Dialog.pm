@@ -82,36 +82,36 @@ sub select
     $lines = $lines+$menuHeight+$self->{'spacer'};
 
     # Set status of each choice
-
+    
     my @init;
     if ( $self->{'program'} ne 'whiptail'
         || $self->_getWhiptailVersion() > '05218'
     ) {
-        for my $choice ( sort keys %{ $choices } ) {
-            push @init, $choice, $choices->{$choice}, $choice eq $defaultTag
+        for my $item ( sort keys %{ $choices } ) {
+            push @init, $choices->{$item}, $item, $choices->{$item} eq $defaultTag
                 ? 'on' : 'off';
 
             # Choices wider than the description text?
-            if ( $columns < ( my $minColumns = width(
-                $choice . ' ' . $choices->{$choice} )+$self->{'selectSpacer'}
+            if ( $columns < ( my $minColumns = width( $item )
+                +$self->{'selectSpacer'}
             ) ) {
                 $columns = $minColumns;
             }
         }
     } else {
-        # WHIPTAIL(1) specific
+        # WHIPTAIL(1) version < 05219 specific
         # The '--notags' option isn't working despite what the man page say.
         # This is a bug which has been fixed in newt library version 0.52.19.
         # See https://bugs.launchpad.net/ubuntu/+source/newt/+bug/1647762
         # We workaround the issue by using items as tags and by providing
         # empty items. Uniqueness of items is assumed here.
-        for my $choice ( sort keys %{ $choices } ) {
-            push @init, $choices->{$choice}, '', $choice eq $defaultTag
+        for my $item ( sort keys %{ $choices }  ) {
+            push @init, $item, '', $choices->{$item} eq $defaultTag
                 ? 'on' : 'off';
             
             # Choices wider than the description text?
-            if ( $columns < ( my $minColumns = width(
-                $choice . ' ' . $choices->{$choice} )+$self->{'selectSpacer'}
+            if ( $columns < ( my $minColumns = width( $item )
+                +$self->{'selectSpacer'}
             ) ) {
                 $columns = $minColumns;
             }
@@ -130,11 +130,10 @@ sub select
     if ( $self->{'program'} eq 'whiptail'
         && $self->_getWhiptailVersion() < '05219'
     ) {
-        # WHIPTAIL(1) specific
+        # WHIPTAIL(1) version < 05219 specific
         # See the above comment for the explanation
         # We need retrieve tag associated with selected item
-        my %choices = reverse( %{ $choices } );
-        $tag = $choices{$tag};
+        $tag = $choices->{$tag};
     }
 
     wantarray ? ( $ret, $tag ) : $tag;
@@ -156,7 +155,7 @@ sub multiselect
         '$choices parameter is undefined or invalid.'
     );
     ref $defaultTags eq 'ARRAY' or croak(
-        '\@defaultTags parameter is invalid.'
+        '$defaultTags parameter is invalid.'
     );
 
     # Figure out how much space in the dialog box the prompt will take.
@@ -183,32 +182,33 @@ sub multiselect
     if ( $self->{'program'} eq 'dialog'
         || $self->_getWhiptailVersion() > '05218'
     ) {
-        for my $choice ( sort keys %{ $choices } ) {
-            push @init, $choice, $choices->{$choice},
-                grep ( $choice eq $_, @{ $defaultTags } ) ? 'on' : 'off';
+        for my $item ( sort keys %{ $choices } ) {
+            push @init, $choices->{$item}, $item, grep (
+                $choices->{$item} eq $_, @{ $defaultTags }
+            ) ? 'on' : 'off';
 
             # Choices wider than the description text?
-            if ($columns < ( my $minColumns = width(
-                $choice . ' ' . $choices->{$choice} )+$self->{'selectSpacer'}
+            if ($columns < ( my $minColumns = width( $item )
+                +$self->{'selectSpacer'}
             ) ) {
                 $columns = $minColumns;
             }
         }
     } else {
-        # WHIPTAIL(1) specific
+        # WHIPTAIL(1) version < 05219 specific
         # The '--notags' option isn't working despite what the man page say.
         # This is a bug which has been fixed in newt library version 0.52.19.
         # See https://bugs.launchpad.net/ubuntu/+source/newt/+bug/1647762
         # We workaround the issue by using items as tags and by providing
         # empty items. Uniqueness of items is assumed here.
-        for my $choice ( sort keys %{ $choices } ) {
-            push @init, $choices->{$choice}, '', grep (
-                $choice eq $_, @{ $defaultTags }
+        for my $item ( sort keys %{ $choices } ) {
+            push @init, $item, '', grep (
+                $choices->{$item} eq $_, @{ $defaultTags }
             ) ? 'on' : 'off';
 
             # Choices wider than the description text?
-            if ($columns < ( my $minColumns = width(
-                $choice . ' ' . $choices->{$choice} )+$self->{'selectSpacer'}
+            if ($columns < ( my $minColumns = width( $item)
+                +$self->{'selectSpacer'}
             ) ) {
                 $columns = $minColumns;
             }
@@ -231,11 +231,10 @@ sub multiselect
     if ( $self->{'program'} eq 'whiptail'
         && $self->_getWhiptailVersion() < '05219'
     ) {
-        # WHIPTAIL(1) specific
+        # WHIPTAIL(1) version < 05219 specific
         # See the above comment for explanation. We need retrieve tags
         # associated with selected items.
-        my %choices = reverse( %{ $choices } );
-        @tags = map { $choices{$_} } @tags;
+        @tags = map { $choices->{$_} } @tags;
     }
 
     wantarray ? ( $ret, \@tags ) : \@tags;

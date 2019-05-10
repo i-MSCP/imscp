@@ -991,7 +991,7 @@ sub _getPackagesDialog
         if ( $needDialog ) {
             my %choices;
             for my $alt ( @alts ) {
-                $choices{$alt} = $data->{$alt}->{'description'} || $alt;
+                $choices{$data->{$alt}->{'description'} || $alt} = $alt;
 
                 # If no alternative is set, either in the master configuration
                 # file or in the  preseed file (preseeding feature), and if the

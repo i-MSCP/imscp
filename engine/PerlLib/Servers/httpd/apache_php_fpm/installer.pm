@@ -167,9 +167,9 @@ sub _dialogForPhpConfLevel
     }
 
     my %choices = (
-        per_site   => 'Per site',
-        per_domain => 'Per domain',
-        per_user   => 'Per user'
+        'Per site'   => 'per_site',
+        'Per domain' => 'per_domain',
+        'Per user'   => 'per_user'
     );
 
     ( my $ret, $value ) = $dialog->select(
@@ -213,8 +213,8 @@ sub _dialogForPhpListenMode
     }
 
     my %choices = (
-        tcp => 'TCP/IP socket',
-        uds => 'UDS (Unix Domain Socket)'
+        'TCP/IP socket'            => 'tcp',
+        'UDS (Unix Domain Socket)' => 'uds'
     );
 
     ( my $ret, $value ) = $dialog->select(

@@ -2082,7 +2082,7 @@ function daemon_readAnswer(&$socket)
 {
     if (($answer = @socket_read($socket, 1024, PHP_NORMAL_READ)) === false) {
         write_log(
-            sprintf('Unable to read answer from i-MSCP daemon: %s' . socket_strerror(socket_last_error())), E_USER_ERROR
+            sprintf('Unable to read answer from the i-MSCP daemon: %s', socket_strerror(socket_last_error())), E_USER_ERROR
         );
         return false;
     }

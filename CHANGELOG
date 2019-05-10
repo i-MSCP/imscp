@@ -24,7 +24,7 @@ CONFIG
 DAEMON
     Enhancement: Make it possible to override default (9876) listen port
     Review: Always write pidfile
-    Review: Make use of a default backend script path (/var/www/imscp/engine/imscp-rqst-mngr) if not is provided
+    Review: Make use of a default backend script path (/var/www/imscp/engine/imscp-rqst-mngr) if none is provided
     Review: Make use of a default pidfile path (/run/imscp_daemon.path) if none is provided
     Updated: Version to 1.4.0
 

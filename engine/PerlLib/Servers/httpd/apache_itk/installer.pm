@@ -165,9 +165,9 @@ sub _dialogForPhpConfLevel
     }
 
     my %choices = (
-        per_site   => 'Per site',
-        per_domain => 'Per domain',
-        per_user   => 'Per user'
+        'Per site'   => 'per_site',
+        'Per domain' => 'per_domain',
+        'Per user'   => 'per_user'
     );
 
     ( my $ret, $value ) = $dialog->select(

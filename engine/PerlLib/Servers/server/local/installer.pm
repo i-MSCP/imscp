@@ -94,7 +94,7 @@ sub dialogForServerHostname
     my ( undef, $dialog ) = @_;
 
     my $value = ::setupGetQuestion( 'SERVER_HOSTNAME', iMSCP::Getopt->preseed
-        ? ( `hostname --fqdn 2>/dev/null` || '' ) =~ s/\n+$//r : '' 
+        ? ( `hostname --fqdn 2>/dev/null` || '' ) =~ s/\n+$//r : ''
     );
 
     if ( !grep ( $::reconfigure eq $_, qw/ local_server system_hostname hostnames all /)
@@ -153,7 +153,7 @@ sub dialogForBaseServerIP
     }
 
     my %choices;
-    @{choices}{ @ipList, '0.0.0.0' } = ( @ipList, 'None' );
+    @{choices}{ @ipList, 'None' } = ( @ipList, '0.0.0.0' );
 
     ( my $ret, $value ) = $dialog->select(
         <<"EOF", \%choices, ( grep ( $_ eq $value, @ipList, '0.0.0.0' ) )[0] // $ipList[0] );
@@ -189,14 +189,16 @@ sub dialogForBaseServerPublicIP
     # through one of remote public IP API
     if ( iMSCP::Getopt->preseed
         && !length $value
-        && ( !isValidIpAddr( $baseServerIp, qr/(?:PUBLIC|GLOBAL-UNICAST)/ ) )
+        && !isValidIpAddr( $baseServerIp, qr/(?:PUBLIC|GLOBAL-UNICAST)/ )
     ) {
         chomp( $value = get( 'https://ipinfo.io/ip' )
             || get( 'https://api.ipify.org/?format=txt' ) || ''
         );
 
-        ::setupSetQuestion( 'BASE_SERVER_PUBLIC_IP', $value ) if length $value;
-        return 20;
+        if ( length $value ) {
+            ::setupSetQuestion( 'BASE_SERVER_PUBLIC_IP', $value );
+            return 20;
+        }
     }
 
     # If user didn't asked for reconfiguration and the server public IP is
@@ -214,19 +216,18 @@ sub dialogForBaseServerPublicIP
 
     # IP inside private IP range?
     if ( $wanNotSetOrInsidePrivateRange
-        || ( $wanNotSetOrInsidePrivateRange && grep (
-        $::reconfigure eq $_, qw/ local_server primary_ip all /)
-    ) ) {
+        || grep ( $::reconfigure eq $_, qw/ local_server primary_ip all /)
+    ) {
         chomp( $value = get( 'https://ipinfo.io/ip' )
             || get( 'https://api.ipify.org/?format=txt' ) || ''
+        ) unless length == $value || grep (
+            $::reconfigure eq $_, qw/ local_server primary_ip all /
         );
 
         my ( $ret, $msg ) = ( 0, '' );
         do {
             ( $ret, $value ) = $dialog->string( <<"EOF", $value );
-${msg}The selected IP address is inside the private IP range.
-
-Please enter your public IP address (WAN IP), or leave blank to force usage of the private IP address if your server is behind a NAT router.
+${msg}Please enter your public IP address (WAN IP), or leave blank to force usage of the private IP address if your server is behind a NAT router.
 
 If you're behind a NAT router, you MUST not forget to forward TCP ports for the various services:
 
@@ -256,8 +257,6 @@ EOF
             }
         } while $ret != 30 && length $msg;
         return 30 if $ret == 30;
-    } else {
-        return 20;
     }
 
     ::setupSetQuestion( 'BASE_SERVER_PUBLIC_IP', $value );

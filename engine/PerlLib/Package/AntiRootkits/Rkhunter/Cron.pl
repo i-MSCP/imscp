@@ -23,12 +23,19 @@ use FindBin;
 use lib "$FindBin::Bin/../../../../PerlLib", "$FindBin::Bin/../../../../PerlVendor";
 use iMSCP::Boolean;
 use iMSCP::Bootstrapper;
-use iMSCP::Debug 'debug';
+use iMSCP::Debug qw/ debug newDebug setDebug setVerbose /;
 use iMSCP::Execute 'execute';
 use iMSCP::File;
 use iMSCP::ProgramFinder;
 
-newDebug( 'imscp-rkhunter-package.log' );
+@{ENV}{qw/ LANG PATH /} = (
+    'C.UTF-8',
+    '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+);
+
+newDebug( 'imscp-rkhunter-cron.log' );
+setDebug( TRUE );
+setVerbose( TRUE );
 
 iMSCP::Bootstrapper->getInstance()->boot( {
     nolock          => TRUE,
@@ -37,7 +44,11 @@ iMSCP::Bootstrapper->getInstance()->boot( {
     config_readonly => TRUE
 } );
 
-exit 0 unless iMSCP::ProgramFinder::find( 'rkhunter' );
+exit unless iMSCP::ProgramFinder::find(
+    'rkhunter'
+) && iMSCP::Bootstrapper->getInstance()->lock(
+    '/var/lock/imscp-rkhunter-cron.lock', 'nowait'
+);
 
 my $logFile = $::imscpConfig{'RKHUNTER_LOG'} || '/var/log/rkhunter.log';
 

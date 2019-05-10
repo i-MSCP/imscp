@@ -40,12 +40,12 @@ use parent 'Common::SingletonClass';
  Display a dialog box with a list of choices
 
  Param string $text Text to show
- Param hashref \%choices List of choices where keys are tags and values are
-                         items
+ Param hashref \%choices List of choices where keys are items and values are
+                         tags
  Param string $default Default selected tag
  Return Selected tag in scalar context, a list containing both dialog return
-                 code and selected tag in list context. Return code can be 0 (Ok),
-                 30 (Back). Croak on failure
+                 code and the selected tag in list context. Return code can be
+                 0 (Ok), 30 (Back). Croak on failure
 
 =cut
 
@@ -54,8 +54,8 @@ use parent 'Common::SingletonClass';
  Display a dialog box with a check list
 
  Param string $text Text to show
- Param hashref \%choices List of choices where keys are tags and values are
-               items
+ Param hashref \%choices List of choices where keys are items and values are
+               tags
  Param arrayref \@default Default tags
  Param bool $showTags Flag indicating whether or not tags must be showed in
                       dialog box

@@ -630,15 +630,17 @@ $rqstCount += debugger_countRequests(); // Plugin items
 
 if (isset($_GET['action'])) {
     if ($_GET['action'] == 'run') {
-        if ($rqstCount > 0) {
+        // Make it possible to trigger backend requests through GUI manually
+        // even if there are not perceptible tasks from the frontEnd POV.
+        //if ($rqstCount > 0) {
             if (send_request()) {
                 set_page_message(tr('Daemon request successful.'), 'success');
             } else {
                 set_page_message(tr('Daemon request failed.'), 'error');
             }
-        } else {
-            set_page_message(tr('There is no pending task. Operation canceled.'), 'warning');
-        }
+        //} else {
+        //    set_page_message(tr('There is no pending task. Operation canceled.'), 'warning');
+        //}
 
         redirectTo('imscp_debugger.php');
     } elseif ($_GET['action'] == 'change' && (isset($_GET['id']) && isset($_GET['type']))) {

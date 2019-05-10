@@ -13,7 +13,7 @@
         </nginx>
     </frontend>
     <httpd
-            description="Httpd server for customers"
+            description="Httpd server implementation"
             has_alternatives="1"
     >
         <apache_fcgid

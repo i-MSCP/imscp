@@ -173,8 +173,8 @@ sub _dialogForDnsServerType
     }
 
     my %choices = (
-        master => 'Master',
-        slave => 'Slave'
+        Master => 'master',
+        Slave  => 'slave'
     );
 
     ( my $ret, $value ) = $dialog->select(

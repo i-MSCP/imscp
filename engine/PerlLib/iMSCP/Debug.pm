@@ -37,19 +37,19 @@ our @EXPORT = qw/
 
 BEGIN {
     $SIG{'__DIE__'} = sub {
-        fatal( @_, ( caller( 1 ) )[3] || 'main' ) if defined $^S && !$^S
+        fatal( @_ ) if defined $^S && !$^S
     };
     $SIG{'__WARN__'} = sub {
-        warning( @_, ( caller( 1 ) )[3] || 'main' );
+        warning( @_, 'main' );
     };
 }
 
 my $self;
 $self = {
-    debug           => FALSE,
-    verbose         => FALSE,
-    loggers         => [ iMSCP::Log->new( id => 'default' ) ],
-    logger          => sub { $self->{'loggers'}->[$#{ $self->{'loggers'} }] }
+    debug   => FALSE,
+    verbose => FALSE,
+    loggers => [ iMSCP::Log->new( id => 'default' ) ],
+    logger  => sub { $self->{'loggers'}->[$#{ $self->{'loggers'} }] }
 };
 
 =head1 DESCRIPTION
@@ -196,9 +196,12 @@ sub debug
     my ( $message, $caller ) = @_;
     $caller //= getCaller();
 
-    $self->{'logger'}()->store(
-        message => $caller . $message, tag => 'debug'
-    ) if $self->{'debug'};
+    if ( $self->{'debug'} ) {
+        $self->{'logger'}()->store(
+            message => $caller . $message, tag => 'debug'
+        );
+    }
+
     print STDOUT output( $caller . $message, 'debug' ) if $self->{'verbose'};
     undef;
 }
@@ -235,7 +238,7 @@ sub warning
 sub error
 {
     my ( $message, $caller ) = @_;
-    $caller //= '';#getCaller();
+    $caller //= getCaller();
 
     $self->{'logger'}()->store( message => $caller . $message, tag => 'error' );
     undef;
@@ -254,7 +257,7 @@ sub error
 sub fatal
 {
     my ( $message, $caller ) = @_;
-    $caller //= '';# getCaller();
+    $caller //= getCaller();
 
     $self->{'logger'}()->store( message => $caller . $message, tag => 'fatal' );
     exit 255;

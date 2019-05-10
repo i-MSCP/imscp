@@ -293,7 +293,7 @@ sub _dialogForDatabaseName
     my ( $ret, $msg ) = ( 0, '' );
 
     if ( iMSCP::Getopt->preseed ) {
-        $msg = "\\Z1Database '$value' exists but doesn't looks like an i-MSCP database.\\Zn\n\n";
+        $msg = "\\Z1The '$value' database exists but doesn't looks like an i-MSCP database.\\Zn\n\n";
     }
 
     do {
@@ -305,8 +305,8 @@ EOF
 
             if ( !isValidDbName( $value ) ) {
                 $msg = $LAST_VALIDATION_ERROR;
-            } elsif ( $self->_setupIsImscpDb( $value ) ) {
-                $msg = "\\Z1Database '$value' exists but doesn't looks like an i-MSCP database.\\Zn\n\n"
+            } elsif ( !$self->_setupIsImscpDb( $value ) ) {
+                $msg = "\\Z1The '$value' database exists but doesn't looks like an i-MSCP database.\\Zn\n\n"
             } else {
                 $msg = '';
             }
@@ -357,21 +357,16 @@ sub _dialogForDatabasePrefix
     }
 
     my %choices = (
-        behind  => 'Behind',
-        infront => 'Infront',
-        none    => 'None',
+        None   => 'none',
+        Prefix => 'infront',
+        Suffix => 'behind'
     );
-    ( my $ret, $value ) = $dialog->radiolist(
-        <<"EOF", \%choices, ( grep ( $value eq $_, qw/ behind infront / ) )[0] // 'none' );
-\\Z4\\Zb\\ZuMySQL Database Prefix/Suffix\\Zn
 
-Do you want use a prefix or suffix for customer's SQL databases and SQL users?
+    ( my $ret, $value ) = $dialog->select(
+        <<"EOF", \%choices, ( grep ( $value eq $_, qw/ behind infront / ) )[0] // '' );
+Do you want enable the automatic addition of a prefix or suffix for customer SQL users and databases?
 
- \\Z4Behind:\\Zn A numeric suffix such as '_1' will be added to each customer
-         SQL user and database name.
-\\Z4Infront:\\Zn A numeric prefix such as '1_' will be added to each customer
-         SQL user and database name.
-   \\Z4None\\Zn: Choice will be left to customer.
+If you choose 'None', the choice will be left to customers.
 EOF
     return 30 if $ret == 30;
 

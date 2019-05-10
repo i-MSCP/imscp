@@ -1409,8 +1409,8 @@ sub _dialogForCpHttpAccessMode
     }
 
     my %choices = (
-        https => 'Secure connection (SSL)',
-        http  => 'Insecure connection'
+        'Secure connection (SSL)' => 'https',
+        'Insecure connection'     => 'http'
     );
 
     ( my $ret, $value ) = $dialog->select(

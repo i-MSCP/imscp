@@ -28,7 +28,7 @@ use warnings;
 use Array::Utils qw/ array_diff array_minus intersect /;
 use File::Basename 'dirname';
 use iMSCP::Boolean;
-use iMSCP::Debug  'error';
+use iMSCP::Debug 'error';
 use iMSCP::Dialog;
 use iMSCP::Dir;
 use iMSCP::Execute 'execute';
@@ -273,7 +273,7 @@ sub _init
     my ( $self ) = @_;
 
     @{ $self->{'PACKAGES'} } = (
-        iMSCP::Dir->new( dirname => "@{ [ dirname __FILE__ ] }/@{ [ ( ref $self ) =~ s/.*:://r ] }" )->getDirs(), 'No'
+        iMSCP::Dir->new( dirname => "@{ [ dirname __FILE__ ] }/@{ [ ( ref $self ) =~ s/.*:://r ] }" )->getDirs()
     );
     $self;
 }
@@ -291,21 +291,22 @@ sub _dialogForPackages
 {
     my ( $self, $dialog ) = @_;
 
+    my @availablePackages = ( @{ $self->{'PACKAGES'} }, 'No' );
     my @selectedPackages = split ',', ::setupGetQuestion( $self->getConfVarname());
     my $ret = 20;
 
     FIRST_DIALOG:
 
-    if ( grep( $::reconfigure eq $_, $self->getOptName(), 'addons', 'all' )
+    if ( grep ( $::reconfigure eq $_, $self->getOptName(), 'addons', 'all' )
         || !@selectedPackages
-        || array_minus( @selectedPackages, @{ $self->{'PACKAGES'} } )
+        || array_minus( @selectedPackages, @availablePackages )
     ) {
         ( $ret, my $packages ) = $dialog->multiselect(
-            <<"EOF", map { $_ => $_ } @{ $self->{'PACKAGES'} }, intersect( @{ $self->{'PACKAGES'} }, @selectedPackages ));
+            <<"EOF", { map { $_ => $_ } @{ $self->{'PACKAGES'} } }, [ intersect( @availablePackages, @selectedPackages ) ] );
 Please select the @{ [ $self->getPackageHumanName() ] } you want to install:
 EOF
         return 30 if $ret == 30;
-        @selectedPackages = @{ $packages } ? @{ $packages } : 'No';
+        @selectedPackages = @{ $packages } ? @{ $packages } : ( 'No' );
     };
 
     ::setupSetQuestion( $self->getConfVarname(), join ',', @selectedPackages );
