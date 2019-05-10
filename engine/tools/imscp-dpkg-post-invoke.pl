@@ -35,7 +35,7 @@ use File::Basename;
 use iMSCP::Boolean;
 use iMSCP::Bootstrapper;
 use iMSCP::Debug qw/
-    debug error getMessageByType getLastError newDebug setVerbose
+    debug error getMessageByType getLastError newDebug setDebug setVerbose
 /;
 use iMSCP::Getopt;
 use iMSCP::Servers;
@@ -51,8 +51,6 @@ use iMSCP::Packages;
 # in configuration files which are readonly in default (backend) context.
 $::execmode = 'setup';
 
-newDebug( 'imscp-dpkg-post-invoke.log' );
-
 iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq{
 
 Execute dpkg(1) post-invoke tasks from i-MSCP servers and packages
@@ -64,6 +62,8 @@ OPTIONS:
     'verbose|v' => \&iMSCP::Getopt::verbose
 );
 
+newDebug( 'imscp-dpkg-post-invoke.log' );
+setDebug( iMSCP::Getopt->debug );
 setVerbose( iMSCP::Getopt->verbose );
 
 iMSCP::Bootstrapper->getInstance()->boot( {

@@ -32,29 +32,39 @@ use warnings;
 use File::Basename;
 use FindBin;
 use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use iMSCP::Boolean;
 use iMSCP::Bootstrapper;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ newDebug setDebug setVerbose /;
 use iMSCP::Getopt;
 use iMSCP::Mount qw/ mount umount isMountpoint getMounts /;
 
-$ENV{'LANG'} = 'C.UTF-8';
-$ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
+@{ENV}{qw/ LANG PATH /} = (
+    'C.UTF-8',
+    '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+);
+
+# Set execution context
+$::execmode = 'backend';
 
 sub run
 {
-    my ($action) = @_;
+    my ( $action ) = @_;
 
     my $rs = 0;
-    my $fstab = "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf";
+    my $fstab = "$::imscpConfig{'CONF_DIR'}/mounts/mounts.conf";
     return $rs unless -f $fstab;
 
-    open my $fh, '<', $fstab or die( sprintf( "Couldn't open %s: %s", $fstab, $! ));
+    open my $fh, '<', $fstab or die( sprintf(
+        "Couldn't open %s: %s", $fstab, $!
+    ));
 
     while ( <$fh> ) {
         next if /^(?:#|$)/; # Ignore comment and empty lines
         chomp;
         my $fields;
-        @{$fields}{ qw/ fs_spec fs_file fs_vfstype fs_mntops ignore_failures / } = split;
+        @{ $fields }{ qw/
+            fs_spec fs_file fs_vfstype fs_mntops ignore_failures
+        / } = split;
 
         if ( $action eq 'start' ) {
             next if $fields->{'fs_mntops'} =~ /\bnoauto\b/;
@@ -69,9 +79,7 @@ sub run
     $rs;
 }
 
-newDebug( 'imscp_mountall.log' );
-
-iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]... start|stop', basename( $0 )) . qq {
+iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]... start|stop', basename( $0 )) . qq{
 
 Mount or umount filesystems by reading entries from i-MSCP fstab-like file.
 
@@ -90,20 +98,21 @@ OPTIONS:
 my $action = shift;
 defined $action && $action =~ /^(?:start|stop)$/ or iMSCP::Getopt->showUsage();
 
+newDebug( 'imscp_mountall.log' );
+setDebug( iMSCP::Getopt->debug );
 setVerbose( iMSCP::Getopt->verbose );
 
-my $bootstrapper = iMSCP::Bootstrapper->getInstance();
-exit unless $bootstrapper->lock( '/var/lock/imscp-mountall.lock', 'nowait' );
-
-$bootstrapper->boot(
-    {
-        config_readonly => 1,
-        mode            => 'backend',
-        nodatabase      => 1,
-        nokeys          => 1,
-        nolock          => 1
-    }
+exit unless iMSCP::Bootstrapper->getInstance()->lock(
+    '/var/lock/imscp-mountall.lock', 'nowait'
 );
+
+iMSCP::Bootstrapper->getInstance()->boot( {
+    config_readonly => TRUE,
+    mode            => $::execmode,
+    nodatabase      => TRUE,
+    nokeys          => TRUE,
+    nolock          => TRUE
+} );
 
 exit run( $action );
 

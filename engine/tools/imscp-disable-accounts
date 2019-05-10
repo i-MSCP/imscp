@@ -31,15 +31,21 @@ use strict;
 use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use iMSCP::Boolean;
 use iMSCP::Database;
-use iMSCP::Debug qw/ debug error newDebug setVerbose /;
+use iMSCP::Debug qw/ debug error newDebug setDebug setVerbose /;
 use iMSCP::Bootstrapper;
 use iMSCP::DbTasksProcessor;
 use iMSCP::Getopt;
 use File::Basename;
 
-$ENV{'LANG'} = 'C.UTF-8';
-$ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
+@{ENV}{qw/ LANG PATH /} = (
+    'C.UTF-8',
+    '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+);
+
+# Set execution context
+$::execmode = 'backend';
 
 sub run
 {
@@ -47,7 +53,9 @@ sub run
 
     local $@;
     eval {
-        my $row = $dbh->selectrow_hashref( "SELECT value FROM config WHERE name = 'HARD_MAIL_SUSPENSION'" );
+        my $row = $dbh->selectrow_hashref(
+            "SELECT value FROM config WHERE name = 'HARD_MAIL_SUSPENSION'"
+        );
         $row = { value => 0 } unless $row;
 
         my $rows = $dbh->selectall_hashref(
@@ -61,9 +69,9 @@ sub run
             'domain_id'
         );
 
-        return 0 unless %{$rows};
+        return 0 unless %{ $rows };
 
-        for ( keys %{$rows} ) {
+        for ( keys %{ $rows } ) {
             eval {
                 $dbh->begin_work();
 
@@ -73,18 +81,43 @@ sub run
                         undef, 'todisable', 'no', $_
                     );
                 } else { # IMAP/POP disabled
-                    $dbh->do( 'UPDATE mail_users SET po_active = ? WHERE domain_id = ?', undef, 'no', $_ );
+                    $dbh->do(
+                        'UPDATE mail_users SET po_active = ? WHERE domain_id = ?',
+                        undef,
+                        'no',
+                        $_
+                    );
                 }
 
-                $dbh->do( 'UPDATE domain SET domain_status = ? WHERE domain_id = ?', undef, 'todisable', $_ );
-                $dbh->do( 'UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?', undef, 'todisable', $_ );
-                $dbh->do( 'UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?', undef, 'todisable', $_ );
+                $dbh->do(
+                    'UPDATE domain SET domain_status = ? WHERE domain_id = ?',
+                    undef,
+                    'todisable',
+                    $_
+                );
+                $dbh->do(
+                    'UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?',
+                    undef,
+                    'todisable',
+                    $_
+                );
+                $dbh->do(
+                    'UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?',
+                    undef,
+                    'todisable',
+                    $_
+                );
                 $dbh->do(
                     '
-                        UPDATE subdomain_alias SET subdomain_alias_status = ?
-                        WHERE alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
+                        UPDATE subdomain_alias
+                        SET subdomain_alias_status = ?
+                        WHERE alias_id IN (
+                            SELECT alias_id FROM domain_aliasses WHERE domain_id = ?
+                        )
                     ',
-                    undef, 'todisable', $_
+                    undef,
+                    'todisable',
+                    $_
                 );
                 $dbh->commit();
             };
@@ -94,7 +127,9 @@ sub run
             }
         }
 
-        iMSCP::DbTasksProcessor->getInstance( mode => 'backend' )->processDbTasks();
+        iMSCP::DbTasksProcessor->getInstance(
+            mode => $::execmode
+        )->processDbTasks();
     };
     if ( $@ ) {
         error( $@ );
@@ -104,9 +139,7 @@ sub run
     0;
 }
 
-newDebug( 'imscp-disable-accounts.log' );
-
-iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq {
+iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq{
 
 Script that disable expired customer accounts
 
@@ -117,17 +150,18 @@ OPTIONS:
     'verbose|v' => \&iMSCP::Getopt::verbose
 );
 
+newDebug( 'imscp-disable-accounts.log' );
+setDebug( iMSCP::Getopt->debug );
 setVerbose( iMSCP::Getopt->verbose );
 
-my $bootstrapper = iMSCP::Bootstrapper->getInstance();
-exit unless $bootstrapper->lock( '/var/lock/imscp-disable-accounts.lock', 'nowait' );
-
-$bootstrapper->getInstance()->boot(
-    {
-        config_readonly => 1,
-        mode            => 'backend'
-    }
+exit unless iMSCP::Bootstrapper->getInstance()->lock(
+    '/var/lock/imscp-disable-accounts.lock', 'nowait'
 );
+
+iMSCP::Bootstrapper->getInstance()->boot( {
+    config_readonly => TRUE,
+    mode            => $::execmode
+} );
 
 exit run();
 

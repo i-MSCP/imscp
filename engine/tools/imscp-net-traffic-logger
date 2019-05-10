@@ -33,14 +33,19 @@ use FindBin;
 use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 use File::Basename;
 use iMSCP::Boolean;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error newDebug setDebug setVerbose /;
 use iMSCP::Bootstrapper;
-use iMSCP::Execute;
+use iMSCP::Execute 'execute';
 use iMSCP::Getopt;
 use iMSCP::ProgramFinder;
 
-$ENV{'LANG'} = 'C.UTF-8';
-$ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
+@{ENV}{qw/ LANG PATH /} = (
+    'C.UTF-8',
+    '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+);
+
+# Set execution context
+$::execmode = 'backend';
 
 my @EXECS;
 
@@ -52,54 +57,84 @@ sub start
     for my $exec ( @EXECS ) {
         defined $exec or next;
 
-        # Creating IMSCP_INPUT and IMSCP_OUTPUT chains for incoming/outgoing traffic logging
-        for ( qw/ IMSCP_INPUT IMSCP_OUTPUT / ) {
-            my $rs = execute( "$exec -w -t filter -N $_", \my $stdout, \my $stderr );
+        # Creating IMSCP_INPUT and IMSCP_OUTPUT chains for incoming/outgoing
+        # traffic logging
+        for my $chain ( qw/ IMSCP_INPUT IMSCP_OUTPUT / ) {
+            my $rs = execute(
+                "$exec -w -t filter -N $chain", \my $stdout, \my $stderr
+            );
             debug( $stdout ) if $stdout;
             error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
         }
 
-        # Adding rules to pass incoming/outgoing traffic through our chains, excluding traffic from/to 'lo' interface
-        for ( '-I INPUT ! -i lo -j IMSCP_INPUT', '-I OUTPUT ! -o lo -j IMSCP_OUTPUT' ) {
-            my $rs = execute( "$exec -w -t filter $_", \my $stdout, \my $stderr );
+        # Adding rules to pass incoming/outgoing traffic through our chains,
+        # excluding traffic from/to 'lo' interface
+        for my $rule ( '-I INPUT ! -i lo -j IMSCP_INPUT', '-I OUTPUT ! -o lo -j IMSCP_OUTPUT' ) {
+            my $rs = execute(
+                "$exec -w -t filter $rule", \my $stdout, \my $stderr
+            );
             debug( $stdout ) if $stdout;
             error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
         }
 
-        for ( $panelHttpPort, $panelHttpsPort, 80, 443, 110, 143, 25, 465, 587, 995, 993, 20, 21 ) {
+        for my $port (
+            $panelHttpPort,
+            $panelHttpsPort,
+            80, 443, 110, 143, 25, 465, 587, 995, 993, 20, 21
+        ) {
             defined or next;
 
             # Adding rule for logging incoming traffic to the given port
-            my $rs = execute( "$exec -w -t filter -I IMSCP_INPUT -p tcp --dport $_", \my $stdout, \my $stderr );
+            my $rs = execute(
+                "$exec -w -t filter -I IMSCP_INPUT -p tcp --dport $port",
+                \my $stdout,
+                \my $stderr
+            );
             debug( $stdout ) if $stdout;
             error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
 
             # Adding rule for logging outgoing traffic from the given port
-            $rs = execute( "$exec -w -t filter -I IMSCP_OUTPUT -p tcp --sport $_", \$stdout, \$stderr );
+            $rs = execute(
+                "$exec -w -t filter -I IMSCP_OUTPUT -p tcp --sport $port",
+                \$stdout,
+                \$stderr
+            );
             debug( $stdout ) if $stdout;
             error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
         }
 
-        for ( qw/ 25 465 587 / ) {
+        for my $port ( qw/ 25 465 587 / ) {
             # Adding a rule for logging incoming traffic from the given port
-            my $rs = execute( "$exec -w -t filter -I IMSCP_INPUT -p tcp --sport $_", \my $stdout, \my $stderr );
+            my $rs = execute(
+                "$exec -w -t filter -I IMSCP_INPUT -p tcp --sport $port",
+                \my $stdout,
+                \my $stderr
+            );
             debug( $stdout ) if $stdout;
             error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
 
             # Adding a rule for logging outgoing traffic to the given port
-            $rs = execute( "$exec -w -t filter -I IMSCP_OUTPUT -p tcp --dport $_", \$stdout, \$stderr );
+            $rs = execute(
+                "$exec -w -t filter -I IMSCP_OUTPUT -p tcp --dport $port",
+                \$stdout,
+                \$stderr
+            );
             debug( $stdout ) if $stdout;
             error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
         }
 
-        for ( qw/ IMSCP_INPUT IMSCP_OUTPUT / ) {
-            my $rs = execute( "$exec -w -t filter -A $_ -j RETURN", \my $stdout, \my $stderr );
+        for my $chain ( qw/ IMSCP_INPUT IMSCP_OUTPUT / ) {
+            my $rs = execute(
+                "$exec -w -t filter -A $chain -j RETURN",
+                \my $stdout,
+                \my $stderr
+            );
             debug( $stdout ) if $stdout;
             error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
@@ -114,7 +149,9 @@ sub stop
     for my $exec ( @EXECS ) {
         defined $exec or next;
 
-        my $rs = execute( "$exec -S | grep 'IMSCP_'", \my $stdout, \my $stderr );
+        my $rs = execute(
+            "$exec -S | grep 'IMSCP_'", \my $stdout, \my $stderr
+        );
         debug( $stdout ) if $stdout;
         error( $stderr || 'Unknown error' ) if $rs > 1;
         return $rs if $rs > 1;
@@ -133,8 +170,10 @@ sub stop
 
         # Delete i-MSCP rules on INPUT and OUTPUT chains if any
         if ( $data{'delete'} ) {
-            for ( @{ $data{'delete'} } ) {
-                $rs = execute( "$exec -w -t filter -D $_", \$stdout, \$stderr );
+            for my $rule ( @{ $data{'delete'} } ) {
+                $rs = execute(
+                    "$exec -w -t filter -D $rule", \$stdout, \$stderr
+                );
                 debug( $stdout ) if $stdout;
                 error( $stderr || 'Unknown error' ) if $rs;
                 return $rs if $rs;
@@ -143,13 +182,17 @@ sub stop
 
         # Flush and delete i-MSCP chains if any
         if ( $data{'flush'} ) {
-            for ( keys %{ $data{'flush'} } ) {
-                $rs = execute( "$exec -w -t filter -F $_", \$stdout, \$stderr );
+            for my $chain ( keys %{ $data{'flush'} } ) {
+                $rs = execute(
+                    "$exec -w -t filter -F $chain", \$stdout, \$stderr
+                );
                 debug( $stdout ) if $stdout;
                 error( $stderr || 'Unknown error' ) if $rs;
                 return $rs if $rs;
 
-                $rs ||= execute( "$exec -w -t filter -X $_", \$stdout, \$stderr );
+                $rs ||= execute(
+                    "$exec -w -t filter -X $chain", \$stdout, \$stderr
+                );
                 debug( $stdout ) if $stdout;
                 error( $stderr || 'Unknown error' ) if $rs;
                 return $rs if $rs;
@@ -159,8 +202,6 @@ sub stop
 
     0;
 }
-
-newDebug( 'imscp-net-traffic-logger.log' );
 
 iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]... start|stop', basename( $0 )) . qq{
 
@@ -176,21 +217,27 @@ OPTIONS:
 my $action = shift;
 $action && $action =~ /^(?:start|stop)$/ or iMSCP::Getopt->showUsage();
 
+newDebug( 'imscp-net-traffic-logger.log' );
+setDebug( iMSCP::Getopt->debug );
 setVerbose( iMSCP::Getopt->verbose );
 
-my $bootstrapper = iMSCP::Bootstrapper->getInstance();
-exit unless $bootstrapper->lock( '/var/lock/imscp-net-traffic-logger.lock', 'nowait' );
+exit unless iMSCP::Bootstrapper->getInstance()->lock(
+    '/var/lock/imscp-net-traffic-logger.lock', 'nowait'
+);
 
-$bootstrapper->boot( {
+iMSCP::Bootstrapper->getInstance()->boot( {
     config_readonly => TRUE,
     nodatabase      => TRUE,
     nokeys          => TRUE,
+    mode            => $::execmode,
     nolock          => TRUE
 } );
 
 @EXECS = (
     iMSCP::ProgramFinder::find( 'iptables' ),
-    ( $::imscpConfig{'IPV6_SUPPORT'} ? iMSCP::ProgramFinder::find( 'ip6tables' ) : undef )
+    ( $::imscpConfig{'IPV6_SUPPORT'}
+        ? iMSCP::ProgramFinder::find( 'ip6tables' ) : undef
+    )
 );
 
 my %dispatch = (
