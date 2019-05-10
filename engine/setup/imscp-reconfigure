@@ -45,8 +45,6 @@ use Net::LibIDN 'idn_to_unicode';
     TRUE
 );
 
-newDebug( 'imscp-reconfigure.log' );
-
 {
     no warnings 'once';
     $::execmode = 'setup';
@@ -55,6 +53,7 @@ newDebug( 'imscp-reconfigure.log' );
 
 iMSCP::Getopt->parse( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )));
 
+newDebug( 'imscp-reconfigure.log' );
 setDebug( iMSCP::Getopt->debug );
 setVerbose( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose );
 
@@ -80,17 +79,20 @@ sub run
 
     unless ( iMSCP::Getopt->noprompt ) {
         my $dialog = iMSCP::Dialog->getInstance();
-        # Override default title
-        local $dialog->{'_opts'}->{'title'} = 'Reconfiguration dialog';
+        
+        # Disable backup feature for first dialog
+        $dialog->backup( FALSE );
+
         # Override default button labels
         local @{ $dialog->{'_opts'} }{
-            $_[0]->{'program'} eq 'dialog'
-                ? qw/ ok-label extra-label /
-                : qw/ yes-button no-button /
-        } = qw/ Continue Abort /;
+            $dialog->{'program'} eq 'dialog'
+                ? qw/ title yes-label no-label /
+                : qw/ title yes-button no-button /
+        } = qw/ Reconfiguration Continue Abort /;
 
-        exit 0 if $dialog->boolean( <<"EOF", TRUE );
-Welcome to the \\Z1i-MSCP $::imscpConfig{'Version'}\\Zn reconfiguration dialog.
+        if($dialog->boolean( <<"EOF", TRUE )) {
+        
+Welcome to the \\Z1\\Zbi-MSCP $::imscpConfig{'Version'}\\Zn reconfiguration dialog.
 
 This program will reconfigures your i-MSCP instance.
 
@@ -98,6 +100,9 @@ During the process, some or all services might require to be shutdown or restart
 
 You can now either continue or abort.
 EOF
+            system('clear');
+            exit 0;
+        }
     }
 
     $rs ||= setupDialog();
@@ -110,8 +115,18 @@ EOF
             print output( 'i-MSCP has been successfully reconfigured.', 'ok' );
         }
     } else {
-        iMSCP::Dialog->getInstance()->infobox( <<"EOF" );
-\\Z1Congratulations\\Zn
+        my $dialog = iMSCP::Dialog->getInstance();
+
+        # Disable backup feature for last dialog
+        $dialog->backup( FALSE );
+
+        # Override default button label
+        local $dialog->{'_opts'}->{
+            $dialog->{'program'} eq 'dialog' ? 'ok-label' : 'ok-button'
+        } = 'Ok';
+
+        iMSCP::Dialog->getInstance()->note( <<"EOF" );
+\\Z1\\ZbCongratulations\\Zn
 
 i-MSCP has been successfully reconfigured.
 

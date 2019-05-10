@@ -40,7 +40,7 @@ BEGIN {
         fatal( @_ ) if defined $^S && !$^S
     };
     $SIG{'__WARN__'} = sub {
-        warning( @_, 'main' );
+        warning( @_ );
     };
 }
 

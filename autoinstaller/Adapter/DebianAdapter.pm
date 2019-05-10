@@ -156,7 +156,7 @@ EOF
         $dialog->error( <<'EOF' );
 You cannot trigger a re-configuration from an i-MSCP version which hasn't been installed yet.
 EOF
-        return 50;
+        return 1;
     }
 
     my $rs = $dialog->execute( [

@@ -89,12 +89,12 @@ sub process
         error( $@ );
         return 1;
     } elsif ( $row ) {
-        iMSCP::Dialog->getInstance()->infobox( <<'EOF' );
-\Z1Uninstallation aborted.\Zn
+        iMSCP::Dialog->getInstance()->error( <<"EOF" );
+\\Z1\\ZbUninstallation aborted.\\Zn
 
 You must first uninstall all i-MSCP plugins through the control panel interface.
 EOF
-        exit 0;
+        exit 1;
     }
 
     undef $row;
@@ -127,7 +127,7 @@ sub shutDown
 {
 
     iMSCP::Dialog->getInstance()->note( <<"EOF" );
-\\Z1Congratulations\\Zn
+\\Z1\\ZbCongratulations\\Zn
 
 i-MSCP has been successfully uninstalled.
 EOF

@@ -169,8 +169,18 @@ sub install
             print output( 'i-MSCP has been successfully installed/updated.', 'ok' );
         }
     } else {
-        iMSCP::Dialog->getInstance()->note( <<"EOF" );
-\\Z1Congratulations\\Zn
+        my $dialog = iMSCP::Dialog->getInstance();
+
+        # Disable backup feature for last dialog
+        $dialog->backup( FALSE );
+
+        # Override default button label
+        local $dialog->{'_opts'}->{
+            $dialog->{'program'} eq 'dialog' ? 'ok-label' : 'ok-button'
+        } = 'Ok';
+
+        $dialog->note( <<"EOF" );
+\\Z1\\ZbCongratulations\\Zn
 
 i-MSCP has been successfully installed/updated.
 
@@ -194,7 +204,7 @@ EOF
  Show welcome dialog
 
  Param iMSCP::Dialog \%dialog
- Return int 0 (Next)
+ Return int 0 (Next), 20 (Skip), 30 (Back), 50 (Abort)
 
 =cut
 
@@ -202,8 +212,17 @@ sub showWelcomeDialog
 {
     my ( $dialog ) = @_;
 
-    $dialog->text( <<"EOF" );
-Welcome to the i-MSCP installer.
+    return 20 if iMSCP::Getopt->noprompt;
+
+    # Override default button labels
+    local @{ $dialog->{'_opts'} }{
+        $dialog->{'program'} eq 'dialog'
+            ? qw/ yes-label no-label /
+            : qw/ yes-button no-button /
+    } = qw/ Continue Abort /;
+
+    exit 50 if $dialog->boolean( <<"EOF" );
+Welcome to the \\Z1\\Zbi-MSCP $::imscpConfig{'Version'}\\Zn installer.
 
 i-MSCP (internet Multi Server Control Panel) is an open source software (OSS) for shared hosting environments management on Linux servers. It comes with a large choice of modules for various services such as Apache2, ProFTPd, Dovecot, Courier, Bind9, and can be easily extended through plugins, or listener files using its events-based API.
 
@@ -232,8 +251,7 @@ sub showGitVersionWarnDialog
 {
     my ( $dialog ) = @_;
 
-    return 20 if iMSCP::Getopt->noprompt || $::reconfigure ne 'none'
-        || index( lc $::imscpConfig{'Version'}, 'git' ) == -1;
+    return 20 if iMSCP::Getopt->noprompt || index( lc $::imscpConfig{'Version'}, 'git' ) == -1;
 
     # Override default button labels
     local @{ $dialog->{'_opts'} }{
@@ -248,8 +266,6 @@ sub showGitVersionWarnDialog
 The installer detected that you intends to @{ [ !%::imscpOldConfig ? 'install' : 'update your installation to' ]} the i-MSCP \\ZbGit\\ZB version.
 
 We would remind you that the Git version can be \\Zuhighly unstable\\ZU and that the i-MSCP team \\Zudoesn't provide any support\\ZU for it.
-
-You can now either continue or abort.
 EOF
     return 50 if $ret == 1;
     $ret;
