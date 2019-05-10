@@ -33,7 +33,7 @@ int main(int argc, char **argv)
         }
     }
 
-    /* Set default pidfile of none was provided */
+    /* Set default pidfile if none was provided */
     if(pidfile == NULL) {
         pidfile = strdup(DAEMON_PIDFILE);
     }
@@ -55,6 +55,7 @@ int main(int argc, char **argv)
     /* daemon process */
 
     {
+        FILE *file = NULL;
         int reuse = 1;
         int servsockfd, clisockfd;
         struct sockaddr_in servaddr;
@@ -86,7 +87,6 @@ int main(int argc, char **argv)
         notify(-1);
     }
 #endif
-
         /* ident socket */
         memset((void *) &servaddr, '\0', (size_t) sizeof(servaddr));
         servaddr.sin_family = AF_INET;
@@ -117,13 +117,11 @@ int main(int argc, char **argv)
         signal(SIGCHLD, handle_signal);
         signal(SIGPIPE, handle_signal);
 
-        /* write pidfile if needed */
-        {
-            FILE *file = fopen(pidfile, "w");
-            fprintf(file, "%ld", (long)getpid());
-            fclose(file);
-            free(pidfile);
-        }
+        /* write pidfile */
+        file = fopen(pidfile, "w");
+        fprintf(file, "%ld", (long)getpid());
+        fclose(file);
+        free(pidfile);
 
         /* notify parent process that initialization is done and that pidfile
            has been written */
@@ -155,7 +153,6 @@ int main(int argc, char **argv)
             }
 
             if (fork() == 0) {
-                /* child */
                 close(servsockfd);
                 say("%s", message(MSG_START_CHILD));
                 handle_client_connection(clisockfd, (struct sockaddr *) &cliaddr);
@@ -164,7 +161,6 @@ int main(int argc, char **argv)
                 exit(EXIT_SUCCESS);
             }
 
-            /* parent */
             close(clisockfd);
         }
 

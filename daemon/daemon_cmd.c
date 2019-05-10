@@ -43,10 +43,9 @@ int backend_command(int sockfd, char *buffer)
 
             if(execl(backendscriptpath, backendscriptname, (char *)NULL) == -1) {
                 say("couldn't execute backend command: %s", strerror(errno));
-                free(backendscriptname);
                 exit(EXIT_FAILURE);
             }
-            
+
             free(backendscriptname);
             break;
         default: { /* parent */
