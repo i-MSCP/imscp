@@ -134,11 +134,12 @@ sub add
         $self->{'_dbh'}->do(
             "
                 UPDATE subdomain_alias AS t1
-                SET t1.subdomain_alias_status = 'tochange'
                 JOIN domain_aliasses AS t2 USING(domain_id)
-                WHERE t2.domain_id = ?
-                AND t1.subdomain_alias_status = 'ok'
+                SET t1.subdomain_alias_status = 'tochange'
+                WHERE t1.subdomain_alias_status = 'ok'
+                AND  t2.domain_id = ?
             ",
+            undef,
             $self->{'alias_id'}
         );
         $self->{'_dbh'}->do(

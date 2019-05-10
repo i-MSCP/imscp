@@ -140,11 +140,12 @@ sub add
         $self->{'_dbh'}->do(
             "
                 UPDATE subdomain AS t1
-                SET t1.subdomain_status = 'tochange'
                 JOIN domain AS t2 USING(domain_id)
-                WHERE t2.domain_id = ?
-                AND t1.subdomain_status = 'ok'
+                SET t1.subdomain_status = 'tochange'
+                WHERE t1.subdomain_status = 'ok'
+                AND t2.domain_id = ?
             ",
+            undef,
             $self->{'domain_id'}
         );
         $self->{'_dbh'}->do(
