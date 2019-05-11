@@ -407,7 +407,7 @@ sub _dialogForSqlRootUser
         for my $host ( qw/ localhost 127.0.0.1 ::1 / ) {
             next if $self->_tryDbConnect( $host, $dbPort );
             ::setupSetQuestion( 'DATABASE_HOST', $dbHost );
-            ::setupsetQuestion( 'DATABASE_PORT', 3306 );
+            ::setupSetQuestion( 'DATABASE_PORT', 3306 );
             ::setupSetQuestion( 'SQL_ROOT_USER', undef );
             ::setupSetQuestion( 'SQL_ROOT_PASSWORD', undef );
             return 0;
