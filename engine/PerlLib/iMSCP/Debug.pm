@@ -198,11 +198,17 @@ sub debug
 
     if ( $self->{'debug'} ) {
         $self->{'logger'}()->store(
-            message => $caller . $message, tag => 'debug'
+            message => $caller ? "$caller: $message" : $message,
+            tag     => 'debug'
         );
     }
 
-    print STDOUT output( $caller . $message, 'debug' ) if $self->{'verbose'};
+    if ( $self->{'verbose'} ) {
+        print STDOUT output(
+            $caller ? "$caller: $message" : $message, 'debug'
+        );
+    }
+
     undef;
 }
 
@@ -221,7 +227,10 @@ sub warning
     my ( $message, $caller ) = @_;
     $caller //= getCaller();
 
-    $self->{'logger'}()->store( message => $caller . $message, tag => 'warn' );
+    $self->{'logger'}()->store(
+        message => $caller ? "$caller: $message" : $message,
+        tag     => 'warn'
+    );
     undef;
 }
 
@@ -240,7 +249,10 @@ sub error
     my ( $message, $caller ) = @_;
     $caller //= getCaller();
 
-    $self->{'logger'}()->store( message => $caller . $message, tag => 'error' );
+    $self->{'logger'}()->store(
+        message => $caller ? "$caller: $message" : $message,
+        tag     => 'error'
+    );
     undef;
 }
 
@@ -259,7 +271,10 @@ sub fatal
     my ( $message, $caller ) = @_;
     $caller //= getCaller();
 
-    $self->{'logger'}()->store( message => $caller . $message, tag => 'fatal' );
+    $self->{'logger'}()->store(
+        message => $caller ? "$caller: $message" : $message,
+        tag     => 'fatal'
+    );
     exit 255;
 }
 
@@ -351,7 +366,7 @@ sub getCaller
     do {
         $caller = ( ( caller $stackIDX++ )[3] || 'main' );
     } while $caller eq '(eval)' || index( $caller, '__ANON__' ) != -1;
-    $caller . ': ';
+    $caller;
 }
 
 =back

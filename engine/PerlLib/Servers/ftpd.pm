@@ -53,7 +53,7 @@ sub factory
 
     my $package = $::imscpConfig{'FTPD_PACKAGE'} || 'Servers::noserver';
 
-    if ( %main::imscpOldConfig
+    if ( %::imscpOldConfig
         && exists $::imscpOldConfig{'FTPD_PACKAGE'}
         && $::imscpOldConfig{'FTPD_PACKAGE'} ne ''
         && $::imscpOldConfig{'FTPD_PACKAGE'} ne $package

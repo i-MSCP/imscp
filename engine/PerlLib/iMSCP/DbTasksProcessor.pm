@@ -532,10 +532,9 @@ sub _processModuleDbTasks
         my $countRows = $sth->rows();
 
         unless ( $countRows ) {
-            debug(
-                sprintf( 'No task to process for %s', $module ),
-                ( caller( 2 ) )[3]
-            );
+            debug( sprintf(
+                'No task to process for %s', $module
+            ), ( caller( 2 ) )[3] );
             return 0;
         }
 
@@ -547,15 +546,13 @@ sub _processModuleDbTasks
         while ( my $row = $sth->fetchrow_hashref() ) {
             my $name = encode_utf8( $row->{'name'} );
 
-            debug(
-                sprintf(
-                    'Processing %s tasks for: %s (ID %s)',
-                    $module,
-                    $name,
-                    $row->{'id'}
-                ),
-                ( caller( 2 ) )[3]
-            );
+            debug( sprintf(
+                'Processing %s tasks for: %s (ID %s)',
+                $module,
+                $name,
+                $row->{'id'}
+            ), ( caller( 2 ) )[3] );
+
             newDebug( $module . ( $perTaskLogFile ? "_${name}" : '' ) . '.log' );
 
             if ( $needStepper ) {

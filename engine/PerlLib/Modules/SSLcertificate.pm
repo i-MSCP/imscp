@@ -27,7 +27,6 @@ use strict;
 use warnings;
 use iMSCP::Boolean;
 use iMSCP::Debug qw/ error getLastError getMessageByType warning /;
-use iMSCP::Dir;
 use iMSCP::File;
 use iMSCP::OpenSSL;
 use File::Temp;
@@ -188,13 +187,9 @@ sub _init
 {
     my ( $self ) = @_;
 
-    $self->{'certsDir'} = "$::imscpConfig{'GUI_ROOT_DIR'}/data/certs";
-    iMSCP::Dir->new( dirname => $self->{'certsDir'} )->make( {
-        user  => $::imscpConfig{'ROOT_USER'},
-        group => $::imscpConfig{'ROOT_GROUP'},
-        mode  => 0750
-    } );
     $self->SUPER::_init();
+    $self->{'certsDir'} = "$::imscpConfig{'GUI_ROOT_DIR'}/data/certs";
+    $self;
 }
 
 =item _loadData( $certificateId )

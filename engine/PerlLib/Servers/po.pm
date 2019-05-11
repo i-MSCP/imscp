@@ -53,7 +53,7 @@ sub factory
 
     my $package = $::imscpConfig{'PO_PACKAGE'} || 'Servers::noserver';
 
-    if ( %main::imscpOldConfig
+    if ( %::imscpOldConfig
         && exists $::imscpOldConfig{'PO_PACKAGE'}
         && $::imscpOldConfig{'PO_PACKAGE'} ne ''
         && $::imscpOldConfig{'PO_PACKAGE'} ne $package
