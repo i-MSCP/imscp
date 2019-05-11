@@ -66,7 +66,7 @@ sub factory
 
 sub getPriority
 {
-    75;
+    80;
 }
 
 =item can( $method )

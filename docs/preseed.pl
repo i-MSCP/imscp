@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2019.05.09
+# Last update: 2019.05.11
 
 %::questions = (
     #
@@ -78,11 +78,21 @@
     # Available SQL server vendors/versions depend on your distribution.
     # Please consult the autoinstaller/Packages/<distro>-<codename>.xml file.
     # Accepted values are the XML node names that describe SQL servers. For
-    # instance: 'mysql_5.7', 'mariadb_10.1', 'mariadb_10.2' ...
+    # instance: 'remote_server', 'mysql_5.7', 'mariadb_10.1', 'mariadb_10.2'
     #
     # Leave this parameter empty to automatically select the default SQL server
     # implementation, as set in the distribution packages file.
     SQL_SERVER                          => '',
+
+    # Keep the local SQL server installed regardless of the selected SQL server
+    # implementation
+    #
+    # If there is a local SQL server installed, and when selecting the
+    # 'remote server' SQL implementation, this flag tells whether or not
+    # the local server must be kept.
+    #
+    # Possible value: yes, no
+    KEEP_LOCAL_SQL_SERVER               => 'yes',
 
     # Database hostname
     #

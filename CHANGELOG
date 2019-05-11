@@ -53,6 +53,7 @@ INSTALLER
     Changed: All PHP versions are now always installed
     Changed: Default selected PHP version for customers is now 7.3
     Changed: Required PHP version for the frontEnd is now 7.3
+    Enhancement: Make it possible to keep local SQL server installed when the SQL remote alternative is selected
     Fixed: jessie-updates repository (previously known as debian-volatile repository) no longer available (pbuilder conffile / Debian)
     Fixed: Update from security repositories won't be pulled (APT pinning)
     Removed: --build-only command line option from the imscp-autoinstall script

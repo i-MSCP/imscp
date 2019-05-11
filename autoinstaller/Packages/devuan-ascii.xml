@@ -421,9 +421,7 @@
             <package>mariadb-client-10.1</package>
             <package>mariadb-common</package>
             <package
-                    pre_install_tasks="
-                        /bin/mkdir -p /etc/mysql/mariadb.conf.d
-                    "
+                    pre_install_tasks="/bin/mkdir -p /etc/mysql/mariadb.conf.d"
             >
                 mariadb-server-10.1
             </package>

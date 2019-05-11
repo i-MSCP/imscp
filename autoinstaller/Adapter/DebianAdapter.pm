@@ -961,8 +961,8 @@ sub _getPackagesDialog
         # Retrieve selected alternative, either from preseed file, or from
         # the master configuration file
         my $sAlt = length $::questions{ uc( $section ) . '_SERVER' }
-             ? $::questions{ uc( $section ) . '_SERVER' }
-             : $::imscpConfig{ uc( $section ) . '_SERVER' };
+            ? $::questions{ uc( $section ) . '_SERVER' }
+            : $::imscpConfig{ uc( $section ) . '_SERVER' };
 
         # Resets alternative if the one currently set is not longer available
         $sAlt = '' if length $sAlt && !grep ( $sAlt eq $_, keys %{ $data } );
@@ -985,6 +985,13 @@ sub _getPackagesDialog
         my $needDialog = !length $sAlt || grep (
             $_ eq $::reconfigure, $section, 'servers', 'all'
         );
+
+        if ( $section eq 'sql' ) {
+            $::questions{'KEEP_LOCAL_SQL_SERVER'} //= $::imscpConfig{'KEEP_LOCAL_SQL_SERVER'};
+            $needDialog = TRUE unless grep (
+                $::questions{'KEEP_LOCAL_SQL_SERVER'}, qw/ yes no /
+            );
+        }
 
         # If a dialog is needed, prepare it, unless there is only one
         # alternative available.
@@ -1016,7 +1023,7 @@ sub _getPackagesDialog
 
             push @dialogStack, sub {
                 my ( $ret, $value ) = $_[0]->select(
-                    <<"EOF", \%choices, $::imscpConfig{ uc( $section ) . '_SERVER' } );
+                    <<"EOF", \%choices, $::questions{ uc( $section ) . '_SERVER' } );
 Please make your choice for the @{ [ $data->{'description'} // "$section alternative" ] }:
 EOF
                 return 30 if $ret == 30;
@@ -1028,6 +1035,25 @@ EOF
                 );
                 0;
             };
+
+            if ( $section eq 'sql' ) {
+                push @dialogStack, sub {
+                    if ( $::questions{'SQL_SERVER'} ne 'remote_server' ||
+                        !iMSCP::ProgramFinder::find( 'mysqld' )
+                    ) {
+                        $::questions{'KEEP_LOCAL_SQL_SERVER'} = 'yes';
+                        return 20;
+                    }
+
+                    my $ret = $_[0]->boolean( <<'EOF', $::questions{'KEEP_LOCAL_SQL_SERVER'} eq 'no' );
+The installer detected that there is already a local SQL server installed on your system.
+
+Do you want to keep your local SQL server? If yes, the installer will ignore it instead of removing packages.
+EOF
+                    $::questions{'KEEP_LOCAL_SQL_SERVER'} = $ret ? 'no' : 'yes';
+                    0;
+                }
+            }
         } else {
             @{main::questions}{
                 uc( $section ) . '_SERVER', uc( $section ) . '_PACKAGE'
@@ -1057,14 +1083,24 @@ The following @{ [
 
 @{ [
     join "\n", sort map {
-        " - $self->{'_packagesFileData'}->{$_}->{ $::imscpConfig{ uc( $_ ) . '_SERVER' }}->{'description'}"
+        " - $self->{'_packagesFileData'}->{$_}->{ $::questions{ uc( $_ ) . '_SERVER' }}->{'description'}".
+        (
+            $_ eq 'sql'
+            && $::questions{ uc( $_ ) . '_SERVER' } eq 'remote_server'
+            && iMSCP::ProgramFinder::find('mysqld')
+                ? ( ' (the local SQL server ' . (
+                    $::questions{'KEEP_LOCAL_SQL_SERVER'} eq 'yes'
+                        ? 'will not be uninstalled)' : 'will be uninstalled)'
+                ))
+                : ''
+        )
     } grep {
-        exists $::imscpConfig{ uc( $_ ) . '_SERVER' }
+        exists $::questions{ uc( $_ ) . '_SERVER' }
         && grep( $::reconfigure eq $_, 'none', 'servers', 'all', $_ )
     } keys %{ $self->{'_packagesFileData'} }
 ] }
 
-This is your last chance to go back or abort before processing of distribution packages.
+This is your last chance to abort or go back before processing of distribution packages.
 EOF
         return 30 if $ret == 30;
         return 50 if $ret == 1;
@@ -1097,6 +1133,23 @@ sub _processPackagesFile
     my $packagesFileData = delete $self->{'_packagesFileData'};
 
     while ( my ( $section, $data ) = each( %{ $packagesFileData } ) ) {
+        # If the remote SQL server alternative has been selected, and if there
+        # is a local server that the user want keep, we simply ignore the SQL
+        # section.
+        if ( $section eq 'sql'
+            && $::questions{'SQL_SERVER'} eq 'remote_server'
+            && $::questions{'KEEP_LOCAL_SQL_SERVER'} eq 'yes'
+            && iMSCP::ProgramFinder::find( 'mysqld' )
+        ) {
+            @{main::imscpConfig}{
+                uc( $section ) . '_SERVER', uc( $section ) . '_PACKAGE'
+            } = (
+                $::questions{ uc( $section ) . '_SERVER' },
+                $::questions{ uc( $section ) . '_PACKAGE' }
+            );
+            next;
+        }
+
         # Packages to install
         if ( defined $data->{'package'} ) {
             for my $package ( @{ $data->{'package'} } ) {
@@ -1378,7 +1431,7 @@ sub _prefillDebconfDatabase
     my $fileC;
 
     # Pre-fill questions for Postfix SMTP server if required
-    if ( $::imscpConfig{'MTA_PACKAGE'} eq 'Servers::mta::postfix' ) {
+    if ( $::questions{'MTA_PACKAGE'} eq 'Servers::mta::postfix' ) {
         chomp( my $mailname = `/usr/bin/hostname --fqdn 2>/dev/null` || 'localdomain' );
         my $hostname = ( $mailname ne 'localdomain' ) ? $mailname : 'localhost';
         chomp( my $domain = `/usr/bin/hostname --domain 2>/dev/null` || 'localdomain' );
@@ -1398,14 +1451,14 @@ EOF
     }
 
     # Pre-fill question for Proftpd FTP server if required
-    if ( $::imscpConfig{'FTPD_PACKAGE'} eq 'Servers::ftpd::proftpd' ) {
+    if ( $::questions{'FTPD_PACKAGE'} eq 'Servers::ftpd::proftpd' ) {
         $fileC .= <<'EOF';
 proftpd-basic shared/proftpd/inetd_or_standalone select standalone
 EOF
     }
 
     # Pre-fill questions for Courier IMAP/POP server if required
-    if ( $::imscpConfig{'PO_PACKAGE'} eq 'Servers::po::courier' ) {
+    if ( $::questions{'PO_PACKAGE'} eq 'Servers::po::courier' ) {
         $fileC .= <<'EOF';
 courier-base courier-base/courier-user note
 courier-base courier-base/webadmin-configmode boolean false
@@ -1414,7 +1467,7 @@ EOF
     }
 
     # Pre-fill questions for Dovecot IMAP/POP server if required
-    if ( $::imscpConfig{'PO_PACKAGE'} eq 'Servers::po::dovecot' ) {
+    if ( $::questions{'PO_PACKAGE'} eq 'Servers::po::dovecot' ) {
         $fileC .= <<'EOF';
 dovecot-core dovecot-core/create-ssl-cert boolean true
 dovecot-core dovecot-core/ssl-cert-name string localhost
@@ -1428,9 +1481,10 @@ sasl2-bin cyrus-sasl2/purge-sasldb2 boolean true
 EOF
     }
 
-    # Pre-fill questions for SQL server (MySQL, MariaDB or Percona) if required
+    # Pre-fill questions for the QL server (MySQL, MariaDB or Percona) if
+    # required
     if ( my ( $sqlServerVendor, $sqlServerVersion )
-        = $::imscpConfig{'SQL_SERVER'} =~ /^(mysql|mariadb|percona)_(\d+\.\d+)/
+        = $::questions{'SQL_SERVER'} =~ /^(mysql|mariadb|percona)_(\d+\.\d+)/
     ) {
         if ( $::imscpConfig{'DATABASE_PASSWORD'} ne ''
             && -d $::imscpConfig{'DATABASE_DIR'}
