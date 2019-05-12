@@ -471,7 +471,7 @@ ${msg}Please enter the hostname from which the SQL users created by i-MSCP can c
 
 For a local SQL server, the value should be '\\Zblocalhost\\ZB' while for a remote SQL server, the value should be the server IP or hostname from which the users are connecting, generally the WAN IP.
 
-You can also make use of a wildcard entry such as: '\\Zb192.168.1.%\\ZB'. In that case, SQL users can connect to the remote SQL server from any IP in the network '\\Zb192.168.1.0\\ZB'.
+You can also make use of a wildcard entry such as: '\\Zb192.168.1.%\\ZB'. In that case, and assuming that the SQL server is running on the same network, SQL users will be able to connect to the remote SQL server from any IP in the network '\\Zb192.168.1.0\\ZB'.
 
 Note that the installer update existing SQL users automatically when the value of this parameter is changed. You must not forget to inform your users about that change, else, their PHP scripts won't longer be able to connect to the SQL server.
 EOF
@@ -1091,6 +1091,11 @@ sub _updateCustomerSqlUsers
         );
 
         for my $sqluID ( keys %{ $rows } ) {
+            # Skip update of the SQL user hostname which value was other than
+            # the old default hostname. The frontEnd allows a custom host for
+            # SQL users.
+            next unless $rows->{$sqluID}->{'sqlu_host'} eq $oldHost;
+
             eval {
                 $dbh->begin_work();
 
