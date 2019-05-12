@@ -31,7 +31,7 @@ use Email::Valid;
 use iMSCP::Boolean;
 use iMSCP::Database;
 use iMSCP::Net;
-use Net::LibIDN qw/ idn_to_ascii /;
+use Net::LibIDN 'idn_to_ascii';
 use parent 'Exporter';
 
 our @EXPORT = qw/
@@ -124,7 +124,8 @@ sub isValidEmail( $ )
 
     defined $email or die( 'Missing $email parameter' );
 
-    return TRUE if Email::Valid->address( $email );
+    return TRUE if length $email
+        && Email::Valid->address( $email );
 
     $LAST_VALIDATION_ERROR = <<"EOF";
 \\Z1Invalid email address.\\Zn
@@ -148,7 +149,9 @@ sub isValidHostname( $ )
 
     defined $hostname or die( 'Missing $hostname parameter' );
 
-    return TRUE if $hostname !~ /\.$/ && ( $hostname =~ tr/.// ) >= 2
+    return TRUE if length $hostname
+        && $hostname !~ /\.$/
+        && ( $hostname =~ tr/.// ) >= 2
         && is_hostname( idn_to_ascii( $hostname, 'utf-8' ));
 
     $LAST_VALIDATION_ERROR = <<"EOF";
@@ -176,19 +179,16 @@ sub isValidSqlUserHostname( $ )
 
     defined $hostname or die( 'Missing $hostname parameter' );
 
-    return 0 unless length $hostname;
+    return FALSE unless length $hostname && $hostname !~ /\.$/;
 
-    # Strip out $hostname of '%' and '_' characters
-    my $tmpHostname = $hostname =~ s/[%_]//g;
-    # Cover case of wildcard only hostname
-    return TRUE unless length $tmpHostname;
-
-    # Strip out leading and trailing dots
-    $tmpHostname =~ s/^[.]|[.]$//g;
-    return 0 unless length $hostname;
-
-    return TRUE if isValidIpAddr( $tmpHostname ) ||
-        is_hostname( idn_to_ascii( $tmpHostname, 'utf-8' ));
+    # FIXME: Implement full validation (wildcard entries)
+    return TRUE if length $hostname
+        && $hostname !~ /\.$/
+        && ( index( $hostname, '%' ) != -1
+            || index( $hostname, '_' != -1 )
+            || isValidIpAddr( $hostname )
+            || is_hostname( idn_to_ascii( $hostname, 'utf-8' ))
+        );
 
     $LAST_VALIDATION_ERROR = <<"EOF";
 \\Z1Invalid SQL user hostname.\\Zn
@@ -214,10 +214,12 @@ sub isValidDomain( $ )
 
     defined $domainName or die( 'Missing $domainName parameter' );
 
-    return TRUE if $domainName !~ /\.$/ && is_domain(
-        idn_to_ascii( $domainName, 'utf-8' ),
-        { domain_disable_tld_validation => TRUE }
-    );
+    return TRUE if length $domainName
+        && $domainName !~ /\.$/
+        && is_domain(
+            idn_to_ascii( $domainName, 'utf-8' ),
+            { domain_disable_tld_validation => TRUE }
+        );
 
     $LAST_VALIDATION_ERROR = <<"EOF";
 \\Z1Invalid domain name.\\Zn
@@ -245,8 +247,11 @@ sub isValidIpAddr( $;$ )
     defined $ipAddr or die( 'Missing $ipAddr parameter' );
 
     my $net = iMSCP::Net->getInstance();
-    return TRUE if $net->isValidAddr( $ipAddr )
-        && ( !defined $typeReg || $net->getAddrType( $ipAddr ) =~ /^$typeReg$/ );
+    return TRUE if length $ipAddr
+        && $net->isValidAddr( $ipAddr )
+        && (!defined $typeReg
+            || $net->getAddrType( $ipAddr ) =~ /^$typeReg$/
+        );
 
     $LAST_VALIDATION_ERROR = <<"EOF";
 \\Z1Invalid or unauthorized IP address.\\Zn
@@ -299,7 +304,8 @@ sub isValidTimezone
 
     defined $timezone or die( 'Missing $timezone parameter' );
 
-    return TRUE if DateTime::TimeZone->is_valid_name( $timezone );
+    return TRUE if length $timezone
+        && DateTime::TimeZone->is_valid_name( $timezone );
 
     $LAST_VALIDATION_ERROR = <<"EOF";
 \\Z1Invalid timezone.\\Zn
@@ -459,11 +465,12 @@ EOF
 
  Is the given SQL user available?
 
- This routine make sure that the given SQL user is not already used by a customer.
+ This routine make sure that the given SQL user is not already used by
+ a customer.
 
  Param string $username SQL username
- Return bool TRUE if the given SQL user is available, FALSE otherwise
-
+ Return bool TRUE if the given SQL user is available, FALSE otherwise, die on
+             unexpected failure
 =cut
 
 sub isAvailableSqlUser( $ )
