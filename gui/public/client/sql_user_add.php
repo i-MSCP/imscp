@@ -177,7 +177,9 @@ function addSqlUser($sqldId)
 
         $host = encode_idna(clean_input($_POST['user_host']));
 
-        if ($host !== '%'
+        # Fixme: Implement full validation...
+        if (strpos($host, '%') === FALSE
+            && strpos($host, '_') === FALSE
             && $host !== 'localhost'
             && !Validator::getInstance()->hostname(
                 $host, ['allow' => ValidateHostname::ALLOW_DNS | ValidateHostname::ALLOW_IP]
