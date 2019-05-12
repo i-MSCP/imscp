@@ -1120,6 +1120,8 @@ sub _updateCustomerSqlUsers
                 #    'UPDATE `mysql`.`columns_priv` SET `Host` = ? WHERE `User` = ?',
                 #    undef, $newHost, $rows->{$sqluID}->{'sqlu_name'}
                 #);
+
+                $dbh->commit();
             };
             if ( $@ ) {
                 $dbh->rollback();
