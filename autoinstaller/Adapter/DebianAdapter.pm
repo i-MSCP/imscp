@@ -255,8 +255,7 @@ sub install
     }
 
     if ( @runningJobs ) {
-        iMSCP::Dialog->getInstance()->msgbox( <<"EOF" );
-
+        iMSCP::Dialog->getInstance()->error( <<"EOF" );
 There are jobs currently running on your system that can not be locked by the installer.
 
 You must wait until the end of these jobs.
@@ -1050,6 +1049,7 @@ The installer detected that there is already a local SQL server installed on you
 
 Do you want to keep your local SQL server? If yes, the installer will ignore it instead of removing packages.
 EOF
+                    return 30 if $ret == 30;
                     $::questions{'KEEP_LOCAL_SQL_SERVER'} = $ret ? 'no' : 'yes';
                     0;
                 }
