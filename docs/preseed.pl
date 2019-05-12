@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2019.05.11
+# Last update: 2019.05.12
 
 %::questions = (
     #
@@ -87,34 +87,40 @@
     # Keep the local SQL server installed regardless of the selected SQL server
     # implementation
     #
-    # If there is a local SQL server installed, and when selecting the
-    # 'remote server' SQL implementation, this flag tells whether or not
-    # the local server must be kept.
+    # If there is a local SQL server installed, and when setting the
+    # 'SQL_SERVER' parameter value to 'remote_server', this flag tells
+    # whether or not the local server must be kept installed.
     #
     # Possible value: yes, no
     KEEP_LOCAL_SQL_SERVER               => 'yes',
 
-    # Database hostname
+    # SQL server hostname
+    #
+    # For a local SQL server, 'localhost' is the recommended value. Setting an
+    # IP address such as '127.0.0.1' in place of 'localhost' would force
+    # connections through TCP/IP rather than local socket connections.
+    # 
+    # For a remote SQL server, the 'localhost', '127.0.0.1' and '::1' entries
+    # are irrelevant, and therefore, prohibited.
     #
     # Possible values: A valid hostname or IP address
     DATABASE_HOST                       => 'localhost',
 
-    # Database port
+    # SQL server port
     #
-    # This port is used only for connections through TCP.
+    # This port is used only for connections through TCP/IP.
     #
-    # Possible values: A valid port
+    # Possible values: A port in range 1025 to 65535
     DATABASE_PORT                       => '3306',
 
-    # SQL root user (User with full privileges, including GRANT option)
+    # SQL root user and password
     #
-    # If you make use of local MySQL server and if the unix_socket
+    # If you make use of a local SQL server, and if the unix_socket
     # authentication plugin is enabled for the SQL root user, you can leave
-    # those parameter empty.
+    # those parameters empty.
     #
     # The installer only make use of that user while installation.
     SQL_ROOT_USER                       => '',
-    # SQL root user password
     SQL_ROOT_PASSWORD                   => '',
 
     # i-MSCP Master SQL user
@@ -362,7 +368,7 @@
     # If your server is behind a NAT router, you MUST not forget
     # to forward those TCP port.
     #
-    # Possible values: A valid port range in range 32768-60999
+    # Possible values: A port range in range 32768-60999
     FTPD_PASSIVE_PORT_RANGE             => '32800 33800',
 
     #
