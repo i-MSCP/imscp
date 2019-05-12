@@ -185,7 +185,7 @@ sub isValidSqlUserHostname( $ )
     return TRUE if length $hostname
         && $hostname !~ /\.$/
         && ( index( $hostname, '%' ) != -1
-            || index( $hostname, '_' != -1 )
+            || index( $hostname, '_' ) != -1
             || isValidIpAddr( $hostname )
             || is_hostname( idn_to_ascii( $hostname, 'utf-8' ))
         );
