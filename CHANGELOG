@@ -66,6 +66,7 @@ LISTENER:
     Removed: 10_named_override_default_rr.pl (now included in core)
 
 PLUGINS
+    Updated: Plugin API to version 1.5.1
     Enhancement: Run frontEnd applications through the Slim microframework (with backward compatibility in mind)
         See http://www.slimframework.com/ for further details about offered possibilities
 
