@@ -963,7 +963,7 @@ sub _setupSecureInstallation
             $dbh->do(
                 "
                     DELETE FROM `user`
-                    WHERE User = 'root'
+                    WHERE `User` = 'root'
                     AND `Host` NOT IN ('localhost', '127.0.0.1', '::1')
                 "
             );
