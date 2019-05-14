@@ -29,6 +29,7 @@ use iMSCP::Boolean;
 use iMSCP::Crypt 'decryptRijndaelCBC';
 use iMSCP::Database;
 use iMSCP::Debug 'error';
+use iMSCP::Dir;
 use iMSCP::File;
 use Servers::mta;
 use Servers::po::dovecot;
@@ -157,6 +158,12 @@ sub _uninstall
             );
             $rs ||= $file->mode( 0644 );
         }
+
+        iMSCP::Dir->new(
+            dirname => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/imscp.d"
+        )->remove();
+
+        0;
     };
     if ( $@ ) {
         error( $@ );

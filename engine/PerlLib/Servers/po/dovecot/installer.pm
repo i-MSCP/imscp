@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -30,6 +30,7 @@ use iMSCP::Crypt qw/ decryptRijndaelCBC encryptRijndaelCBC randomStr /;
 use iMSCP::Boolean;
 use iMSCP::Database;
 use iMSCP::Debug qw/ debug error /;
+use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute 'execute';
 use iMSCP::File;
@@ -88,7 +89,8 @@ sub install
         return $rs if $rs;
     }
 
-    my $rs = $self->_setDovecotVersion();
+    my $rs = $self->_makeDirs();
+    $rs ||= $self->_setDovecotVersion();
     $rs ||= $self->_setupSqlUser();
     $rs ||= $self->_buildConf();
     $rs ||= $self->_migrateFromCourier();
@@ -224,6 +226,36 @@ sub _init
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'config'} = $self->{'po'}->{'config'};
     $self;
+}
+
+=item _makeDirs( )
+
+ Create required directories
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _makeDirs
+{
+    my ( $self ) = @_;
+
+    local $@;
+    eval {
+        iMSCP::Dir->new(
+            dirname => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/imscp.d"
+        )->make( {
+            user  => $::imscpConfig{'ROOT_USER'},
+            group => $::imscpConfig{'ROOT_GROUP'},
+            mode  => 0755
+        } );
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    0;
 }
 
 =item _setDovecotVersion( )

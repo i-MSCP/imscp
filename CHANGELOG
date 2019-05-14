@@ -70,6 +70,9 @@ PLUGINS
     Enhancement: Run frontEnd applications through the Slim microframework (with backward compatibility in mind)
         See http://www.slimframework.com/ for further details about offered possibilities
 
+SERVICES
+    Enhancement: Make it possible to extend/override Dovecot configuration with additional configuration files
+
 VENDOR
     Added: Hydrahon library (PHP dependency)
     Added: Slim library (PHP dependency)
