@@ -158,7 +158,7 @@ sub installComposer
             "PHP dependency manager version is already %s. Installation skipped.",
             $version
         ));
-        return;
+        return $self;
     }
 
     iMSCP::Dir->new(
@@ -241,7 +241,7 @@ sub require
             ->{'composer_json'}
             ->{'require_dev'}
             ->{$package} = $version // 'dev-master';
-        return;
+        return $self;
     }
 
     # Make sure to not add the same package twice
@@ -269,7 +269,7 @@ sub remove
 
     if ( $dev ) {
         delete $self->{'composer_json'}->{'require_dev'}->{$package};
-        return;
+        return $self;
     }
 
     delete $self->{'composer_json'}->{'require'}->{$package};
@@ -496,7 +496,7 @@ sub loadComposerJson
 
     $composerJson //= $self->{'composer_json'} // '';
 
-    return unless length $self->{'composer_json'};
+    return $self unless length $self->{'composer_json'};
 
     $self->{'composer_json'} = File::Spec->rel2abs(
         $self->{'composer_json'}, $self->{'composer_working_dir'}
@@ -528,7 +528,7 @@ sub dumpComposerJson
 
     $self->_createWorkingDir();
 
-    return unless ref $self->{'composer_json'} eq 'HASH';
+    return $self unless ref $self->{'composer_json'} eq 'HASH';
 
     my $file = iMSCP::File->new(
         filename => "$self->{'composer_working_dir'}/composer.json"
