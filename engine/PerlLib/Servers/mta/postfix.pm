@@ -1272,13 +1272,11 @@ EOF
 =cut
 
 END {
-    my $self = shift;
-
     return if $? || !defined $INSTANCE || ( $::execmode && $::execmode eq 'setup' );
 
     my ( $ret, $rs ) = ( 0, 0 );
 
-    for my $map ( keys %{ $self->{'_postmap'} } ) {
+    for my $map ( keys %{ $INSTANCE->{'_postmap'} } ) {
         if ( $INSTANCE->{'_maps'}->{$map} ) {
             $rs = $INSTANCE->{'_maps'}->{$map}->mode( 0640 );
             $ret ||= $rs;
