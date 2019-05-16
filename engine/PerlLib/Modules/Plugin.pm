@@ -26,6 +26,7 @@ package Modules::Plugin;
 use strict;
 use warnings;
 use autouse 'Hash::Merge' => qw/ merge /;
+use iMSCP::Boolean;
 use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::Database;
 use iMSCP::EventManager;
@@ -73,7 +74,9 @@ sub process
 
     local $@;
     eval {
-        $self->{'pluginData'}->{$_} = decode_json( $self->{'pluginData'}->{$_} ) for qw/ info config config_prev /;
+        $self->{'pluginData'}->{$_} = decode_json(
+            $self->{'pluginData'}->{$_}
+        ) for qw/ info config config_prev /;
     };
     if ( $@ ) {
         error( sprintf( "Couldn't decode plugin JSON object: %s", $@ ));
@@ -88,13 +91,17 @@ sub process
         $self->{'pluginAction'} = $1;
         $action = '_' . $1;
     } else {
-        error( sprintf( 'Unknown plugin status: %s', $self->{'pluginData'}->{'plugin_status'} ));
+        error( sprintf(
+            'Unknown plugin status: %s', $self->{'pluginData'}->{'plugin_status'}
+        ));
         return 1;
     }
 
     $rs = $self->$action();
     $rs ||= $self->{'events'}->trigger(
-        'onBeforeSetPluginStatus', $self->{'pluginData'}->{'plugin_name'}, \$self->{'pluginData'}->{'plugin_status'}
+        'onBeforeSetPluginStatus',
+        $self->{'pluginData'}->{'plugin_name'},
+        \$self->{'pluginData'}->{'plugin_status'}
     );
 
     eval {
@@ -105,14 +112,15 @@ sub process
             toupdate    => 'enabled',
             tochange    => 'enabled',
             todisable   => 'disabled',
-            touninstall => ( $self->{'pluginData'}->{'info'}->{'__installable__'} ) ? 'uninstalled' : 'disabled'
+            touninstall => $self->{'pluginData'}->{'info'}->{'__installable__'}
+                ? 'uninstalled' : 'disabled'
         );
 
         $self->{'dbh'}->do(
             "UPDATE plugin SET " . ( $rs ? 'plugin_error' : 'plugin_status' ) . " = ? WHERE plugin_id = ?",
             undef,
             ( $rs
-                ? getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+                ? getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error'
                 : $plugin_next_state_map{$self->{'pluginData'}->{'plugin_status'}}
             ),
             $data->{'id'}
@@ -169,8 +177,9 @@ sub _loadData
     my $pluginData = eval {
         $self->{'dbh'}->selectrow_hashref(
             '
-                SELECT plugin_id, plugin_name, plugin_info AS info, plugin_config AS config,
-                    plugin_config_prev AS config_prev, plugin_status
+                SELECT plugin_id, plugin_name, plugin_info AS info,
+                    plugin_config AS config, plugin_config_prev AS config_prev,
+                    plugin_status
                 FROM plugin
                 WHERE plugin_id = ?
              ',
@@ -203,9 +212,13 @@ sub _install
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'events'}->trigger( 'onBeforeInstallPlugin', $self->{'pluginData'}->{'plugin_name'} );
+    my $rs = $self->{'events'}->trigger(
+        'onBeforeInstallPlugin', $self->{'pluginData'}->{'plugin_name'}
+    );
     $rs ||= $self->_executePluginAction( 'install' );
-    $rs ||= $self->{'events'}->trigger( 'onAfterInstallPlugin', $self->{'pluginData'}->{'plugin_name'} );
+    $rs ||= $self->{'events'}->trigger(
+        'onAfterInstallPlugin', $self->{'pluginData'}->{'plugin_name'}
+    );
     $rs ||= $self->_enable();
 }
 
@@ -221,9 +234,13 @@ sub _uninstall
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'events'}->trigger( 'onBeforeUninstallPlugin', $self->{'pluginData'}->{'plugin_name'} );
+    my $rs = $self->{'events'}->trigger(
+        'onBeforeUninstallPlugin', $self->{'pluginData'}->{'plugin_name'}
+    );
     $rs ||= $self->_executePluginAction( 'uninstall' );
-    $rs ||= $self->{'events'}->trigger( 'onAfterUninstallPlugin', $self->{'pluginData'}->{'plugin_name'} );
+    $rs ||= $self->{'events'}->trigger(
+        'onAfterUninstallPlugin', $self->{'pluginData'}->{'plugin_name'}
+    );
 }
 
 =item _enable( )
@@ -238,9 +255,13 @@ sub _enable
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'events'}->trigger( 'onBeforeEnablePlugin', $self->{'pluginData'}->{'plugin_name'} );
+    my $rs = $self->{'events'}->trigger(
+        'onBeforeEnablePlugin', $self->{'pluginData'}->{'plugin_name'}
+    );
     $rs ||= $self->_executePluginAction( 'enable' );
-    $rs ||= $self->{'events'}->trigger( 'onAfterEnablePlugin', $self->{'pluginData'}->{'plugin_name'} );
+    $rs ||= $self->{'events'}->trigger(
+        'onAfterEnablePlugin', $self->{'pluginData'}->{'plugin_name'}
+    );
 }
 
 =item _disable( )
@@ -255,9 +276,13 @@ sub _disable
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'events'}->trigger( 'onBeforeDisablePlugin', $self->{'pluginData'}->{'plugin_name'} );
+    my $rs = $self->{'events'}->trigger(
+        'onBeforeDisablePlugin', $self->{'pluginData'}->{'plugin_name'}
+    );
     $rs ||= $self->_executePluginAction( 'disable' );
-    $rs ||= $self->{'events'}->trigger( 'onAfterDisablePlugin', $self->{'pluginData'}->{'plugin_name'} );
+    $rs ||= $self->{'events'}->trigger(
+        'onAfterDisablePlugin', $self->{'pluginData'}->{'plugin_name'}
+    );
 }
 
 =item _change( )
@@ -273,9 +298,13 @@ sub _change
     my ( $self ) = @_;
 
     my $rs = $self->_disable();
-    $rs ||= $self->{'events'}->trigger( 'onBeforeChangePlugin', $self->{'pluginData'}->{'plugin_name'} );
+    $rs ||= $self->{'events'}->trigger(
+        'onBeforeChangePlugin', $self->{'pluginData'}->{'plugin_name'}
+    );
     $rs ||= $self->_executePluginAction( 'change' );
-    $rs ||= $self->{'events'}->trigger( 'onAfterChangePlugin', $self->{'pluginData'}->{'plugin_name'} );
+    $rs ||= $self->{'events'}->trigger(
+        'onAfterChangePlugin', $self->{'pluginData'}->{'plugin_name'}
+    );
     return $rs if $rs;
 
     if ( $self->{'pluginData'}->{'info'}->{'__need_change__'} ) {
@@ -285,7 +314,11 @@ sub _change
         local $@;
         eval {
             $self->{'dbh'}->do(
-                'UPDATE plugin SET plugin_info = ?, plugin_config_prev = plugin_config WHERE plugin_id = ?',
+                '
+                    UPDATE plugin
+                    SET plugin_info = ?, plugin_config_prev = plugin_config
+                    WHERE plugin_id = ?
+                ',
                 undef,
                 encode_json( $self->{'pluginData'}->{'info'} ),
                 $self->{'pluginData'}->{'plugin_id'}
@@ -313,9 +346,13 @@ sub _update
     my ( $self ) = @_;
 
     my $rs = $self->_disable();
-    $rs ||= $self->{'events'}->trigger( 'onBeforeUpdatePlugin', $self->{'pluginData'}->{'plugin_name'} );
+    $rs ||= $self->{'events'}->trigger(
+        'onBeforeUpdatePlugin', $self->{'pluginData'}->{'plugin_name'}
+    );
     $rs ||= $self->_executePluginAction(
-        'update', $self->{'pluginData'}->{'info'}->{'version'}, $self->{'pluginData'}->{'info'}->{'__nversion__'}
+        'update',
+        $self->{'pluginData'}->{'info'}->{'version'},
+        $self->{'pluginData'}->{'info'}->{'__nversion__'}
     );
     return $rs if $rs;
 
@@ -335,11 +372,15 @@ sub _update
         return 1;
     }
 
-    $rs = $self->{'events'}->trigger( 'onAfterUpdatePlugin', $self->{'pluginData'}->{'plugin_name'} );
+    $rs = $self->{'events'}->trigger(
+        'onAfterUpdatePlugin', $self->{'pluginData'}->{'plugin_name'}
+    );
     return $rs if $rs;
 
     if ( $self->{'pluginData'}->{'info'}->{'__need_change__'} ) {
-        $rs = $self->{'events'}->trigger( 'onBeforeChangePlugin', $self->{'pluginData'}->{'plugin_name'} );
+        $rs = $self->{'events'}->trigger(
+            'onBeforeChangePlugin', $self->{'pluginData'}->{'plugin_name'}
+        );
         $rs ||= $self->_executePluginAction( 'change' );
         return $rs if $rs;
 
@@ -348,7 +389,11 @@ sub _update
 
         eval {
             $self->{'dbh'}->do(
-                'UPDATE plugin SET plugin_info = ?, plugin_config_prev = plugin_config WHERE plugin_id = ?',
+                '
+                    UPDATE plugin
+                    SET plugin_info = ?, plugin_config_prev = plugin_config
+                    WHERE plugin_id = ?
+                ',
                 undef,
                 encode_json( $self->{'pluginData'}->{'info'} ),
                 $self->{'pluginData'}->{'plugin_id'}
@@ -359,7 +404,9 @@ sub _update
             return 1
         }
 
-        $rs = $self->{'events'}->trigger( 'onAfterChangePlugin', $self->{'pluginData'}->{'plugin_name'} );
+        $rs = $self->{'events'}->trigger(
+            'onAfterChangePlugin', $self->{'pluginData'}->{'plugin_name'}
+        );
         return $rs if $rs;
     }
 
@@ -378,9 +425,13 @@ sub _run
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'events'}->trigger( 'onBeforeRunPlugin', $self->{'pluginData'}->{'plugin_name'} );
+    my $rs = $self->{'events'}->trigger(
+        'onBeforeRunPlugin', $self->{'pluginData'}->{'plugin_name'}
+    );
     $rs ||= $self->_executePluginAction( 'run' );
-    $rs ||= $self->{'events'}->trigger( 'onAfterRunPlugin', $self->{'pluginData'}->{'plugin_name'} );
+    $rs ||= $self->{'events'}->trigger(
+        'onAfterRunPlugin', $self->{'pluginData'}->{'plugin_name'}
+    );
 }
 
 =item _executePluginAction( $action [, $fromVersion = undef [, $toVersion = undef ] ] )
@@ -404,9 +455,16 @@ sub _executePluginAction
         $self->{'pluginInstance'} = eval {
             # Turn any warning from plugin into exception
             local $SIG{'__WARN__'} = sub { die shift };
-            my $pluginClass = iMSCP::Plugins->getInstance()->getClass( $self->{'pluginData'}->{'plugin_name'} );
-            return undef unless $pluginClass->can( $action ); # Do not instantiate plugin when not necessary
-            ( $pluginClass->can( 'getInstance' ) || $pluginClass->can( 'new' ) || die( 'Bad plugin class' ) )->(
+            my $pluginClass = iMSCP::Plugins->getInstance()->getClass(
+                $self->{'pluginData'}->{'plugin_name'}
+            );
+            # Do not instantiate plugin when not necessary
+            return undef unless $pluginClass->can( $action );
+
+            ( $pluginClass->can( 'getInstance' )
+                || $pluginClass->can( 'new' )
+                || die( 'Bad plugin class' )
+            )->(
                 $pluginClass,
                 action       => $self->{'pluginAction'},
                 config       => $self->{'pluginData'}->{'config'},
@@ -435,9 +493,10 @@ sub _executePluginAction
         return 1;
     }
 
-    # Return value from the run() action is ignored by default because it's the responsability of the plugins to set
-    # error status for their items. However a plugin can force return value by setting the FORCE_RETVAL attribute to
-    # a TRUE
+    # Return value from the run() action is ignored by default because it's the
+    # responsibility of the plugin to set the  error status for their items.
+    # However a plugin can force return value by setting the FORCE_RETVAL
+    # attribute to a TRUE
     ( $action ne 'run' || $self->{'pluginInstance'}->{'FORCE_RETVAL'} ) ? $rs : 0
 }
 

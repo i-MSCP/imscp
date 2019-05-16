@@ -11,7 +11,7 @@ BACKEND
     Fixed: Can't locate object method "remove" via package "iMSCP::File" (iMSCP::Service)
     Fixed: Error output is badly captured, leading to 'Unknown error' (named-compilezone / Bind9 server implementation)
     Fixed: Missing check for SSL private key and SSL certificate matching (iMSCP::OpenSSL)
-    Fixed: Symlinks must be copied AS THIS instead of being followed (dereferenced) (iMSCP::Dir, iMSCP::File)
+    Fixed: Symlinks must be copied AS THIS instead of being followed (iMSCP::Dir, iMSCP::File)
     Fixed: SysVinit script are always reported as enabled (Debian SysVinit init provider)
     Fixed: The 'imscp_panel' service is always restarted even when it should not (FrontEnd dpkg(1) post invoke tasks)
     Fixed: The 'is-enabled' support for SysVinit scripts isn't available in older systemd version (Debian Systemd init provider)
