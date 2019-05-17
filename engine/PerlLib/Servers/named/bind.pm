@@ -273,8 +273,8 @@ sub deleteDmn
 {
     my ( $self, $data ) = @_;
 
-    return 0 if $data->{'PARENT_DOMAIN_NAME'} eq $::imscpConfig{'BASE_SERVER_VHOST'}
-        && !$data->{'FORCE_DELETION'};
+    return 0 unless $data->{'FORCE_DELETION'}
+        || $data->{'PARENT_DOMAIN_NAME'} ne $::imscpConfig{'BASE_SERVER_VHOST'};
 
     my $rs = $self->{'events'}->trigger( 'beforeNamedDelDmn', $data );
     $rs ||= $self->_deleteDmnConfig( $data );

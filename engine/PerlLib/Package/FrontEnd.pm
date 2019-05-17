@@ -1149,10 +1149,13 @@ sub _dialogForCpHostname
 {
     my ( undef, $dialog ) = @_;
 
-    my $value = ::setupGetQuestion( 'BASE_SERVER_VHOST', iMSCP::Getopt->preseed
-        ? 'panel.' . ::setupGetQuestion( 'SERVER_HOSTNAME' ) : ''
-    );
+    my $value = ::setupGetQuestion( 'BASE_SERVER_VHOST' );
 
+    if( iMSCP::Getopt->preseed && !length $value ) {
+       my @domainLabels = split /\./, ::setupGetQuestion( 'SERVER_HOSTNAME' );
+       $value = 'panel.' . join( '.', @domainLabels[1 .. $#domainLabels] );
+    }
+    
     if ( !grep ( $::reconfigure eq $_, qw/ panel panel_hostname hostnames all / )
         && isValidDomain( $value )
     ) {
@@ -2127,13 +2130,14 @@ sub _deleteDnsZone
 {
     my ( $self ) = @_;
 
-    return 0 unless $::imscpOldConfig{'BASE_SERVER_VHOST'}
+    return 0 unless length $::imscpOldConfig{'BASE_SERVER_VHOST'}
         && $::imscpOldConfig{'BASE_SERVER_VHOST'} ne ::setupGetQuestion( 'BASE_SERVER_VHOST' );
 
     my $rs = $self->{'events'}->trigger( 'beforeNamedDeleteMasterZone' );
     $rs ||= Servers::named->factory()->deleteDmn( {
-        DOMAIN_NAME    => $::imscpOldConfig{'BASE_SERVER_VHOST'},
-        FORCE_DELETION => TRUE
+        PARENT_DOMAIN_NAME => $::imscpOldConfig{'BASE_SERVER_VHOST'},
+        DOMAIN_NAME        => $::imscpOldConfig{'BASE_SERVER_VHOST'},
+        FORCE_DELETION     => TRUE
     } );
     $rs ||= $self->{'events'}->trigger( 'afterNamedDeleteMasterZone' );
 }
