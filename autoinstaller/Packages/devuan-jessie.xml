@@ -509,7 +509,6 @@
                 "
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
-                allow_switch="percona_5.6,percona_5.7,remote_server"
         >
             <package>libmysqlclient18</package>
             <package>libperconaserverclient18</package>

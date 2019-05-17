@@ -390,7 +390,6 @@
                 "
                 pinning_pin="release o=Ubuntu"
                 pinning_pin_priority="1001"
-                allow_switch="remote_server"
         >
             <package>libmysqlclient20</package>
             <package>mysql-client-5.7</package>

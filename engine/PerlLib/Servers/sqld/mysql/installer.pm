@@ -324,7 +324,7 @@ sub _dialogForMasterSqlUserPassword
     # make us able to connect, we skip dialog.
     if ( !grep ( $::reconfigure eq $_, qw/ sql servers all / )
         && isValidPassword( $dbPasswd )
-        && !$self->_tryDbConnect( $dbHost, $dbPort, $dbUser, $dbPasswd )
+        && (iMSCP::Getopt->preseed || !$self->_tryDbConnect( $dbHost, $dbPort, $dbUser, $dbPasswd ) )
     ) {
         ::setupSetQuestion( 'DATABASE_PASSWORD', encryptRijndaelCBC(
             $::imscpDBKey, $::imscpDBiv, $dbPasswd
@@ -1009,7 +1009,7 @@ sub _setupDatabase
             my $qdbName = $dbh->quote_identifier( $dbName );
             $dbh->do(
                 "
-                    CREATE DATABASE $qdbName IF NOT EXISTS
+                    CREATE DATABASE IF NOT EXISTS $qdbName
                     CHARACTER SET utf8 COLLATE utf8_unicode_ci;
                 "
             );

@@ -81,7 +81,7 @@ sub setDebug
         $_->retrieve( tag => 'debug', remove => TRUE );
     }
 
-    $self->{'debug'} = 0;
+    $self->{'debug'} = FALSE;
     undef;
 }
 

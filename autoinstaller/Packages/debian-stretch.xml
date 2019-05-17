@@ -366,7 +366,10 @@
         </external_server>
         <package>resolvconf</package>
     </named>
-    <sql>
+    <sql
+            description="SQL server"
+            has_alternatives="1"
+    >
         <mysql_5.6
                 allow_upgrade_from="remote_server,mysql_5.5"
                 class="Servers::sqld::mysql"
@@ -416,7 +419,6 @@
                 "
                 pinning_pin="release o=Debian"
                 pinning_pin_priority="1001"
-                allow_switch="mariadb_10.2,remote_server"
         >
             <package>libmariadbclient18</package>
             <package>mariadb-client-10.1</package>
