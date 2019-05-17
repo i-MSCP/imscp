@@ -252,3 +252,6 @@ exit $dispatch{ $action }->();
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
+
+1;
+__END__

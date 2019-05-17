@@ -153,7 +153,7 @@ sub _init
     my ( $self ) = @_;
 
     $self->{'dbh'} = iMSCP::Database->factory()->getRawDb();
-    $self->{'events'} = iMSCP::EventManager->getInstance();
+    $self->{'event'} = iMSCP::EventManager->getInstance();
     $self->{'pluginAction'} = undef;
     $self->{'pluginData'} = {};
     $self->{'pluginInstance'} = undef;
@@ -472,7 +472,7 @@ sub _executePluginAction
                     # On plugin change/update, make sure that prev config also contains any new parameter
                     ? merge( $self->{'pluginData'}->{'config_prev'}, $self->{'pluginData'}->{'config'} )
                     : $self->{'pluginData'}->{'config_prev'} ),
-                eventManager => $self->{'eventManager'},
+                eventManager => $self->{'events'},
                 info         => $self->{'pluginData'}->{'info'}
             );
         };
