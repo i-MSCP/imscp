@@ -153,7 +153,7 @@ sub _init
     my ( $self ) = @_;
 
     $self->{'dbh'} = iMSCP::Database->factory()->getRawDb();
-    $self->{'event'} = iMSCP::EventManager->getInstance();
+    $self->{'events'} = iMSCP::EventManager->getInstance();
     $self->{'pluginAction'} = undef;
     $self->{'pluginData'} = {};
     $self->{'pluginInstance'} = undef;
