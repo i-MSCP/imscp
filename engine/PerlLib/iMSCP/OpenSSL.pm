@@ -320,7 +320,7 @@ sub importCertificate
     return FALSE if $file->save();
 
     my @cmd = (
-        '/usr/bin/cat',
+        '/bin/cat',
         escapeShell( $self->{'certificate_container_path'} ),
         '>>', escapeShell( "$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem" )
     );
@@ -368,7 +368,7 @@ sub importCaBundle
     return FALSE if $file->save();
 
     my @cmd = (
-        '/usr/bin/cat',
+        '/bin/cat',
         escapeShell( $self->{'ca_bundle_container_path'} ),
         '>>', escapeShell( "$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem" )
     );
