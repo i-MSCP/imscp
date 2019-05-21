@@ -1158,7 +1158,7 @@ sub _isInsideContainer
     return 0 unless -f '/proc/user_beancounters';
 
     my $rs = execute(
-        '/usr/bin/cat /proc/1/status | grep --color=never envID',
+        '/bin/cat /proc/1/status | grep --color=never envID',
         \my $stdout,
         \my $stderr
     );
