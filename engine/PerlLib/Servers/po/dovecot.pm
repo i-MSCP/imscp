@@ -213,9 +213,11 @@ sub addMail
 
     # Mailboxes
 
+    # Note: We also create the sieve directory, even if sieve isn't
+    # available. See the comments about sieve below for further explanation.
     local $@;
     eval {
-        for my $mailbox ( qw/ .Drafts .Junk .Sent .Trash / ) {
+        for my $mailbox ( qw/ .Drafts .Junk .Sent .Trash sieve / ) {
             iMSCP::Dir->new( dirname => "$mailDir/$mailbox" )->make( {
                 user           => $mailUidName,
                 group          => $mailGidName,
@@ -223,7 +225,9 @@ sub addMail
                 fixpermissions => iMSCP::Getopt->fixPermissions
             } );
 
-            for my $dir( qw/ cur new tmp /) {
+            next if $mailbox eq 'sieve';
+
+            for my $dir ( qw/ cur new tmp / ) {
                 iMSCP::Dir->new( dirname => "$mailDir/$mailbox/$dir" )->make( {
                     user           => $mailUidName,
                     group          => $mailGidName,
@@ -233,13 +237,13 @@ sub addMail
             }
         }
     };
-    if( $@ ) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
 
     # Subscriptions
-    
+
     my @subscribedFolders = qw/ Drafts Junk Sent Trash /;
     my $subscriptionsFile = iMSCP::File->new(
         filename => "$mailDir/subscriptions"
@@ -264,12 +268,45 @@ sub addMail
     return $rs if $rs;
 
     # Sieve filters
-    # Create symlink for sieve filters, even if those are not installed.
-    # If we don't do that, sieve filters will not be enabled by default, even
-    # when installed. Users will have to enable them through the Roundcube
-    # managesieve plugin and that's not acceptable for beginners...
 
-    # Note: the 'dovecot.sieve' symlink was the one created by the old
+    # Unless a sieve script (filters) is already present, we provide a default
+    # one that define two rules: one for moving SPAM to Junk folder, and another
+    # one for vacation. However, by default, only the 'spam' rule need to be
+    # enabled because this doesn't make sense to enable vacation for new email
+    # accounts.
+    #
+    # If we don't do that, users will have to enable sieve through the Roundcube
+    # managesieve plugin and that's not acceptable for beginners, mostly for SPAM
+    # filtering...
+    unless ( -f "$mailDir/sieve/managesieve.sieve" ) {
+        my $file = iMSCP::File->new( filename => "$mailDir/sieve/managesieve.sieve" );
+        $file->set( <<'EOF' );
+require ["fileinto","vacation"];
+# rule:[spam]
+if header :contains "x-spam-flag" "YES"
+{
+    fileinto "INBOX.Junk";
+    stop;
+}
+# rule:[vacation]
+if false
+{
+    vacation :subject "Out of office" text:
+Hello,
+
+Thank you for your message. I'm out of office, with no email access.
+.
+;
+}
+EOF
+        $rs = $file->save();
+        $rs ||= $file->owner( $mailUidName, $mailGidName );
+        $rs ||= $file->mode( 0600 );
+        return $rs if $rs;
+    }
+
+    # We need also create the symlink to the sieve filters script
+    # Note: The 'dovecot.sieve' symlink was the one created by the old
     # RoundcubePlugins plugin (managesieve plugin configuration). It is now
     # '.dovecot.sieve'. We need remove it if present...
     for my $lnk ( qw/ .dovecot.sieve dovecot.sieve / ) {

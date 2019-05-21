@@ -9,6 +9,7 @@ BACKEND
     Added: Array::Utils library (PerlVendor)
     Enhancement: Make it possible to override any default DNS resource record (Bind9 server implementation)
     Fixed: Can't locate object method "remove" via package "iMSCP::File" (iMSCP::Service)
+    Fixed: Create default sieve script (filters), even if sieve is not available (Dovecot IMAP/POP server implementation)
     Fixed: Create symlink for sieve filters on email account creation/update, even when those are not available (Dovecot IMAP/POP server implementation)
     Fixed: Error output is badly captured, leading to 'Unknown error' (named-compilezone / Bind9 server implementation)
     Fixed: Missing check for SSL private key and SSL certificate matching (iMSCP::OpenSSL)
