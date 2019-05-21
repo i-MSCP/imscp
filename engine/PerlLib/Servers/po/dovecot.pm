@@ -26,6 +26,7 @@ package Servers::po::dovecot;
 use strict;
 use warnings;
 use Class::Autouse qw/ :nostat Servers::po::dovecot::installer Servers::po::dovecot::uninstaller /;
+use File::Spec;
 use File::Temp;
 use iMSCP::Boolean;
 use iMSCP::Config;
@@ -210,6 +211,8 @@ sub addMail
     my $mailUidName = $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'};
     my $mailGidName = $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'};
 
+    # Mailboxes
+
     local $@;
     eval {
         for my $mailbox ( qw/ .Drafts .Junk .Sent .Trash / ) {
@@ -235,6 +238,8 @@ sub addMail
         return 1;
     }
 
+    # Subscriptions
+    
     my @subscribedFolders = qw/ Drafts Junk Sent Trash /;
     my $subscriptionsFile = iMSCP::File->new(
         filename => "$mailDir/subscriptions"
@@ -257,6 +262,31 @@ sub addMail
     $rs ||= $subscriptionsFile->owner( $mailUidName, $mailGidName );
     $rs ||= $subscriptionsFile->mode( 0640 );
     return $rs if $rs;
+
+    # Sieve filters
+    # Create symlink for sieve filters, even if those are not installed.
+    # If we don't do that, sieve filters will not be enabled by default, even
+    # when installed. Users will have to enable them through the Roundcube
+    # managesieve plugin and that's not acceptable for beginners...
+
+    # Note: the 'dovecot.sieve' symlink was the one created by the old
+    # RoundcubePlugins plugin (managesieve plugin configuration). It is now
+    # '.dovecot.sieve'. We need remove it if present...
+    for my $lnk ( qw/ .dovecot.sieve dovecot.sieve / ) {
+        next unless -l "$mailDir/$lnk";
+        $rs = iMSCP::File->new( filename => "$mailDir/$lnk" )->delFile();
+        return $rs if $rs;
+    }
+
+    unless ( symlink(
+        File::Spec->abs2rel( "$mailDir/sieve/managesieve.sieve", $mailDir ),
+        "$mailDir/.dovecot.sieve"
+    ) ) {
+        error( sprintf( "Couldn't create symlink for managesieve" ));
+        return 1;
+    }
+    
+    # Quota
 
     if ( $data->{'MAIL_QUOTA'} ) {
         if ( $self->{'forceMailboxesQuotaRecalc'}
