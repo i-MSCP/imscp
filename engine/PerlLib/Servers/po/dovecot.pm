@@ -285,7 +285,12 @@ sub addMail
         error( sprintf( "Couldn't create symlink for managesieve" ));
         return 1;
     }
-    
+
+    $rs = iMSCP::File->new( filename => "$mailDir/.dovecot.sieve" )->owner(
+        $mailUidName, $mailGidName
+    );
+    return $rs if $rs;
+
     # Quota
 
     if ( $data->{'MAIL_QUOTA'} ) {
