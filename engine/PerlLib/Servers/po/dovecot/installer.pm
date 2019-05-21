@@ -473,19 +473,25 @@ sub _buildConf
     }
 
     my %cfgFiles = (
-        'dovecot.conf'     => [
+        'dovecot.conf'             => [
             "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot.conf", # Dest path
             $::imscpConfig{'ROOT_USER'},                            # Owner
             $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},   # Group
             0640                                                    # Permissions
         ],
-        'dovecot-sql.conf' => [
+        'dovecot-sql.conf'         => [
             "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf", # Dest path
             $::imscpConfig{'ROOT_USER'},                                # owner
             $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},       # Group
             0640                                                        # Permissions
         ],
-        'quota-warning'    => [
+        'dovecot-managesieve.conf' => [
+            "$self->{'config'}->{'DOVECOT_CONF_DIR'}/imscp.d/dovecot-managesieve.conf", # Dest path
+            $::imscpConfig{'ROOT_USER'},                                                # owner
+            $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},                       # Group
+            0640                                                                        # Permissions
+        ],
+        'quota-warning'            => [
             "$::imscpConfig{'ENGINE_ROOT_DIR'}/quota/imscp-dovecot-quota.sh", # Dest path
             $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'},             # Owner
             $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},             # Group

@@ -17,6 +17,7 @@ BACKEND
     Fixed: SysVinit script are always reported as enabled (Debian SysVinit init provider)
     Fixed: The 'imscp_panel' service is always restarted even when it should not (FrontEnd dpkg(1) post invoke tasks)
     Fixed: The 'is-enabled' support for SysVinit scripts isn't available in older systemd version (Debian Systemd init provider)
+    Review: Enable sieve filtering service by default (Move of SPAM to Junk folder - Dovecot IMAP/POP server implementation)
     Review: Engine permissions (Bind9 server implementation)
     Review: Pass the full item data row to backend modules
     Rewritten: Packages (addons)

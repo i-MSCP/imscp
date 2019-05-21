@@ -309,6 +309,8 @@
             <package>dovecot-imapd</package>
             <package>dovecot-pop3d</package>
             <package>dovecot-mysql</package>
+            <package>dovecot-managesieved</package>
+            <package>dovecot-sieve</package>
         </dovecot>
     </po>
     <mta

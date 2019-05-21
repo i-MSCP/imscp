@@ -279,27 +279,8 @@ sub addMail
     # managesieve plugin and that's not acceptable for beginners, mostly for SPAM
     # filtering...
     unless ( -f "$mailDir/sieve/managesieve.sieve" ) {
-        my $file = iMSCP::File->new( filename => "$mailDir/sieve/managesieve.sieve" );
-        $file->set( <<'EOF' );
-require ["fileinto","vacation"];
-# rule:[spam]
-if header :contains "x-spam-flag" "YES"
-{
-    fileinto "INBOX.Junk";
-    stop;
-}
-# rule:[vacation]
-if false
-{
-    vacation :subject "Out of office" text:
-Hello,
-
-Thank you for your message. I'm out of office, with no email access.
-.
-;
-}
-EOF
-        $rs = $file->save();
+        my $file = iMSCP::File->new( filename => "$self->{'cfgDir'}/sieve.default" );
+        $rs = $file->copyFile( "$mailDir/sieve/managesieve.sieve", { preserve => 'no' } );
         $rs ||= $file->owner( $mailUidName, $mailGidName );
         $rs ||= $file->mode( 0600 );
         return $rs if $rs;
