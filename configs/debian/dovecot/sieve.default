@@ -6,7 +6,7 @@ if header :contains "X-Spam-Flag" "YES"
     stop;
 }
 # rule:[vacation]
-if false
+if false # true
 {
     vacation :subject "Out of office" text:
 Hello,
