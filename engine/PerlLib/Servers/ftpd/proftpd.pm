@@ -434,7 +434,7 @@ sub getTraffic
     debug( sprintf( 'Processing FTP logs from the %s file', $logFile ));
 
     # Create snapshot of traffic data source file
-    my $snapshotFH = File::Temp->new( UNLINK => TRUE );
+    my $snapshotFH = File::Temp->new();
     iMSCP::File->new(
         filename => $logFile
     )->copyFile(

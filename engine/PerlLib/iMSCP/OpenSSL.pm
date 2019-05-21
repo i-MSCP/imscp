@@ -67,7 +67,7 @@ sub validatePrivateKey
     if ( $self->{'private_key_passphrase'} ) {
         # Write SSL private key passphrase into temporary file, which is only
         # readable by root
-        $passphraseFile = File::Temp->new( UNLINK => TRUE );
+        $passphraseFile = File::Temp->new();
         print $passphraseFile $self->{'private_key_passphrase'};
         $passphraseFile->close();
     }
@@ -262,7 +262,7 @@ sub importPrivateKey
     if ( length $self->{'private_key_passphrase'} ) {
         # Write SSL private key passphrase into temporary file which is only
         # readable by root user
-        $passphraseFile = File::Temp->new( UNLINK => TRUE );
+        $passphraseFile = File::Temp->new();
         print $passphraseFile $self->{'private_key_passphrase'};
         $passphraseFile->close();
     }
@@ -420,7 +420,7 @@ sub createSelfSignedCertificate
     );
 
     # Write openssl configuration file into temporary file
-    my $openSSLConffile = File::Temp->new( UNLINK => TRUE );
+    my $openSSLConffile = File::Temp->new();
     print $openSSLConffile process(
         {
             COMMON_NAME   => $commonName,

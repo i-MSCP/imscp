@@ -486,7 +486,7 @@ sub getTraffic
         );
 
         # Create a snapshot of current log file state
-        my $snapshotFH = File::Temp->new( UNLINK => TRUE );
+        my $snapshotFH = File::Temp->new();
         iMSCP::File->new(
             filename => $logFile
         )->copyFile(

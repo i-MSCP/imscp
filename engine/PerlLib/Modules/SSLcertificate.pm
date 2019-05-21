@@ -124,19 +124,19 @@ sub add
     return $rs if $rs;
 
     # Private key
-    my $privateKeyContainer = File::Temp->new( UNLINK => TRUE );
+    my $privateKeyContainer = File::Temp->new();
     print $privateKeyContainer $self->{'private_key'};
     $privateKeyContainer->close();
 
     # Certificate
-    my $certificateContainer = File::Temp->new( UNLINK => TRUE );
+    my $certificateContainer = File::Temp->new();
     print $certificateContainer $self->{'certificate'};
     $certificateContainer->close();
 
     # CA Bundle (intermediate certificate(s))
     my $caBundleContainer;
     if ( $self->{'ca_bundle'} ) {
-        $caBundleContainer = File::Temp->new( UNLINK => TRUE );
+        $caBundleContainer = File::Temp->new();
         print $caBundleContainer $self->{'ca_bundle'};
         $caBundleContainer->close();
     }

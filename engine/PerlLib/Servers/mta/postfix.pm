@@ -794,7 +794,7 @@ sub getTraffic
         my ( $idx, $idxContent ) = ( $trafficIndexDb->{'smtp_lineNo'} || 0, $trafficIndexDb->{'smtp_lineContent'} );
 
         # Create a snapshot of current log file state
-        my $snapshotFH = File::Temp->new( UNLINK => TRUE );
+        my $snapshotFH = File::Temp->new();
         iMSCP::File->new(
             filename => $logFile
         )->copyFile(

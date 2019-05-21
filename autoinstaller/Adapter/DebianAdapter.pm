@@ -364,7 +364,7 @@ sub _installPackages
     my ( $self ) = @_;
 
     # See https://people.debian.org/~hmh/invokerc.d-policyrc.d-specification.txt
-    my $policyrcd = File::Temp->new( UNLINK => TRUE );
+    my $policyrcd = File::Temp->new();
 
     # Prevents INVOKE-RC.D(8) to start managed services
     print $policyrcd <<"EOF";
@@ -815,7 +815,7 @@ EOF
             );
         } elsif ( $repository->{'repository_key_uri'} ) {
             # Add the repository key by fetching it first from the given URI
-            my $keyFile = File::Temp->new( UNLINK => TRUE );
+            my $keyFile = File::Temp->new();
             $keyFile->close();
             $rs = execute(
                 [
@@ -1565,7 +1565,7 @@ EOF
 
     return 0 unless length $fileC;
 
-    my $debconfSelectionsFile = File::Temp->new( UNLINK => TRUE );
+    my $debconfSelectionsFile = File::Temp->new();
     print $debconfSelectionsFile $fileC;
     $debconfSelectionsFile->close();
 

@@ -585,7 +585,7 @@ EOF
     );
     return $rs if $rs;
 
-    $file = File::Temp->new( UNLINK => TRUE );
+    $file = File::Temp->new();
     print $file ${ $fileC };
     $file->close();
 
