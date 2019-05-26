@@ -38,6 +38,7 @@ use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::Rights 'setRights';
 use iMSCP::Service;
+use Text::Balanced qw/ extract_multiple extract_bracketed /;
 use Tie::File;
 use parent 'Common::SingletonClass';
 
@@ -1066,7 +1067,21 @@ sub postconf
             sub {
                 return unless ( my $p, my $v ) = $_[0] =~ /^([^=]+)\s+=\s*(.*)/;
 
-                my ( @vls, @rpls ) = ( split( /,\s*/, $v ), () );
+                my @vls = extract_multiple(
+                    $v,
+                    [
+                        # Support for per-Milter and per-policy server timeout
+                        # and other settings (Postfix >= 3)
+                        # See http://www.postfix.org/announcements/postfix-3.0.0.html
+                        # See http://www.postfix.org/MILTER_README.html
+                        sub { extract_bracketed( $_[0], '{}' ) },
+                        # Comma or whitespace separated parameter values
+                        qr/([^,\s*]+)/
+                    ],
+                    undef,
+                    TRUE
+                );
+                my @rpls;
 
                 defined $params{$p}->{'values'}
                     && ref $params{$p}->{'values'} eq 'ARRAY' or die( sprintf(

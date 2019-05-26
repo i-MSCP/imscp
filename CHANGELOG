@@ -5,6 +5,7 @@ Git 1.5.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
+    Added: Support for per-Milter and per-policy server timeout (Servers::mta::postfix::postconf() - Postfix >= 3.0.0)
     Added: iMSCP::Database::mariadb adapter (for use with new DBD::MariaDB driver for DBI, in place of DBD::mysql when available)
     Added: Array::Utils library (PerlVendor)
     Enhancement: Make it possible to override any default DNS resource record (Bind9 server implementation)
