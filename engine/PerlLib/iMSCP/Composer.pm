@@ -304,8 +304,7 @@ sub install
             '--no-interaction',
             '--no-suggest',
             ( $nodev ? '--no-dev' : () ),
-            ( $noautoloader ? '--no-autoloader' : () ),
-            '-vv',
+            ( $noautoloader ? '--no-autoloader' : () )
         ),
         $self->{'_stdout'},
         $self->{'_stderr'}
@@ -349,7 +348,6 @@ sub update
             '--no-suggest',
             ( $nodev ? '--no-dev' : () ),
             ( $noautoloader ? '--no-autoloader' : () ),
-            '-vv',
             @packages
         ),
         $self->{'_stdout'},
@@ -377,8 +375,7 @@ sub clearCache
             $self->{'composer_phar'}, 'clear-cache',
             "--working-dir=$self->{'composer_working_dir'}",
             '--no-interaction',
-            '--no-ansi',
-            '-vv'
+            '--no-ansi'
         ),
         $self->{'_stdout'},
         $self->{'_stderr'}
