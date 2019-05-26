@@ -140,7 +140,7 @@ sub executeNoWait( $;$$ )
     my $sel = IO::Select->new( $stdout, $stderr );
     while ( my @ready = $sel->can_read() ) {
         for my $fh ( @ready ) {
-            my $bytes = sysread $fh, $buffers{$fh}, 4096, length $buffers{$fh};
+            my $bytes = sysread $fh, $buffers{$fh}, 512, length $buffers{$fh};
             next if $!{'EINTR'};      # Ignore signal interrupt
             defined $bytes or die $!; # Something is going wrong; abort early
 
