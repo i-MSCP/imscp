@@ -38,12 +38,15 @@ use iMSCP::Dialog;
 use iMSCP::EventManager;
 use iMSCP::Getopt;
 use Net::LibIDN 'idn_to_unicode';
+use POSIX 'locale_h';
 
 @{ENV}{qw/ LANG PATH IMSCP_SETUP /} = (
     'C.UTF-8',
     '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
     TRUE
 );
+delete $ENV{'LANGUAGE'};
+setlocale( LC_MESSAGES, 'C.UTF-8' );
 
 {
     no warnings 'once';

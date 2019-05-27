@@ -37,11 +37,14 @@ use iMSCP::Bootstrapper;
 use iMSCP::Debug qw/ newDebug setDebug setVerbose /;
 use iMSCP::Getopt;
 use iMSCP::Mount qw/ mount umount isMountpoint getMounts /;
+use POSIX 'locale_h';
 
 @{ENV}{qw/ LANG PATH /} = (
     'C.UTF-8',
     '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
 );
+delete $ENV{'LANGUAGE'};
+setlocale( LC_MESSAGES, 'C.UTF-8' );
 
 # Set execution context
 $::execmode = 'backend';

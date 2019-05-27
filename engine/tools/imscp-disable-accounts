@@ -29,6 +29,7 @@
 
 use strict;
 use warnings;
+use File::Basename;
 use FindBin;
 use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 use iMSCP::Boolean;
@@ -37,12 +38,14 @@ use iMSCP::Debug qw/ debug error newDebug setDebug setVerbose /;
 use iMSCP::Bootstrapper;
 use iMSCP::DbTasksProcessor;
 use iMSCP::Getopt;
-use File::Basename;
+use POSIX 'locale_h';
 
 @{ENV}{qw/ LANG PATH /} = (
     'C.UTF-8',
-    '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
 );
+delete $ENV{'LANGUAGE'};
+setlocale( LC_MESSAGES, 'C.UTF-8' );
 
 # Set execution context
 $::execmode = 'backend';

@@ -31,9 +31,14 @@ use XML::Parser;
 use warnings;
 use JSON;
 use MIME::Base64 qw/ encode_base64 decode_base64 /;
+use POSIX 'locale_h';
 
-$ENV{'LANG'} = 'C.UTF-8';
-$ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
+@{ENV}{qw/ LANG PATH /} = (
+    'C.UTF-8',
+    '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+);
+delete $ENV{'LANGUAGE'};
+setlocale( LC_MESSAGES, 'C.UTF-8' );
 
 defined $ARGV[0] or die( 'Expects a base64 encoded string containing JSON data as first argument' );
 

@@ -40,11 +40,15 @@ use iMSCP::Debug qw/
 use iMSCP::Getopt;
 use iMSCP::Servers;
 use iMSCP::Packages;
+use POSIX 'locale_h';
 
-@{ENV}{qw/ LANG PATH /} = (
+@{ENV}{qw/ LANG PATH IMSCP_SETUP /} = (
     'C.UTF-8',
-    '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+    TRUE
 );
+delete $ENV{'LANGUAGE'};
+setlocale( LC_MESSAGES, 'C.UTF-8' );
 
 # Set execution context
 # Need to be setup as some post-invoke tasks could have to write

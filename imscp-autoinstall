@@ -44,12 +44,15 @@ use iMSCP::Debug qw/ newDebug output setDebug setVerbose /;
 use iMSCP::Requirements;
 use iMSCP::Dialog;
 use iMSCP::Getopt;
+use POSIX 'locale_h';
 
 @{ENV}{qw/ LANG PATH IMSCP_SETUP /} = (
     'C.UTF-8',
     '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
     TRUE
 );
+delete $ENV{'LANGUAGE'};
+setlocale( LC_MESSAGES, 'C.UTF-8' );
 
 system( 'clear' );
 

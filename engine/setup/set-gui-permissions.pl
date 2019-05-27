@@ -38,9 +38,14 @@ use iMSCP::EventManager;
 use iMSCP::Getopt;
 use iMSCP::Servers;
 use iMSCP::Packages;
+use POSIX 'locale_h';
 
-$ENV{'LANG'} = 'C.UTF-8';
-$ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
+@{ENV}{qw/ LANG PATH /} = (
+    'C.UTF-8',
+    '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+);
+delete $ENV{'LANGUAGE'};
+setlocale( LC_MESSAGES, 'C.UTF-8' );
 
 newDebug( 'imscp-set-gui-permissions.log' );
 

@@ -49,11 +49,14 @@ use iMSCP::Service;
 use iMSCP::Stepper qw/ step endDetail startDetail /;
 use iMSCP::SystemUser;
 use Servers::sqld;
+use POSIX 'locale_h';
 
 @{ENV}{qw/ LANG PATH /} = (
     'C.UTF-8',
     '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
 );
+delete $ENV{'LANGUAGE'};
+setlocale( LC_MESSAGES, 'C.UTF-8' );
 
 # Set backend mode
 $::execmode = 'uninstaller';
