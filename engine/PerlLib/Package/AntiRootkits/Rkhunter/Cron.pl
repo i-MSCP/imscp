@@ -29,10 +29,9 @@ use iMSCP::File;
 use iMSCP::ProgramFinder;
 use POSIX 'locale_h';
 
-@{ENV}{qw/ LANG PATH IMSCP_SETUP /} = (
+@{ENV}{qw/ LANG PATH /} = (
     'C.UTF-8',
     '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-    TRUE
 );
 delete $ENV{'LANGUAGE'};
 setlocale( LC_MESSAGES, 'C.UTF-8' );
