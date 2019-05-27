@@ -39,6 +39,7 @@ use iMSCP::ProgramFinder;
 use iMSCP::Service;
 use iMSCP::SystemGroup;
 use iMSCP::SystemUser;
+use Module::Load::Conditional 'check_install';
 use Servers::httpd::apache_itk;
 use Servers::sqld;
 use version;
@@ -589,9 +590,13 @@ sub _setupVlogger
         );
 
         $self->{'httpd'}->setData( {
-            DATABASE_NAME     => ::setupGetQuestion( 'DATABASE_NAME' ),
-            DATABASE_HOST     => ::setupGetQuestion( 'DATABASE_HOST' ),
-            DATABASE_PORT     => ::setupGetQuestion( 'DATABASE_PORT' ),
+            DSN               => "DBI:" . (
+                !!check_install( module => 'DBD::MariaDB', verbose => FALSE )
+                    ? 'MariaDB' : 'mysql'
+            ) . ":database=@{ [ ::setupGetQuestion( 'DATABASE_NAME' ) ] };"
+                . $::imscpConfig{'DATABASE_HOST'}
+                . ( $::imscpConfig{'DATABASE_HOST'} ne 'localhost'
+                    ? ";$::imscpConfig{'DATABASE_PORT'}" : '' ),
             DATABASE_USER     => $config{'APACHE_VLOGGER_SQL_USER'},
             DATABASE_PASSWORD => $config{'APACHE_VLOGGER_SQL_USER_PASSWD'}
         } );
