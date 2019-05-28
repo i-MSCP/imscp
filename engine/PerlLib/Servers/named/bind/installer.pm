@@ -26,6 +26,7 @@ package Servers::named::bind::installer;
 use strict;
 use warnings;
 use File::Basename;
+use iMSCP::Boolean;
 use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dir;
 use iMSCP::EventManager;
@@ -361,7 +362,7 @@ sub _dialogForDnsServerIpv6Support
 {
     my ( $self, $dialog ) = @_;
 
-    unless ( $::imscpConfig{'IPV6_SUPPORT'} ) {
+    unless ( ::setupGetQuestion( 'IPV6_SUPPORT', FALSE ) ) {
         ::setupSetQuestion( 'BIND_IPV6', 'no' );
         return 20;
     }
