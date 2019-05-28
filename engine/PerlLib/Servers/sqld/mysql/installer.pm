@@ -161,10 +161,11 @@ sub _dialogForSqlServerHostname
     if ( !grep ( $::reconfigure eq $_, qw/ sql servers all / )
         && isNotEmpty( $dbHost )
         && ( $dbHost eq 'localhost'
-        || isValidHostname( $dbHost )
-        || !isValidIpAddr( $dbHost )
-    )
+             || isValidHostname( $dbHost )
+             || isValidIpAddr( $dbHost )
+        )
     ) {
+        ::setupSetQuestion( 'DATABASE_HOST', $dbHost );
         return 20;
     }
 
@@ -215,12 +216,20 @@ sub _dialogForSqlServerPort
     my ( undef, $dialog ) = @_;
 
     my $isRemoteSqlSrv = ::setupGetQuestion( 'SQL_SERVER' ) eq 'remote_server';
-    my $dbPort = ::setupGetQuestion( 'DATABASE_PORT' );
-
+    my $dbPort = ::setupGetQuestion(
+        'DATABASE_PORT',
+        # if the database server  hostname has been set to 'localhost', set the
+        # port to 3306 and skip the dialog, unless the user explicitly asked
+        # for a reconfiguration. 'localhost mean connection through UDS so the
+        # port is irrelevant in that context.    
+        ::setupGetQuestion( 'DATABASE_HOST') eq 'localhost' ? 3306 : ''
+    );
+    
     if ( !grep ( $::reconfigure eq $_, qw/ sql servers all / )
         && isNumber( $dbPort )
         && isNumberInRange( $dbPort, 1025, 65535 )
     ) {
+        ::setupSetQuestion( 'DATABASE_PORT', $dbPort );
         return 20;
     }
 
@@ -447,8 +456,11 @@ sub _dialogForSqlUserHost
     my ( undef, $dialog ) = @_;
 
     my $isRemoteSqlSrv = $::imscpConfig{'SQL_SERVER'} eq 'remote_server';
-    my $value = ::setupGetQuestion( 'DATABASE_USER_HOST', $isRemoteSqlSrv
-        ? ::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' ) : 'localhost'
+    my $value = ::setupGetQuestion(
+        'DATABASE_USER_HOST',
+        $isRemoteSqlSrv
+            ? ::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' )
+            : 'localhost'
     );
 
     # In case of a remote SQL server, none of 'localhost', '127.0.0.1',
