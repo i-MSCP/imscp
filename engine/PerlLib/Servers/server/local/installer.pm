@@ -220,7 +220,7 @@ sub dialogForBaseServerPublicIP
     ) {
         chomp( $value = get( 'https://ipinfo.io/ip' )
             || get( 'https://api.ipify.org/?format=txt' ) || ''
-        ) unless length == $value || grep (
+        ) unless length $value || grep (
             $::reconfigure eq $_, qw/ local_server primary_ip all /
         );
 
