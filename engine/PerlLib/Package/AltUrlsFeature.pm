@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Boolean;
 use iMSCP::EventManager;
+use iMSCP::Getopt;
 use Servers::httpd;
 use Servers::named;
 use Scalar::Defer 'lazy';
@@ -246,11 +247,14 @@ sub _dialogForAltUrlsFeature
 {
     my ( undef, $dialog ) = @_;
 
-    my $value = ::setupGetQuestion( 'CLIENT_WEBSITES_ALT_URLS' );
+    my $value = ::setupGetQuestion(
+        'CLIENT_WEBSITES_ALT_URLS', iMSCP::Getopt->preseed ? 'yes' : ''
+    );
 
     if ( !grep ( $::reconfigure eq $_, qw/ alt_urls_feature all / )
         && grep ( $value eq $_, qw/ yes no / )
     ) {
+        ::setupSetQuestion( 'CLIENT_WEBSITES_ALT_URLS', $value );
         return 20
     }
 

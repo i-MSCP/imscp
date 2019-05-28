@@ -2,12 +2,61 @@
 
 # i-MSCP preseed.pl template file for installer preseeding feature
 #
-# See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
+# See the documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2019.05.12
+# Last update: 2019.05.28
 
 %::questions = (
+    ###
+    ### Mandatory parameters
+    ### Unless otherwise stated, these parameters can't be left blank.
+    ###
+
+    # Server primary IP
+    #
+    # If you make use of a Cloud computing service such as Scaleway or Amazon
+    # EC2, you should set the value to '0.0.0.0' which means that i-MSCP will
+    # configures the services to listen on all  interfaces rather than a
+    # specific interface.
+    #
+    # Possible values: A configured IPv4 or IPv6 address
+    BASE_SERVER_IP                      => '',
+    
+    # Master administrator (control panel) password
+    #
+    # Only ASCII alphabet characters and digits are allowed in password.
+    ADMIN_PASSWORD                      => '',
+
+    # Master administrator email address
+    #
+    # Be aware that mails sent to local root user will be forwarded to that
+    # email.
+    #
+    # This email address is very important as this is the one to which i-MSCP
+    # will  send all system notifications such as warning, error and so on...
+    # If you make use of The i-MSCP LetsEncrypt plugin, this email will be also
+    # used for the account registration. 
+    #
+    # Possible value: A valid email address.
+    DEFAULT_ADMIN_ADDRESS               => '',
+
+    # SQL root username/password
+    #
+    # If you make use of a local SQL server, and if the unix_socket
+    # authentication plugin is enabled for the SQL root user, you can leave
+    # these parameters blank.
+    #
+    # The installer only make use of that SQL user while installation.
+    SQL_ROOT_USER                       => '',
+    SQL_ROOT_PASSWORD                   => '',
+
+    ###
+    ### Parameter with default values
+    ### All parameters below can be left 'AS THIS' if the default values fit
+    ### for you.
+    ###
+
     #
     ## System configuration
     #
@@ -16,30 +65,20 @@
     #
     # Possible values: A fully qualified hostname name (FQHN)
     #
-    # Leave this parameter empty for use of the configured server hostname.
+    # Leave this parameter blank for use of default value: server hostname.
     SERVER_HOSTNAME                     => '',
-
-    # Server primary IP
-    #
-    # Note: If you make use of a Cloud computing service such as Scaleway or
-    # Amazon EC2, you should set the value to '0.0.0.0'. Setting the value to
-    # '0.0.0.0' means that i-MSCP will configures the services to listen on all
-    # interfaces rather than a specific interface.
-    #
-    # Possible values: A configured IPv4 or IPv6 address
-    BASE_SERVER_IP                      => '',
 
     # WAN IP
     #
     # You can force usage of a private IP by setting this parameter to the
-    # value of the 'BASE_SERVER_IP' parameter instead of a public IP. You
-    # can also leave this parameter empty for automatic detection of the
-    # public (WAN) IP.
+    # value of the 'BASE_SERVER_IP' parameter instead of a public IP.
     #
     # If you have set the 'BASE_SERVER_IP' parameter value to '0.0.0.0', you
-    # should leave this parameter empty.
+    # should leave this parameter blank.
     #
     # Possible values: an Ipv4 or IPv6 address
+    #
+    # Leave this parameter blank for use of default value: WAN IP
     BASE_SERVER_PUBLIC_IP               => '',
 
     # Server timezone
@@ -47,7 +86,7 @@
     # Possible values: A valid timezone such as 'Europe/Berlin'
     # (see http://php.net/manual/en/timezones.php)
     #
-    # Leave this parameter empty for automatic timezone detection.
+    # Leave this parameter blank for use of default value: server timezone.
     TIMEZONE                            => '',
 
     #
@@ -58,7 +97,9 @@
     # configuration files
     #
     # Possible values: yes, no
-    BACKUP_IMSCP                        => 'yes',
+    #
+    # Leave this parameter blank for use of default value: yes
+    BACKUP_IMSCP                        => '',
 
     # Enable/Disable the backup feature for client data (Web data, SQL data,
     # and mail data)
@@ -67,7 +108,9 @@
     # backup feature on a per client basis.
     #
     # Possible values: yes, no
-    BACKUP_DOMAINS                      => 'yes',
+    #
+    # Leave this parameter blank for use of default value: yes
+    BACKUP_DOMAINS                      => '',
 
     #
     ## SQL server configuration parameters
@@ -80,19 +123,21 @@
     # Accepted values are the XML node names that describe SQL servers. For
     # instance: 'remote_server', 'mysql_5.7', 'mariadb_10.1', 'mariadb_10.2'
     #
-    # Leave this parameter empty to automatically select the default SQL server
-    # implementation, as set in the distribution packages file.
+    # Leave this parameter blank for use of default value: default SQL server
+    # as set in distribution packages file.
     SQL_SERVER                          => '',
 
     # Keep the local SQL server installed regardless of the selected SQL server
     # implementation
     #
-    # If there is a local SQL server installed, and when setting the
-    # 'SQL_SERVER' parameter value to 'remote_server', this flag tells
-    # whether or not the local server must be kept installed.
+    # If there is a local SQL server installed locally, and if you choose the
+    # remote SQl server alternative, this flag tells  the installer whether or
+    # not the local server must be kept installed.
     #
     # Possible value: yes, no
-    KEEP_LOCAL_SQL_SERVER               => 'yes',
+    #
+    # Leave this parameter blank for use of default value: yes
+    KEEP_LOCAL_SQL_SERVER               => '',
 
     # SQL server hostname
     #
@@ -104,24 +149,17 @@
     # are irrelevant, and therefore, prohibited.
     #
     # Possible values: A valid hostname or IP address
-    DATABASE_HOST                       => 'localhost',
-
-    # SQL server port
     #
-    # This port is used only for connections through TCP/IP.
+    # If you make use of a local SQL server, you can leave this parameter blank
+    # for use of default value: localhost
+    DATABASE_HOST                       => '',
+
+    # SQL server port (only relevant for TCP/IP connection)
     #
     # Possible values: A port in range 1025 to 65535
-    DATABASE_PORT                       => '3306',
-
-    # SQL root user and password
     #
-    # If you make use of a local SQL server, and if the unix_socket
-    # authentication plugin is enabled for the SQL root user, you can leave
-    # those parameters empty.
-    #
-    # The installer only make use of that user while installation.
-    SQL_ROOT_USER                       => '',
-    SQL_ROOT_PASSWORD                   => '',
+    # Leave this parameter blank for use of default value: 3306
+    DATABASE_PORT                       => '',
 
     # i-MSCP Master SQL user
     #
@@ -130,9 +168,12 @@
     #
     # Note that the debian-sys-maint, mysql.user, root  SQL users are not
     # allowed.
-    DATABASE_USER                       => 'imscp_user',
-    # Only ASCII alphabet characters and numbers are allowed in password.
-    # Leave this parameter empty for automatic password generation.
+    #
+    # Leave this parameter blank for use of default value: imscp_user
+    DATABASE_USER                       => '',
+    # Only ASCII alphabet characters and digits are allowed in password.
+    #
+    # Leave this parameter blank for use of default value: random password.
     DATABASE_PASSWORD                   => '',
 
     # Hostname for SQL users created by i-MSCP
@@ -157,15 +198,24 @@
     #
     # Possible values: A valid SQL user hostname.
     # See https://dev.mysql.com/doc/refman/5.7/en/account-names.html
-    DATABASE_USER_HOST                  => 'localhost',
+    #
+    # Leave this parameter blank for use of default value which depending on
+    # context is:
+    # - Local SQL server: localhost
+    # - Remote SQL server: WAN IP
+    DATABASE_USER_HOST                  => '',
 
     # Database name (database for the control panel)
-    DATABASE_NAME                       => 'imscp',
+    #
+    # Leave this parameter blank for use of default value: imscp
+    DATABASE_NAME                       => '',
 
-    # Enable/disable prefix/suffix for SQL databases and users names
+    # Enable/disable prefix/suffix for SQL databases/usernames
     #
     # Possible values: behind, infront, none
-    MYSQL_PREFIX                        => 'none',
+    #
+    # Leave this parameter blank for use of default value: none
+    MYSQL_PREFIX                        => '',
 
     #
     ## Control panel configuration parameters
@@ -175,42 +225,49 @@
     #
     # Possible value: nginx
     #
-    # Leave this parameter empty to automatically select the default DNS
-    # server implementation, as set in the distribution packages file.
+    # Leave this parameter blank for us of default value: default Http server
+    # for the frontend (control panel) as set in distribution packages file.
     FRONTEND_SERVER                     => '',
 
     # Control panel hostname
     #
     # Hostname from which the control panel must be reachable.
     #
-    # Possible values: A fully qualified hostname name (FQHN)
+    # Possible values: A fully qualified hostname name (FQHN).
     #
-    #
-    # Leave this parameter empty for use of default value:
-    #    panel.<SERVER_HOSTNAME>
+    # Leave this parameter blank for use of default value:
+    # panel.<SERVER_HOSTNAME>
     BASE_SERVER_VHOST                   => '',
 
     # Control panel http port
     #
     # Possible values: A port in range 1025-65535
-    BASE_SERVER_VHOST_HTTP_PORT         => '8880',
+    #
+    # Leave this parameter blank for use of default value: 8880
+    BASE_SERVER_VHOST_HTTP_PORT         => '',
 
     # Control panel https port (only relevant if SSL is enabled for the control
     # panel)
     #
     # Possible values: A port in range 1025-65535
-    BASE_SERVER_VHOST_HTTPS_PORT        => '8443',
+    #
+    # Leave this parameter blank for use of default value: 8443
+    BASE_SERVER_VHOST_HTTPS_PORT        => '',
 
     # Enable/disable SSL for the control panel
     #
     # Possible values: yes, no
-    PANEL_SSL_ENABLED                   => 'yes',
+    #
+    # Leave this parameter blank for use of default value: yes
+    PANEL_SSL_ENABLED                   => '',
 
     # Whether or not a self-signed SSL certificate must be generated for the
     # control panel
     #
     # Possible values: yes, no
-    PANEL_SSL_SELFSIGNED_CERTIFICATE    => 'yes',
+    #
+    # Leave this parameter blank for use of default value: yes
+    PANEL_SSL_SELFSIGNED_CERTIFICATE    => '',
 
     # Control panel SSL certificate private key (only relevant for a trusted
     # SSL certificate)
@@ -245,26 +302,22 @@
     # wildcard DNS in the control panel domain zone such as *.<cp_domain>.tld.
     #
     # Possible values: yes, no
-    CLIENT_WEBSITES_ALT_URLS            => 'yes',
+    #
+    # Leave this parameter blank for use of default value: yes
+    CLIENT_WEBSITES_ALT_URLS            => '',
 
     # Control panel access mode (only relevant if SSL is enabled for the control
     # panel)
     #
     # Possible values: http://, https://
-    BASE_SERVER_VHOST_PREFIX            => 'http://',
-
-    # Master administrator account credentials
-    ADMIN_LOGIN_NAME                    => 'admin',
-    # Only ASCII alphabet characters and numbers are allowed in password.
-    ADMIN_PASSWORD                      => '',
-
-    # Master administrator email address
     #
-    # Be aware that mails sent to local root user will be forwarded to that
-    # email.
+    # Leave this parameter blank for use of default value: http://
+    BASE_SERVER_VHOST_PREFIX            => '',
+
+    # Master administrator account credentials (control panel)
     #
-    # Possible value: A valid email address.
-    DEFAULT_ADMIN_ADDRESS               => '',
+    # Leave this parameter blank for use of default value: admin
+    ADMIN_LOGIN_NAME                    => '',
 
     #
     ## DNS server configuration
@@ -274,8 +327,8 @@
     #
     # Possible values: bind, external_server
     #
-    # Leave this parameter empty to automatically select the default DNS
-    # server implementation, as set in the distribution packages file.
+    # Leave this parameter blank for us of default value: default DNS server
+    # as set in distribution packages file.
     NAMED_SERVER                        => '',
 
     #
@@ -285,33 +338,43 @@
     # DNS server mode
     #
     # Possible values: master, slave
-    BIND_MODE                           => 'master',
+    #
+    # Leave this parameter blank for use of default value: master
+    BIND_MODE                           => '',
 
     # Master DNS IP addresses (Only relevant when the value of the 'BIND_MODE'
     # parameter is set to 'master')
     #
     # Possible value: 'no', or a list of IPv4/IPv6 addresses, each separated by
-    # semicolon or space
-    PRIMARY_DNS                         => 'no',
+    # semicolon or space.
+    #
+    # Leave this parameter blank for use of default value: no
+    PRIMARY_DNS                         => '',
 
     # Slave DNS IP addresses (Only relevant when the value of the 'BIND_MODE'
     # parameter is set to 'slave')
     #
     # Possible value: 'no', or a list of IPv4/IPv6 addresses, each separated by
     # semicolon or space
-    SECONDARY_DNS                       => 'no',
+    #
+    # Leave this parameter blank for use of default value: no
+    SECONDARY_DNS                       => '',
 
     # IPv6 support
     #
     # Possible values: yes, no
-    BIND_IPV6                           => 'no',
+    #
+    # Leave this parameter blank for use of default value: no
+    BIND_IPV6                           => '',
 
     # Local DNS resolver
     #
     # Make use of the local DNS server (bind9) for the local DNS resolution.
     #
     # Possible values: yes, no
-    LOCAL_DNS_RESOLVER                  => 'yes',
+    #
+    # Leave this parameter blank for use of default value: yes
+    LOCAL_DNS_RESOLVER                  => '',
 
     #
     ## Httpd server configuration parameters
@@ -321,8 +384,8 @@
     #
     # Possible values: apache_itk, apache_fcgid or apache_php_fpm (recommended)
     #
-    # Leave this parameter empty to automatically select the default httpd
-    # server implementation, as set in the distribution packages file.
+    # Leave this parameter blank for us of default value: Default Httpd server
+    # as set in distribution packages file.
     HTTPD_SERVER                        => '',
 
     #
@@ -333,8 +396,8 @@
     #
     # Possible values: php5.6, php7.0, php7.1, php7.2, or php7.3 (recommended)
     #
-    # Leave this parameter empty to automatically select the default PHP
-    # version, as set in the distribution packages file.
+    # Leave this parameter blank for us of default value: Default PHP version
+    # as set in distribution packages file.
     PHP_SERVER                          => '',
 
     # PHP configuration level
@@ -343,13 +406,17 @@
     # 'per_site'.
     #
     # Possible values: per_user, per_domain, per_site
-    PHP_CONFIG_LEVEL                    => 'per_site',
+    #
+    # Leave this parameter blank for use of default value: per_site
+    PHP_CONFIG_LEVEL                    => '',
 
     # PHP-FPM listen socket type (Only relevant with the 'apache_php_fpm'
     # server implementation)
     #
     # Possible values: uds (recommended), tcp
-    PHP_FPM_LISTEN_MODE                 => 'uds',
+    #
+    # Leave this parameter blank for use of default value: uds
+    PHP_FPM_LISTEN_MODE                 => '',
 
     #
     ## FTPd server configuration parameters
@@ -359,17 +426,19 @@
     #
     # Possible values: proftpd, vsftpd
     #
-    # Leave this parameter empty to automatically select the default FTP server
-    # implementation, as set in the distribution packages file.
+    # Leave this parameter blank for us of default value: default FTP server
+    # as set in distribution packages file.
     FTPD_SERVER                         => '',
 
-    # Passive port range
+    # Passive TCP port range
     #
     # If your server is behind a NAT router, you MUST not forget
-    # to forward those TCP port.
+    # to forward those TCP ports.
     #
     # Possible values: A port range in range 32768-60999
-    FTPD_PASSIVE_PORT_RANGE             => '32800 33800',
+    #
+    # Leave this parameter blank for use of default value: 32800 33800
+    FTPD_PASSIVE_PORT_RANGE             => '',
 
     #
     ## MTA server configuration parameters
@@ -379,8 +448,8 @@
     #
     # Possible values: postfix
     #
-    # Leave this parameter empty to automatically select the default MTA server
-    # implementation, as set in the distribution packages file.
+    # Leave this parameter blank for us of default value: default MTA server
+    # as set in distribution packages file.
     MTA_SERVER                          => '',
 
     #
@@ -390,8 +459,9 @@
     # POP/IMAP servers implementation
     #
     # Possible values: courier, dovecot
-    # Leave this parameter empty to automatically select the default IMAP/POP
-    # server implementation, as set in the distribution packages file.
+    #
+    # Leave this parameter blank for us of default value: default IMAP/POP
+    # server  as set in distribution packages file.
     PO_SERVER                           => '',
 
     #
@@ -401,12 +471,16 @@
     # Enable/disable SSL for various services (FTP, IMAP/POP, SMTP)
     #
     # Possible values: yes, no
-    SERVICES_SSL_ENABLED                => 'yes',
+    #
+    # Leave this parameter blank for use of default value: yes
+    SERVICES_SSL_ENABLED                => '',
 
     # Whether or not a self-signed SSL certificate must be generated
     #
     # Possible values: yes, no
-    SERVICES_SSL_SELFSIGNED_CERTIFICATE => 'yes',
+    #
+    # Leave this parameter blank for use of default value: yes
+    SERVICES_SSL_SELFSIGNED_CERTIFICATE => '',
 
     # Services SSL certificate private key (only relevant for a trusted SSL
     # certificate)

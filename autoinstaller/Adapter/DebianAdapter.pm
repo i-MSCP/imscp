@@ -987,6 +987,11 @@ sub _getPackagesDialog
 
         if ( $section eq 'sql' ) {
             $::questions{'KEEP_LOCAL_SQL_SERVER'} //= $::imscpConfig{'KEEP_LOCAL_SQL_SERVER'};
+
+            unless( length $::questions{'KEEP_LOCAL_SQL_SERVER'} || !iMSCP::Getopt->preseed ) {
+                $::questions{'KEEP_LOCAL_SQL_SERVER'} = 'yes';
+            }
+
             $needDialog = TRUE unless grep (
                 $::questions{'KEEP_LOCAL_SQL_SERVER'}, qw/ yes no /
             );

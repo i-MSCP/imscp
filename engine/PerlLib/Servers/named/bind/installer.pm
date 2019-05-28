@@ -31,6 +31,7 @@ use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
+use iMSCP::Getopt;
 use iMSCP::Net;
 use iMSCP::ProgramFinder;
 use iMSCP::Service;
@@ -162,7 +163,8 @@ sub _dialogForDnsServerType
     my ( $self, $dialog ) = @_;
 
     my $value = ::setupGetQuestion(
-        'BIND_MODE', $self->{'config'}->{'BIND_MODE'}
+        'BIND_MODE',
+        iMSCP::Getopt->preseed() ? 'master' : $self->{'config'}->{'BIND_MODE'}
     );
 
     if ( !grep ( $::reconfigure eq $_, qw/ named servers all / )
@@ -214,7 +216,8 @@ sub _dialogForMasterDnsServerIps
     }
 
     my @values = split /(?:[;,]| )/, ::setupGetQuestion(
-        'PRIMARY_DNS', $self->{'config'}->{'PRIMARY_DNS'}
+        'PRIMARY_DNS',
+        iMSCP::Getopt->preseed ? 'no' : $self->{'config'}->{'PRIMARY_DNS'}
     );
 
     # IF the local DNS server was previously the master DNS server, we
@@ -285,7 +288,8 @@ sub _dialogForSlaveDnsServerIps
     }
 
     my @values = split /(?:[;,]| )/, ::setupGetQuestion(
-        'SECONDARY_DNS', $self->{'config'}->{'SECONDARY_DNS'}
+        'SECONDARY_DNS',
+        iMSCP::Getopt->preseed ? 'no' : $self->{'config'}->{'SECONDARY_DNS'}
     );
 
     # IF the local DNS server was previously the slave DNS server, we
@@ -363,7 +367,8 @@ sub _dialogForDnsServerIpv6Support
     }
 
     my $value = ::setupGetQuestion(
-        'BIND_IPV6', $self->{'config'}->{'BIND_IPV6'}
+        'BIND_IPV6',
+        iMSCP::Getopt->preseed ? 'no' : $self->{'config'}->{'BIND_IPV6'}
     );
 
     if ( !grep ( $::reconfigure eq $_, qw/ named servers all / )
@@ -396,7 +401,8 @@ sub _dialogForLocalResolving
     my ( $self, $dialog ) = @_;
 
     my $value = ::setupGetQuestion(
-        'LOCAL_DNS_RESOLVER', $self->{'config'}->{'LOCAL_DNS_RESOLVER'}
+        'LOCAL_DNS_RESOLVER',
+        iMSCP::Getopt->preseed ? 'yes' : $self->{'config'}->{'LOCAL_DNS_RESOLVER'}
     );
 
     if ( !grep ( $::reconfigure eq $_, qw/ resolver named all / )

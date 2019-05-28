@@ -276,8 +276,10 @@ sub dialogForServerTimezone
 {
     my ( undef, $dialog ) = @_;
 
-    my $value = ::setupGetQuestion( 'TIMEZONE', iMSCP::Getopt->preseed
-        ? DateTime::TimeZone->new( name => 'local' )->name() : ''
+    my $value = ::setupGetQuestion(
+        'TIMEZONE',
+        iMSCP::Getopt->preseed
+            ? DateTime::TimeZone->new( name => 'local' )->name() : ''
     );
 
     if ( !grep ( $::reconfigure eq $_, qw/ local_server timezone all / )

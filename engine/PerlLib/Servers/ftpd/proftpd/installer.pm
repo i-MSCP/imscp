@@ -149,7 +149,8 @@ sub _dialogForPassivePortRange
 
     my $value = ::setupGetQuestion(
         'FTPD_PASSIVE_PORT_RANGE',
-        $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'}
+        iMSCP::Getopt->preseed
+            ? '32800 33800' : $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'}
     );
     my ( $startOfRange, $endOfRange );
 
@@ -165,10 +166,10 @@ sub _dialogForPassivePortRange
 
     my ( $ret, $msg ) = ( 0, '' );
     do {
-        ( $ret, $value ) = $dialog->string( <<"EOF", length $value ? $value : '32768 60999' );
-${msg}Please choose the passive port range for the FTP server.
+        ( $ret, $value ) = $dialog->string( <<"EOF", length $value ? $value : '32800 33800' );
+${msg}Please choose the passive TCP port range for the FTP server.
 
-If the FTP server is behind a NAT, you \\ZbMUST\\Zb not forget to forward the ports.
+If the FTP server is behind a NAT, you \\ZbMUST\\Zb not forget to forward these ports.
 EOF
         if ( $ret != 30 ) {
             if ( !isValidNumberRange( $value, \$startOfRange, \$endOfRange )

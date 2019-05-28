@@ -151,9 +151,12 @@ sub _dialogForServicesSSL
     my $idn = idn_to_unicode(
         ::setupGetQuestion( 'SERVER_HOSTNAME' ), 'utf-8'
     );
-    my $ssl = ::setupGetQuestion( 'SERVICES_SSL_ENABLED' );
+    my $ssl = ::setupGetQuestion(
+        'SERVICES_SSL_ENABLED', iMSCP::Getopt->preseed ? 'yes' : ''
+    );
     my $selfSignedCrt = ::setupGetQuestion(
-        'SERVICES_SSL_SELFSIGNED_CERTIFICATE'
+        'SERVICES_SSL_SELFSIGNED_CERTIFICATE',
+        iMSCP::Getopt->preseed ? 'yes' : ''
     );
     my $pkPath = ::setupGetQuestion(
         'SERVICES_SSL_PRIVATE_KEY_PATH',

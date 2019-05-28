@@ -968,7 +968,9 @@ sub _dialogForMasterAdminUsername
     my ( undef, $dialog ) = @_;
 
     my ( $value, $db ) = (
-        ::setupGetQuestion( 'ADMIN_LOGIN_NAME' ),
+        ::setupGetQuestion(
+            'ADMIN_LOGIN_NAME', iMSCP::Getopt->preseed ? 'admin' : ''
+        ),
         iMSCP::Database->factory()
     );
 
@@ -1151,11 +1153,11 @@ sub _dialogForCpHostname
 
     my $value = ::setupGetQuestion( 'BASE_SERVER_VHOST' );
 
-    if( iMSCP::Getopt->preseed && !length $value ) {
-       my @domainLabels = split /\./, ::setupGetQuestion( 'SERVER_HOSTNAME' );
-       $value = 'panel.' . join( '.', @domainLabels[1 .. $#domainLabels] );
+    if ( iMSCP::Getopt->preseed && !length $value ) {
+        my @domainLabels = split /\./, ::setupGetQuestion( 'SERVER_HOSTNAME' );
+        $value = 'panel.' . join( '.', @domainLabels[1 .. $#domainLabels] );
     }
-    
+
     if ( !grep ( $::reconfigure eq $_, qw/ panel panel_hostname hostnames all / )
         && isValidDomain( $value )
     ) {
@@ -1201,9 +1203,11 @@ sub _dialogForCpSSL
 
     my $hostname = ::setupGetQuestion( 'BASE_SERVER_VHOST' );
     my $idn = idn_to_unicode( $hostname, 'utf-8' );
-    my $ssl = ::setupGetQuestion( 'PANEL_SSL_ENABLED' );
+    my $ssl = ::setupGetQuestion(
+        'PANEL_SSL_ENABLED', iMSCP::Getopt->preseed ? 'yes' : ''
+    );
     my $selfSignedCrt = ::setupGetQuestion(
-        'PANEL_SSL_SELFSIGNED_CERTIFICATE'
+        'PANEL_SSL_SELFSIGNED_CERTIFICATE', iMSCP::Getopt->preseed ? 'yes' : ''
     );
     my $pkPath = ::setupGetQuestion(
         'PANEL_SSL_PRIVATE_KEY_PATH',
@@ -1402,12 +1406,13 @@ sub _dialogForCpHttpAccessMode
     }
 
     my $value = ::setupGetQuestion(
-        'BASE_SERVER_VHOST_PREFIX', 'http://'
+        'BASE_SERVER_VHOST_PREFIX', iMSCP::Getopt->preseed ? 'http://' : ''
     );
 
     if ( !grep ( $::reconfigure eq $_, qw/ panel panel_ssl ssl all / )
         && grep ( $value eq $_, 'https://', 'http://' )
     ) {
+        ::setupSetQuestion( 'BASE_SERVER_VHOST_PREFIX', $value );
         return 20;
     }
 
@@ -1439,13 +1444,16 @@ sub _dialogForHttpPort
 {
     my ( undef, $dialog ) = @_;
 
-    my $value = ::setupGetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT' );
+    my $value = ::setupGetQuestion(
+        'BASE_SERVER_VHOST_HTTP_PORT', iMSCP::Getopt->preseed ? 8880 : ''
+    );
 
     if ( !grep ( $::reconfigure eq $_, qw/ panel panel_ports all / )
         && isNumber( $value )
         && isNumberInRange( $value, 1025, 65535 )
         && isStringNotInList( $value, ::setupGetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT', 8443 ))
     ) {
+        ::setupSetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT', $value );
         return 20;
     }
 
@@ -1486,13 +1494,16 @@ sub _dialogForHttpsPort
 {
     my ( undef, $dialog ) = @_;
 
-    my $value = ::setupGetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT' );
+    my $value = ::setupGetQuestion(
+        'BASE_SERVER_VHOST_HTTPS_PORT', iMSCP::Getopt->preseed ? 8443 : ''
+    );
 
     if ( !grep ( $::reconfigure eq $_, qw/ panel panel_ports all / )
         && isNumber( $value )
         && isNumberInRange( $value, 1025, 65535 )
         && isStringNotInList( $value, ::setupGetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT' ))
     ) {
+        ::setupSetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT', $value );
         return 20;
     }
 

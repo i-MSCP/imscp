@@ -157,7 +157,9 @@ sub _dialogForPhpConfLevel
     my ( $self, $dialog ) = @_;
 
     my $value = ::setupGetQuestion(
-        'PHP_CONFIG_LEVEL', $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'}
+        'PHP_CONFIG_LEVEL',
+        iMSCP::Getopt->preseed
+            ? 'per_site' : $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'}
     );
 
     if ( !grep ( $::reconfigure eq $_, qw/ php servers all /)
@@ -203,7 +205,9 @@ sub _dialogForPhpListenMode
     my ( $self, $dialog ) = @_;
 
     my $value = ::setupGetQuestion(
-        'PHP_FPM_LISTEN_MODE', $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'}
+        'PHP_FPM_LISTEN_MODE',
+        iMSCP::Getopt->preseed
+            ? 'uds' : $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'}
     );
 
     if ( !grep ( $::reconfigure eq $_, qw/ php servers all /)
@@ -681,7 +685,7 @@ sub _setupVlogger
             ) . ":database=@{ [ ::setupGetQuestion( 'DATABASE_NAME' ) ] };"
                 . $::imscpConfig{'DATABASE_HOST'}
                 . ( $::imscpConfig{'DATABASE_HOST'} ne 'localhost'
-                    ? ";$::imscpConfig{'DATABASE_PORT'}" : '' ),
+                ? ";$::imscpConfig{'DATABASE_PORT'}" : '' ),
             DATABASE_USER     => $config{'APACHE_VLOGGER_SQL_USER'},
             DATABASE_PASSWORD => $config{'APACHE_VLOGGER_SQL_USER_PASSWD'}
         } );

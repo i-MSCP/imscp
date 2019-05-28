@@ -26,6 +26,7 @@ package Package::BackupFeature;
 use strict;
 use warnings;
 use iMSCP::Boolean;
+use iMSCP::Getopt;
 use Servers::cron;
 use parent 'Common::SingletonClass';
 
@@ -162,11 +163,14 @@ sub _dialogForCpBackup
 {
     my ( undef, $dialog ) = @_;
 
-    my $value = ::setupGetQuestion( 'BACKUP_IMSCP' );
+    my $value = ::setupGetQuestion(
+        'BACKUP_IMSCP', iMSCP::Getopt->preseed ? 'yes' : ''
+    );
 
     if ( !grep ( $_ eq $::reconfigure, qw/ backup all / )
         && grep ( $_ eq $value, qw/ yes no / )
     ) {
+        ::setupSetQuestion( 'BACKUP_IMSCP', $value );
         return 20;
     }
 
@@ -192,11 +196,14 @@ sub _dialogForClientBackup
 {
     my ( undef, $dialog ) = @_;
 
-    my $value = ::setupGetQuestion( 'BACKUP_DOMAINS' );
+    my $value = ::setupGetQuestion(
+        'BACKUP_DOMAINS', iMSCP::Getopt->preseed ? 'yes' : ''
+    );
 
     if ( !grep ( $_ eq $::reconfigure, qw/ backup all / )
         && grep ( $_ eq $value, qw/ yes no / )
     ) {
+        ::setupSetQuestion( 'BACKUP_DOMAINS', $value );
         return 20;
     }
 
