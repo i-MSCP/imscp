@@ -968,9 +968,7 @@ sub _dialogForMasterAdminUsername
     my ( undef, $dialog ) = @_;
 
     my ( $value, $db ) = (
-        ::setupGetQuestion(
-            'ADMIN_LOGIN_NAME', iMSCP::Getopt->preseed ? 'admin' : ''
-        ),
+        ::setupGetQuestion( 'ADMIN_LOGIN_NAME', 'admin' ),
         iMSCP::Database->factory()
     );
 
@@ -998,7 +996,8 @@ sub _dialogForMasterAdminUsername
         }
     }
 
-    if ( !grep ( $::reconfigure eq $_, qw/ admin admin_username admin_credentials all / )
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ admin admin_username admin_credentials all / )
         && isValidUsername( $value )
     ) {
         ::setupSetQuestion( 'ADMIN_LOGIN_NAME', $value );
@@ -1021,10 +1020,18 @@ EOF
                 local $@;
                 my $row = eval {
                     $db->getRawDb()->selectrow_hashref(
-                        'SELECT 1 FROM admin WHERE admin_name = ?', undef, $value
+                        "
+                            SELECT 1
+                            FROM admin
+                            WHERE admin_name = ?
+                            AND admin_type <>  'admin'
+                            AND created_by <> 0
+                        ",
+                        undef,
+                        $value
                     );
                 };
-                $msg = $row ? '\\Z1This username is not available.\\Zn\n\n' : '';
+                $msg = $row ? "\\Z1This username is not available.\\Zn\n\n" : '';
             } else {
                 $msg = '';
             }
@@ -1077,7 +1084,8 @@ sub _dialogForMasterAdminPassword
         }
     }
 
-    if ( !grep ( $::reconfigure eq $_, qw/ admin admin_password admin_credentials all / )
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ admin admin_password admin_credentials all / )
         && ( $isset || isValidPassword( $value ) )
     ) {
         return 20;
@@ -1088,7 +1096,7 @@ sub _dialogForMasterAdminPassword
     do {
         ( $ret, $value ) = $dialog->string(
             <<"EOF", randomStr( 16, iMSCP::Crypt::ALNUM ));
-${msg}Please enter a password for the master administrator:
+${msg}Please enter a password for the master (@{ [ ::setupGetQuestion( 'ADMIN_LOGIN_NAME' ) ] }) administrator:
 EOF
         if ( $ret != 30 ) {
             $value =~ s/^\s+|\s+$//g;
@@ -1116,7 +1124,8 @@ sub _dialogForMasterAdminEmail
 
     my $value = ::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' );
 
-    if ( !grep ( $::reconfigure eq $_, qw/ admin admin_email all / )
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ admin admin_email all / )
         && isValidEmail( $value )
     ) {
         return 20;
@@ -1153,12 +1162,13 @@ sub _dialogForCpHostname
 
     my $value = ::setupGetQuestion( 'BASE_SERVER_VHOST' );
 
-    if ( iMSCP::Getopt->preseed && !length $value ) {
+    if ( !length $value ) {
         my @domainLabels = split /\./, ::setupGetQuestion( 'SERVER_HOSTNAME' );
         $value = 'panel.' . join( '.', @domainLabels[1 .. $#domainLabels] );
     }
 
-    if ( !grep ( $::reconfigure eq $_, qw/ panel panel_hostname hostnames all / )
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ panel panel_hostname hostnames all / )
         && isValidDomain( $value )
     ) {
         ::setupSetQuestion( 'BASE_SERVER_VHOST', $value );
@@ -1203,29 +1213,35 @@ sub _dialogForCpSSL
 
     my $hostname = ::setupGetQuestion( 'BASE_SERVER_VHOST' );
     my $idn = idn_to_unicode( $hostname, 'utf-8' );
-    my $ssl = ::setupGetQuestion(
-        'PANEL_SSL_ENABLED', iMSCP::Getopt->preseed ? 'yes' : ''
-    );
+    my $ssl = ::setupGetQuestion( 'PANEL_SSL_ENABLED', 'yes' );
     my $selfSignedCrt = ::setupGetQuestion(
-        'PANEL_SSL_SELFSIGNED_CERTIFICATE', iMSCP::Getopt->preseed ? 'yes' : ''
+        'PANEL_SSL_SELFSIGNED_CERTIFICATE', 'yes'
     );
     my $pkPath = ::setupGetQuestion(
         'PANEL_SSL_PRIVATE_KEY_PATH',
-        "$::imscpConfig{'CONF_DIR'}/$hostname.pem"
+        iMSCP::Getopt->preseed
+            ? ''
+            : "$::imscpConfig{'CONF_DIR'}/$hostname.pem"
     );
     my $passphrase = ::setupGetQuestion(
         'PANEL_SSL_PRIVATE_KEY_PASSPHRASE'
     );
     my $crtPath = ::setupGetQuestion(
         'PANEL_SSL_CERTIFICATE_PATH',
-        "$::imscpConfig{'CONF_DIR'}/$hostname.pem"
+        iMSCP::Getopt->preseed
+            ? ''
+            : "$::imscpConfig{'CONF_DIR'}/$hostname.pem"
     );
     my $caPath = ::setupGetQuestion(
-        'PANEL_SSL_CA_BUNDLE_PATH', "$::imscpConfig{'CONF_DIR'}/$hostname.pem"
+        'PANEL_SSL_CA_BUNDLE_PATH',
+        iMSCP::Getopt->preseed
+            ? ''
+            : "$::imscpConfig{'CONF_DIR'}/$hostname.pem"
     );
     my $openSSL = iMSCP::OpenSSL->new();
 
-    if ( !grep ( $::reconfigure eq $_, qw/ panel panel_ssl ssl all / ) ) {
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ panel panel_ssl ssl all / ) ) {
         goto CHECK_SSL_CHAIN if $ssl eq 'yes';
         return 20 if $ssl eq 'no';
     }
@@ -1348,6 +1364,14 @@ EOF
     goto END_SSL_DIALOG;
 
     CHECK_SSL_CHAIN:
+    
+    if ( iMSCP::Getopt->preseed && $selfSignedCrt ) {
+        ::setupSetQuestion( 'PANEL_SSL_ENABLED', $ssl );
+        ::setupSetQuestion(
+            'PANEL_SSL_SELFSIGNED_CERTIFICATE', $selfSignedCrt
+        );
+        return 20;
+    }
 
     @{ $openSSL }{qw/
         private_key_container_path
@@ -1358,14 +1382,6 @@ EOF
     );
 
     unless ( $openSSL->validateCertificateChain() ) {
-        if ( iMSCP::Getopt->preseed && $selfSignedCrt ) {
-            getMessageByType( 'error', {
-                amount => 1,
-                remove => TRUE
-            } );
-            return 20;
-        }
-
         local $dialog->{'_opts'}->{
             $dialog->{'program'} eq 'dialog' ? 'ok-label' : 'ok-button'
         } = 'Reconfigure';
@@ -1406,10 +1422,13 @@ sub _dialogForCpHttpAccessMode
     }
 
     my $value = ::setupGetQuestion(
-        'BASE_SERVER_VHOST_PREFIX', iMSCP::Getopt->preseed ? 'http://' : ''
+        'BASE_SERVER_VHOST_PREFIX',
+        ::setupGetQuestion( 'PANEL_SSL_ENABLED' ) ne 'yes'
+            ? 'http://' : 'https://'
     );
 
-    if ( !grep ( $::reconfigure eq $_, qw/ panel panel_ssl ssl all / )
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ panel panel_ssl ssl all / )
         && grep ( $value eq $_, 'https://', 'http://' )
     ) {
         ::setupSetQuestion( 'BASE_SERVER_VHOST_PREFIX', $value );
@@ -1444,11 +1463,10 @@ sub _dialogForHttpPort
 {
     my ( undef, $dialog ) = @_;
 
-    my $value = ::setupGetQuestion(
-        'BASE_SERVER_VHOST_HTTP_PORT', iMSCP::Getopt->preseed ? 8880 : ''
-    );
+    my $value = ::setupGetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT', 8880 );
 
-    if ( !grep ( $::reconfigure eq $_, qw/ panel panel_ports all / )
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ panel panel_ports all / )
         && isNumber( $value )
         && isNumberInRange( $value, 1025, 65535 )
         && isStringNotInList( $value, ::setupGetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT', 8443 ))
@@ -1494,11 +1512,10 @@ sub _dialogForHttpsPort
 {
     my ( undef, $dialog ) = @_;
 
-    my $value = ::setupGetQuestion(
-        'BASE_SERVER_VHOST_HTTPS_PORT', iMSCP::Getopt->preseed ? 8443 : ''
-    );
+    my $value = ::setupGetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT', 8443 );
 
-    if ( !grep ( $::reconfigure eq $_, qw/ panel panel_ports all / )
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ panel panel_ports all / )
         && isNumber( $value )
         && isNumberInRange( $value, 1025, 65535 )
         && isStringNotInList( $value, ::setupGetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT' ))

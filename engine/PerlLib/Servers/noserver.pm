@@ -48,7 +48,7 @@ my $instance;
 
 sub factory
 {
-    return $instance if $instance;
+    return $instance if defined $instance;
 
     $instance = __PACKAGE__->getInstance();
     @{ $instance }{qw/ start restart reload /} = ( 0, 0, 0 );

@@ -154,7 +154,7 @@ sub preinstall
 
     my @distributionPackages;
 
-    for my $package ( split ',', $::imscpConfig{ $self->getConfVarname() } ) {
+    for my $package ( split ',', ::setupGetQuestion( $self->getConfVarname()) ) {
         next if $package eq 'No';
 
         local $@;
@@ -208,6 +208,21 @@ sub getOptName
     my ( $self ) = @_;
 
     die( "The @{ [ ref $self ] } package must implements the getOptName() method." );
+}
+
+=item getDefaultValues( )
+
+ Get default values for setup dialog
+
+ Return string representing list of default values, each comma separated
+
+=cut
+
+sub getDefaultValues
+{
+    my ( $self ) = @_;
+
+    die( "The @{ [ ref $self ] } package must implements the getDefaultValues() method." );
 }
 
 =item getPackageHumanName( )
@@ -292,12 +307,15 @@ sub _dialogForPackages
     my ( $self, $dialog ) = @_;
 
     my @availablePackages = ( @{ $self->{'PACKAGES'} }, 'No' );
-    my @selectedPackages = split ',', ::setupGetQuestion( $self->getConfVarname());
+    my @selectedPackages = split ',', ::setupGetQuestion(
+        $self->getConfVarname(), $self->getDefaultValues()
+    );
     my $ret = 20;
 
     FIRST_DIALOG:
 
-    if ( grep ( $::reconfigure eq $_, $self->getOptName(), 'addons', 'all' )
+    if ( $dialog->executeRetval == 30
+        || grep ( $::reconfigure eq $_, $self->getOptName(), 'addons', 'all' )
         || !@selectedPackages
         || array_minus( @selectedPackages, @availablePackages )
     ) {

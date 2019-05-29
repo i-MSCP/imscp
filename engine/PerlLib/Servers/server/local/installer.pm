@@ -93,11 +93,12 @@ sub dialogForServerHostname
 {
     my ( undef, $dialog ) = @_;
 
-    my $value = ::setupGetQuestion( 'SERVER_HOSTNAME', iMSCP::Getopt->preseed
-        ? ( `hostname --fqdn 2>/dev/null` || '' ) =~ s/\n+$//r : ''
+    my $value = ::setupGetQuestion(
+        'SERVER_HOSTNAME', ( `hostname --fqdn 2>/dev/null` || '' ) =~ s/\n+$//r
     );
 
-    if ( !grep ( $::reconfigure eq $_, qw/ local_server system_hostname hostnames all /)
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ local_server system_hostname hostnames all /)
         && isValidHostname( $value )
     ) {
         ::setupSetQuestion( 'SERVER_HOSTNAME', $value );
@@ -146,8 +147,10 @@ sub dialogForBaseServerIP
 
     my $value = ::setupGetQuestion( 'BASE_SERVER_IP' );
 
-    if ( !grep ( $::reconfigure eq $_, qw/ local server primary_ip all /)
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ local server primary_ip all /)
         && isValidIpAddr( $value )
+        && ( $value eq '0.0.0.0' || grep( $_ eq $value, @ipList) )
     ) {
         return 20;
     }
@@ -184,18 +187,20 @@ sub dialogForBaseServerPublicIP
     my $baseServerIp = ::setupGetQuestion( 'BASE_SERVER_IP' );
     my $value = ::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' );
 
-    # If we are in preseed mode and that the WAN IP isn't set, and that
-    # the base server IP is not public, we try to guess the WAN IP
-    # through one of remote public IP API
-    if ( iMSCP::Getopt->preseed
-        && !length $value
+    # Try to guess the WAN IP (default value) in case BASE_SERVER_IP is not a
+    # public IP.
+    if ( !length $value
         && !isValidIpAddr( $baseServerIp, qr/(?:PUBLIC|GLOBAL-UNICAST)/ )
     ) {
         chomp( $value = get( 'https://ipinfo.io/ip' )
             || get( 'https://api.ipify.org/?format=txt' ) || ''
         );
 
-        if ( length $value ) {
+        # If the WAN IP has been guessed and the user didn't asked for
+        # reconfiguration, we skip dialog
+        if ( length $value
+            && !grep ( $::reconfigure eq $_, qw/ local_server primary_ip all /)
+        ) {
             ::setupSetQuestion( 'BASE_SERVER_PUBLIC_IP', $value );
             return 20;
         }
@@ -204,7 +209,8 @@ sub dialogForBaseServerPublicIP
     # If user didn't asked for reconfiguration and the server public IP is
     # equal to the base server IP, but not equal to the INADDR_ANY IP, we
     # skip the dialog for the server public IP
-    if ( !grep ( $::reconfigure eq $_, qw/ local_server primary_ip all /)
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ local_server primary_ip all /)
         && ( $value eq $baseServerIp && $baseServerIp ne '0.0.0.0' )
     ) {
         return 20;
@@ -215,7 +221,8 @@ sub dialogForBaseServerPublicIP
     );
 
     # IP inside private IP range?
-    if ( $wanNotSetOrInsidePrivateRange
+    if ( $dialog->executeRetval == 30
+        ||  $wanNotSetOrInsidePrivateRange
         || grep ( $::reconfigure eq $_, qw/ local_server primary_ip all /)
     ) {
         chomp( $value = get( 'https://ipinfo.io/ip' )
@@ -227,15 +234,16 @@ sub dialogForBaseServerPublicIP
         my ( $ret, $msg ) = ( 0, '' );
         do {
             ( $ret, $value ) = $dialog->string( <<"EOF", $value );
-${msg}Please enter your public IP address (WAN IP), or leave blank to force usage of the private IP address if your server is behind a NAT router.
+${msg}Please enter your public IP address (WAN IP), or leave blank to force usage of the private IP address.
 
-If you're behind a NAT router, you MUST not forget to forward TCP ports for the various services:
+If you're behind a NAT router, you MUST not forget to forward the UDP/TCP ports for the various services:
 
- - FTP: 20, 21, including passive port range
- - HTTP: 80, 443, including ports for the control panel which, by default, are 8880 and 8443
- - IMAP: 143, 993
- - SMTP: 25, 465, 587
- - POP3: 110, 995
+ - DNS : 53 UDP/TCP ports
+ - FTP : 20, 21 TCP ports, including passive TCP port range which is 32800..33800 (default) 
+ - HTTP: 80, 443 TCP ports, including TCP ports for the control panel which are 8880 and 8443 (default)
+ - IMAP: 143, 993 TCP ports
+ - POP3: 110, 995 TCP ports
+ - SMTP: 25, 465, 587 TCP ports
 EOF
             if ( $ret != 30 ) {
                 $value =~ s/^\s+|\s+$//g;
@@ -277,12 +285,11 @@ sub dialogForServerTimezone
     my ( undef, $dialog ) = @_;
 
     my $value = ::setupGetQuestion(
-        'TIMEZONE',
-        iMSCP::Getopt->preseed
-            ? DateTime::TimeZone->new( name => 'local' )->name() : ''
+        'TIMEZONE', DateTime::TimeZone->new( name => 'local' )->name()
     );
 
-    if ( !grep ( $::reconfigure eq $_, qw/ local_server timezone all / )
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ local_server timezone all / )
         && isValidTimezone( $value )
     ) {
         ::setupSetQuestion( 'TIMEZONE', $value );
@@ -292,7 +299,7 @@ sub dialogForServerTimezone
     my ( $ret, $msg ) = ( 0, '' );
     do {
         ( $ret, $value ) = $dialog->string(
-            <<"EOF", $value || DateTime::TimeZone->new( name => 'local' )->name());
+            <<"EOF", length $value ? $value : DateTime::TimeZone->new( name => 'local' )->name());
 ${msg}Please enter the server timezone:
 EOF
         if ( $ret != 30 ) {

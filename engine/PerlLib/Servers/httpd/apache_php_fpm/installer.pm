@@ -85,9 +85,14 @@ sub preinstall
 {
     my ( $self ) = @_;
 
+    $::imscpConfig{'HTTPD_SERVER'} = ::setupGetQuestion( 'HTTPD_SERVER' );
+    $::imscpConfig{'FTPD_PACKAGE'} = ::setupGetQuestion( 'HTTPD_PACKAGE' );
+
     for my $confVar ( qw/ PHP_CONFIG_LEVEL PHP_FPM_LISTEN_MODE / ) {
         $self->{'phpConfig'}->{$confVar} = ::setupGetQuestion( $confVar );
     }
+
+    $self->_guessSystemPhpVariables();
 
     0;
 }
@@ -139,7 +144,6 @@ sub _init
     $self->{'config'} = $self->{'httpd'}->{'config'};
     $self->{'phpCfgDir'} = $self->{'httpd'}->{'phpCfgDir'};
     $self->{'phpConfig'} = $self->{'httpd'}->{'phpConfig'};
-    $self->_guessSystemPhpVariables();
     $self;
 }
 
@@ -158,11 +162,13 @@ sub _dialogForPhpConfLevel
 
     my $value = ::setupGetQuestion(
         'PHP_CONFIG_LEVEL',
-        iMSCP::Getopt->preseed
-            ? 'per_site' : $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'}
+        length $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'}
+            ? $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'}
+            : 'per_site'
     );
 
-    if ( !grep ( $::reconfigure eq $_, qw/ php servers all /)
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ php servers all /)
         && grep ( $value eq $_, qw/ per_site per_domain per_user / )
     ) {
         ::setupSetQuestion( 'PHP_CONFIG_LEVEL', $value );
@@ -206,11 +212,13 @@ sub _dialogForPhpListenMode
 
     my $value = ::setupGetQuestion(
         'PHP_FPM_LISTEN_MODE',
-        iMSCP::Getopt->preseed
-            ? 'uds' : $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'}
+        length $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'}
+            ? $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'}
+            : 'uds'
     );
 
-    if ( !grep ( $::reconfigure eq $_, qw/ php servers all /)
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ php servers all /)
         && grep ( $value eq $_, qw/ tcp uds /)
     ) {
         ::setupSetQuestion( 'PHP_FPM_LISTEN_MODE', $value );

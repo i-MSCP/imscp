@@ -167,45 +167,32 @@ EOF
     ] );
     return $rs if $rs;
 
-    my @steps;
-
-    if ( $::skippackages ) {
-        @{main::questions}{qw/
-            FRONTEND_SERVER FTPD_SERVER HTTPD_SERVER MTA_SERVER
-            NAMED_SERVER PHP_SERVER PO_SERVER SQL_SERVER
-        /} = (
-            $::imscpConfig{'FRONTEND_SERVER'}, $::imscpConfig{'FTPD_SERVER'},
-            $::imscpConfig{'HTTPD_SERVER'}, $::imscpConfig{'MTA_SERVER'},
-            $::imscpConfig{'NAMED_SERVER'}, $::imscpConfig{'PHP_SERVER'},
-            $::imscpConfig{'PO_SERVER'}, $::imscpConfig{'SQL_SERVER'}
-        );
-    } else {
-        push @steps,
-            [
-                sub { $self->_processPackagesFile() },
-                'Process packages file'
-            ],
-            [
-                sub { $self->_prefillDebconfDatabase() },
-                'Pre-fill Debconf database'
-            ],
-            [
-                sub { $self->_processAptRepositories() },
-                'Processing APT repositories'
-            ],
-            [
-                sub { $self->_processAptPreferences() },
-                'Processing APT preferences'
-            ],
-            [
-                sub { $self->_updatePackagesIndex() },
-                'Updating packages index'
-            ],
-            [
-                sub { $self->_installPackages() },
-                'Installing required packages'
-            ]
-    }
+    my @steps = (
+        [
+            sub { $self->_processPackagesFile() },
+            'Process packages file'
+        ],
+        [
+            sub { $self->_prefillDebconfDatabase() },
+            'Pre-fill Debconf database'
+        ],
+        [
+            sub { $self->_processAptRepositories() },
+            'Processing APT repositories'
+        ],
+        [
+            sub { $self->_processAptPreferences() },
+            'Processing APT preferences'
+        ],
+        [
+            sub { $self->_updatePackagesIndex() },
+            'Updating packages index'
+        ],
+        [
+            sub { $self->_installPackages() },
+            'Installing required packages'
+        ]
+    );
 
     push @steps,
         [ \&buildDistFiles, 'Building distribution files' ],
@@ -924,6 +911,10 @@ sub _updatePackagesIndex
 
  Return dialog for distribution packages
 
+ This method need to be called, even if the '--skip-dist-packages' command line
+ option has been passed-in. Not doing this would lead to unset values in the
+ %::questions hash.
+
  Param iMSCP::Dialog $dialog
  Return List of dialog subroutines, die on failure
 
@@ -934,8 +925,6 @@ sub _getPackagesDialog
     my ( $self ) = @_;
 
     my @dialogStack;
-
-    return @dialogStack if $::skippackages;
 
     my $rs = $self->{'eventManager'}->trigger(
         'onLoadPackagesFile', \my $packagesFilePath
@@ -960,24 +949,26 @@ sub _getPackagesDialog
         # Retrieve selected alternative, either from preseed file, or from
         # the master configuration file
         my $sAlt = length $::questions{ uc( $section ) . '_SERVER' }
+            # Covers preseeding case
             ? $::questions{ uc( $section ) . '_SERVER' }
+            # Covers update case
             : $::imscpConfig{ uc( $section ) . '_SERVER' };
 
-        # Resets alternative if the one currently set is not longer available
+        # Reset alternative if the current one is not available
         $sAlt = '' if length $sAlt && !grep ( $sAlt eq $_, keys %{ $data } );
 
-        # Filter unallowed alternatives
+        # Filter incompatible alternatives
         my @alts = grep {
             ref $data->{$_} eq 'HASH'
                 && ( !defined $data->{$_}->{'required_arch'}
-                || $arch eq $data->{$_}->{'required_arch'}
-            )
+                    || $arch eq $data->{$_}->{'required_arch'}
+                )
                 && ( $section ne 'sql'
-                || !length $sAlt
-                || $sAlt eq $_
-                || !defined $data->{$_}->{'allow_upgrade_from'}
-                || grep { $sAlt eq $_ } split ',', $data->{$_}->{'allow_upgrade_from'}
-            )
+                    || !length $sAlt
+                    || $sAlt eq $_
+                    || !defined $data->{$_}->{'allow_upgrade_from'}
+                    || grep { $sAlt eq $_ } split ',', $data->{$_}->{'allow_upgrade_from'}
+                )
         } keys %{ $data };
 
         # Whether or not user must be asked for alternative
@@ -996,35 +987,39 @@ sub _getPackagesDialog
                 $::questions{'KEEP_LOCAL_SQL_SERVER'}, qw/ yes no /
             );
         }
+        
+        my %choices;
+        for my $alt ( @alts ) {
+            $choices{ $data->{$alt}->{'description'} // $alt } = $alt;
+
+            # If no alternative is set, either in the master configuration file
+            # or in the preseed file (preseeding feature), and if the current
+            # one is set as the default one in the distribution packages file,
+            # we set it as default selected alternative.
+            if ( !length $sAlt && $data->{$alt}->{'default'} ) {
+                $sAlt = $alt;
+                # We don't show setup dialog, unless the user asked for
+                # reconfiguration
+                $needDialog = grep(
+                    $_ eq iMSCP::Getopt->reconfigure, 'all', 'servers', $section
+                );
+            }
+        }
+        
+        # If no alternative is set, that means that the distribution packages
+        # file doesn't define one... In such case, we  select the first
+        # alternative.
+        $sAlt = $alts[0] unless length $sAlt;
+            
+        @{main::questions}{
+            uc( $section ) . '_SERVER', uc( $section ) . '_PACKAGE'
+        } = (
+            $sAlt, $data->{$sAlt}->{'class'} // $sAlt
+        );
 
         # If a dialog is needed, prepare it, unless there is only one
         # alternative available.
-        if ( $needDialog ) {
-            my %choices;
-            for my $alt ( @alts ) {
-                $choices{ $data->{$alt}->{'description'} // $alt } = $alt;
-
-                # If no alternative is set, either in the master configuration
-                # file or in the  preseed file (preseeding feature), and if the
-                # current one is set as  the default one in the distribution
-                # packages file, we set it as default selected alternative.
-                if ( !length $sAlt && $data->{$alt}->{'default'} ) {
-                    $sAlt = $alt;
-
-                    # In preseeding mode, we skip setup dialog.
-                    $needDialog = !iMSCP::Getopt->preseed;
-                }
-            }
-
-            @{main::questions}{
-                uc( $section ) . '_SERVER', uc( $section ) . '_PACKAGE'
-            } = (
-                $sAlt, $data->{$sAlt}->{'class'} // $sAlt
-            );
-
-            # No need for dialog if there is only one alternative
-            next unless $needDialog && keys %{choices} > 1;
-
+        if ( $needDialog && keys %{choices} > 1) {
             push @dialogStack, sub {
                 my ( $ret, $value ) = $_[0]->select(
                     <<"EOF", \%choices, $::questions{ uc( $section ) . '_SERVER' } );
@@ -1059,13 +1054,6 @@ EOF
                     0;
                 }
             }
-        } else {
-            @{main::questions}{
-                uc( $section ) . '_SERVER', uc( $section ) . '_PACKAGE'
-            } = (
-                $::imscpConfig{ uc( $section ) . '_SERVER' },
-                $::imscpConfig{ uc( $section ) . '_PACKAGE' }
-            );
         }
     }
 
@@ -1146,12 +1134,6 @@ sub _processPackagesFile
             && $::questions{'KEEP_LOCAL_SQL_SERVER'} eq 'yes'
             && iMSCP::ProgramFinder::find( 'mysqld' )
         ) {
-            @{main::imscpConfig}{
-                uc( $section ) . '_SERVER', uc( $section ) . '_PACKAGE'
-            } = (
-                $::questions{ uc( $section ) . '_SERVER' },
-                $::questions{ uc( $section ) . '_PACKAGE' }
-            );
             next;
         }
 
@@ -1320,13 +1302,6 @@ sub _processPackagesFile
                 }
             }
         }
-
-        @{main::imscpConfig}{
-            uc( $section ) . '_SERVER', uc( $section ) . '_PACKAGE'
-        } = (
-            $::questions{ uc( $section ) . '_SERVER' },
-            $::questions{ uc( $section ) . '_PACKAGE' }
-        );
     }
 
     require List::MoreUtils;

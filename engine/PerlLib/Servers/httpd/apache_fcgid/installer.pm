@@ -85,6 +85,9 @@ sub preinstall
 {
     my ( $self ) = @_;
 
+    $::imscpConfig{'HTTPD_SERVER'} = ::setupGetQuestion( 'HTTPD_SERVER' );
+    $::imscpConfig{'HTTPD_PACKAGE'} = ::setupGetQuestion( 'HTTPD_PACKAGE' );
+
     $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} = ::setupGetQuestion(
         'PHP_CONFIG_LEVEL'
     );
@@ -156,11 +159,13 @@ sub _dialogForPhpConfLevel
 
     my $value = ::setupGetQuestion(
         'PHP_CONFIG_LEVEL',
-        iMSCP::Getopt->preseed
-            ? 'per_site' : $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'}
+        length $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'}
+            ? $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'}
+            : 'per_site'
     );
 
-    if ( !grep ( $::reconfigure eq $_, qw/ php servers all /)
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ php servers all /)
         && grep ( $value eq $_, qw/ per_site per_domain per_user / )
     ) {
         ::setupSetQuestion( 'PHP_CONFIG_LEVEL', $value );

@@ -86,7 +86,7 @@ sub preinstall
             iMSCP::Dir->new( dirname => '/etc/php' )->getDirs()
         ) {
             next if $version !~ /^[0-9.]+$/
-                || $self->{'config'}->{'PHP_VERSION'} eq $version;
+                || $self->{'phpConfig'}->{'PHP_VERSION'} eq $version;
 
             $service->stop( sprintf( 'php%s-fpm', $version ));
             $service->disable( sprintf( 'php%s-fpm', $version ));
@@ -118,7 +118,7 @@ sub _init
 {
     my ( $self ) = @_;
 
-    $self->{'config'} = Servers::httpd->factory()->{'phpConfig'};
+    $self->{'phpConfig'} = Servers::httpd->factory()->{'phpConfig'};
 }
 
 =back

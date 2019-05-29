@@ -37,6 +37,7 @@ use iMSCP::Getopt;
 use iMSCP::ProgramFinder;
 use iMSCP::TemplateParser 'process';
 use iMSCP::Umask;
+use MIME::Base64 qw/ decode_base64 encode_base64 /;
 use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
 use Servers::sqld::mysql;
 use version;
@@ -79,6 +80,7 @@ sub registerSetupListeners
         push @{ $_[0] },
             sub { $self->_dialogForSqlServerHostname( @_ ); },
             sub { $self->_dialogForSqlServerPort( @_ ); },
+            sub { $self->_dialogForSqlRootUser( @_ ); },
             sub { $self->_dialogForMasterSqlUsername( @_ ); },
             sub { $self->_dialogForMasterSqlUserPassword( @_ ); },
             sub { $self->_dialogForDatabaseName( @_ ); },
@@ -149,10 +151,7 @@ sub _dialogForSqlServerHostname
 
     my $isRemoteSqlSrv = ::setupGetQuestion( 'SQL_SERVER' ) eq 'remote_server';
     my $dbHost = ::setupGetQuestion(
-        'DATABASE_HOST',
-        $isRemoteSqlSrv
-            ? ''
-            : ( iMSCP::Getopt->preseed() ? 'localhost' : '' )
+        'DATABASE_HOST', $isRemoteSqlSrv ? '' : 'localhost'
     );
 
     # In case of a remote SQL server, none of 'localhost', '127.0.0.1', and
@@ -161,22 +160,25 @@ sub _dialogForSqlServerHostname
         $dbHost eq $_, qw/ localhost 127.0.0.1 ::1 /
     );
 
-    if ( !grep ( $::reconfigure eq $_, qw/ sql servers all / )
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ sql servers all / )
         && isNotEmpty( $dbHost )
         && ( $dbHost eq 'localhost'
         || isValidHostname( $dbHost )
         || isValidIpAddr( $dbHost )
     )
     ) {
-        ::setupSetQuestion( 'DATABASE_HOST', $dbHost );
+        ::setupSetQuestion(
+            'DATABASE_HOST', idn_to_ascii( $dbHost, 'utf-8' )
+        );
         return 20;
     }
 
     my ( $ret, $msg ) = ( 0, '' );
 
     do {
-        ( $ret, $dbHost ) = $dialog->string( <<"EOF", $dbHost );
-${msg}Please enter your@{ [ $isRemoteSqlSrv ? ' remote ' : ' local ' ] }SQL server hostname:
+        ( $ret, $dbHost ) = $dialog->string( <<"EOF", length $dbHost ? $dbHost : ( $isRemoteSqlSrv ? '' : 'localhost' ) );
+${msg}Please enter your @{ [ $isRemoteSqlSrv ? 'remote' : 'local' ] } SQL server hostname:
 EOF
         if ( $ret != 30 ) {
             $dbHost =~ s/^\s+|\s+$//g;
@@ -220,21 +222,20 @@ sub _dialogForSqlServerPort
 
     my $databaseHost = ::setupGetQuestion( 'DATABASE_HOST' );
     my $isRemoteSqlSrv = ::setupGetQuestion( 'SQL_SERVER' ) eq 'remote_server';
-    my $dbPort = ::setupGetQuestion(
-        'DATABASE_PORT',
-        iMSCP::Getopt->preseed ? 3306 : ''
-    );
+    my $dbPort = ::setupGetQuestion( 'DATABASE_PORT', 3306 );
 
     # If the database server hostname has been set to 'localhost', set the port
     # to 3306 and skip the dialog. 'localhost mean connection through UDS so the
     # port is irrelevant in that context.
     $dbPort = 3306 if $databaseHost eq 'localhost';
 
-    if ( ( $databaseHost eq 'localhost'
-        || !grep ( $::reconfigure eq $_, qw/ sql servers all /)
-    )
-        && isNumber( $dbPort )
-        && isNumberInRange( $dbPort, 1025, 65535 )
+    if ( $databaseHost eq 'localhost'
+        || ( ( $dialog->executeRetval != 30
+                || !grep ( $::reconfigure eq $_, qw/ sql servers all /)
+            ) 
+            && isNumber( $dbPort )
+            && isNumberInRange( $dbPort, 1025, 65535 )
+        )
     ) {
         ::setupSetQuestion( 'DATABASE_PORT', $dbPort );
         return 20;
@@ -244,7 +245,7 @@ sub _dialogForSqlServerPort
 
     do {
         ( $ret, $dbPort ) = $dialog->string( <<"EOF", length $dbPort ? $dbPort : 3306 );
-${msg}Please enter your@{ [ $isRemoteSqlSrv ? ' remote ' : ' local ' ] }SQL server port:
+${msg}Please enter your @{ [ $isRemoteSqlSrv ? 'remote' : 'local' ] } SQL server port:
 EOF
         if ( $ret != 30 ) {
             $dbPort =~ s/^\s+|\s+$//g;
@@ -264,6 +265,107 @@ EOF
     0;
 }
 
+=item _dialogForSqlRootUser( \%dialog )
+
+ Dialog for SQL root user
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 (Next), 20 (Skip), 30 (back)
+
+=cut
+
+sub _dialogForSqlRootUser
+{
+    my ( $self, $dialog ) = @_;
+
+    my $isRemoteSqlSrv = ::setupGetQuestion( 'SQL_SERVER' ) eq 'remote_server';
+    my $dbRootUser = ::setupGetQuestion( 'SQL_ROOT_USER', 'root' );
+    my $dbRootPasswd = ::setupGetQuestion( 'SQL_ROOT_PASSWORD' );
+    my $dbHost = ::setupGetQuestion( 'DATABASE_HOST' );
+    my $dbPort = ::setupGetQuestion( 'DATABASE_PORT' );
+    my $dbUser = ::setupGetQuestion( 'DATABASE_USER' );
+    my $dbPasswd = ::setupGetQuestion(
+        'DATABASE_PASSWORD',
+        iMSCP::Getopt->preseed ? randomStr( 16, iMSCP::Crypt::ALNUM ) : ''
+    );
+    my $firstTry = length $dbPasswd == 0 && length $dbRootPasswd == 0;
+
+    if ( length $dbPasswd && !iMSCP::Getopt->preseed ) {
+        $dbPasswd = decryptRijndaelCBC(
+            $::imscpDBKey, $::imscpDBiv, $dbPasswd
+        );
+    }
+
+    goto PASSWD_DIALOG if $dialog->executeRetval == 30;
+
+    # We first try to connect with the i-MSCP master SQL user account
+    # credentials. If the connection succeed, we skip dialog as usage of SQL
+    # root user isn't needed.
+    return 20 if length $dbPasswd
+        && !$self->_tryDbConnect( $dbHost, $dbPort, $dbUser, $dbPasswd );
+
+    # We try to connect with the current SQL root user account credentials. If
+    # the connection succeed, we skip dialog. This cover the preseeding feature
+    # and unix_socket authentication.
+    goto CONNECT_CHECK if length $dbRootUser;
+
+    my ( $ret, $msg ) = ( 0, '' );
+
+    USERNAME_DIALOG:
+    do {
+        ( $ret, $dbRootUser ) = $dialog->string(
+            <<"EOF", length $dbRootUser ? $dbRootUser : 'root' );
+Please enter the SQL root username:
+
+This user must have full privileges on the @{ [ $isRemoteSqlSrv ? 'remote' : 'local' ] } SQL server.
+
+The installer only make use of that user while installation.
+EOF
+        $dbRootUser =~ s/^\s+|\s+$//g if $ret != 30;
+    } while $ret != 30 && length $msg;
+    return 30 if $ret == 30;
+
+    PASSWD_DIALOG:
+    do {
+        ( $ret, $dbRootPasswd ) = $dialog->password( <<"EOF", $dbRootPasswd );
+Please enter the SQL root user password:
+EOF
+        $dbRootPasswd =~ s/^\s+|\s+$//g if $ret != 30;
+    } while $ret != 30 && length $msg;
+    goto USERNAME_DIALOG if $ret == 30;
+
+    CONNECT_CHECK:
+    if ( my $connectError = $self->_tryDbConnect(
+        $dbHost, $dbPort, $dbRootUser, $dbRootPasswd
+    ) ) {
+        unless ( $firstTry ) {
+            # Override default button label
+            local $dialog->{'_opts'}->{
+                $dialog->{'program'} eq 'dialog' ? 'ok-label' : 'ok-button'
+            } = 'Ok';
+
+            $ret = $dialog->error( <<"EOF" );
+The i-MSCP installer can't connect to the @{ [ $isRemoteSqlSrv ? 'remote' : 'local'] } SQL server using the following data:
+
+\\Z4Hostname:\\Zn $dbHost
+\\Z4Port    :\\Zn $dbPort
+\\Z4Username:\\Zn $dbRootUser
+\\Z4Password:\\Zn $dbRootPasswd
+
+Error   : \\Z1@{[ $connectError =~ s/^.*\s+failed:\s+(.*)\s+at\s+.*/$1/r ] }\\Zn
+EOF
+            goto PASSWD_DIALOG;
+        }
+
+        $firstTry = FALSE;
+        goto USERNAME_DIALOG;
+    }
+
+    ::setupSetQuestion( 'SQL_ROOT_USER', $dbRootUser );
+    ::setupSetQuestion( 'SQL_ROOT_PASSWORD', $dbRootPasswd );
+    0;
+}
+
 =item _dialogForMasterSqlUsername( \%dialog )
 
  Dialog for the master SQL username
@@ -277,12 +379,10 @@ sub _dialogForMasterSqlUsername
 {
     my ( undef, $dialog ) = @_;
 
-    my $dbUser = ::setupGetQuestion(
-        'DATABASE_USER',
-        iMSCP::Getopt->preseed() ? 'imscp_user' : ''
-    );
+    my $dbUser = ::setupGetQuestion( 'DATABASE_USER', 'imscp_user' );
 
-    if ( !grep ( $::reconfigure eq $_, qw/ sql servers all / )
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ sql servers all / )
         && isValidUsername( $dbUser )
         && isStringNotInList( $dbUser, qw/ debian-sys-maint mysql.user root / )
     ) {
@@ -326,15 +426,11 @@ sub _dialogForMasterSqlUserPassword
 {
     my ( $self, $dialog ) = @_;
 
-    my $dbHost = ::setupGetQuestion( 'DATABASE_HOST' );
-    my $dbPort = ::setupGetQuestion( 'DATABASE_PORT' );
-    my $dbUser = ::setupGetQuestion( 'DATABASE_USER' );
     my $dbPasswd = ::setupGetQuestion(
-        'DATABASE_PASSWORD',
-        iMSCP::Getopt->preseed ? randomStr( 16, iMSCP::Crypt::ALNUM ) : ''
+        'DATABASE_PASSWORD', randomStr( 16, iMSCP::Crypt::ALNUM )
     );
 
-    if ( length $dbPasswd && !iMSCP::Getopt->preseed ) {
+    if ( length $dbPasswd && $self->_lookLikeBase64Str( $dbPasswd ) ) {
         $dbPasswd = decryptRijndaelCBC(
             $::imscpDBKey, $::imscpDBiv, $dbPasswd
         );
@@ -342,9 +438,9 @@ sub _dialogForMasterSqlUserPassword
 
     # If user didn't asked for reconfiguration, and if the currently set data
     # make us able to connect, we skip dialog.
-    if ( !grep ( $::reconfigure eq $_, qw/ sql servers all / )
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ sql servers all / )
         && isValidPassword( $dbPasswd )
-        && ( iMSCP::Getopt->preseed || !$self->_tryDbConnect( $dbHost, $dbPort, $dbUser, $dbPasswd ) )
     ) {
         ::setupSetQuestion( 'DATABASE_PASSWORD', encryptRijndaelCBC(
             $::imscpDBKey, $::imscpDBiv, $dbPasswd
@@ -352,13 +448,12 @@ sub _dialogForMasterSqlUserPassword
         return 20;
     }
 
-    PASSWORD_DIALOG:
     $dbPasswd = isValidPassword( $dbPasswd ) ? $dbPasswd : '';
     my ( $ret, $msg ) = ( 0, '' );
     do {
         ( $ret, $dbPasswd ) = $dialog->string(
             <<"EOF", $dbPasswd || randomStr( 16, iMSCP::Crypt::ALNUM ));
-${msg}Please enter a password for the master i-MSCP SQL user:
+${msg}Please enter a password for the master (@{ [ ::setupGetQuestion( 'DATABASE_USER' ) ] }) SQL user:
 EOF
         if ( $ret != 30 ) {
             $dbPasswd =~ s/^\s+|\s+$//g;
@@ -370,12 +465,6 @@ EOF
     ::setupSetQuestion( 'DATABASE_PASSWORD', encryptRijndaelCBC(
         $::imscpDBKey, $::imscpDBiv, $dbPasswd
     ));
-
-    # Ask for SQL root password if needed.
-    $ret = $self->_dialogForSqlRootUser(
-        $dialog, $dbHost, $dbPort, $dbUser, $dbPasswd
-    );
-    goto PASSWORD_DIALOG if $ret == 30;
 
     0;
 }
@@ -393,12 +482,10 @@ sub _dialogForDatabaseName
 {
     my ( $self, $dialog ) = @_;
 
-    my $value = ::setupGetQuestion(
-        'DATABASE_NAME',
-        iMSCP::Getopt->preseed ? 'imscp' : ''
-    );
+    my $value = ::setupGetQuestion( 'DATABASE_NAME', 'imscp' );
 
-    if ( !grep ( $::reconfigure eq $_, qw/ sql servers all /)
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ sql servers all /)
         && isValidDbName( $value )
         && ( !$self->_setupIsDatabase( $value )
         || $self->_setupIsImscpDatabase( $value )
@@ -473,11 +560,9 @@ sub _dialogForSqlUserHost
     my $isRemoteSqlSrv = $::imscpConfig{'SQL_SERVER'} eq 'remote_server';
     my $value = ::setupGetQuestion(
         'DATABASE_USER_HOST',
-        iMSCP::Getopt->preseed
-            ? ( $isRemoteSqlSrv
-                ? ::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' )
-                : 'localhost'
-        ) : ''
+        $isRemoteSqlSrv ?
+            ::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' )
+            : 'localhost'
     );
 
     # In case of a remote SQL server, none of 'localhost', '127.0.0.1',
@@ -486,9 +571,11 @@ sub _dialogForSqlUserHost
         $value eq $_, qw/ localhost 127.0.0.1 ::1 /
     );
 
-    if ( !grep ( $::reconfigure eq $_, qw/ sql servers all / )
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ sql servers all / )
         && isValidSqlUserHostname( $value )
     ) {
+        ::setupSetQuestion( 'DATABASE_USER_HOST', idn_to_ascii( $value, 'utf-8' ) );
         return 20;
     }
 
@@ -532,11 +619,10 @@ sub _dialogForCustomerSqlDatabasesAndUsersPrefixSuffix
 {
     my ( undef, $dialog ) = @_;
 
-    my $value = ::setupGetQuestion(
-        'MYSQL_PREFIX', iMSCP::Getopt->preseed ? 'none' : ''
-    );
+    my $value = ::setupGetQuestion( 'MYSQL_PREFIX', 'none' );
 
-    if ( !grep ( $::reconfigure eq $_, qw/ sql servers all / )
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ sql servers all / )
         && grep ( $value eq $_, qw/ behind infront none /)
     ) {
         ::setupSetQuestion( 'MYSQL_PREFIX', $value );
@@ -558,90 +644,6 @@ EOF
     return 30 if $ret == 30;
 
     ::setupSetQuestion( 'MYSQL_PREFIX', $value );
-    0;
-}
-
-=item _dialogForSqlRootUser( \%dialog, $dbHost, $dbPort, $dbUser, $dbPasswd )
-
- Dialog for SQL root user
-
- Param iMSCP::Dialog \%dialog
- Param string $dbHost SQL server hostname
- Param int $dbPort SQL server port
- Param $dbUser i-MSCP master SQL username
- Param $dbPasswd i-MSCP master SQL user password
- Return int 0 (Next), 20 (Skip), 30 (back)
-
-=cut
-
-sub _dialogForSqlRootUser
-{
-    my ( $self, $dialog, $dbHost, $dbPort, $dbUser, $dbPasswd ) = @_;
-
-    # We first try to connect with the i-MSCP master SQL user account
-    # credentials. If the connection succeed, we skip dialog as usage of SQL
-    # root user isn't needed.
-    return 20 if !$self->_tryDbConnect( $dbHost, $dbPort, $dbUser, $dbPasswd );
-
-    my $isRemoteSqlSrv = ::setupGetQuestion( 'SQL_SERVER' ) eq 'remote_server';
-    my $dbRootUser = ::setupGetQuestion( 'SQL_ROOT_USER' );
-    my $dbRootPasswd = ::setupGetQuestion( 'SQL_ROOT_PASSWORD' );
-
-    # We try to connect with the current SQL root user account credentials. If
-    # the connection succeed, we skip dialog. This cover the preseeding feature
-    # and unix_socket authentication.
-    goto CONNECT_CHECK if TRUE;
-
-    my ( $ret, $msg ) = ( 0, '' );
-
-    USERNAME_DIALOG:
-    do {
-        ( $ret, $dbRootUser ) = $dialog->string(
-            <<"EOF", length $dbRootUser ? $dbRootUser : 'root' );
-Please enter the SQL root username:
-
-This user must have full privileges on the@{ [ $isRemoteSqlSrv ? ' remote ' : ' local ' ] }SQL server.
-
-The installer only make use of that user while installation.
-EOF
-        $dbRootUser =~ s/^\s+|\s+$//g if $ret != 30;
-    } while $ret != 30 && length $msg;
-    return 30 if $ret == 30;
-
-    do {
-        ( $ret, $dbRootPasswd ) = $dialog->password( <<"EOF" );
-Please enter the SQL root user password:
-EOF
-        $dbRootPasswd =~ s/^\s+|\s+$//g if $ret != 30;
-    } while $ret != 30 && length $msg;
-    goto USERNAME_DIALOG if $ret == 30;
-
-    CONNECT_CHECK:
-    if ( my $connectError = $self->_tryDbConnect(
-        idn_to_ascii( $dbHost, 'utf-8' ), $dbPort, $dbRootUser, $dbRootPasswd
-    ) ) {
-        chomp( $connectError );
-
-        # Override default button label
-        local $dialog->{'_opts'}->{
-            $dialog->{'program'} eq 'dialog' ? 'ok-label' : 'ok-button'
-        } = 'Ok';
-
-        $ret = $dialog->error( <<"EOF" );
-The i-MSCP installer can't connect to the@{ [ $isRemoteSqlSrv ? ' remote ' : ' local '] }SQL server using the following data:
-
-\\Z4Hostname:\\Zn $dbHost
-\\Z4Port    :\\Zn $dbPort
-\\Z4Username:\\Zn $dbRootUser
-\\Z4Password:\\Zn $dbRootPasswd
-
-Error was: \\Z1$connectError\\Zn
-EOF
-        goto USERNAME_DIALOG;
-    }
-
-    ::setupSetQuestion( 'SQL_ROOT_USER', $dbUser );
-    ::setupSetQuestion( 'SQL_ROOT_PASSWORD', $dbPasswd );
     0;
 }
 
@@ -1314,6 +1316,31 @@ sub _tryDbConnect
     $db->set( 'DATABASE_USER', $username );
     $db->set( 'DATABASE_PASSWORD', $password );
     $db->connect();
+}
+
+=item _lookLikeBase64Str( $str )
+
+ Does the given string look like a base64 encoded string?
+ 
+ Param string $str Possibly base64 encoded string
+ Return bool TRUE if the given string looks like a base64 encoded string, false otherwise
+
+=cut
+
+sub _lookLikeBase64Str
+{
+    my ( undef, $str ) = @_;
+
+    ref \$str eq 'SCALAR' && length $str or die(
+        "The '$str' parameter is not defined or is empty"
+    );
+
+    my $ret = eval { encode_base64( decode_base64( $str ), '' ) eq $str; };
+    if ( $@ ) {
+        $ret = FALSE;
+    }
+
+    $ret;
 }
 
 =item _oldEngineCompatibility( )

@@ -37,9 +37,7 @@ use parent 'Package::AbstractPackageCollection';
 
 =item getConfVarname( )
 
- Get package configuration variable name
-
- Return string
+ See Package::AbstractPackageCollection::getConfVarname()
 
 =cut
 
@@ -52,9 +50,7 @@ sub getConfVarname
 
 =item getOptName( )
 
- Get package option name
-
- Return string
+ See Package::AbstractPackageCollection::getOptName()
 
 =cut
 
@@ -65,11 +61,22 @@ sub getOptName
     'sql_admin_tool_packages';
 }
 
+=item getDefaultValues( )
+
+ See Package::AbstractPackageCollection::getDefaultValues()
+
+=cut
+
+sub getDefaultValues
+{
+    my ( $self ) = @_;
+
+    'PhpMyAdmin';
+}
+
 =item getPackageHumanName( )
 
- Get package human name
-
- Return string
+ See Package::AbstractPackageCollection::getPackageHumanName()
 
 =cut
 

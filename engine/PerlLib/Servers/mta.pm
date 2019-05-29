@@ -47,9 +47,10 @@ my $instance;
 
 sub factory
 {
-    return $instance if $instance;
+    return $instance if defined $instance;
 
-    my $package ||= $::imscpConfig{'MTA_PACKAGE'} || 'Servers::noserver';
+    my $package = main->can( '::setupGetQuestion' )
+        ? ::setupGetQuestion( 'MTA_PACKAGE' ) : $::imscpConfig{'MTA_PACKAGE'};
     eval "require $package";
     die( $@ ) if $@;
     $instance = $package->getInstance();
@@ -81,7 +82,8 @@ sub can
 {
     my ( undef, $method ) = @_;
 
-    my $package = $::imscpConfig{'MTA_PACKAGE'} || 'Servers::noserver';
+    my $package = main->can( '::setupGetQuestion' )
+        ? ::setupGetQuestion( 'MTA_PACKAGE' ) : $::imscpConfig{'MTA_PACKAGE'};
     eval "require $package";
     die( $@ ) if $@;
 

@@ -5,7 +5,7 @@
 # See the documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2019.05.28
+# Last update: 2019.05.29
 
 %::questions = (
     ###
@@ -311,7 +311,10 @@
     #
     # Possible values: http://, https://
     #
-    # Leave this parameter blank for use of default value: http://
+    # Leave this parameter blank for use of default value: http:// or https//,
+    # depending whether or not SSL is enabled for the control panel. Note that
+    # if  SSL is disabled for the control panel, this parameter will be set to
+    # http:// regardless of the value set.
     BASE_SERVER_VHOST_PREFIX            => '',
 
     # Master administrator account credentials (control panel)
@@ -513,31 +516,41 @@
     #
     # Possible values: 'No', or a list of packages, each comma separated.
     # Available packages are: AWStats
-    WEB_STATISTIC_PACKAGES              => 'AWStats',
+    #
+    # Leave this parameter blank for use of default value: AWStats
+    WEB_STATISTIC_PACKAGES              => '',
 
     # Web FTP clients
     #
     # Possible values: 'No', or a list of packages, each comma separated.
     # Available packages are: MonstaFTP
-    WEB_FTP_CLIENT_PACKAGES             => 'MonstaFTP',
+    #
+    # Leave this parameter blank for use of default value: MonstaFTP
+    WEB_FTP_CLIENT_PACKAGES             => '',
 
     # SQL administrator tool packages
     #
     # Possible values: 'No', or a list of packages, each comma separated.
     # Available packages are: PhpMyAdmin
-    SQL_ADMIN_TOOL_PACKAGES             => 'PhpMyAdmin',
+    #
+    # Leave this parameter blank for use of default value: PhpMyAdmin
+    SQL_ADMIN_TOOL_PACKAGES             => '',
 
     # Webmail client packages
     #
     # Possible values: 'No', or a list of packages, each comma separated.
     # Available packages are: RainLoop, Roundcube
-    WEB_MAIL_CLIENT_PACKAGES            => 'RainLoop,Roundcube',
+    #
+    # Leave this parameter blank for use of default value: RainLoop,Roundcube
+    WEB_MAIL_CLIENT_PACKAGES            => '',
 
     # Antirootkits packages
     #
     # Possible values: 'No', or a list of packages, each comma separated.
     # Available packages are: Chkrootkit, Rkhunter
-    ANTI_ROOTKIT_PACKAGES               => 'Chkrootkit,Rkhunter'
+    #
+    # Leave this parameter blank for use of default value: Chkrootkit,Rkhunter
+    ANTI_ROOTKIT_PACKAGES               => ''
 );
 
 1;

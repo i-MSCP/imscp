@@ -60,6 +60,9 @@ sub preinstall
 {
     my ( $self ) = @_;
 
+    $::imscpConfig{'MTA_SERVER'} = ::setupGetQuestion( 'MTA_SERVER' );
+    $::imscpConfig{'MTA_PACKAGE'} = ::setupGetQuestion( 'MTA_PACKAGE' );
+
     my $rs = $self->_createUserAndGroup();
     $rs ||= $self->_makeDirs();
 }

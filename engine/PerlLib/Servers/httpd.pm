@@ -47,9 +47,10 @@ my $instance;
 
 sub factory
 {
-    return $instance if $instance;
+    return $instance if defined $instance;
 
-    my $package = $::imscpConfig{'HTTPD_PACKAGE'} || 'Servers::noserver';
+    my $package = main->can( '::setupGetQuestion' )
+        ? ::setupGetQuestion( 'HTTPD_PACKAGE' ) : $::imscpConfig{'HTTPD_PACKAGE'};
     eval "require $package";
     die( $@ ) if $@;
     $instance = $package->getInstance();
@@ -81,7 +82,8 @@ sub can
 {
     my ( undef, $method ) = @_;
 
-    my $package = $::imscpConfig{'HTTPD_PACKAGE'} || 'Servers::noserver';
+    my $package = main->can( '::setupGetQuestion' )
+        ? ::setupGetQuestion( 'HTTPD_PACKAGE' ) : $::imscpConfig{'HTTPD_PACKAGE'};
     eval "require $package";
     die( $@ ) if $@;
     $package->can( $method );

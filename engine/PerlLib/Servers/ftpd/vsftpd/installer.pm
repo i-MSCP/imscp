@@ -82,6 +82,9 @@ sub preinstall
 {
     my ( $self ) = @_;
 
+    $::imscpConfig{'FTPD_SERVER'} = ::setupGetQuestion( 'FTPD_SERVER' );
+    $::imscpConfig{'FTPD_PACKAGE'} = ::setupGetQuestion( 'FTPD_PACKAGES' );
+    
     $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'} = ::setupGetQuestion(
         'FTPD_PASSIVE_PORT_RANGE'
     );
@@ -148,12 +151,14 @@ sub _dialogForPassivePortRange
 
     my $value = ::setupGetQuestion(
         'FTPD_PASSIVE_PORT_RANGE',
-        iMSCP::Getopt->preseed
-            ? '32800 33800' : $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'}
+        length $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'}
+            ? $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'}
+            : '32800 33800'
     );
     my ( $startOfRange, $endOfRange );
 
-    if ( !grep ( $::reconfigure eq $_, qw/ ftpd servers all /)
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ ftpd servers all /)
         && length $value
         && isValidNumberRange( $value, \$startOfRange, \$endOfRange )
         && isNumberInRange( $startOfRange, 32768, 60999 )

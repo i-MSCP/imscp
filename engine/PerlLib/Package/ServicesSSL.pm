@@ -151,31 +151,35 @@ sub _dialogForServicesSSL
     my $idn = idn_to_unicode(
         ::setupGetQuestion( 'SERVER_HOSTNAME' ), 'utf-8'
     );
-    my $ssl = ::setupGetQuestion(
-        'SERVICES_SSL_ENABLED', iMSCP::Getopt->preseed ? 'yes' : ''
-    );
+    my $ssl = ::setupGetQuestion( 'SERVICES_SSL_ENABLED', 'yes' );
     my $selfSignedCrt = ::setupGetQuestion(
-        'SERVICES_SSL_SELFSIGNED_CERTIFICATE',
-        iMSCP::Getopt->preseed ? 'yes' : ''
+        'SERVICES_SSL_SELFSIGNED_CERTIFICATE', 'yes'
     );
     my $pkPath = ::setupGetQuestion(
         'SERVICES_SSL_PRIVATE_KEY_PATH',
-        "$::imscpConfig{'CONF_DIR'}/imscp_services.pem"
+        iMSCP::Getopt->preseed
+            ? ''
+            : "$::imscpConfig{'CONF_DIR'}/imscp_services.pem"
     );
     my $passphrase = ::setupGetQuestion(
         'SERVICES_SSL_PRIVATE_KEY_PASSPHRASE'
     );
     my $crtPath = ::setupGetQuestion(
         'SERVICES_SSL_CERTIFICATE_PATH',
-        "$::imscpConfig{'CONF_DIR'}/imscp_services.pem"
+        iMSCP::Getopt->preseed
+            ? ''
+            : "$::imscpConfig{'CONF_DIR'}/imscp_services.pem"
     );
     my $caPath = ::setupGetQuestion(
         'SERVICES_SSL_CA_BUNDLE_PATH',
-        "$::imscpConfig{'CONF_DIR'}/imscp_services.pem"
+        iMSCP::Getopt->preseed
+            ? ''
+            : "$::imscpConfig{'CONF_DIR'}/imscp_services.pem"
     );
     my $openSSL = iMSCP::OpenSSL->new();
 
-    if ( !grep ( $::reconfigure eq $_, qw/ services_ssl ssl all / ) ) {
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ services_ssl ssl all / ) ) {
         goto CHECK_SSL_CHAIN if $ssl eq 'yes';
         return 20 if $ssl eq 'no';
     }
@@ -299,6 +303,14 @@ EOF
 
     CHECK_SSL_CHAIN:
 
+    if ( $selfSignedCrt eq 'yes' ) {
+        ::setupSetQuestion( 'SERVICES_SSL_ENABLED', $ssl );
+        ::setupSetQuestion(
+            'SERVICES_SSL_SELFSIGNED_CERTIFICATE', $selfSignedCrt
+        );
+        return 20;
+    }
+
     @{ $openSSL }{qw/
         private_key_container_path ca_bundle_container_path
         certificate_container_path
@@ -307,14 +319,6 @@ EOF
     );
 
     unless ( $openSSL->validateCertificateChain() ) {
-        if ( iMSCP::Getopt->preseed && $selfSignedCrt ) {
-            getMessageByType( 'error', {
-                amount => 1,
-                remove => TRUE
-            } );
-            return 20;
-        }
-
         local $dialog->{'_opts'}->{
             $dialog->{'program'} eq 'dialog' ? 'ok-label' : 'ok-button'
         } = 'Reconfigure';

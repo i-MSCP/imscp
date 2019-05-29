@@ -85,6 +85,9 @@ sub preinstall
 {
     my ( $self ) = @_;
 
+    $::imscpConfig{'NAMED_SERVER'} = ::setupGetQuestion( 'NAMED_SERVER' );
+    $::imscpConfig{'NAMED_PACKAGE'} = ::setupGetQuestion( 'NAMED_PACKAGE' );
+
     for my $configVar (
         qw/ BIND_IPV6 BIND_MODE LOCAL_DNS_RESOLVER PRIMARY_DNS SECONDARY_DNS /
     ) {
@@ -165,10 +168,13 @@ sub _dialogForDnsServerType
 
     my $value = ::setupGetQuestion(
         'BIND_MODE',
-        iMSCP::Getopt->preseed() ? 'master' : $self->{'config'}->{'BIND_MODE'}
+        length $self->{'config'}->{'BIND_MODE'}
+            ? $self->{'config'}->{'BIND_MODE'}
+            : 'master'
     );
 
-    if ( !grep ( $::reconfigure eq $_, qw/ named servers all / )
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ named servers all / )
         && grep ( $value eq $_, qw/ master slave / )
     ) {
         ::setupSetQuestion( 'BIND_MODE', $value );
@@ -218,7 +224,9 @@ sub _dialogForMasterDnsServerIps
 
     my @values = split /(?:[;,]| )/, ::setupGetQuestion(
         'PRIMARY_DNS',
-        iMSCP::Getopt->preseed ? 'no' : $self->{'config'}->{'PRIMARY_DNS'}
+        length $self->{'config'}->{'PRIMARY_DNS'}
+            ? $self->{'config'}->{'PRIMARY_DNS'}
+            : 'no'
     );
 
     # IF the local DNS server was previously the master DNS server, we
@@ -229,7 +237,8 @@ sub _dialogForMasterDnsServerIps
         @values = ();
     }
 
-    if ( !grep ( $::reconfigure eq $_, qw/ named servers all /)
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ named servers all /)
         && length "@values"
         && ( "@values" eq 'no' || $self->_checkIps( @values ) )
     ) {
@@ -290,7 +299,9 @@ sub _dialogForSlaveDnsServerIps
 
     my @values = split /(?:[;,]| )/, ::setupGetQuestion(
         'SECONDARY_DNS',
-        iMSCP::Getopt->preseed ? 'no' : $self->{'config'}->{'SECONDARY_DNS'}
+        length $self->{'config'}->{'SECONDARY_DNS'}
+            ? $self->{'config'}->{'SECONDARY_DNS'}
+            : 'no'
     );
 
     # IF the local DNS server was previously the slave DNS server, we
@@ -301,7 +312,8 @@ sub _dialogForSlaveDnsServerIps
         @values = ();
     }
 
-    if ( !grep ( $::reconfigure eq $_, qw/ named servers all /)
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ named servers all /)
         && length "@values"
         && ( "@values" eq 'no' || $self->_checkIps( @values ) )
     ) {
@@ -369,10 +381,13 @@ sub _dialogForDnsServerIpv6Support
 
     my $value = ::setupGetQuestion(
         'BIND_IPV6',
-        iMSCP::Getopt->preseed ? 'no' : $self->{'config'}->{'BIND_IPV6'}
+        length $self->{'config'}->{'BIND_IPV6'}
+            ? $self->{'config'}->{'BIND_IPV6'}
+            : 'no'
     );
 
-    if ( !grep ( $::reconfigure eq $_, qw/ named servers all / )
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ named servers all / )
         && grep ( $value eq $_, qw/ yes no / )
     ) {
         ::setupSetQuestion( 'BIND_IPV6', $value );
@@ -403,10 +418,13 @@ sub _dialogForLocalResolving
 
     my $value = ::setupGetQuestion(
         'LOCAL_DNS_RESOLVER',
-        iMSCP::Getopt->preseed ? 'yes' : $self->{'config'}->{'LOCAL_DNS_RESOLVER'}
+        length $self->{'config'}->{'LOCAL_DNS_RESOLVER'}
+            ? $self->{'config'}->{'LOCAL_DNS_RESOLVER'}
+            : 'yes'
     );
 
-    if ( !grep ( $::reconfigure eq $_, qw/ resolver named all / )
+    if ( $dialog->executeRetval != 30
+        && !grep ( $::reconfigure eq $_, qw/ resolver named all / )
         && grep ( $value eq $_, qw/ yes no /)
     ) {
         ::setupSetQuestion( 'LOCAL_DNS_RESOLVER', $value );

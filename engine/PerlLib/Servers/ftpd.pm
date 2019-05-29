@@ -51,7 +51,8 @@ sub factory
 {
     return $instance if defined $instance;
 
-    my $package = $::imscpConfig{'FTPD_PACKAGE'} || 'Servers::noserver';
+    my $package = main->can( '::setupGetQuestion' )
+        ? ::setupGetQuestion( 'FTPD_PACKAGE' ) : $::imscpConfig{'FTPD_PACKAGE'};
 
     if ( %::imscpOldConfig
         && exists $::imscpOldConfig{'FTPD_PACKAGE'}
@@ -96,7 +97,8 @@ sub can
 {
     my ( undef, $method ) = @_;
 
-    my $package = $::imscpConfig{'FTPD_PACKAGE'} || 'Servers::noserver';
+    my $package = main->can( '::setupGetQuestion' )
+        ? ::setupGetQuestion( 'FTPD_PACKAGE' ) : $::imscpConfig{'FTPD_PACKAGE'};
     eval "require $package";
     die( $@ ) if $@;
     $package->can( $method );

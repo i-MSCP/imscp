@@ -78,9 +78,23 @@ sub registerSetupListeners
     );
 }
 
+=item preinstall( )
+
+ Pre-installation tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub preinstall
+{
+    $::imscpConfig{'PO_SERVER'} = ::setupGetQuestion( 'PO_SERVER' );
+    $::imscpConfig{'PO_PACKAGE'} = ::setupGetQuestion( 'PO_PACKAGE' );
+}
+
 =item install( )
 
- Process install tasks
+ Installation tasks
 
  Return int 0 on success, other on failure
 
