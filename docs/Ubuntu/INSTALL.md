@@ -46,6 +46,9 @@ which a default value is available. If you want force the installer to display
 all dialogs, you need to pass the `--reconfigure` option, without any argument,
 to the installer.
 
+You can have a look at the [preseeding template file](../preseed.pl) to know
+the default values used by the installer.
+
 ## Upgrade
 
 ### 1. Make sure to read the errata file
