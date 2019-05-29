@@ -147,18 +147,6 @@ EOF
 
     my $dialog = iMSCP::Dialog->getInstance();
 
-    # Prevent the reconfiguration from a unknown i-MSCP version, that is
-    # an i-MSCP version which has not been installed yet
-    if ( $::reconfigure ne 'none'
-        && ( $::imscpOldConfig{'Version'} ne $::imscpConfig{'Version'}
-        || !-f "$::imscpConfig{'CONF_DIR'}/imscp.conf"
-    ) ) {
-        $dialog->error( <<'EOF' );
-You cannot trigger a re-configuration from an i-MSCP version which hasn't been installed yet.
-EOF
-        return 1;
-    }
-
     my $rs = $dialog->execute( [
         \&showWelcomeDialog,
         \&showGitVersionWarnDialog,
