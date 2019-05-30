@@ -17,22 +17,10 @@ set -e
 export DEBIAN_FRONTEND=noninteractive
 export LANG=C.UTF-8
 
-# Install pre-required packages
-apt-get --assume-yes --no-install-recommends install ca-certificates perl
+# Remove unwanted foreign i386 architecture which is enabled in
+# some Vagrant boxes
+dpkg --remove-architecture i386 2>/dev/null
 
-# Create i-MSCP preseed file
-if [ -f /vagrant/preseed.pl ]; then
-    head -n -1 /vagrant/preseed.pl > /tmp/preseed.pl
-    cat <<'EOT' >> /tmp/preseed.pl
-
-$::questions{'BASE_SERVER_IP'} = '0.0.0.0';
-
-1;
-EOT
-else
- echo "The i-MSCP preseed.pl file has not been found. Please create it first."
- exit 1
-fi
-
-# Run i-MSCP installer using preconfiguration file
-perl /usr/local/src/imscp/imscp-installer --debug --verbose --preseed /tmp/preseed.pl
+apt-get update
+apt-get --assume-yes dist-upgrade
+apt-get --assume-yes install ca-certificates perl

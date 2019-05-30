@@ -14,13 +14,19 @@
 
 set -e
 
-export DEBIAN_FRONTEND=noninteractive
-export LANG=C.UTF-8
+# Create i-MSCP preseed file
+if [ ! -f /vagrant/preseed.pl ]; then
+ echo "The i-MSCP preseed.pl file has not been found. Please create it first."
+ exit 1
+fi
 
-# Remove unwanted foreign i386 architecture which is enabled in some Vagrant
-# boxes
-dpkg --remove-architecture i386 2>/dev/null
+head -n -1 /vagrant/preseed.pl > /tmp/preseed.pl
+cat <<'EOT' >> /tmp/preseed.pl
 
-# Make sure that the distribution is up-to-date
-apt-get update
-apt-get --assume-yes --no-install-recommends dist-upgrade
+$::questions{'BASE_SERVER_IP'} = '0.0.0.0';
+
+1;
+EOT
+
+# Execute the i-MSCP installer using preseeding file
+perl /usr/local/src/imscp/imscp-autoinstall --debug --verbose --preseed /tmp/preseed.pl

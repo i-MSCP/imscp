@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-# i-MSCP preseed.pl template file for installer preseeding feature
+# Preseeding template file for i-MSCP unattended installation
 #
 # See the documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
@@ -37,7 +37,7 @@ use warnings;
     # email.
     #
     # This email address is very important as this is the one to which i-MSCP
-    # will  send all system notifications such as warning, error and so on...
+    # will send all system notifications such as warning, error and so on...
     # If you make use of The i-MSCP LetsEncrypt plugin, this email will be also
     # used for the account registration. 
     #
@@ -320,7 +320,7 @@ use warnings;
     #
     # Leave this parameter blank for use of default value: http:// or https//,
     # depending whether or not SSL is enabled for the control panel. Note that
-    # if  SSL is disabled for the control panel, this parameter will be set to
+    # if SSL is disabled for the control panel, this parameter will be set to
     # http:// regardless of the value set.
     BASE_SERVER_VHOST_PREFIX            => '',
 
