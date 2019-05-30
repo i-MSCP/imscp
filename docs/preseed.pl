@@ -8,7 +8,7 @@ use warnings;
 # See the documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2019.05.29
+# Last update: 2019.05.30
 
 %::questions = (
     ###
@@ -270,6 +270,10 @@ use warnings;
     # Possible values: yes, no
     #
     # Leave this parameter blank for use of default value: yes
+    #
+    # Warning: This parameter has a higher precedence than other SSL related
+    # parameters. If you want provide your own SSL certificate, be sure to set
+    # the value of this parameter to 'no'.
     PANEL_SSL_SELFSIGNED_CERTIFICATE    => '',
 
     # Control panel SSL certificate private key (only relevant for a trusted
@@ -486,6 +490,10 @@ use warnings;
     # Possible values: yes, no
     #
     # Leave this parameter blank for use of default value: yes
+    #
+    # Warning: This parameter has a higher precedence than other SSL related
+    # parameters. If you want provide your own SSL certificate, be sure to set
+    # the value of this parameter to 'no'.
     SERVICES_SSL_SELFSIGNED_CERTIFICATE => '',
 
     # Services SSL certificate private key (only relevant for a trusted SSL
