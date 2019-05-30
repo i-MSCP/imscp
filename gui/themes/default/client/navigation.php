@@ -62,9 +62,9 @@ return [
                         'title_class' => 'domains',
                     ],
                     'cert_view'              => [
-                        'dynamic_title' => '{TR_DYNAMIC_TITLE}',
-                        'uri'           => '/client/cert_view.php',
-                        'title_class'   => 'domains',
+                        'label'       => '{TR_DYNAMIC_TITLE}',
+                        'uri'         => '/client/cert_view.php',
+                        'title_class' => 'domains',
                     ]
                 ]
             ],
@@ -246,7 +246,7 @@ return [
                 'assertion'   => \iMSCP\Assertion\ClientHasProtectedAreasFeatureAssertion::class,
                 'pages'       => [
                     'add_protected_area'               => [
-                        'dynamic_title' => '{TR_DYNAMIC_TITLE}',
+                        'label' => '{TR_DYNAMIC_TITLE}',
                         'uri'           => '/client/protected_areas_add.php',
                         'title_class'   => 'htaccess',
                     ],
@@ -329,12 +329,19 @@ return [
         'resource'  => 'support',
         'assertion' => \iMSCP\Assertion\ClientHasSupportFeatureAssertion::class,
         'pages'     => [
-            'tickets_open'   => [
+            'open_tickets'   => [
                 'label'       => tr('Open tickets'),
                 'uri'         => '/client/ticket_system.php',
-                'title_class' => 'support'
+                'title_class' => 'support',
+                'pages'       => [
+                    'view_ticket' => [
+                        'label'       => tr('View ticket'),
+                        'uri'         => '/client/ticket_view.php',
+                        'title_class' => 'support'
+                    ]
+                ]
             ],
-            'tickets_closed' => [
+            'closed_tickets' => [
                 'label'       => tr('Closed tickets'),
                 'uri'         => '/client/ticket_closed.php',
                 'title_class' => 'support'
@@ -343,12 +350,6 @@ return [
                 'label'       => tr('New ticket'),
                 'uri'         => '/client/ticket_create.php',
                 'title_class' => 'support'
-            ],
-            'view_ticket'    => [
-                'label'       => tr('View ticket'),
-                'uri'         => '/client/ticket_view.php',
-                'title_class' => 'support',
-                'visible'     => false
             ]
         ]
     ],

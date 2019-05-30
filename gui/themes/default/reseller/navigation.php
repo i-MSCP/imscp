@@ -184,12 +184,19 @@ return [
         'resource'  => 'support',
         'assertion' => \iMSCP\Assertion\ResellerHasSupportFeatureAssertion::class,
         'pages'     => [
-            'tickets_open'   => [
+            'open_tickets'   => [
                 'label'       => tr('Open tickets'),
                 'uri'         => '/reseller/ticket_system.php',
-                'title_class' => 'support'
+                'title_class' => 'support',
+                'pages' => [
+                    'view_ticket'    => [
+                        'label'       => tr('View ticket'),
+                        'uri'         => '/reseller/ticket_view.php',
+                        'title_class' => 'support'
+                    ]
+                ]
             ],
-            'tickets_closed' => [
+            'closed_tickets' => [
                 'label'       => tr('Closed tickets'),
                 'uri'         => '/reseller/ticket_closed.php',
                 'title_class' => 'support'
@@ -198,12 +205,6 @@ return [
                 'label'       => tr('New ticket'),
                 'uri'         => '/reseller/ticket_create.php',
                 'title_class' => 'support'
-            ],
-            'view_ticket'    => [
-                'label'       => tr('View ticket'),
-                'uri'         => '/reseller/ticket_view.php',
-                'title_class' => 'support',
-                'visible'     => false
             ]
         ]
     ],

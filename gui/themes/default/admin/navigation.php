@@ -52,7 +52,7 @@ return [
                 'title_class' => 'users',
                 'pages'       => [
                     'user_edit'     => [
-                        'dynamic_title' => '{TR_DYNAMIC_TITLE}',
+                        'label' => '{TR_DYNAMIC_TITLE}',
                         'uri'           => '/admin/user_edit.php',
                         'title_class'   => '{DYNAMIC_TITLE_CLASS}',
                     ],
@@ -192,18 +192,19 @@ return [
             'open_tickets'   => [
                 'label'       => tr('Open tickets'),
                 'uri'         => '/admin/ticket_system.php',
-                'title_class' => 'support'
+                'title_class' => 'support',
+                'pages' => [
+                    'view_ticket'    => [
+                        'label'       => tr('View ticket'),
+                        'uri'         => '/admin/ticket_view.php',
+                        'title_class' => 'support'
+                    ]
+                ]
             ],
             'closed_tickets' => [
                 'label'       => tr('Closed tickets'),
                 'uri'         => '/admin/ticket_closed.php',
                 'title_class' => 'support'
-            ],
-            'view_ticket'    => [
-                'label'       => tr('View ticket'),
-                'uri'         => '/admin/ticket_view.php',
-                'title_class' => 'support',
-                'visible'     => false
             ]
         ]
     ],
@@ -224,7 +225,6 @@ return [
             ],
             'custom_menus'         => [
                 'label'         => tr('Custom menus'),
-                'dynamic_title' => '{TR_DYNAMIC_TITLE}',
                 'uri'           => '/admin/custom_menus.php',
                 'title_class'   => 'custom_link'
             ],

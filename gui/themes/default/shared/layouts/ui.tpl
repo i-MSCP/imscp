@@ -1,13 +1,15 @@
 <?php
-$container = $this->navigation->getContainer();
 /** @var iMSCP_pTemplate $this */
+/** @var Zend_Navigation $container */
+$container = $this->navigation->getContainer();
+
 foreach($container as $page) {
     if($page->isActive(true)) {
         $leftMenu = $page;
         break;
     }
 }
-$sectionPage = $this->navigation->findActive($container, 0, 0)['page'];
+
 $page = $this->navigation->findActive($container, 0)['page'];
 ?>
 <!DOCTYPE html>
@@ -37,7 +39,7 @@ $page = $this->navigation->findActive($container, 0)['page'];
 <?= $this->navigation->menu()->renderMenu(null, [
     'ulClass'  => 'icons' . ($_SESSION['show_main_menu_labels'] ? ' show_labels' : ''),
     'indent'   => 12,
-    'maxDepth' => 0,
+    'maxDepth' => 0
 ]); ?>
 
         </div>
@@ -47,7 +49,7 @@ $page = $this->navigation->findActive($container, 0)['page'];
     </div>
     <div class="location">
         <div class="location-area">
-            <h1><?= $this->navigation->menu()->htmlify($sectionPage)?></h1>
+            <h1><?= $this->navigation->menu()->htmlify($leftMenu)?></h1>
         </div>
         <ul class="location-menu">
 <?php if(isset($_SESSION['logged_from'])):?>
