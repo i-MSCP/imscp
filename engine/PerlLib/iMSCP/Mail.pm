@@ -114,10 +114,10 @@ sub _sendMail
     my ( undef, $subject, $message, $severity ) = @_;
 
     my $sendmail = iMSCP::ProgramFinder::find( 'sendmail' ) or die( "Couldn't find sendmail executable" );
-    my $host = $main::imscpConfig{'BASE_SERVER_VHOST'};
+    my $host = $::imscpConfig{'BASE_SERVER_VHOST'};
     my $out = MIME::Entity->new()->build(
         From       => "i-MSCP ($host) <noreply\@$host>",
-        To         => $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'},
+        To         => $::imscpConfig{'DEFAULT_ADMIN_ADDRESS'},
         Subject    => $subject,
         Type       => 'text/plain; charset=utf-8',
         Encoding   => '8bit',
@@ -126,10 +126,10 @@ Dear administrator,
 
 This is an automatic email sent by i-MSCP:
  
-Server name: $main::imscpConfig{'SERVER_HOSTNAME'}
-Server IP: $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}
-Version: $main::imscpConfig{'Version'}
-Build: $main::imscpConfig{'Build'}
+Server name: $::imscpConfig{'SERVER_HOSTNAME'}
+Server IP: $::imscpConfig{'BASE_SERVER_PUBLIC_IP'}
+Version: $::imscpConfig{'Version'}
+Build: $::imscpConfig{'Build'}
 Message severity: $severity
 
 ==========================================================================

@@ -269,12 +269,12 @@ sub backupMaildirs
 
 sub backupAll
 {
-    return unless $main::imscpConfig{'BACKUP_DOMAINS'} eq 'yes';
+    return unless $::imscpConfig{'BACKUP_DOMAINS'} eq 'yes';
 
-    my $cmpAlgo = lc( $main::imscpConfig{'BACKUP_COMPRESS_ALGORITHM'} );
+    my $cmpAlgo = lc( $::imscpConfig{'BACKUP_COMPRESS_ALGORITHM'} );
     $cmpAlgo = 'no' unless $cmpAlgo eq 'no' || exists $command->{$cmpAlgo};
 
-    my ($cmpLevel) = $main::imscpConfig{'BACKUP_COMPRESS_LEVEL'} =~ /^([1-9])$/;
+    my ($cmpLevel) = $::imscpConfig{'BACKUP_COMPRESS_LEVEL'} =~ /^([1-9])$/;
     $cmpLevel ||= 1;
 
     my $bkpExt = ( $cmpAlgo ne 'no' ) ? '.' . $command->{$cmpAlgo}->{'extension'} : '';
@@ -299,7 +299,7 @@ sub backupAll
 
     while ( my ($dmnId, $dmnData) = each( %{$rows} ) ) {
         next unless $dmnData->{'allowbackup'} && $dmnData->{'allowbackup'} =~ /\b(?:dmn|sql|mail)\b/;
-        my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$dmnData->{'domain_name'}";
+        my $homeDir = "$::imscpConfig{'USER_WEB_DIR'}/$dmnData->{'domain_name'}";
 
         next unless -d $homeDir;
 

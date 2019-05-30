@@ -76,7 +76,7 @@ sub quotaFiles
         while ( my ($dmnId, $dmnData) = each( %{$rows} ) ) {
             my $totalDiskUsage = my $webDiskUsage = my $mailDiskUsage = 0;
             my @items = (
-                { webdir => "$main::imscpConfig{'USER_WEB_DIR'}/$dmnData->{'domain_name'}" },
+                { webdir => "$::imscpConfig{'USER_WEB_DIR'}/$dmnData->{'domain_name'}" },
                 { maildir => "$virtualMailDir/$dmnData->{'domain_name'}" }
             );
 

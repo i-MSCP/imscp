@@ -415,7 +415,7 @@ sub processDbTasks
 
             my ( $stdout, $stderr );
             execute(
-                "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-sw-mngr "
+                "perl $::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-sw-mngr "
                     . escapeShell( $pushString ), \$stdout,
                 \$stderr
             ) == 0 or die( $stderr || 'Unknown error' );
@@ -462,7 +462,7 @@ sub processDbTasks
 
             my ( $stdout, $stderr );
             execute(
-                "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-pkt-mngr "
+                "perl $::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-pkt-mngr "
                     . escapeShell( $pushstring ),
                 \$stdout,
                 \$stderr

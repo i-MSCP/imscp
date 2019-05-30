@@ -71,9 +71,9 @@ our $command = {
 
 sub run
 {
-    return 0 unless $main::imscpConfig{'BACKUP_IMSCP'} eq 'yes';
+    return 0 unless $::imscpConfig{'BACKUP_IMSCP'} eq 'yes';
 
-    my $algo = lc( $main::imscpConfig{'BACKUP_COMPRESS_ALGORITHM'} );
+    my $algo = lc( $::imscpConfig{'BACKUP_COMPRESS_ALGORITHM'} );
 
     unless ( exists $command->{$algo} || $algo eq 'no' ) {
         error( sprintf( 'Backup algorithm not supported: %s', $algo ));
@@ -81,13 +81,11 @@ sub run
     }
 
     # Make sure that backup directory exists
-    iMSCP::Dir->new( dirname => $main::imscpConfig{'BACKUP_FILE_DIR'} )->make(
-        {
-            user  => $main::imscpConfig{'ROOT_USER'},
-            group => $main::imscpConfig{'ROOT_GROUP'},
-            mode  => 0750
-        }
-    );
+    iMSCP::Dir->new( dirname => $::imscpConfig{'BACKUP_FILE_DIR'} )->make( {
+        user  => $::imscpConfig{'ROOT_USER'},
+        group => $::imscpConfig{'ROOT_GROUP'},
+        mode  => 0750
+    } );
 
     # Backup i-MSCP database
     my $rs = _backupDatabase();
@@ -99,7 +97,7 @@ sub run
 
     # Remove any backup older than 7 days
     $rs = execute(
-        "find $main::imscpConfig{'BACKUP_FILE_DIR'}/* -maxdepth 0 -type f -mtime +7 -print | xargs -r rm",
+        "find $::imscpConfig{'BACKUP_FILE_DIR'}/* -maxdepth 0 -type f -mtime +7 -print | xargs -r rm",
         \ my $stdout,
         \ my $stderr
     );
@@ -122,7 +120,7 @@ sub _backupDatabase
     my $db = iMSCP::Database->factory();
 
     local $@;
-    eval { $db->dumpdb( $main::imscpConfig{'DATABASE_NAME'}, $main::imscpConfig{'BACKUP_FILE_DIR'} ) };
+    eval { $db->dumpdb( $::imscpConfig{'DATABASE_NAME'}, $::imscpConfig{'BACKUP_FILE_DIR'} ) };
     if ( $@ ) {
         error( $@ );
         return 1;
@@ -130,19 +128,19 @@ sub _backupDatabase
 
     # Encode slashes as SOLIDUS unicode character
     # Encode dots as Full stop unicode character
-    ( my $encodedDbName = $main::imscpConfig{'DATABASE_NAME'} ) =~ s%([./])%{ '/', '@002f', '.', '@002e' }->{$1}%ge;
+    ( my $encodedDbName = $::imscpConfig{'DATABASE_NAME'} ) =~ s%([./])%{ '/', '@002f', '.', '@002e' }->{$1}%ge;
 
     my $date = strftime "%Y.%m.%d-%H-%M", localtime;
 
     my $rs = iMSCP::File->new(
-        filename => $main::imscpConfig{'BACKUP_FILE_DIR'} . '/' . $encodedDbName . '.sql'
+        filename => $::imscpConfig{'BACKUP_FILE_DIR'} . '/' . $encodedDbName . '.sql'
     )->moveFile(
-        $main::imscpConfig{'BACKUP_FILE_DIR'} . '/' . $encodedDbName . '-' . $date . '.sql'
+        $::imscpConfig{'BACKUP_FILE_DIR'} . '/' . $encodedDbName . '-' . $date . '.sql'
     );
     return $rs if $rs;
 
-    my $algo = lc( $main::imscpConfig{'BACKUP_COMPRESS_ALGORITHM'} );
-    my $level = $main::imscpConfig{'BACKUP_COMPRESS_LEVEL'};
+    my $algo = lc( $::imscpConfig{'BACKUP_COMPRESS_ALGORITHM'} );
+    my $level = $::imscpConfig{'BACKUP_COMPRESS_LEVEL'};
     $level = 1 unless $level =~ /^[1-9]$/;
 
     if ( $algo ne 'no' ) {
@@ -150,7 +148,7 @@ sub _backupDatabase
             $command->{$algo}->{'command'},
             "-$level",
             '--force',
-            escapeShell( $main::imscpConfig{'BACKUP_FILE_DIR'} . '/' . $encodedDbName . '-' . $date . '.sql' )
+            escapeShell( $::imscpConfig{'BACKUP_FILE_DIR'} . '/' . $encodedDbName . '-' . $date . '.sql' )
         );
         $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
@@ -168,17 +166,17 @@ sub _backupDatabase
 sub _backupConfig
 {
     my $date = strftime "%Y.%m.%d-%H-%M", localtime;
-    my $archivePath = "$main::imscpConfig{'BACKUP_FILE_DIR'}/config-backup-$date.tar";
-    my $algo = lc( $main::imscpConfig{'BACKUP_COMPRESS_ALGORITHM'} );
-    my $level = $main::imscpConfig{'BACKUP_COMPRESS_LEVEL'};
+    my $archivePath = "$::imscpConfig{'BACKUP_FILE_DIR'}/config-backup-$date.tar";
+    my $algo = lc( $::imscpConfig{'BACKUP_COMPRESS_ALGORITHM'} );
+    my $level = $::imscpConfig{'BACKUP_COMPRESS_LEVEL'};
     $level = 1 unless $level =~ /^[1-9]$/;
 
     if ( $algo ne 'no' ) {
-        $archivePath .= '.' . $command->{$main::imscpConfig{'BACKUP_COMPRESS_ALGORITHM'}}->{'extension'};
+        $archivePath .= '.' . $command->{$::imscpConfig{'BACKUP_COMPRESS_ALGORITHM'}}->{'extension'};
     }
 
     my @backupCommand = (
-        "tar -c -C $main::imscpConfig{'CONF_DIR'}",
+        "tar -c -C $::imscpConfig{'CONF_DIR'}",
         '--exclude=?*[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]',
         '--preserve-permissions',
         '.',

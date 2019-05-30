@@ -117,13 +117,13 @@ sub setEnginePermissions
 
     my $rs = $self->{'events'}->trigger( 'beforeSqldSetEnginePermissions' );
     $rs ||= setRights( "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf", {
-        user  => $main::imscpConfig{'ROOT_USER'},
-        group => $main::imscpConfig{'ROOT_GROUP'},
+        user  => $::imscpConfig{'ROOT_USER'},
+        group => $::imscpConfig{'ROOT_GROUP'},
         mode  => '0644'
     } );
     $rs ||= setRights( "$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf", {
-        user  => $main::imscpConfig{'ROOT_USER'},
-        group => $main::imscpConfig{'ROOT_GROUP'},
+        user  => $::imscpConfig{'ROOT_USER'},
+        group => $::imscpConfig{'ROOT_GROUP'},
         mode  => '0640'
     } );
     $rs ||= $self->{'events'}->trigger( 'afterSqldSetEnginePermissions' );

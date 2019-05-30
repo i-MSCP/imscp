@@ -153,7 +153,7 @@ sub _uninstall
                 filename => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf"
             );
             my $rs = $file->owner(
-                $main::imscpConfig{'ROOT_USER'},
+                $::imscpConfig{'ROOT_USER'},
                 $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'}
             );
             $rs ||= $file->mode( 0644 );

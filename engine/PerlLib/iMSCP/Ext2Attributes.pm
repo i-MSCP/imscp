@@ -367,7 +367,7 @@ sub _setAttributes
 sub _isSupported
 {
     unless ( defined $isSupported ) {
-        unless ( _getAttributes( $main::imscpConfig{'USER_WEB_DIR'} ) == -1 ) {
+        unless ( _getAttributes( $::imscpConfig{'USER_WEB_DIR'} ) == -1 ) {
             $isSupported = TRUE;
         } else {
             $isSupported = FALSE;
