@@ -20,9 +20,8 @@ if [ ! -f /vagrant/preseed.pl ]; then
  exit 1
 fi
 
-head -n -1 /vagrant/preseed.pl > /tmp/preseed.pl
+head -n -2 /vagrant/preseed.pl > /tmp/preseed.pl
 cat <<'EOT' >> /tmp/preseed.pl
-
 $::questions{'BASE_SERVER_IP'} = '0.0.0.0';
 
 1;
