@@ -25,6 +25,7 @@ cat <<'EOT' >> /tmp/preseed.pl
 $::questions{'BASE_SERVER_IP'} = '0.0.0.0';
 
 1;
+__END__
 EOT
 
 # Execute the i-MSCP installer using preseeding file
