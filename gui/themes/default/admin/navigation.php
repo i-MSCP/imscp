@@ -203,6 +203,7 @@ return [
                 'label'       => tr('View ticket'),
                 'uri'         => '/admin/ticket_view.php',
                 'title_class' => 'support',
+                'visible'     => false
             ]
         ]
     ],
