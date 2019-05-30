@@ -109,7 +109,7 @@ sub postinstall
     my ( $self ) = @_;
 
     my $rs = $self->{'events'}->trigger( 'beforeFtpdPostInstall', 'proftpd' );
-    $rs ||= Servers::ftpd::proftpd::installer->getInstance()->install();
+    $rs ||= Servers::ftpd::proftpd::installer->getInstance()->postinstall();
     $rs ||= $self->{'events'}->trigger( 'afterFtpdPostInstall', 'proftpd' );
 }
 
