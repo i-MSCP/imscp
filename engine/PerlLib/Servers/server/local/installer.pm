@@ -29,7 +29,10 @@ use iMSCP::Boolean;
 use iMSCP::Database;
 use DateTime::TimeZone;
 use iMSCP::Debug qw/ debug error /;
-use iMSCP::Dialog::InputValidation;
+use iMSCP::Dialog::InputValidation qw/
+    $LAST_VALIDATION_ERROR
+    isValidHostname isValidIpAddr isValidTimezone
+/;
 use iMSCP::Execute 'execute';
 use iMSCP::EventManager;
 use iMSCP::File;

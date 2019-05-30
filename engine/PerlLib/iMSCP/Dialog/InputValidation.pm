@@ -65,6 +65,9 @@ sub isValidUsername( $ )
     my ( $username ) = @_;
 
     defined $username or die( 'Missing $username parameter' );
+
+    $LAST_VALIDATION_ERROR = '';
+
     my $length = length $username;
 
     return TRUE if $length >= 3 && $length <= 16
@@ -94,6 +97,9 @@ sub isValidPassword( $ )
     my ( $password ) = @_;
 
     defined $password or die( 'Missing $password parameter' );
+
+    $LAST_VALIDATION_ERROR = '';
+
     my $length = length $password;
 
     return TRUE if $length >= 6 && $length <= 32
@@ -124,6 +130,8 @@ sub isValidEmail( $ )
 
     defined $email or die( 'Missing $email parameter' );
 
+    $LAST_VALIDATION_ERROR = '';
+
     return TRUE if length $email
         && Email::Valid->address( $email );
 
@@ -148,6 +156,8 @@ sub isValidHostname( $ )
     my ( $hostname ) = @_;
 
     defined $hostname or die( 'Missing $hostname parameter' );
+
+    $LAST_VALIDATION_ERROR = '';
 
     return TRUE if length $hostname
         && $hostname !~ /\.$/
@@ -179,7 +189,7 @@ sub isValidSqlUserHostname( $ )
 
     defined $hostname or die( 'Missing $hostname parameter' );
 
-    return FALSE unless length $hostname && $hostname !~ /\.$/;
+    $LAST_VALIDATION_ERROR = '';
 
     # FIXME: Implement full validation (wildcard entries)
     return TRUE if length $hostname
@@ -187,8 +197,9 @@ sub isValidSqlUserHostname( $ )
         && ( index( $hostname, '%' ) != -1
             || index( $hostname, '_' ) != -1
             || isValidIpAddr( $hostname )
-            || is_hostname( idn_to_ascii( $hostname, 'utf-8' ))
-        );
+            || is_hostname( idn_to_ascii( $hostname, 'utf-8' )
+        )
+    );
 
     $LAST_VALIDATION_ERROR = <<"EOF";
 \\Z1Invalid SQL user hostname.\\Zn
@@ -213,6 +224,8 @@ sub isValidDomain( $ )
     my ( $domainName ) = @_;
 
     defined $domainName or die( 'Missing $domainName parameter' );
+
+    $LAST_VALIDATION_ERROR = '';
 
     return TRUE if length $domainName
         && $domainName !~ /\.$/
@@ -246,10 +259,12 @@ sub isValidIpAddr( $;$ )
 
     defined $ipAddr or die( 'Missing $ipAddr parameter' );
 
+    $LAST_VALIDATION_ERROR = '';
+
     my $net = iMSCP::Net->getInstance();
     return TRUE if length $ipAddr
         && $net->isValidAddr( $ipAddr )
-        && (!defined $typeReg
+        && ( !defined $typeReg
             || $net->getAddrType( $ipAddr ) =~ /^$typeReg$/
         );
 
@@ -274,6 +289,9 @@ sub isValidDbName( $ )
     my ( $dbName ) = @_;
 
     defined $dbName or die( 'Missing $dbName parameter' );
+
+    $LAST_VALIDATION_ERROR = '';
+
     my $length = length $dbName;
 
     return TRUE if $length >= 3 && $length <= 16
@@ -304,6 +322,8 @@ sub isValidTimezone
 
     defined $timezone or die( 'Missing $timezone parameter' );
 
+    $LAST_VALIDATION_ERROR = '';
+
     return TRUE if length $timezone
         && DateTime::TimeZone->is_valid_name( $timezone );
 
@@ -330,6 +350,8 @@ sub isNumber( $ )
     my ( $number ) = @_;
 
     defined $number or die( 'Missing $number parameter' );
+
+    $LAST_VALIDATION_ERROR = '';
 
     return TRUE if $number =~ /^[\x30-\x39]+$/;
 
@@ -358,6 +380,8 @@ sub isValidNumberRange( $$$ )
     defined $numberRange or die( 'Missing $numberRange parameter' );
     ref $n1 eq 'SCALAR' or die( 'Missing or invalid $n1 parameter' );
     ref $n2 eq 'SCALAR' or die( 'Missing or invalid $n2 parameter' );
+
+    $LAST_VALIDATION_ERROR = '';
 
     return TRUE if ( ${ $n1 }, ${ $n2 } ) = $numberRange
         =~ /^\s*([\x30-\x39]+)\s+([\x30-\x39]+)\s*$/;
@@ -396,6 +420,8 @@ sub isNumberInRange( $$$ )
         'Missing or invalid $end parameter'
     );
 
+    $LAST_VALIDATION_ERROR = '';
+
     return TRUE if $number >= $start && $number <= $end;
 
     $LAST_VALIDATION_ERROR = <<"EOF";
@@ -425,6 +451,8 @@ sub isStringNotInList( $@ )
 
     defined $string or die( 'Missing $string parameter' );
 
+    $LAST_VALIDATION_ERROR = '';
+
     return TRUE unless grep { lc $string eq lc $_ } @stringList;
 
     my $entries = join ', ', @stringList;
@@ -452,6 +480,8 @@ sub isNotEmpty( $ )
 
     defined $string or die( 'Missing $string parameter' );
 
+    $LAST_VALIDATION_ERROR = '';
+
     return TRUE if !$string || $string =~ /[^\s]/;
 
     $LAST_VALIDATION_ERROR = <<"EOF";
@@ -478,6 +508,8 @@ sub isAvailableSqlUser( $ )
     my ( $username ) = @_;
 
     defined $username or die( 'Missing $username parameter' );
+
+    $LAST_VALIDATION_ERROR = '';
 
     my $db = iMSCP::Database->factory();
 

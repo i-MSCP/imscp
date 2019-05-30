@@ -29,10 +29,9 @@ use File::Spec;
 use File::Temp;
 use iMSCP::Boolean;
 use iMSCP::Config;
-use iMSCP::Crypt qw/ decryptRijndaelCBC encryptRijndaelCBC randomStr /;
+use iMSCP::Crypt qw/ ALPHA64 decryptRijndaelCBC encryptRijndaelCBC randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug qw/ debug error /;
-use iMSCP::Dialog::InputValidation;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute qw/ execute executeNoWait /;
@@ -320,13 +319,13 @@ sub _setupSqlUser
             $::imscpDBKey,
             $::imscpDBiv,
             $config{'COURIER_AUTHDAEMON_SQL_USER'} // ''
-        ) || 'dovecot_' . randomStr( 8, iMSCP::Crypt::ALPHA64 ) );
+        ) || 'dovecot_' . randomStr( 8, ALPHA64 ) );
 
         ( $config{'COURIER_AUTHDAEMON_SQL_USER_PASSWD'} = decryptRijndaelCBC(
             $::imscpDBKey,
             $::imscpDBiv,
             $config{'COURIER_AUTHDAEMON_SQL_USER_PASSWD'} // ''
-        ) || randomStr( 16, iMSCP::Crypt::ALPHA64 ) );
+        ) || randomStr( 16, ALPHA64 ) );
 
         (
             $self->{'_courier_authdaemon_sql_user'},

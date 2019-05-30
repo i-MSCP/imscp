@@ -75,10 +75,9 @@ sub preinstall
     ) ) {
         unless ( iMSCP::Getopt->preseed ) {
             iMSCP::Getopt->skipDistPackages( TRUE );
+            iMSCP::Getopt->noprompt( FALSE );
         }
 
-        iMSCP::Getopt->noprompt( FALSE );
-        iMSCP::Getopt->clearComposerCache( TRUE );
         iMSCP::Getopt->skipComposerUpdate( FALSE );
         iMSCP::Getopt->fixPermissions( TRUE );
     }

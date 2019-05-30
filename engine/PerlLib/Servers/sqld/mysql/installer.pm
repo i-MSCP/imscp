@@ -26,18 +26,23 @@ package Servers::sqld::mysql::installer;
 use strict;
 use warnings;
 use iMSCP::Boolean;
-use iMSCP::Crypt qw/ encryptRijndaelCBC decryptRijndaelCBC randomStr /;
+use iMSCP::Crypt qw/ ALNUM encryptRijndaelCBC decryptRijndaelCBC randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug qw/ debug error /;
-use iMSCP::Dialog::InputValidation;
+use iMSCP::Dialog::InputValidation qw/
+    $LAST_VALIDATION_ERROR
+    isNotEmpty isValidHostname isValidIpAddr
+    isNumber isNumberInRange isValidUsername
+    isStringNotInList isValidPassword
+    isValidDbName isValidSqlUserHostname
+/;
 use iMSCP::Dir;
 use iMSCP::Execute qw/ execute escapeShell /;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::ProgramFinder;
 use iMSCP::TemplateParser 'process';
-use iMSCP::Umask;
-use MIME::Base64 qw/ decode_base64 encode_base64 /;
+use iMSCP::Umask '$UMASK';
 use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
 use Servers::sqld::mysql;
 use version;
@@ -164,9 +169,9 @@ sub _dialogForSqlServerHostname
         && !grep ( $_ eq iMSCP::Getopt->reconfigure, qw/ sql servers all / )
         && isNotEmpty( $dbHost )
         && ( $dbHost eq 'localhost'
-        || isValidHostname( $dbHost )
-        || isValidIpAddr( $dbHost )
-    )
+            || isValidHostname( $dbHost )
+            || isValidIpAddr( $dbHost )
+        )
     ) {
         ::setupSetQuestion(
             'DATABASE_HOST', idn_to_ascii( $dbHost, 'utf-8' )
@@ -187,7 +192,7 @@ EOF
                 grep ( $dbHost eq $_, qw/ localhost 127.0.0.1 ::1 /)
             ) {
                 $msg = sprintf(
-                    "\\Z1The '%s' hostname isn't valid when using a remote SQL server.\\Zn\n\n",
+                    "\\Z1The '%s' hostname doesn't fit for a remote SQL server.\\Zn\n\n",
                     $dbHost
                 );
             } elsif ( $dbHost ne 'localhost'
@@ -322,7 +327,7 @@ This user must have full privileges on the @{ [ $isRemoteSqlSrv ? 'remote' : 'lo
 The installer only make use of that user while installation.
 EOF
         $dbRootUser =~ s/^\s+|\s+$//g if $ret != 30;
-    } while $ret != 30 && length $msg;
+    } while $ret != 30 && ( length $msg || length $dbRootUser == 0 );
     return 30 if $ret == 30;
 
     PASSWD_DIALOG:
@@ -427,7 +432,7 @@ sub _dialogForMasterSqlUserPassword
     my ( undef, $dialog ) = @_;
 
     my $dbPasswd = ::setupGetQuestion(
-        'DATABASE_PASSWORD', randomStr( 16, iMSCP::Crypt::ALNUM )
+        'DATABASE_PASSWORD', randomStr( 16, ALNUM )
     );
 
     if ( length $dbPasswd
@@ -500,7 +505,7 @@ sub _dialogForDatabaseName
     my ( $ret, $msg ) = ( 0, '' );
 
     if ( iMSCP::Getopt->preseed ) {
-        $msg = "\\Z1The '$value' database exists but doesn't looks like an i-MSCP database.\\Zn\n\n";
+        $msg = "\\Z1The '$value' database exists but doesn't look like an i-MSCP database.\\Zn\n\n";
     }
 
     do {
@@ -535,7 +540,7 @@ A database '$oldValue' for i-MSCP already exists.
 Are you sure you want to create the new '$value' database for i-MSCP?
 Keep in mind that the new database will be free of any data.
 
-\\Z4Note:\\Zn If the '$value' database already exists and looks like an i-MSCP database, data won't be overridden.
+If the '$value' database already exists and looks like an i-MSCP database, the data won't be overwritten.
 EOF
             goto &{_dialogForDatabaseName};
         }
@@ -586,11 +591,11 @@ sub _dialogForSqlUserHost
             <<"EOF", length $value ? idn_to_unicode( $value, 'utf-8' ) : ( $isRemoteSqlSrv ? ::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' ) : 'localhost' ));
 ${msg}Please enter the hostname from which the SQL users created by i-MSCP can connect to the SQL server.
 
-For a local SQL server, the value should be '\\Zblocalhost\\ZB' while for a remote SQL server, the value should be the server IP or hostname from which the users are connecting, generally the WAN IP.
+For a local SQL server, the value should be '\\Zblocalhost\\ZB' while for a remote SQL server, the value should be the server IP or hostname from which the users are connecting.
 
-You can also make use of a wildcard entry such as: '\\Zb192.168.1.%\\ZB'. In that case, and assuming that the SQL server is running on the same network, SQL users will be able to connect to the remote SQL server from any IP in the network '\\Zb192.168.1.0\\ZB'.
+You can also make use of a wildcard entry such as: '\\Zb192.168.1.%\\ZB'. In such a case, and assuming that the SQL server is running on the same network, SQL users will be able to connect to the remote SQL server from any IP in the network '\\Zb192.168.1.0\\ZB'.
 
-Note that the installer update existing SQL users automatically when the value of this parameter is changed. You must not forget to inform your users about that change, else, their PHP scripts won't longer be able to connect to the SQL server.
+The installer update existing SQL users automatically when the value of this parameter is changed. You must not forget to inform your users about that change, else, their PHP scripts won't longer be able to connect to the SQL server.
 EOF
         if ( $ret != 30 ) {
             $value =~ s/^\s+|\s+$//g;

@@ -27,10 +27,13 @@ use strict;
 use warnings;
 use File::Basename;
 use iMSCP::Boolean;
-use iMSCP::Crypt qw/ decryptRijndaelCBC encryptRijndaelCBC randomStr /;
+use iMSCP::Crypt qw/ ALPHA64 decryptRijndaelCBC encryptRijndaelCBC randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug qw/ debug error /;
-use iMSCP::Dialog::InputValidation;
+use iMSCP::Dialog::InputValidation qw/
+    $LAST_VALIDATION_ERROR
+    isValidNumberRange isNumberInRange
+/;
 use iMSCP::Execute 'execute';
 use iMSCP::File;
 use iMSCP::Getopt;
@@ -313,13 +316,13 @@ sub _setupDatabase
             $::imscpDBKey,
             $::imscpDBiv,
             $config{'PROFTPD_SQL_USER'} // ''
-        ) || 'proftpd_' . randomStr( 8, iMSCP::Crypt::ALPHA64 ) );
+        ) && $config{'PROFTPD_SQL_USER'} || 'proftpd_' . randomStr( 8, ALPHA64 ) );
 
         ( $config{'PROFTPD_SQL_USER_PASSWD'} = decryptRijndaelCBC(
             $::imscpDBKey,
             $::imscpDBiv,
             $config{'PROFTPD_SQL_USER_PASSWD'} // ''
-        ) || randomStr( 16, iMSCP::Crypt::ALPHA64 ) );
+        ) || randomStr( 16, ALPHA64 ) );
 
         (
             $self->{'_proftpd_sql_user'},

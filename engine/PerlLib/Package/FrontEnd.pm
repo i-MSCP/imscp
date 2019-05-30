@@ -29,10 +29,15 @@ use File::Basename;
 use File::Spec;
 use iMSCP::Boolean;
 use iMSCP::Config;
-use iMSCP::Crypt qw/ apr1MD5 randomStr /;
+use iMSCP::Crypt qw/ ALNUM apr1MD5 randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug qw/ error debug getMessageByType /;
-use iMSCP::Dialog::InputValidation;
+use iMSCP::Dialog::InputValidation qw/
+    $LAST_VALIDATION_ERROR
+    isValidUsername isValidPassword isValidEmail
+    isValidDomain isNumber isNumberInRange
+    isStringNotInList
+/;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute 'execute';
@@ -1095,7 +1100,7 @@ sub _dialogForMasterAdminPassword
 
     do {
         ( $ret, $value ) = $dialog->string(
-            <<"EOF", randomStr( 16, iMSCP::Crypt::ALNUM ));
+            <<"EOF", randomStr( 16, ALNUM ));
 ${msg}Please enter a password for the master (@{ [ ::setupGetQuestion( 'ADMIN_LOGIN_NAME' ) ] }) administrator:
 EOF
         if ( $ret != 30 ) {
