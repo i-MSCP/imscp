@@ -74,10 +74,10 @@
     "ext-zlib": "*",
     "algo26-matthias/idna-convert": "~2.1.0",
     "clancats/hydrahon": "~1.1.11",
-    "cweagans/composer-patches": "~1.6.5",
+    "cweagans/composer-patches": "~1.6.6",
     "imscp/composer-installers": "^1.0",
     "pear/net_dns2": "~1.4.4",
-    "phpseclib/phpseclib": "~2.0.15",
+    "phpseclib/phpseclib": "~2.0.17",
     "slim/slim": "^3.12",
     "zendframework/zend-escaper": "^2.6",
     "zendframework/zendframework1": "1.12.20"
