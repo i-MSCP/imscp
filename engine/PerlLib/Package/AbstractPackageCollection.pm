@@ -315,7 +315,7 @@ sub _dialogForPackages
     FIRST_DIALOG:
 
     if ( $dialog->executeRetval == 30
-        || grep ( $::reconfigure eq $_, $self->getOptName(), 'addons', 'all' )
+        || grep ( $_ eq iMSCP::Getopt->reconfigure, $self->getOptName(), 'addons', 'all' )
         || !@selectedPackages
         || array_minus( @selectedPackages, @availablePackages )
     ) {

@@ -35,7 +35,7 @@ use List::MoreUtils qw/ uniq /;
 # Parameter that allows to add one or many IPs to the bind9 db_sub file of the specified domains
 # Please replace the entries below by your own entries
 # Be aware that invalid or unallowed IP addresses are ignored silently
-my %perDomainAdditionalIPs = (
+my %PER_DOMAIN_ADDITIONAL_IPS = (
     'domain1.tld' => [ 'IP1', 'IP2' ],
     'domain2.tld' => [ 'IP1', 'IP2' ]
 );
@@ -43,27 +43,26 @@ my %perDomainAdditionalIPs = (
 # Parameter that allows to add one or many IPs to all bind9 db files
 # Please replace the entries below by your own entries
 # Be aware that invalid or unallowed IP addresses are ignored silently
-my @additionalIPs = ( 'IP1', 'IP2' );
+my @ADDITIONAL_IPS = ( 'IP1', 'IP2' );
 
 #
 ## Please, don't edit anything below this line
 #
 
-iMSCP::EventManager->getInstance( )->register(
+iMSCP::EventManager->getInstance()->register(
     'afterNamedAddDmnDb',
-    sub {
-        my ($tplDbFileContent, $data) = @_;
+    sub
+    {
+        my ( $tplDbFileContent, $data ) = @_;
 
-        my $net = iMSCP::Net->getInstance( );
+        my $net = iMSCP::Net->getInstance();
         my @ipList = uniq(
             map $net->normalizeAddr( $_ ), grep {
-
                 $net->getAddrType( $_ ) =~ /^(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)$/
             } (
-                @additionalIPs,
-                ($perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}
-                        && ref $perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}} eq 'ARRAY'
-                    ? @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}}
+                @ADDITIONAL_IPS,
+                ( ref $PER_DOMAIN_ADDITIONAL_IPS{$data->{'DOMAIN_NAME'}} eq 'ARRAY'
+                    ? @{ $PER_DOMAIN_ADDITIONAL_IPS{$data->{'DOMAIN_NAME'}} }
                     : ()
                 )
             )
@@ -71,22 +70,22 @@ iMSCP::EventManager->getInstance( )->register(
 
         return 0 unless @ipList;
 
-        my @formattedEntries = ( );
+        my @formattedEntries = ();
 
-        for my $ip(@ipList) {
-            for my $name('@', 'ftp', 'mail', 'imap', 'pop', 'pop3', 'relay', 'smtp') {
+        for my $ip ( @ipList ) {
+            for my $name ( qw/ @ ftp mail imap pop pop3 relay smtp / ) {
                 push @formattedEntries, $net->getAddrVersion( $ip ) eq 'ipv6'
-                        ? "$name\tIN\tAAAA\t$ip\n" : "$name\tIN\tA\t$ip\n";
+                    ? "$name\tIN\tAAAA\t$ip\n" : "$name\tIN\tA\t$ip\n";
             }
         }
 
-        ${$tplDbFileContent} = replaceBloc(
+        ${ $tplDbFileContent } = replaceBloc(
             "; custom DNS records BEGIN\n",
             "; custom DNS records ENDING\n",
             "; dualstack DNS records BEGIN\n"
-                .join( '', @formattedEntries )
-                ."; dualstack DNS records END\n",
-            ${$tplDbFileContent},
+                . join( '', @formattedEntries )
+                . "; dualstack DNS records END\n",
+            ${ $tplDbFileContent },
             'PreserveTags'
         );
 
@@ -94,20 +93,20 @@ iMSCP::EventManager->getInstance( )->register(
     }
 );
 
-iMSCP::EventManager->getInstance( )->register(
+iMSCP::EventManager->getInstance()->register(
     'afterNamedAddSub',
-    sub {
-        my ($wrkDbFileContent, $data) = @_;
+    sub
+    {
+        my ( $wrkDbFileContent, $data ) = @_;
 
-        my $net = iMSCP::Net->getInstance( );
+        my $net = iMSCP::Net->getInstance();
         my @ipList = uniq(
             map $net->normalizeAddr( $_ ), grep {
                 $net->getAddrType( $_ ) =~ /^(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)$/
             } (
-                @additionalIPs,
-                ($perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}
-                        && ref $perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}} eq 'ARRAY'
-                    ? @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}}
+                @ADDITIONAL_IPS,
+                ( ref $PER_DOMAIN_ADDITIONAL_IPS{$data->{'DOMAIN_NAME'}} eq 'ARRAY'
+                    ? @{ $PER_DOMAIN_ADDITIONAL_IPS{$data->{'DOMAIN_NAME'}} }
                     : ()
                 )
             )
@@ -115,29 +114,29 @@ iMSCP::EventManager->getInstance( )->register(
 
         return 0 unless @ipList;
 
-        my @formattedEntries = ( );
+        my @formattedEntries = ();
 
-        for my $ip(@ipList) {
-            for my $name('@', 'ftp', 'mail', 'imap', 'pop', 'pop3', 'relay', 'smtp') {
+        for my $ip ( @ipList ) {
+            for my $name ( qw/ @ ftp mail imap pop pop3 relay smtp / ) {
                 push @formattedEntries, $net->getAddrVersion( $ip ) eq 'ipv6'
-                        ? "$name\tIN\tAAAA\t$ip\n" : "$name\tIN\tA\t$ip\n";
+                    ? "$name\tIN\tAAAA\t$ip\n" : "$name\tIN\tA\t$ip\n";
             }
         }
 
-        ${$wrkDbFileContent} = replaceBloc(
+        ${ $wrkDbFileContent } = replaceBloc(
             "; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n",
             "; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
             "; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n"
-                .getBloc(
+                . getBloc(
                 "; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n",
                 "; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
-                ${$wrkDbFileContent}
+                ${ $wrkDbFileContent }
             )
-                ."; dualstack DNS records BEGIN\n"
-                .join( '', @formattedEntries )
-                ."; dualstack DNS records END\n"
-                ."; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
-            ${$wrkDbFileContent}
+                . "; dualstack DNS records BEGIN\n"
+                . join( '', @formattedEntries )
+                . "; dualstack DNS records END\n"
+                . "; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
+            ${ $wrkDbFileContent }
         );
 
         0;

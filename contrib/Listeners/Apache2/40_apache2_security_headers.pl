@@ -27,22 +27,25 @@ use warnings;
 use iMSCP::EventManager;
 use iMSCP::TemplateParser qw/ getBloc process replaceBloc /;
 
-iMSCP::EventManager->getInstance()->register( 'beforeHttpdBuildConf', sub {
-    my ( $cfgTpl, $tplName, $data ) = @_;
+iMSCP::EventManager->getInstance()->register(
+    'beforeHttpdBuildConf',
+    sub
+    {
+        my ( $cfgTpl, $tplName, $data ) = @_;
 
-    return 0 unless $tplName eq 'domain.tpl'
-        && grep ( $_ eq $data->{'VHOST_TYPE'}, qw/ domain domain_ssl / );
+        return 0 unless $tplName eq 'domain.tpl'
+            && grep ( $_ eq $data->{'VHOST_TYPE'}, qw/ domain domain_ssl / );
 
-    ${ $cfgTpl } = replaceBloc(
-        "# SECTION addons BEGIN.\n",
-        "# SECTION addons END.\n",
-        "    # SECTION addons BEGIN.\n"
-            . getBloc(
+        ${ $cfgTpl } = replaceBloc(
             "# SECTION addons BEGIN.\n",
             "# SECTION addons END.\n",
-            ${ $cfgTpl }
-        )
-            . process( { PREFIX => $data->{'VHOST_TYPE'} eq 'domain' ? 'http' : 'https' }, <<"EOF" )
+            "    # SECTION addons BEGIN.\n"
+                . getBloc(
+                    "# SECTION addons BEGIN.\n",
+                    "# SECTION addons END.\n",
+                    ${ $cfgTpl }
+                )
+                . process( { PREFIX => $data->{'VHOST_TYPE'} eq 'domain' ? 'http' : 'https' }, <<"EOF" )
     <IfModule mod_headers.c>
         Header always set Content-Security-Policy "default-src {PREFIX}: data: 'unsafe-inline' 'unsafe-eval'"
         Header always set Referrer-Policy "strict-origin-when-cross-origin"
@@ -51,12 +54,13 @@ iMSCP::EventManager->getInstance()->register( 'beforeHttpdBuildConf', sub {
         Header always set X-XSS-Protection "1; mode=block"
     </IfModule>
 EOF
-            . "    # SECTION addons END.\n",
-        ${ $cfgTpl }
-    );
+                . "    # SECTION addons END.\n",
+            ${ $cfgTpl }
+        );
 
-    0;
-} );
+        0;
+    }
+);
 
 1;
 __END__

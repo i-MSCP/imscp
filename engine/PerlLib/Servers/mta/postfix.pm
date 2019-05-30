@@ -54,7 +54,7 @@ my $INSTANCE;
 
 =item preinstall( )
 
- Process preinstall tasks
+ Pre-installation tasks
 
  Return int 0 on success, other on failure
 
@@ -65,14 +65,13 @@ sub preinstall
     my ( $self ) = @_;
 
     my $rs = $self->{'events'}->trigger( 'beforeMtaPreInstall', 'postfix' );
-    $rs ||= $self->stop();
     $rs ||= Servers::mta::postfix::installer->getInstance()->preinstall();
     $rs ||= $self->{'events'}->trigger( 'afterMtaPreInstall', 'postfix' );
 }
 
 =item install( )
 
- Process install tasks
+ Installation tasks
 
  Return int 0 on success, other on failure
 
@@ -89,7 +88,7 @@ sub install
 
 =item postinstall( )
 
- Process postintall tasks
+ Post-installation tasks
 
  Return int 0 on success, other on failure
 
@@ -100,49 +99,13 @@ sub postinstall
     my ( $self ) = @_;
 
     my $rs = $self->{'events'}->trigger( 'beforeMtaPostinstall', 'postfix' );
-    return $rs if $rs;
-
-    local $@;
-    eval { iMSCP::Service->getInstance()->enable(
-        $self->{'config'}->{'MTA_SNAME'}
-    ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $rs = $self->{'events'}->register(
-        'beforeSetupRestartServices',
-        sub {
-            push @{ $_[0] },
-                [
-                    sub {
-                        for ( keys %{ $self->{'_postmap'} } ) {
-                            if ( $self->{'_maps'}->{$_} ) {
-                                $rs = $self->{'_maps'}->{$_}->mode( 0640 );
-                                last if $rs;
-                            }
-
-                            $rs = $self->postmap( $_ );
-                            last if $rs;
-                        }
-
-                        $rs ||= $self->start();
-                    },
-                    'Postfix'
-                ];
-            0;
-        },
-        6
-    );
-    $rs ||= $self->{'events'}->trigger(
-        'afterMtaPostinstall', 'postfix'
-    );
+    $rs ||= Servers::mta::postfix::installer->getInstance()->postinstall();
+    $rs ||= $self->{'events'}->trigger( 'afterMtaPostinstall', 'postfix' );
 }
 
 =item uninstall( )
 
- Process uninstall tasks
+ Uninstallation tasks
 
  Return int 0 on success, other on failure
 

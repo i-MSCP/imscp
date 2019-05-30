@@ -1,5 +1,5 @@
 # i-MSCP Listener::Postfix::Tuning listener file
-# Copyright (C) 2010-2017 Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -34,37 +34,38 @@ use Servers::mta;
 ## Postfix main.cf (see http://www.postfix.org/postconf.5.html)
 # Hash where each pair of key/value correspond to a postfix parameter
 # Please replace the entries below by your own entries
-my %mainCfParameters = (
-    'inet_protocols'     => 'ipv4, ipv6',
-    'inet_interfaces'    => '127.0.0.1, 192.168.2.5, [2001:db8:0:85a3::ac1f:8001]',
-    'smtp_bind_address'  => '192.168.2.5',
-    'smtp_bind_address6' => '',
-    'relayhost'          => '192.168.1.5:125'
+my %MAIN_CF_PARAMETERS = (
+    inet_protocols     => 'ipv4, ipv6',
+    inet_interfaces    => '127.0.0.1, 192.168.2.5, [2001:db8:0:85a3::ac1f:8001]',
+    smtp_bind_address  => '192.168.2.5',
+    smtp_bind_address6 => '',
+    relayhost          => '192.168.1.5:125'
 );
 
 ## Postfix master.cf (see http://www.postfix.org/master.5.html)
 # Array where each entry correspond to a postfix service. Entries are added at bottom.
 # Please replace the entries below by your own entries
-my @masterCfParameters = (
+my @MASTER_CF_PARAMETERS = (
     '125       inet  n       -       -       -       -       smtpd'
 );
 
 #
-## Please, don't edit anything below this line unless you known what you're doing
+## Please, don't edit anything below this line.
 #
 
 iMSCP::EventManager->getInstance()->register(
     'afterMtaBuildConf',
-    sub {
+    sub
+    {
         my %params = ();
-        while(my ($param, $value) = each( %mainCfParameters )) {
+        while ( my ( $param, $value ) = each( %MAIN_CF_PARAMETERS ) ) {
             $params{$param} = {
-                'action' => 'replace',
-                'values' => [ split /,\s+/, $value ]
+                action => 'replace',
+                values => [ split /,\s+/, $value ]
             };
         }
 
-        if (%params) {
+        if ( %params ) {
             my $rs = Servers::mta->factory()->postconf( %params );
             return $rs if $rs;
         }
@@ -76,12 +77,13 @@ iMSCP::EventManager->getInstance()->register(
 
 iMSCP::EventManager->getInstance()->register(
     'afterMtaBuildMasterCfFile',
-    sub {
+    sub
+    {
         my $cfgTpl = shift;
 
-        return 0 unless @masterCfParameters;
+        return 0 unless @MASTER_CF_PARAMETERS;
 
-        $$cfgTpl .= join( "\n", @masterCfParameters )."\n";
+        ${ $cfgTpl } .= join( "\n", @MASTER_CF_PARAMETERS ) . "\n";
         0;
     }
 );

@@ -92,7 +92,7 @@ sub registerSetupListeners
 
 =item preinstall( )
 
- Process preinstall tasks
+ Pre-installation tasks
 
  Return int 0 on success, other on failure
 
@@ -161,7 +161,7 @@ sub _dialogForSqlServerHostname
     );
 
     if ( $dialog->executeRetval != 30
-        && !grep ( $::reconfigure eq $_, qw/ sql servers all / )
+        && !grep ( $_ eq iMSCP::Getopt->reconfigure, qw/ sql servers all / )
         && isNotEmpty( $dbHost )
         && ( $dbHost eq 'localhost'
         || isValidHostname( $dbHost )
@@ -231,7 +231,7 @@ sub _dialogForSqlServerPort
 
     if ( $databaseHost eq 'localhost'
         || ( ( $dialog->executeRetval != 30
-                || !grep ( $::reconfigure eq $_, qw/ sql servers all /)
+                || !grep ( $_ eq iMSCP::Getopt->reconfigure, qw/ sql servers all / )
             ) 
             && isNumber( $dbPort )
             && isNumberInRange( $dbPort, 1025, 65535 )
@@ -382,7 +382,7 @@ sub _dialogForMasterSqlUsername
     my $dbUser = ::setupGetQuestion( 'DATABASE_USER', 'imscp_user' );
 
     if ( $dialog->executeRetval != 30
-        && !grep ( $::reconfigure eq $_, qw/ sql servers all / )
+        && !grep ( $_ eq iMSCP::Getopt->reconfigure, qw/ sql servers all / )
         && isValidUsername( $dbUser )
         && isStringNotInList( $dbUser, qw/ debian-sys-maint mysql.user root / )
     ) {
@@ -424,13 +424,15 @@ EOF
 
 sub _dialogForMasterSqlUserPassword
 {
-    my ( $self, $dialog ) = @_;
+    my ( undef, $dialog ) = @_;
 
     my $dbPasswd = ::setupGetQuestion(
         'DATABASE_PASSWORD', randomStr( 16, iMSCP::Crypt::ALNUM )
     );
 
-    if ( length $dbPasswd && $self->_lookLikeBase64Str( $dbPasswd ) ) {
+    if ( length $dbPasswd
+        && $dbPasswd eq $::imscpConfig{'DATABASE_PASSWORD'}
+    ) {
         $dbPasswd = decryptRijndaelCBC(
             $::imscpDBKey, $::imscpDBiv, $dbPasswd
         );
@@ -439,7 +441,7 @@ sub _dialogForMasterSqlUserPassword
     # If user didn't asked for reconfiguration, and if the currently set data
     # make us able to connect, we skip dialog.
     if ( $dialog->executeRetval != 30
-        && !grep ( $::reconfigure eq $_, qw/ sql servers all / )
+        && !grep ( $_ eq iMSCP::Getopt->reconfigure, qw/ sql servers all / )
         && isValidPassword( $dbPasswd )
     ) {
         ::setupSetQuestion( 'DATABASE_PASSWORD', encryptRijndaelCBC(
@@ -448,11 +450,10 @@ sub _dialogForMasterSqlUserPassword
         return 20;
     }
 
-    $dbPasswd = isValidPassword( $dbPasswd ) ? $dbPasswd : '';
-    my ( $ret, $msg ) = ( 0, '' );
+    my ( $ret, $msg ) = ( 0, $LAST_VALIDATION_ERROR );
     do {
         ( $ret, $dbPasswd ) = $dialog->string(
-            <<"EOF", $dbPasswd || randomStr( 16, iMSCP::Crypt::ALNUM ));
+            <<"EOF", length $dbPasswd && isValidPassword( $dbPasswd) ? $dbPasswd : randomStr( 16, iMSCP::Crypt::ALNUM ));
 ${msg}Please enter a password for the master (@{ [ ::setupGetQuestion( 'DATABASE_USER' ) ] }) SQL user:
 EOF
         if ( $ret != 30 ) {
@@ -485,7 +486,7 @@ sub _dialogForDatabaseName
     my $value = ::setupGetQuestion( 'DATABASE_NAME', 'imscp' );
 
     if ( $dialog->executeRetval != 30
-        && !grep ( $::reconfigure eq $_, qw/ sql servers all /)
+        && !grep ( $_ eq iMSCP::Getopt->reconfigure, qw/ sql servers all / )
         && isValidDbName( $value )
         && ( !$self->_setupIsDatabase( $value )
         || $self->_setupIsImscpDatabase( $value )
@@ -572,7 +573,7 @@ sub _dialogForSqlUserHost
     );
 
     if ( $dialog->executeRetval != 30
-        && !grep ( $::reconfigure eq $_, qw/ sql servers all / )
+        && !grep ( $_ eq iMSCP::Getopt->reconfigure, qw/ sql servers all / )
         && isValidSqlUserHostname( $value )
     ) {
         ::setupSetQuestion( 'DATABASE_USER_HOST', idn_to_ascii( $value, 'utf-8' ) );
@@ -622,7 +623,7 @@ sub _dialogForCustomerSqlDatabasesAndUsersPrefixSuffix
     my $value = ::setupGetQuestion( 'MYSQL_PREFIX', 'none' );
 
     if ( $dialog->executeRetval != 30
-        && !grep ( $::reconfigure eq $_, qw/ sql servers all / )
+        && !grep ( $_ eq iMSCP::Getopt->reconfigure, qw/ sql servers all / )
         && grep ( $value eq $_, qw/ behind infront none /)
     ) {
         ::setupSetQuestion( 'MYSQL_PREFIX', $value );
@@ -1316,31 +1317,6 @@ sub _tryDbConnect
     $db->set( 'DATABASE_USER', $username );
     $db->set( 'DATABASE_PASSWORD', $password );
     $db->connect();
-}
-
-=item _lookLikeBase64Str( $str )
-
- Does the given string look like a base64 encoded string?
- 
- Param string $str Possibly base64 encoded string
- Return bool TRUE if the given string looks like a base64 encoded string, false otherwise
-
-=cut
-
-sub _lookLikeBase64Str
-{
-    my ( undef, $str ) = @_;
-
-    ref \$str eq 'SCALAR' && length $str or die(
-        "The '$str' parameter is not defined or is empty"
-    );
-
-    my $ret = eval { encode_base64( decode_base64( $str ), '' ) eq $str; };
-    if ( $@ ) {
-        $ret = FALSE;
-    }
-
-    $ret;
 }
 
 =item _oldEngineCompatibility( )

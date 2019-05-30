@@ -92,7 +92,6 @@ sub preinstall
     my $rs = $self->{'events'}->trigger(
         'beforeHttpdPreInstall', 'apache_php_fpm'
     );
-    $rs ||= $self->stop();
     $rs ||= Servers::httpd::apache_php_fpm::installer
         ->getInstance()
         ->preinstall();
@@ -139,32 +138,9 @@ sub postinstall
     my $rs = $self->{'events'}->trigger(
         'beforeHttpdPostInstall', 'apache_php_fpm'
     );
-    return $rs if $rs;
-
-    local $@;
-    eval {
-        my $serviceMngr = iMSCP::Service->getInstance();
-        $serviceMngr->enable( sprintf(
-            'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'}
-        ));
-        $serviceMngr->enable( $self->{'config'}->{'HTTPD_SNAME'} );
-    };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $rs = $self->{'events'}->register(
-        'beforeSetupRestartServices',
-        sub {
-            push @{ $_[0] }, [
-                sub { $self->start(); },
-                'Httpd (Apache2/php-fpm)'
-            ];
-            0;
-        },
-        3
-    );
+    $rs ||= Servers::httpd::apache_php_fpm::installer
+        ->getInstance()
+        ->postinstall();
     $rs ||= $self->{'events'}->trigger(
         'afterHttpdPostInstall', 'apache_php_fpm'
     );
@@ -1456,11 +1432,11 @@ sub start
 
     local $@;
     eval {
-        my $serviceMngr = iMSCP::Service->getInstance();
-        $serviceMngr->start( sprintf(
+        my $service = iMSCP::Service->getInstance();
+        $service->start( sprintf(
             'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'}
         ));
-        $serviceMngr->start( $self->{'config'}->{'HTTPD_SNAME'} );
+        $service->start( $self->{'config'}->{'HTTPD_SNAME'} );
     };
     if ( $@ ) {
         error( $@ );
@@ -1487,11 +1463,11 @@ sub stop
 
     local $@;
     eval {
-        my $serviceMngr = iMSCP::Service->getInstance();
-        $serviceMngr->stop( sprintf(
+        my $service = iMSCP::Service->getInstance();
+        $service->stop( sprintf(
             'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'}
         ));
-        $serviceMngr->stop( $self->{'config'}->{'HTTPD_SNAME'} );
+        $service->stop( $self->{'config'}->{'HTTPD_SNAME'} );
     };
     if ( $@ ) {
         error( $@ );
@@ -1518,17 +1494,18 @@ sub restart
 
     local $@;
     eval {
-        my $serviceMngr = iMSCP::Service->getInstance();
+        my $service = iMSCP::Service->getInstance();
+
         if ( $self->{'forceRestart'} ) {
-            $serviceMngr->restart( sprintf(
+            $service->restart( sprintf(
                 'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'}
             ));
-            $serviceMngr->restart( $self->{'config'}->{'HTTPD_SNAME'} );
+            $service->restart( $self->{'config'}->{'HTTPD_SNAME'} );
         } else {
-            $serviceMngr->reload( sprintf(
+            $service->reload( sprintf(
                 'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'}
             ));
-            $serviceMngr->reload( $self->{'config'}->{'HTTPD_SNAME'} );
+            $service->reload( $self->{'config'}->{'HTTPD_SNAME'} );
         }
     };
     if ( $@ ) {

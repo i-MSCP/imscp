@@ -66,11 +66,6 @@ if ( iMSCP::Getopt->preseed ) {
     iMSCP::Getopt->noprompt( TRUE );
 }
 
-{
-    no warnings 'once';
-    $::reconfigure = iMSCP::Getopt->reconfigure;
-}
-
 sub run
 {
     require "$FindBin::Bin/imscp-setup-functions.pl";

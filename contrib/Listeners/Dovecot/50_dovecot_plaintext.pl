@@ -16,7 +16,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Dissallow plaintext authentication if TLS is not used by client.
+## Disallow plaintext authentication if SSL is enabled
+## In other words, clients won't be able to connect without TLS.
 #
 
 package Listener::Dovecot::Plaintext;
@@ -27,12 +28,14 @@ use iMSCP::EventManager;
 
 iMSCP::EventManager->getInstance()->register(
     'afterPoBuildConf',
-    sub {
-        my ($cfgTpl, $tplName) = @_;
+    sub
+    {
+        my ( $cfgTpl, $tplName ) = @_;
 
-        return 0 unless $tplName eq 'dovecot.conf';
+        return 0 unless $tplName eq 'dovecot.conf'
+            && $cfgTpl =~ /^ssl\s+=\s+yes/;
 
-        $$cfgTpl =~ s/^(disable_plaintext_auth\s+=\s+).*/$1yes/ if $cfgTpl =~ /^ssl\s+=\s+yes/;
+        ${ $cfgTpl } =~ s/^(disable_plaintext_auth\s+=\s+).*/$1yes/;
         0;
     }
 );

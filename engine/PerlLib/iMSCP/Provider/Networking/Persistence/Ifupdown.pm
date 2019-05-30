@@ -59,8 +59,8 @@ sub checkForOperability
     return FALSE unless length iMSCP::ProgramFinder::find( 'ifup' )
         && length iMSCP::ProgramFinder::find( 'ifdown' );
 
-    my $srvMngr = iMSCP::Service->getInstance();
-    $srvMngr->hasService( 'networking' ) && $srvMngr->isEnabled( 'networking' );
+    my $service = iMSCP::Service->getInstance();
+    $service->hasService( 'networking' ) && $service->isEnabled( 'networking' );
 }
 
 =back

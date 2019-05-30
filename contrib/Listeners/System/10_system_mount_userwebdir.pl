@@ -41,17 +41,18 @@ my $USER_WEB_DIR = '/home/virtual';
 
 iMSCP::EventManager->getInstance()->register(
     'afterSetupInstallFiles',
-    sub {
-        my $rs = umount($main::imscpConfig{'USER_WEB_DIR'});
-        $rs ||= mount(
-            {
-                fs_spec    => $USER_WEB_DIR,
-                fs_file    => $main::imscpConfig{'USER_WEB_DIR'},
-                fs_vfstype => 'none',
-                fs_mntops  => 'rbind,rslave'
-            }
+    sub
+    {
+        my $rs = umount( $::imscpConfig{'USER_WEB_DIR'} );
+        $rs ||= mount( {
+            fs_spec    => $USER_WEB_DIR,
+            fs_file    => $::imscpConfig{'USER_WEB_DIR'},
+            fs_vfstype => 'none',
+            fs_mntops  => 'rbind,rslave'
+        } );
+        $rs ||= addMountEntry(
+            "$USER_WEB_DIR $::imscpConfig{'USER_WEB_DIR'} none rbind,rslave"
         );
-        $rs ||= addMountEntry("$USER_WEB_DIR $main::imscpConfig{'USER_WEB_DIR'} none rbind,rslave");
     }
 );
 

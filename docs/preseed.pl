@@ -1,5 +1,8 @@
 #!/usr/bin/perl
 
+use strict;
+use warnings;
+
 # i-MSCP preseed.pl template file for installer preseeding feature
 #
 # See the documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
@@ -22,7 +25,7 @@
     #
     # Possible values: A configured IPv4 or IPv6 address
     BASE_SERVER_IP                      => '',
-    
+
     # Master administrator (control panel) password
     #
     # Only ASCII alphabet characters and digits are allowed in password.
@@ -54,7 +57,7 @@
     ###
     ### Parameter with default values
     ### All parameters below can be left 'AS THIS' if the default values fit
-    ### for you.
+    ### for your needs.
     ###
 
     #

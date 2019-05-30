@@ -85,13 +85,17 @@ sub preinstall
 {
     my ( $self ) = @_;
 
-    $::imscpConfig{'HTTPD_SERVER'} = ::setupGetQuestion( 'HTTPD_SERVER' );
-    $::imscpConfig{'HTTPD_PACKAGE'} = ::setupGetQuestion( 'HTTPD_PACKAGE' );
-
+    local $@;
+    eval { $self->_setPhpVariables(); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+    
     $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} = ::setupGetQuestion(
         'PHP_CONFIG_LEVEL'
     );
-    0;
+    $self->{'httpd'}->stop();
 }
 
 =item install( )
@@ -114,6 +118,40 @@ sub install
     $rs ||= $self->_installLogrotate();
     $rs ||= $self->_setupVlogger();
     $rs ||= $self->_cleanup();
+}
+
+=item postinstall( )
+
+ Uninstallation tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub postinstall
+{
+    my ( $self ) = @_;
+
+    local $@;
+    eval { iMSCP::Service->getInstance()->enable(
+        $self->{'config'}->{'HTTPD_SNAME'}
+    ); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    $self->{'events'}->register(
+        'beforeSetupRestartServices',
+        sub {
+            push @{ $_[0] }, [
+                sub { $self->{'httpd'}->start(); },
+                'Httpd (Apache2/Fcgid)'
+            ];
+            0;
+        },
+        3
+    );
 }
 
 =back
@@ -140,7 +178,6 @@ sub _init
     $self->{'config'} = $self->{'httpd'}->{'config'};
     $self->{'phpCfgDir'} = $self->{'httpd'}->{'phpCfgDir'};
     $self->{'phpConfig'} = $self->{'httpd'}->{'phpConfig'};
-    $self->_guessSystemPhpVariables();
     $self;
 }
 
@@ -165,7 +202,7 @@ sub _dialogForPhpConfLevel
     );
 
     if ( $dialog->executeRetval != 30
-        && !grep ( $::reconfigure eq $_, qw/ php servers all /)
+        && !grep ( $_ eq iMSCP::Getopt->reconfigure, qw/ php servers all / )
         && grep ( $value eq $_, qw/ per_site per_domain per_user / )
     ) {
         ::setupSetQuestion( 'PHP_CONFIG_LEVEL', $value );
@@ -194,19 +231,19 @@ EOF
     0;
 }
 
-=item _guessSystemPhpVariables( )
+=item _setPhpVariables( )
 
- Guess system PHP Variables
+ Set PHP Variables
 
  Return int 0 on success, die on failure
 
 =cut
 
-sub _guessSystemPhpVariables
+sub _setPhpVariables
 {
     my ( $self ) = @_;
 
-    ( $self->{'phpConfig'}->{'PHP_VERSION'} ) = $::imscpConfig{'PHP_SERVER'}
+    ( $self->{'phpConfig'}->{'PHP_VERSION'} ) = ::setupGetQuestion( 'PHP_SERVER' )
         =~ /(\d+.\d+)$/ or die( "Couldn't guess system PHP version" );
 
     $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find(
@@ -766,11 +803,11 @@ sub _cleanup
 
         unlink grep !/www\.conf$/, glob "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/*.conf";
 
-        my $serviceMngr = iMSCP::Service->getInstance();
-        $serviceMngr->stop( sprintf(
+        my $service = iMSCP::Service->getInstance();
+        $service->stop( sprintf(
             'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'}
         ));
-        $serviceMngr->disable( sprintf(
+        $service->disable( sprintf(
             'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'}
         ));
 

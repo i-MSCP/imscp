@@ -35,6 +35,7 @@ use iMSCP::EventManager;
 use iMSCP::Execute 'execute';
 use iMSCP::File;
 use iMSCP::Getopt;
+use iMSCP::Service;
 use iMSCP::TemplateParser 'process';
 use iMSCP::Umask '$UMASK';
 use Servers::mta::postfix;
@@ -72,7 +73,7 @@ sub registerSetupListeners
     );
 }
 
-=item preinstall( )
+=item install( )
 
  Pre-installation tasks
 
@@ -82,8 +83,36 @@ sub registerSetupListeners
 
 sub preinstall
 {
-    $::imscpConfig{'PO_SERVER'} = ::setupGetQuestion( 'PO_SERVER' );
-    $::imscpConfig{'PO_PACKAGE'} = ::setupGetQuestion( 'PO_PACKAGE' );
+    my ( $self ) = @_;
+    
+    my $rs = $self->_setDovecotVersion();
+    return $rs if $rs;
+
+    local $@;
+    $rs = eval {
+        my $service = iMSCP::Service->getInstance();
+
+        # Disable dovecot.socket unit if any
+        # Dovecot as configured by i-MSCP doesn't rely on systemd activation
+        # socket.  This also solve problem on boxes where IPv6 is not
+        # available; default dovecot.socket unit file make  assumption that
+        # IPv6 is available without further checks...
+        # See also: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=814999
+        if ( $service->isSystemd()
+            && $service->hasService( 'dovecot.socket' )
+        ) {
+            $service->stop( 'dovecot.socket' );
+            $service->disable( 'dovecot.socket' );
+        }
+
+        $self->{'po'}->stop();
+    };
+    if ( $@ ) {
+        error( $@ );
+        $rs = 1;
+    }
+    
+    $rs;
 }
 
 =item install( )
@@ -104,11 +133,41 @@ sub install
     }
 
     my $rs = $self->_makeDirs();
-    $rs ||= $self->_setDovecotVersion();
     $rs ||= $self->_setupSqlUser();
     $rs ||= $self->_buildConf();
     $rs ||= $self->_migrateFromCourier();
     $rs ||= $self->_oldEngineCompatibility();
+}
+
+=item postinstall( )
+
+ Post-installation tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub postinstall
+{
+    my ( $self ) = @_;
+
+    local $@;
+    eval { iMSCP::Service->getInstance()->enable(
+        $self->{'config'}->{'DOVECOT_SNAME'}
+    ); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    $self->{'events'}->register(
+        'beforeSetupRestartServices',
+        sub {
+            push @{ $_[0] }, [ sub { $self->{'po'}->start(); }, 'Dovecot' ];
+            0;
+        },
+        5
+    );
 }
 
 =back

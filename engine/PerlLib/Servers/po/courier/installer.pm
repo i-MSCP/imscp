@@ -41,6 +41,7 @@ use iMSCP::Getopt;
 use iMSCP::Mount qw/ addMountEntry isMountpoint mount umount /;
 use iMSCP::ProgramFinder;
 use iMSCP::Stepper qw/ startDetail endDetail step /;
+use iMSCP::Service;
 use iMSCP::SystemUser;
 use iMSCP::TemplateParser qw/ process replaceBloc /;
 use iMSCP::Umask '$UMASK';
@@ -88,8 +89,9 @@ sub registerSetupListeners
 
 sub preinstall
 {
-    $::imscpConfig{'PO_SERVER'} = ::setupGetQuestion( 'PO_SERVER' );
-    $::imscpConfig{'PO_PACKAGE'} = ::setupGetQuestion( 'PO_PACKAGE' );
+    my ( $self ) = @_;
+
+    $self->{'po'}->stop();
 }
 
 =item install( )
@@ -109,6 +111,59 @@ sub install
     $rs ||= $self->_setupSASL();
     $rs ||= $self->_migrateFromDovecot();
     $rs ||= $self->_oldEngineCompatibility();
+}
+
+=item postinstall( )
+
+ Post-installation tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub postinstall
+{
+    my ( $self ) = @_;
+
+    local $@;
+    eval {
+        my @toEnableServices = (
+            'AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME'
+        );
+        my @toDisableServices = ();
+
+        if ( $::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes' ) {
+            push @toEnableServices, 'POPD_SSL_SNAME', 'IMAPD_SSL_SNAME';
+        } else {
+            push @toDisableServices, 'POPD_SSL_SNAME', 'IMAPD_SSL_SNAME';
+        }
+
+        my $serviceMngr = iMSCP::Service->getInstance();
+        for my $service ( @toEnableServices ) { ;
+            $serviceMngr->enable( $self->{'config'}->{$service} );
+        }
+
+        for my $service ( @toDisableServices ) {
+            $serviceMngr->stop( $self->{'config'}->{$service} );
+            $serviceMngr->disable( $self->{'config'}->{$service} );
+        }
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    $self->{'events'}->register(
+        'beforeSetupRestartServices',
+        sub {
+            push @{ $_[0] }, [
+                sub { $self->{'po'}->start(); },
+                'Courier IMAP/POP, Courier Authdaemon'
+            ];
+            0;
+        },
+        5
+    );
 }
 
 =back

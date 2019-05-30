@@ -41,16 +41,17 @@ my $SERVER_IDENT_MESSAGE = 'i-MSCP FTP server.';
 
 iMSCP::EventManager->getInstance()->register(
     'beforeFtpdBuildConf',
-    sub {
-        my ($tplContent, $tplName) = @_;
+    sub
+    {
+        my ( $tplContent, $tplName ) = @_;
 
         return 0 unless $tplName eq 'proftpd.conf';
         $SERVER_IDENT_MESSAGE =~ s%("|\\)%\\$1%g;
-        ${$tplContent} = process(
+        ${ $tplContent } = process(
             {
                 SERVER_IDENT_MESSAGE => qq/"$SERVER_IDENT_MESSAGE"/
             },
-            ${$tplContent}
+            ${ $tplContent }
         );
         0;
     }

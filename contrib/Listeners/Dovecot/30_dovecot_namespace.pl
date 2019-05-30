@@ -28,28 +28,28 @@ use iMSCP::EventManager;
 
 iMSCP::EventManager->getInstance()->register(
     'beforePoBuildConf',
-    sub {
-        my ($cfgTpl, $tplName) = @_;
+    sub
+    {
+        my ( $cfgTpl, $tplName ) = @_;
 
         return 0 unless $tplName eq 'dovecot.conf';
 
-        my $cfgSnippet = <<EOF;
+        my $cfgSnippet = <<"EOF";
 
 # BEGIN Listener::Dovecot::Namespace
 namespace compat {
-	separator = .
-	prefix = INBOX.
-	inbox = no
-	hidden = yes
-	list = no
-	alias_for =
+    separator = .
+    prefix = INBOX.
+    inbox = no
+    hidden = yes
+    list = no
+    alias_for =
 }
 # END Listener::Dovecot::Namespace
 EOF
-
-        $$cfgTpl =~ s/(separator\s+=\s+)\./$1\//;
-        $$cfgTpl =~ s/(prefix\s+=\s+)INBOX\./$1/;
-        $$cfgTpl =~ s/^(namespace\s+inbox\s+\{.*?^\}\n)/$1$cfgSnippet/sm;
+        ${ $cfgTpl } =~ s/(separator\s+=\s+)\./$1\//;
+        ${ $cfgTpl } =~ s/(prefix\s+=\s+)INBOX\./$1/;
+        ${ $cfgTpl } =~ s/^(namespace\s+inbox\s+\{.*?^\}\n)/$1$cfgSnippet/sm;
         0;
     }
 );

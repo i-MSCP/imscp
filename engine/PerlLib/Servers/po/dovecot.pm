@@ -71,7 +71,7 @@ sub registerSetupListeners
 
 =item preinstall( )
 
- Process preinstall tasks
+ Pre-installation tasks
 
  Return int 0 on success, other on failure
 
@@ -82,39 +82,13 @@ sub preinstall
     my ( $self ) = @_;
 
     my $rs = $self->{'events'}->trigger( 'beforePoPreinstall', 'dovecot' );
-    $rs ||= $self->stop();
-    return $rs if $rs;
-
-    local $@;
-    $rs = eval {
-        my $serviceMngr = iMSCP::Service->getInstance();
-
-        # Disable dovecot.socket unit if any
-        # Dovecot as configured by i-MSCP doesn't rely on systemd activation
-        # socket.  This also solve problem on boxes where IPv6 is not
-        # available; default dovecot.socket unit file make  assumption that
-        # IPv6 is available without further checks...
-        # See also: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=814999
-        if ( $serviceMngr->isSystemd()
-            && $serviceMngr->hasService( 'dovecot.socket' )
-        ) {
-            $serviceMngr->stop( 'dovecot.socket' );
-            $serviceMngr->disable( 'dovecot.socket' );
-        }
-
-        $self->stop();
-    };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
+    $rs ||= Servers::po::dovecot::installer->getInstance()->preinstall();
     $rs ||= $self->{'events'}->trigger( 'afterPoPreinstall', 'dovecot' );
 }
 
 =item install( )
 
- Process install tasks
+ Installation tasks
 
  Return int 0 on success, other on failure
 
@@ -131,7 +105,7 @@ sub install
 
 =item postinstall( )
 
- Process postinstall tasks
+ Post-installation tasks
 
  Return int 0 on success, other on failure
 
@@ -142,31 +116,13 @@ sub postinstall
     my ( $self ) = @_;
 
     my $rs = $self->{'events'}->trigger( 'beforePoPostinstall', 'dovecot' );
-    return $rs if $rs;
-
-    local $@;
-    eval { iMSCP::Service->getInstance()->enable(
-        $self->{'config'}->{'DOVECOT_SNAME'}
-    ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $rs = $self->{'events'}->register(
-        'beforeSetupRestartServices',
-        sub {
-            push @{ $_[0] }, [ sub { $self->start(); }, 'Dovecot' ];
-            0;
-        },
-        5
-    );
+    $rs ||= Servers::po::dovecot::installer->getInstance()->postinstall();
     $rs ||= $self->{'events'}->trigger( 'afterPoPostinstall', 'dovecot' );
 }
 
 =item uninstall( )
 
- Process uninstall tasks
+ Uninstallation tasks
 
  Return int 0 on success, other on failure
 

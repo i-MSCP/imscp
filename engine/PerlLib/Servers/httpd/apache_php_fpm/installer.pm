@@ -36,6 +36,7 @@ use iMSCP::EventManager;
 use iMSCP::Execute qw/ execute escapeShell /;
 use iMSCP::Getopt;
 use iMSCP::ProgramFinder;
+use iMSCP::Service;
 use iMSCP::SystemGroup;
 use iMSCP::SystemUser;
 use Module::Load::Conditional 'check_install';
@@ -85,16 +86,18 @@ sub preinstall
 {
     my ( $self ) = @_;
 
-    $::imscpConfig{'HTTPD_SERVER'} = ::setupGetQuestion( 'HTTPD_SERVER' );
-    $::imscpConfig{'FTPD_PACKAGE'} = ::setupGetQuestion( 'HTTPD_PACKAGE' );
+    local $@;
+    eval { $self->_setPhpVariables(); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
 
     for my $confVar ( qw/ PHP_CONFIG_LEVEL PHP_FPM_LISTEN_MODE / ) {
         $self->{'phpConfig'}->{$confVar} = ::setupGetQuestion( $confVar );
     }
 
-    $self->_guessSystemPhpVariables();
-
-    0;
+    $self->{'httpd'}->stop();
 }
 
 =item install( )
@@ -118,6 +121,44 @@ sub install
     $rs ||= $self->_installLogrotate();
     $rs ||= $self->_setupVlogger();
     $rs ||= $self->_cleanup();
+}
+
+=item postinstall( )
+
+ Uninstallation tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub postinstall
+{
+    my ( $self ) = @_;
+
+    local $@;
+    eval {
+        my $service = iMSCP::Service->getInstance();
+        $service->enable( sprintf(
+            'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'}
+        ));
+        $service->enable( $self->{'config'}->{'HTTPD_SNAME'} );
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    $self->{'events'}->register(
+        'beforeSetupRestartServices',
+        sub {
+            push @{ $_[0] }, [
+                sub { $self->{'httpd'}->start(); },
+                'Httpd (Apache2/php-fpm)'
+            ];
+            0;
+        },
+        3
+    );
 }
 
 =back
@@ -168,7 +209,7 @@ sub _dialogForPhpConfLevel
     );
 
     if ( $dialog->executeRetval != 30
-        && !grep ( $::reconfigure eq $_, qw/ php servers all /)
+        && !grep ( $_ eq iMSCP::Getopt->reconfigure, qw/ php servers all / )
         && grep ( $value eq $_, qw/ per_site per_domain per_user / )
     ) {
         ::setupSetQuestion( 'PHP_CONFIG_LEVEL', $value );
@@ -218,7 +259,7 @@ sub _dialogForPhpListenMode
     );
 
     if ( $dialog->executeRetval != 30
-        && !grep ( $::reconfigure eq $_, qw/ php servers all /)
+        && !grep ( $_ eq iMSCP::Getopt->reconfigure, qw/ php servers all / )
         && grep ( $value eq $_, qw/ tcp uds /)
     ) {
         ::setupSetQuestion( 'PHP_FPM_LISTEN_MODE', $value );
@@ -245,19 +286,19 @@ EOF
     0;
 }
 
-=item _guessSystemPhpVariables
+=item _setPhpVariables
 
- Guess system PHP Variables
+ Set PHP Variables
 
  Return int 0 on success, die on failure
 
 =cut
 
-sub _guessSystemPhpVariables
+sub _setPhpVariables
 {
     my ( $self ) = @_;
 
-    ( $self->{'phpConfig'}->{'PHP_VERSION'} ) = $::imscpConfig{'PHP_SERVER'}
+    ( $self->{'phpConfig'}->{'PHP_VERSION'} ) = ::setupGetQuestion( 'PHP_SERVER' )
         =~ /(\d+.\d+)$/ or die( "Couldn't guess system PHP version" );
 
     $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find(

@@ -250,7 +250,7 @@ sub _dialogForAltUrlsFeature
     my $value = ::setupGetQuestion( 'CLIENT_WEBSITES_ALT_URLS', 'yes' );
 
     if ( $dialog->executeRetval != 30
-        && !grep ( $::reconfigure eq $_, qw/ alt_urls_feature all / )
+        && !grep ( $_ eq iMSCP::Getopt->reconfigure, qw/ alt_urls_feature all / )
         && grep ( $value eq $_, qw/ yes no / )
     ) {
         ::setupSetQuestion( 'CLIENT_WEBSITES_ALT_URLS', $value );

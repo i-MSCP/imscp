@@ -1,5 +1,5 @@
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2016-2017 by Laurent Declercq
+# Copyright (C) 2016-2019 by Laurent Declercq
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -31,7 +31,7 @@ use iMSCP::File;
 #
 
 # Path to PhpMyAdmin configuration template file
-my $tplFilePath = '/root/imscp.config.inc.php';
+my $CONFIG_TPL_FILE_PATH = '/root/imscp.config.inc.php';
 
 #
 ## Please, don't edit anything below this line
@@ -39,12 +39,17 @@ my $tplFilePath = '/root/imscp.config.inc.php';
 
 iMSCP::EventManager->getInstance()->register(
     'onLoadTemplate',
-    sub {
-        my ($pkgName, $tplName, $tplContent) = @_;
+    sub
+    {
+        my ( $pkgName, $tplName, $tplContent ) = @_;
 
-        return 0 unless $pkgName eq 'phpmyadmin' && $tplName eq 'imscp.config.inc.php' && -f $tplFilePath;
+        return 0 unless $pkgName eq 'phpmyadmin'
+            && $tplName eq 'imscp.config.inc.php'
+            && -f $CONFIG_TPL_FILE_PATH;
 
-        $$tplContent = iMSCP::File->new( filename => $tplFilePath )->get();
+        ${ $tplContent } = iMSCP::File->new(
+            filename => $CONFIG_TPL_FILE_PATH
+        )->get();
         0;
     }
 );

@@ -62,9 +62,9 @@ sub checkForOperability
 
     return FALSE unless length iMSCP::ProgramFinder::find( 'netplan' );
 
-    my $srvMngr = iMSCP::Service->getInstance();
-    $srvMngr->hasService( 'systemd-networkd' )
-        && $srvMngr->isEnabled( 'systemd-networkd' );
+    my $service = iMSCP::Service->getInstance();
+    $service->hasService( 'systemd-networkd' )
+        && $service->isEnabled( 'systemd-networkd' );
 }
 
 =back

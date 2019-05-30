@@ -33,6 +33,7 @@ use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::Net;
+use iMSCP::Service;
 use iMSCP::SystemGroup;
 use iMSCP::SystemUser;
 use iMSCP::TemplateParser 'process';
@@ -50,7 +51,7 @@ use parent 'Common::SingletonClass';
 
 =item preinstall( )
 
- Process preinstall tasks
+ Pre-installation tasks
 
  Return int 0 on success, other on failure
 
@@ -60,16 +61,14 @@ sub preinstall
 {
     my ( $self ) = @_;
 
-    $::imscpConfig{'MTA_SERVER'} = ::setupGetQuestion( 'MTA_SERVER' );
-    $::imscpConfig{'MTA_PACKAGE'} = ::setupGetQuestion( 'MTA_PACKAGE' );
-
-    my $rs = $self->_createUserAndGroup();
+    my $rs = $self->{'mta'}->stop();
+    $rs ||= $self->_createUserAndGroup();
     $rs ||= $self->_makeDirs();
 }
 
 =item install( )
 
- Process install tasks
+ Installation tasks
 
  Return int 0 on success, other on failure
 
@@ -84,6 +83,53 @@ sub install
     $rs ||= $self->_buildConf();
     $rs ||= $self->_buildAliasesDb();
     $rs ||= $self->_oldEngineCompatibility();
+}
+
+=item postinstall( )
+
+ Post-installation tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub postinstall
+{
+    my ( $self ) = @_;
+
+    local $@;
+    eval { iMSCP::Service->getInstance()->enable(
+        $self->{'config'}->{'MTA_SNAME'}
+    ); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    $self->{'events'}->register(
+        'beforeSetupRestartServices',
+        sub {
+            push @{ $_[0] },
+                [
+                    sub {
+                        for my $map ( keys %{ $self->{'mta'}->{'_postmap'} } ) {
+                            if ( $self->{'_maps'}->{$map} ) {
+                                my $rs = $self->{'_maps'}->{$map}->mode( 0640 );
+                                last if $rs;
+                            }
+
+                            my $rs = $self->{'mta'}->postmap( $map );
+                            return $rs if $rs;
+                        }
+
+                        $self->{'mta'}->start();
+                    },
+                    'Postfix'
+                ];
+            0;
+        },
+        6
+    );
 }
 
 =back

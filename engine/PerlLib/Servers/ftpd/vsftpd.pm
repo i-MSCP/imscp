@@ -76,7 +76,6 @@ sub preinstall
     my ( $self ) = @_;
 
     my $rs = $self->{'events'}->trigger( 'beforeFtpdPreinstall', 'vsftpd' );
-    $rs ||= $self->stop();
     $rs ||= Servers::ftpd::vsftpd::installer->getInstance()->preinstall();
     $rs ||= $self->{'events'}->trigger( 'afterFtpdPreinstall', 'vsftpd' );
 }
@@ -111,24 +110,7 @@ sub postinstall
     my ( $self ) = @_;
 
     my $rs = $self->{'events'}->trigger( 'beforeFtpdPostInstall', 'vsftpd' );
-
-    local $@;
-    eval { iMSCP::Service->getInstance()->enable(
-        $self->{'config'}->{'FTPD_SNAME'}
-    ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $rs = $self->{'events'}->register(
-        'beforeSetupRestartServices',
-        sub {
-            push @{ $_[0] }, [ sub { $self->start() }, 'VsFTPd server' ];
-            0
-        },
-        4
-    );
+    $rs ||= Servers::ftpd::vsftpd::installer->getInstance()->postinstall();
     $rs ||= $self->{'events'}->trigger( 'afterFtpdPostInstall', 'vsftpd' );
 }
 

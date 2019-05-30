@@ -179,7 +179,7 @@ sub _dialogForServicesSSL
     my $openSSL = iMSCP::OpenSSL->new();
 
     if ( $dialog->executeRetval != 30
-        && !grep ( $::reconfigure eq $_, qw/ services_ssl ssl all / ) ) {
+        && !grep ( $_ eq iMSCP::Getopt->reconfigure, qw/ services_ssl ssl all / ) ) {
         goto CHECK_SSL_CHAIN if $ssl eq 'yes';
         return 20 if $ssl eq 'no';
     }

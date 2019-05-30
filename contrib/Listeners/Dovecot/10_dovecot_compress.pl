@@ -34,7 +34,7 @@ use iMSCP::EventManager;
 #
 
 # Compression level
-my $compressionLevel = 6;
+my $COMPRESSION_LEVEL = 6;
 
 #
 ## Please, don't edit anything below this line
@@ -42,19 +42,19 @@ my $compressionLevel = 6;
 
 iMSCP::EventManager->getInstance()->register(
     'beforePoBuildConf',
-    sub {
-        my ($cfgTpl, $tplName) = @_;
+    sub
+    {
+        my ( $cfgTpl, $tplName ) = @_;
 
         return 0 unless $tplName eq 'dovecot.conf';
 
         my $cfgSnippet = <<EOF;
 
-	# BEGIN Listener::Dovecot::Compress
-	zlib_save = gz
-	zlib_save_level = $compressionLevel
-	# END Listener::Dovecot::Compress
+    # BEGIN Listener::Dovecot::Compress
+    zlib_save = gz
+    zlib_save_level = $COMPRESSION_LEVEL
+    # END Listener::Dovecot::Compress
 EOF
-
         # Enable zlib plugin globally for reading/writing
         $$cfgTpl =~ s/^(mail_plugins\s+=.*)/$1 zlib/m;
         $$cfgTpl =~ s/^(protocol\simap\s+\{.*?mail_plugins.*?$)/$1 imap_zlib/sm;

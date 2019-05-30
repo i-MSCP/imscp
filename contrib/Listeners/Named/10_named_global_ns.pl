@@ -50,7 +50,7 @@ my $ZONE_NAME = '';
 # Note that the name from first entry is used as name-server in SOA RR.
 #
 # Warning: For IDNs, you must use the Punycode notation.
-my @NAMESERVERS = (
+my @NAME_SERVERS = (
     [ "ns1.$ZONE_NAME", '<ipv4>' ], # MASTER DNS IP (IPv4 ; this server)
     [ "ns1.$ZONE_NAME", '<ipv6>' ], # MASTER DNS IP (IPv6 ; this server)
     [ 'ns2.name.tld', '<ipv4>' ],   # SLAVE DNS 1 IP (IPv4)
@@ -63,7 +63,8 @@ my @NAMESERVERS = (
 ## Please don't edit anything below this line
 #
 
-iMSCP::EventManager->getInstance()->register( 'beforeNamedAddDmnDb', sub {
+iMSCP::EventManager->getInstance()->register( 'beforeNamedAddDmnDb', sub
+{
     my ( $tplFileC, $data ) = @_;
 
     return 0 unless length $ZONE_NAME;
@@ -75,7 +76,7 @@ iMSCP::EventManager->getInstance()->register( 'beforeNamedAddDmnDb', sub {
             [^\s]+\Q.{DOMAIN_NAME}\E
             (\.\s+[^\s]+\.)
             \Q{DOMAIN_NAME}\E
-        /$1$NAMESERVERS[0]->[0]$2$ZONE_NAME/mox;
+        /$1$NAME_SERVERS[0]->[0]$2$ZONE_NAME/mox;
 
     # Set NS and glue DNS RRs
 
@@ -93,8 +94,8 @@ iMSCP::EventManager->getInstance()->register( 'beforeNamedAddDmnDb', sub {
     my ( $nsRRs, $glueRRs ) = ( '', '' );
     my $net = iMSCP::Net->getInstance();
 
-    for my $nameservers ( @NAMESERVERS ) {
-        $nsRRs .= process( { NS_NAME => $nameservers->[0] . '.' }, $nsTpl );
+    for my $nameserver ( @NAME_SERVERS ) {
+        $nsRRs .= process( { NS_NAME => $nameserver->[0] . '.' }, $nsTpl );
 
         # Glue RR must be set only if $data->{'DOMAIN_NAME'] is equal to
         # $ZONE_NAME. If $name is out-of-zone, it will be automatically
@@ -103,11 +104,11 @@ iMSCP::EventManager->getInstance()->register( 'beforeNamedAddDmnDb', sub {
 
         $glueRRs .= process(
             {
-                NS_NAME    => $nameservers->[0] . '.',
+                NS_NAME    => $nameserver->[0] . '.',
                 NS_IP_TYPE => $net->getAddrVersion(
-                    ${ $nameservers }->[1]
+                    ${ $nameserver }->[1]
                 ) eq 'ipv4' ? 'A' : 'AAAA',
-                NS_IP      => $nameservers->[1]
+                NS_IP      => $nameserver->[1]
             },
             $glueTpl
         );

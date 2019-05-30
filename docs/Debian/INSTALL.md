@@ -44,8 +44,8 @@ perl imscp-autoinstall -d
 
 Note that by default, not all setup dialogs are displayed, that is, those for
 which a default value is available. If you want force the installer to display
-all dialogs, you need to pass the `--reconfigure` option, without any argument,
-to the installer.
+all setup dialogs, you need to pass the `--reconfigure` option, without any
+argument, to the installer.
 
 You can have a look at the [preseeding template file](../preseed.pl) to know
 the default values used by the installer.

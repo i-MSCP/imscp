@@ -16,7 +16,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Enforces TLS connection on Postfix submission.
+## Enforces TLS connection on Postfix submission and disable unsafe TLS
+## versions.
 #
 
 package Listener::Postfix::Submission::TLS;
@@ -28,13 +29,14 @@ use Servers::mta;
 
 iMSCP::EventManager->getInstance()->register(
     'afterMtaBuildMasterCfFile',
-    sub {
+    sub
+    {
         my $content = shift;
 
         # Redefine submission service
         # According MASTER(5)), when multiple lines specify the same service
         # name and type, only the last one is remembered.
-        ${$content} .= <<'EOF';
+        ${ $content } .= <<'EOF';
 # Redefines submission service to enforce TLS
 submission inet n       -       y       -       -       smtpd
  -o smtpd_tls_security_level=encrypt
@@ -47,19 +49,18 @@ EOF
 
 iMSCP::EventManager->getInstance()->register(
     'afterMtaBuildConf',
-    sub {
+    sub
+    {
         # smtpd_tls_security_level=encrypt means mandatory.
         # Make sure to disable vulnerable SSL versions
-        Servers::mta->factory()->postconf(
-            (
-                smtpd_tls_mandatory_protocols => {
-                    action => 'replace',
-                    values => [ '!SSLv2', '!SSLv3' ]
-                }
-            )
-        );
+        Servers::mta->factory()->postconf( (
+            smtpd_tls_mandatory_protocols => {
+                action => 'replace',
+                values => [ '!SSLv2', '!SSLv3' ]
+            }
+        ));
     },
-    - 99
+    -99
 );
 
 1;

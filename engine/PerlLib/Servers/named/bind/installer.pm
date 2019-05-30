@@ -30,7 +30,7 @@ use iMSCP::Boolean;
 use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dir;
 use iMSCP::EventManager;
-use iMSCP::Execute;
+use iMSCP::Execute 'execute';
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::Net;
@@ -85,9 +85,6 @@ sub preinstall
 {
     my ( $self ) = @_;
 
-    $::imscpConfig{'NAMED_SERVER'} = ::setupGetQuestion( 'NAMED_SERVER' );
-    $::imscpConfig{'NAMED_PACKAGE'} = ::setupGetQuestion( 'NAMED_PACKAGE' );
-
     for my $configVar (
         qw/ BIND_IPV6 BIND_MODE LOCAL_DNS_RESOLVER PRIMARY_DNS SECONDARY_DNS /
     ) {
@@ -124,6 +121,37 @@ sub install
     my $rs = $self->_makeDirs();
     $rs ||= $self->_buildConf();
     $rs ||= $self->_oldEngineCompatibility();
+}
+
+=item postinstall( )
+
+ Post-installation tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub postinstall
+{
+    my ( $self ) = @_;
+
+    local $@;
+    eval { iMSCP::Service->getInstance()->enable(
+        $self->{'config'}->{'NAMED_SERVICE'}
+    ); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    $self->{'events'}->register(
+        'beforeSetupRestartServices',
+        sub {
+            push @{ $_[0] }, [ sub { $self->{'named'}->restart(); }, 'Bind9' ];
+            0;
+        },
+        100
+    );
 }
 
 =back
@@ -174,7 +202,7 @@ sub _dialogForDnsServerType
     );
 
     if ( $dialog->executeRetval != 30
-        && !grep ( $::reconfigure eq $_, qw/ named servers all / )
+        && !grep ( $_ eq iMSCP::Getopt->reconfigure, qw/ named servers all / )
         && grep ( $value eq $_, qw/ master slave / )
     ) {
         ::setupSetQuestion( 'BIND_MODE', $value );
@@ -238,7 +266,7 @@ sub _dialogForMasterDnsServerIps
     }
 
     if ( $dialog->executeRetval != 30
-        && !grep ( $::reconfigure eq $_, qw/ named servers all /)
+        && !grep ( $_ eq iMSCP::Getopt->reconfigure, qw/ named servers all / )
         && length "@values"
         && ( "@values" eq 'no' || $self->_checkIps( @values ) )
     ) {
@@ -313,7 +341,7 @@ sub _dialogForSlaveDnsServerIps
     }
 
     if ( $dialog->executeRetval != 30
-        && !grep ( $::reconfigure eq $_, qw/ named servers all /)
+        && !grep ( $_ eq iMSCP::Getopt->reconfigure, qw/ named servers all / )
         && length "@values"
         && ( "@values" eq 'no' || $self->_checkIps( @values ) )
     ) {
@@ -387,7 +415,7 @@ sub _dialogForDnsServerIpv6Support
     );
 
     if ( $dialog->executeRetval != 30
-        && !grep ( $::reconfigure eq $_, qw/ named servers all / )
+        && !grep ( $_ eq iMSCP::Getopt->reconfigure, qw/ named servers all / )
         && grep ( $value eq $_, qw/ yes no / )
     ) {
         ::setupSetQuestion( 'BIND_IPV6', $value );
@@ -424,7 +452,7 @@ sub _dialogForLocalResolving
     );
 
     if ( $dialog->executeRetval != 30
-        && !grep ( $::reconfigure eq $_, qw/ resolver named all / )
+        && !grep ( $_ eq iMSCP::Getopt->reconfigure, qw/ resolver named all / )
         && grep ( $value eq $_, qw/ yes no /)
     ) {
         ::setupSetQuestion( 'LOCAL_DNS_RESOLVER', $value );
@@ -576,13 +604,13 @@ sub _buildConf
         $tplContent =~ s/RESOLVCONF=(?:no|yes)/RESOLVCONF=$self->{'config'}->{'LOCAL_DNS_RESOLVER'}/i;
 
         # Fix for #IP-1333
-        my $serviceMngr = iMSCP::Service->getInstance();
-        if ( $serviceMngr->isSystemd() ) {
+        my $service = iMSCP::Service->getInstance();
+        if ( $service->isSystemd() ) {
             if ( $self->{'config'}->{'LOCAL_DNS_RESOLVER'} eq 'yes' ) {
-                $serviceMngr->enable( 'bind9-resolvconf' );
+                $service->enable( 'bind9-resolvconf' );
             } else {
-                $serviceMngr->stop( 'bind9-resolvconf' );
-                $serviceMngr->disable( 'bind9-resolvconf' );
+                $service->stop( 'bind9-resolvconf' );
+                $service->disable( 'bind9-resolvconf' );
             }
         }
 

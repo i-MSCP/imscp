@@ -35,6 +35,7 @@ use iMSCP::Dialog::InputValidation;
 use iMSCP::Execute 'execute';
 use iMSCP::File;
 use iMSCP::Getopt;
+use iMSCP::Service;
 use iMSCP::TemplateParser 'process';
 use iMSCP::Umask '$UMASK';
 use Servers::ftpd::vsftpd;
@@ -82,14 +83,11 @@ sub preinstall
 {
     my ( $self ) = @_;
 
-    $::imscpConfig{'FTPD_SERVER'} = ::setupGetQuestion( 'FTPD_SERVER' );
-    $::imscpConfig{'FTPD_PACKAGE'} = ::setupGetQuestion( 'FTPD_PACKAGES' );
-    
     $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'} = ::setupGetQuestion(
         'FTPD_PASSIVE_PORT_RANGE'
     );
 
-    0;
+    $self->{'ftpd'}->stop();
 }
 
 =item install( )
@@ -108,6 +106,37 @@ sub install
     $rs ||= $self->_setupDatabase();
     $rs ||= $self->_buildConfigFile();
     $rs ||= $self->_oldEngineCompatibility();
+}
+
+=item postinstall( )
+
+ Post-installation tasks
+
+ Return int 0 on success, die on failure
+
+=cut
+
+sub postinstall
+{
+    my ( $self ) = @_;
+
+    local $@;
+    eval { iMSCP::Service->getInstance()->enable(
+        $self->{'config'}->{'FTPD_SNAME'}
+    ); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    $self->{'events'}->register(
+        'beforeSetupRestartServices',
+        sub {
+            push @{ $_[0] }, [ sub { $self->{'ftpd'}->start() }, 'VsFTPd server' ];
+            0
+        },
+        4
+    );
 }
 
 =back
@@ -158,7 +187,7 @@ sub _dialogForPassivePortRange
     my ( $startOfRange, $endOfRange );
 
     if ( $dialog->executeRetval != 30
-        && !grep ( $::reconfigure eq $_, qw/ ftpd servers all /)
+        && !grep ( $_ eq iMSCP::Getopt->reconfigure, qw/ ftpd servers all / )
         && length $value
         && isValidNumberRange( $value, \$startOfRange, \$endOfRange )
         && isNumberInRange( $startOfRange, 32768, 60999 )

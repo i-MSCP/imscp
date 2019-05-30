@@ -30,8 +30,8 @@ use Servers::mta;
 ## Configuration variables
 #
 
-my $postfixRecipientBccMap = '/etc/postfix/recipient_bcc_map';
-my $postfixSenderBccMap = '/etc/postfix/sender_bcc_map';
+my $RECIPIENT_BBC_MAP_PATH = '/etc/postfix/recipient_bcc_map';
+my $SENDER_BBC_MAP_PATH = '/etc/postfix/sender_bcc_map';
 
 #
 ## Please, don't edit anything below this line
@@ -39,22 +39,30 @@ my $postfixSenderBccMap = '/etc/postfix/sender_bcc_map';
 
 iMSCP::EventManager->getInstance()->register(
     'afterMtaBuildConf',
-    sub {
+    sub
+    {
         my $mta = Servers::mta->factory();
-        my $rs = $mta->addMapEntry( $postfixRecipientBccMap );
-        $rs ||= $mta->addMapEntry( $postfixSenderBccMap );
-        $rs ||= $mta->postconf(
-            (
+
+        if ( length $RECIPIENT_BBC_MAP_PATH ) {
+            my $rs = $mta->addMapEntry( $RECIPIENT_BBC_MAP_PATH );
+            $rs ||= $mta->postconf( (
                 recipient_bcc_maps => {
                     action => 'add',
-                    values => [ "hash:$postfixRecipientBccMap" ]
+                    values => [ "hash:$RECIPIENT_BBC_MAP_PATH" ]
                 },
-                sender_bcc_maps    => {
-                    action => 'add',
-                    values => [ "hash:$postfixSenderBccMap" ]
-                }
-            )
-        );
+            ));
+            return $rs if $rs;
+        }
+
+        return 0 unless length $SENDER_BBC_MAP_PATH;
+
+        my $rs = $mta->addMapEntry( $SENDER_BBC_MAP_PATH );
+        $rs ||= $mta->postconf( (
+            sender_bcc_maps => {
+                action => 'add',
+                values => [ "hash:$SENDER_BBC_MAP_PATH" ]
+            }
+        ));
     },
     -99
 );

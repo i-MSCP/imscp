@@ -36,30 +36,34 @@ use Servers::named;
 #
 
 # Max responses per second
-my $responsesPerSecond = 10;
+my $MAX_RESPONSES_PER_SECONDS = 10;
 
 #
 ## Please, don't edit anything below this line
 #
 
-iMSCP::EventManager->getInstance()->register( 'afterNamedBuildConf', sub {
-    my ( $tplContent, $tplName ) = @_;
+iMSCP::EventManager->getInstance()->register(
+    'afterNamedBuildConf',
+    sub
+    {
+        my ( $tplContent, $tplName ) = @_;
 
-    return 0 unless $tplName eq basename(
-        Servers::named->factory()->{'config'}->{'BIND_OPTIONS_CONF_FILE'}
-    );
+        return 0 unless $tplName eq basename(
+            Servers::named->factory()->{'config'}->{'BIND_OPTIONS_CONF_FILE'}
+        );
 
-    ${ $tplContent } = replaceBloc(
-        "// imscp [{ENTRY_ID}] entry BEGIN\n",
-        "// imscp [{ENTRY_ID}] entry ENDING\n",
-        <<"EOF", ${ $tplContent }, 'preserveTags' );
+        ${ $tplContent } = replaceBloc(
+            "// imscp [{ENTRY_ID}] entry BEGIN\n",
+            "// imscp [{ENTRY_ID}] entry ENDING\n",
+            <<"EOF", ${ $tplContent }, 'preserveTags' );
         rate-limit {
-            responses-per-second $responsesPerSecond;
+            responses-per-second $MAX_RESPONSES_PER_SECONDS;
         };
 
 EOF
-    0;
-} );
+        0;
+    }
+);
 
 1;
 __END__

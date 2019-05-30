@@ -39,7 +39,7 @@ use parent 'Servers::sqld::mysql';
 
 =item preinstall( )
 
- Process preinstall tasks
+ Pre-installation tasks
 
  Return int 0 on success, other on failure
 
@@ -56,7 +56,7 @@ sub preinstall
 
 =item postinstall( )
 
- Process postinstall tasks
+ Post-installation tasks
 
  Return int 0
 
@@ -89,7 +89,7 @@ sub postinstall
 
 =item uninstall( )
 
- Process uninstall tasks
+ Uninstallation tasks
 
  Return int 0 on success, other on failure
 

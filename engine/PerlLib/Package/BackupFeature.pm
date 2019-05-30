@@ -166,7 +166,7 @@ sub _dialogForCpBackup
     my $value = ::setupGetQuestion( 'BACKUP_IMSCP', 'yes' );
 
     if ( $dialog->executeRetval != 30
-        && !grep ( $_ eq $::reconfigure, qw/ backup all / )
+        && !grep ( $_ eq iMSCP::Getopt->reconfigure, qw/ backup all / )
         && grep ( $_ eq $value, qw/ yes no / )
     ) {
         ::setupSetQuestion( 'BACKUP_IMSCP', $value );
@@ -198,7 +198,7 @@ sub _dialogForClientBackup
     my $value = ::setupGetQuestion( 'BACKUP_DOMAINS', 'yes' );
 
     if ( $dialog->executeRetval != 30
-        && !grep ( $_ eq $::reconfigure, qw/ backup all / )
+        && !grep ( $_ eq iMSCP::Getopt->reconfigure, qw/ backup all / )
         && grep ( $_ eq $value, qw/ yes no / )
     ) {
         ::setupSetQuestion( 'BACKUP_DOMAINS', $value );

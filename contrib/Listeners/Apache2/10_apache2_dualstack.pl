@@ -47,13 +47,23 @@ my %PER_DMN_IPS = (
 ## Please, don't edit anything below this line
 #
 
-iMSCP::EventManager->getInstance()->register( 'onAddHttpdVhostIps', sub {
-    my ( $data, $domainIps ) = @_;
+iMSCP::EventManager->getInstance()->register(
+    'onAddHttpdVhostIps',
+    sub
+    {
+        my ( $data, $domainIps ) = @_;
 
-    push @{ $domainIps }, @GLOBAL_IPS if @GLOBAL_IPS;
-    push @{ $domainIps }, @{ $PER_DMN_IPS{$data->{'DOMAIN_NAME'}} } if $PER_DMN_IPS{$data->{'DOMAIN_NAME'}};
-    0;
-} );
+        if ( @GLOBAL_IPS ) {
+            push @{ $domainIps }, @GLOBAL_IPS;
+        }
+
+        if ( ref $PER_DMN_IPS{$data->{'DOMAIN_NAME'}} eq 'ARRAY' ) {
+            push @{ $domainIps }, @{ $PER_DMN_IPS{$data->{'DOMAIN_NAME'}} };
+        }
+
+        0;
+    }
+);
 
 1;
 __END__

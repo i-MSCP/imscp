@@ -32,7 +32,7 @@ use Servers::httpd;
 #
 
 # Map Apache2 vhosts (domains) to additional server aliases 
-my %serverAliases = (
+my %SERVER_ALIASES = (
     # Add example1.in and example1.br server aliases to example1.com vhost
     'example1.com' => 'example1.in example1.br',
     # Add example2.in and example2.br server aliases to example2.com vhost
@@ -43,21 +43,26 @@ my %serverAliases = (
 ## Please, don't edit anything below this line
 #
 
-iMSCP::EventManager->getInstance()->register( 'beforeHttpdBuildConfFile', sub {
-    my ( undef, $tplName, $data ) = @_;
+iMSCP::EventManager->getInstance()->register(
+    'beforeHttpdBuildConfFile',
+    sub
+    {
+        my ( undef, $tplName, $data ) = @_;
 
-    return 0 unless $tplName eq 'domain.tpl'
-        && length $serverAliases{$data->{'DOMAIN_NAME'}};
+        return 0 unless $tplName eq 'domain.tpl'
+            && length $SERVER_ALIASES{$data->{'DOMAIN_NAME'}};
 
-    my $httpd = Servers::httpd->factory();
-    my $serverData = $httpd->getData();
+        my $httpd = Servers::httpd->factory();
+        my $serverData = $httpd->getData();
 
-    $httpd->setData( {
-        SERVER_ALIASES => length $serverData->{'SERVER_ALIASES'}
-            ? $serverData->{'SERVER_ALIASES'} . ' ' . $serverAliases{$data->{'DOMAIN_NAME'}}
-            : $serverAliases{$data->{'DOMAIN_NAME'}}
-    } );
-} );
+        $httpd->setData( {
+            SERVER_ALIASES => length $serverData->{'SERVER_ALIASES'}
+                ? $serverData->{'SERVER_ALIASES'} . ' '
+                    . $SERVER_ALIASES{$data->{'DOMAIN_NAME'}}
+                : $SERVER_ALIASES{$data->{'DOMAIN_NAME'}}
+        } );
+    }
+);
 
 1;
 __END__

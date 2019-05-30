@@ -55,18 +55,17 @@ my $STORAGE_ROOT_PATH = '';
 if ( $> == 0 && length $STORAGE_ROOT_PATH ) {
     iMSCP::EventManager->getInstance()->register(
         'onBoot',
-        sub {
+        sub
+        {
             local $@;
             eval {
                 # Make sure that the root path for outsourced backup directories
                 # exists and that it is set with expected ownership and permissions
-                iMSCP::Dir->new( dirname => $STORAGE_ROOT_PATH )->make(
-                    {
-                        user  => $main::imscpConfig{'ROOT_USER'},
-                        group => $main::imscpConfig{'ROOT_GROUP'},
-                        mode  => 0750
-                    }
-                );
+                iMSCP::Dir->new( dirname => $STORAGE_ROOT_PATH )->make( {
+                    user  => $::imscpConfig{'ROOT_USER'},
+                    group => $::imscpConfig{'ROOT_GROUP'},
+                    mode  => 0750
+                } );
             };
             if ( $@ ) {
                 error( $@ );
@@ -79,8 +78,9 @@ if ( $> == 0 && length $STORAGE_ROOT_PATH ) {
 
     iMSCP::EventManager->getInstance()->register(
         'beforeHttpdAddFiles',
-        sub {
-            my ($data) = @_;
+        sub
+        {
+            my ( $data ) = @_;
 
             return 0 unless $data->{'DOMAIN_TYPE'} eq 'dmn'
                 && -d "$data->{'WEB_DIR'}/backups";
@@ -93,14 +93,17 @@ if ( $> == 0 && length $STORAGE_ROOT_PATH ) {
 
     iMSCP::EventManager->getInstance()->register(
         'afterHttpdAddFiles',
-        sub {
-            my ($data) = @_;
+        sub
+        {
+            my ( $data ) = @_;
 
             return 0 unless $data->{'DOMAIN_TYPE'} eq 'dmn';
 
             local $@;
             eval {
-                my $backupDirHandle = iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/backups" );
+                my $backupDirHandle = iMSCP::Dir->new(
+                    dirname => "$data->{'WEB_DIR'}/backups"
+                );
 
                 # If needed, moves data from existents backup directory into the
                 # new backup directory
@@ -109,22 +112,26 @@ if ( $> == 0 && length $STORAGE_ROOT_PATH ) {
 
                     unless ( -d "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}" ) {
                         # Move backup directory to new location
-                        $backupDirHandle->rcopy( "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}" );
+                        $backupDirHandle->rcopy(
+                            "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}"
+                        );
                     }
 
                     # Empty directory by re-creating it from scratch (should never occurs)
                     $backupDirHandle->clear();
 
-                    setImmutable( $data->{'WEB_DIR'} ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
+                    if ( $data->{'WEB_FOLDER_PROTECTION'} eq 'yes' ) {
+                        setImmutable( $data->{'WEB_DIR'} );
+                    }
                 } else {
                     # Create empty outsourced customer backup directory
-                    iMSCP::Dir->new( dirname => "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}" )->make(
-                        {
-                            user  => $data->{'USER'},
-                            group => $data->{'GROUP'},
-                            mode  => 0750
-                        }
-                    );
+                    iMSCP::Dir->new(
+                        dirname => "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}"
+                    )->make( {
+                        user  => $data->{'USER'},
+                        group => $data->{'GROUP'},
+                        mode  => 0750
+                    } );
                 }
             };
             if ( $@ ) {
@@ -133,14 +140,12 @@ if ( $> == 0 && length $STORAGE_ROOT_PATH ) {
             }
 
             # Outsource customer backup directory by mounting new backup directory on top of it
-            my $rs ||= mount(
-                {
-                    fs_spec    => "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}",
-                    fs_file    => "$data->{'WEB_DIR'}/backups",
-                    fs_vfstype => 'none',
-                    fs_mntops  => 'bind,slave'
-                }
-            );
+            my $rs ||= mount( {
+                fs_spec    => "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}",
+                fs_file    => "$data->{'WEB_DIR'}/backups",
+                fs_vfstype => 'none',
+                fs_mntops  => 'bind,slave'
+            } );
             $rs ||= addMountEntry(
                 "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'} $data->{'WEB_DIR'}/backups none bind,slave"
             );
@@ -149,18 +154,23 @@ if ( $> == 0 && length $STORAGE_ROOT_PATH ) {
 
     iMSCP::EventManager->getInstance()->register(
         'beforeHttpdDelDmn',
-        sub {
+        sub
+        {
             my $data = shift;
 
             return 0 unless $data->{'DOMAIN_TYPE'} eq 'dmn';
 
             my $fsFile = "$data->{'WEB_DIR'}/backups";
-            my $rs = removeMountEntry( qr%.*?[ \t]+\Q$fsFile\E(?:/|[ \t]+)[^\n]+% );
+            my $rs = removeMountEntry(
+                qr%.*?[ \t]+\Q$fsFile\E(?:/|[ \t]+)[^\n]+%
+            );
             $rs ||= umount( $fsFile );
             return $rs if $rs;
 
             local $@;
-            eval { iMSCP::Dir->new( dirname => "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}" )->remove(); };
+            eval { iMSCP::Dir->new(
+                dirname => "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}" )->remove();
+            };
             if ( $@ ) {
                 error( $@ );
                 return 1;

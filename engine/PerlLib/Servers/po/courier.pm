@@ -71,7 +71,7 @@ sub registerSetupListeners
 
 =item preinstall( )
 
- Process preinstall tasks
+ Pre-installation tasks
 
  Return int 0 on success, other on failure
 
@@ -82,13 +82,13 @@ sub preinstall
     my ( $self ) = @_;
 
     my $rs = $self->{'events'}->trigger( 'beforePoPreinstall', 'courier' );
-    $rs ||= $self->stop();
+    $rs ||= Servers::po::courier::installer->getInstance()->preinstall();
     $rs ||= $self->{'events'}->trigger( 'afterPoPreinstall', 'courier' );
 }
 
 =item install( )
 
- Process install tasks
+ Installation tasks
 
  Return int 0 on success, other on failure
 
@@ -105,7 +105,7 @@ sub install
 
 =item postinstall( )
 
- Process postinstall tasks
+ Post-installation tasks
 
  Return int 0 on success, other on failure
 
@@ -116,53 +116,13 @@ sub postinstall
     my ( $self ) = @_;
 
     my $rs = $self->{'events'}->trigger( 'beforePoPostinstall', 'courier' );
-    return $rs if $rs;
-
-    local $@;
-    eval {
-        my @toEnableServices = (
-            'AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME'
-        );
-        my @toDisableServices = ();
-
-        if ( $::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes' ) {
-            push @toEnableServices, 'POPD_SSL_SNAME', 'IMAPD_SSL_SNAME';
-        } else {
-            push @toDisableServices, 'POPD_SSL_SNAME', 'IMAPD_SSL_SNAME';
-        }
-
-        my $serviceMngr = iMSCP::Service->getInstance();
-        for my $service ( @toEnableServices ) { ;
-            $serviceMngr->enable( $self->{'config'}->{$service} );
-        }
-
-        for my $service ( @toDisableServices ) {
-            $serviceMngr->stop( $self->{'config'}->{$service} );
-            $serviceMngr->disable( $self->{'config'}->{$service} );
-        }
-    };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $rs = $self->{'events'}->register(
-        'beforeSetupRestartServices',
-        sub {
-            push @{ $_[0] }, [
-                sub { $self->start(); },
-                'Courier IMAP/POP, Courier Authdaemon'
-            ];
-            0;
-        },
-        5
-    );
+    $rs ||= Servers::po::courier::installer->getInstance()->postinstall();
     $rs ||= $self->{'events'}->trigger( 'afterPoPostinstall', 'courier' );
 }
 
 =item uninstall( )
 
- Process uninstall tasks
+ Uninstallation tasks
 
  Return int 0 on success, other on failure
 

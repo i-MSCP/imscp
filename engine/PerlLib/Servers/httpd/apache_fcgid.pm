@@ -92,7 +92,6 @@ sub preinstall
     my $rs = $self->{'events'}->trigger(
         'beforeHttpdPreinstall', 'apache_fcgid'
     );
-    $rs ||= $self->stop();
     $rs ||= Servers::httpd::apache_fcgid::installer->getInstance()->preinstall();
     $rs ||= $self->{'events'}->trigger(
         'afterHttpdPreinstall', 'apache_fcgid'
@@ -135,28 +134,9 @@ sub postinstall
     my $rs = $self->{'events'}->trigger(
         'beforeHttpdPostInstall', 'apache_fcgid'
     );
-    return $rs if $rs;
-
-    local $@;
-    eval { iMSCP::Service->getInstance()->enable(
-        $self->{'config'}->{'HTTPD_SNAME'}
-    ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $rs = $self->{'events'}->register(
-        'beforeSetupRestartServices',
-        sub {
-            push @{ $_[0] }, [
-                sub { $self->start(); },
-                'Httpd (Apache2/Fcgid)'
-            ];
-            0;
-        },
-        3
-    );
+    $rs ||= Servers::httpd::apache_fcgid::installer
+        ->getInstance()
+        ->postinstall();
     $rs ||= $self->{'events'}->trigger(
         'afterHttpdPostInstall', 'apache_fcgid'
     );

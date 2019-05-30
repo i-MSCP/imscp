@@ -1,5 +1,5 @@
 # i-MSCP Listener::Postfix::Transport::Table listener file
-# Copyright (C) 2017 Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2019 Laurent Declercq <l.declercq@nuxwin.com>
 # Copyright (C) 2017 Matthew L. Hill <m.hill@innodapt.com>
 #
 # This library is free software; you can redistribute it and/or
@@ -35,24 +35,31 @@ use Servers::mta;
 # Postfix transport(5) table.
 #
 # Please replace the entries below by your own entries.
-my %transportTableEntries = (
+my %TRANSPORT_TABLE_ENTRIES = (
     'recipientdomain.tld' => 'relay:my.smtprelay',
     'user2@domain.tld'    => 'smtp:some-other-host'
 );
 
 #
-## Please, don't edit anything below this line
+## Please, don't edit anything below this line.
 #
 
 # Listener responsible to add entries in the Postfix transport(5) table
 iMSCP::EventManager->getInstance()->register(
     'afterCreatePostfixMaps',
-    sub {
+    sub
+    {
         my $mta = Servers::mta->factory();
-        while(my ($recipient, $transport) = each(%transportTableEntries)) {
-            my $rs = $mta->addMapEntry( $mta->{'config'}->{'MTA_TRANSPORT_HASH'}, "$recipient\t$transport" );
+        while ( my ( $recipient, $transport ) = each(
+            %TRANSPORT_TABLE_ENTRIES
+        ) ) {
+            my $rs = $mta->addMapEntry(
+                $mta->{'config'}->{'MTA_TRANSPORT_HASH'},
+                "$recipient\t$transport"
+            );
             return $rs if $rs;
         }
+
         0;
     }
 );

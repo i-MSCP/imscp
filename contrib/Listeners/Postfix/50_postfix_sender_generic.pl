@@ -30,7 +30,7 @@ use Servers::mta;
 ## Configuration variables
 #
 
-my $postfixSmtpGenericMap = '/etc/postfix/imscp/smtp_outgoing_rewrite';
+my $SENDER_GENERIC_MAP_PATH = '/etc/postfix/imscp/smtp_outgoing_rewrite';
 
 #
 ## Please, don't edit anything below this line
@@ -38,17 +38,18 @@ my $postfixSmtpGenericMap = '/etc/postfix/imscp/smtp_outgoing_rewrite';
 
 iMSCP::EventManager->getInstance()->register(
     'afterMtaBuildConf',
-    sub {
+    sub
+    {
+        return 0 unless $SENDER_GENERIC_MAP_PATH;
+
         my $mta = Servers::mta->factory();
-        my $rs = $mta->addMapEntry( $postfixSmtpGenericMap );
-        $rs ||= $mta->postconf(
-            (
-                smtp_generic_maps => {
-                    action => 'add',
-                    values => [ "hash:$postfixSmtpGenericMap" ]
-                }
-            )
-        );
+        my $rs = $mta->addMapEntry( $SENDER_GENERIC_MAP_PATH );
+        $rs ||= $mta->postconf( (
+            smtp_generic_maps => {
+                action => 'add',
+                values => [ "hash:$SENDER_GENERIC_MAP_PATH" ]
+            }
+        ));
     },
     -99
 );

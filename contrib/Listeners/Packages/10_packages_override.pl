@@ -31,11 +31,14 @@ my $DISTRO_PACKAGES_FILE = '';
 
 # Please don't edit anything below this line
 
-iMSCP::EventManager->getInstance()->register( 'onLoadPackagesFile', sub {
-    my $packagesFile = shift;
-    ${ $packagesFile } = $DISTRO_PACKAGES_FILE;
-    0;
-} ) if length $DISTRO_PACKAGES_FILE;
+iMSCP::EventManager->getInstance()->register(
+    'onLoadPackagesFile',
+    sub {
+        my $packagesFile = shift;
+        ${ $packagesFile } = $DISTRO_PACKAGES_FILE;
+        0;
+    }
+) if length $DISTRO_PACKAGES_FILE;
 
 1;
 __END__

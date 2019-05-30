@@ -116,25 +116,7 @@ sub postinstall
     my ( $self ) = @_;
 
     my $rs = $self->{'events'}->trigger( 'beforeNamedPostInstall' );
-    return $rs if $rs;
-
-    local $@;
-    eval { iMSCP::Service->getInstance()->enable(
-        $self->{'config'}->{'NAMED_SERVICE'}
-    ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $rs = $self->{'events'}->register(
-        'beforeSetupRestartServices',
-        sub {
-            push @{ $_[0] }, [ sub { $self->restart(); }, 'Bind9' ];
-            0;
-        },
-        100
-    );
+    $rs ||= Servers::named::bind::installer->getInstance()->postinstall();
     $rs ||= $self->{'events'}->trigger( 'afterNamedPostInstall' );
 }
 

@@ -1,5 +1,5 @@
 # i-MSCP Listener::ProFTPd::TLS listener file
-# Copyright (C) 2017 Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2019 Laurent Declercq <l.declercq@nuxwin.com>
 # Copyright (C) 2015-2017 Rene Schuster <mail@reneschuster.de>
 #
 # This library is free software; you can redistribute it and/or
@@ -29,11 +29,12 @@ use iMSCP::EventManager;
 
 iMSCP::EventManager->getInstance()->register(
     'afterFtpdBuildConf',
-    sub {
-        my ($tplContent, $tplName) = @_;
+    sub
+    {
+        my ( $tplContent, $tplName ) = @_;
 
         return 0 unless $tplName eq 'proftpd.conf';
-        ${$tplContent} =~ s/(TLSRequired\s+)off/${1}on/im;
+        ${ $tplContent } =~ s/(TLSRequired\s+)off/${1}on/im;
         0;
     }
 );

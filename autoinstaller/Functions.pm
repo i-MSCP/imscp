@@ -184,11 +184,11 @@ sub install
 
 i-MSCP has been successfully installed/updated.
 
-You can login at $::imscpConfig{'BASE_SERVER_VHOST_PREFIX'}@{ [
-    idn_to_unicode( $::imscpConfig{'BASE_SERVER_VHOST'}, 'utf-8' )
-] }:@{ [ $::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'http://'
-    ? $::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}
-    : $::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'}
+You can login at $::questions{'BASE_SERVER_VHOST_PREFIX'}@{ [
+    idn_to_unicode( $::questions{'BASE_SERVER_VHOST'}, 'utf-8' )
+] }:@{ [ $::questions{'BASE_SERVER_VHOST_PREFIX'} eq 'http://'
+    ? $::questions{'BASE_SERVER_VHOST_HTTP_PORT'}
+    : $::questions{'BASE_SERVER_VHOST_HTTPS_PORT'}
 ] } with the master administrator account credentials.
 
 Thank you for choosing i-MSCP.

@@ -64,7 +64,7 @@ sub registerSetupListeners
 
 =item preinstall( )
 
- Process preinstall tasks
+ Pre-installation tasks
 
  Return int 0 on success, other on failure
 
@@ -74,14 +74,9 @@ sub preinstall
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'events'}->trigger(
-        'beforeFtpdPreinstall', 'proftpd'
-    );
-    $rs ||= $self->stop();
+    my $rs = $self->{'events'}->trigger( 'beforeFtpdPreinstall', 'proftpd' );
     $rs ||= Servers::ftpd::proftpd::installer->getInstance()->preinstall();
-    $rs ||= $self->{'events'}->trigger(
-        'afterFtpdPreinstall', 'proftpd'
-    );
+    $rs ||= $self->{'events'}->trigger( 'afterFtpdPreinstall', 'proftpd' );
 }
 
 =item install( )
@@ -96,13 +91,9 @@ sub install
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'events'}->trigger(
-        'beforeFtpdInstall', 'proftpd'
-    );
+    my $rs = $self->{'events'}->trigger( 'beforeFtpdInstall', 'proftpd' );
     $rs ||= Servers::ftpd::proftpd::installer->getInstance()->install();
-    $rs ||= $self->{'events'}->trigger(
-        'afterFtpdInstall', 'proftpd'
-    );
+    $rs ||= $self->{'events'}->trigger( 'afterFtpdInstall', 'proftpd' );
 }
 
 =item postinstall( )
@@ -117,30 +108,9 @@ sub postinstall
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'events'}->trigger(
-        'beforeFtpdPostInstall', 'proftpd'
-    );
-    return $rs if $rs;
-
-    local $@;
-    eval { iMSCP::Service->getInstance()->enable(
-        $self->{'config'}->{'FTPD_SNAME'}
-    ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $self->{'events'}->register(
-        'beforeSetupRestartServices',
-        sub {
-            push @{ $_[0] }, [ sub { $self->start(); }, 'ProFTPD' ];
-            0;
-        },
-        4
-    );
-
-    $self->{'events'}->trigger( 'afterFtpdPostInstall', 'proftpd' );
+    my $rs = $self->{'events'}->trigger( 'beforeFtpdPostInstall', 'proftpd' );
+    $rs ||= Servers::ftpd::proftpd::installer->getInstance()->install();
+    $rs ||= $self->{'events'}->trigger( 'afterFtpdPostInstall', 'proftpd' );
 }
 
 =item uninstall( )

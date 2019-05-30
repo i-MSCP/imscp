@@ -213,9 +213,9 @@ sub install
 
     # Not really the right place to do that job but we have not really choice
     # because this must be done before installation of new files
-    my $serviceMngr = iMSCP::Service->getInstance();
-    if ( $serviceMngr->hasService( 'imscp_network' ) ) {
-        $serviceMngr->remove( 'imscp_network' );
+    my $service = iMSCP::Service->getInstance();
+    if ( $service->hasService( 'imscp_network' ) ) {
+        $service->remove( 'imscp_network' );
     }
 
     my $bootstrapper = iMSCP::Bootstrapper->getInstance();
@@ -961,7 +961,7 @@ sub _getPackagesDialog
 
         # Whether or not user must be asked for alternative
         my $needDialog = !length $sAlt || grep (
-            $_ eq $::reconfigure, $section, 'servers', 'all'
+            $_ eq iMSCP::Getopt->reconfigure, $section, 'servers', 'all'
         );
 
         if ( $section eq 'sql' ) {
@@ -1057,7 +1057,7 @@ EOF
 
         my $ret = $_[0]->boolean( <<"EOF" );
 The following @{ [
-    grep( $::reconfigure eq $_, qw/ none servers all /)
+    grep( $_ eq iMSCP::Getopt->reconfigure, qw/ none servers all / )
         ? 'alternatives were selected'
         : 'alternative has been selected'
 ] }:
@@ -1077,7 +1077,7 @@ The following @{ [
         )
     } grep {
         exists $::questions{ uc( $_ ) . '_SERVER' }
-        && grep( $::reconfigure eq $_, 'none', 'servers', 'all', $_ )
+        && grep( $_ eq iMSCP::Getopt->reconfigure, 'none', 'servers', 'all', $_ )
     } keys %{ $self->{'_packagesFileData'} }
 ] }
 

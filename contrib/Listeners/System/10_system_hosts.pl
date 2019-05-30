@@ -23,7 +23,6 @@ package Listener::System::Hosts;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::File;
 
@@ -32,11 +31,11 @@ use iMSCP::File;
 #
 
 # Path to system hosts file
-my $hostsFilePath = '/etc/hosts';
+my $HOST_FILE_PATH = '/etc/hosts';
 
 # Parameter which allow to add one or many host entries in the system hosts file
 # Please replace the entries below by your own entries
-my @hostsFileEntries = (
+my @HOST_ENTRIES = (
     '192.168.1.10	foo.mydomain.org	foo',
     '192.168.1.13	bar.mydomain.org	bar'
 );
@@ -48,17 +47,14 @@ my @hostsFileEntries = (
 # Listener responsible to add host entries in the system hosts file, once it was built by i-MSCP
 iMSCP::EventManager->getInstance()->register(
     'afterSetupServerHostname',
-    sub {
-        return 0 unless -f $hostsFilePath;
+    sub
+    {
+        return 0 unless -f $HOST_FILE_PATH;
 
-        my $file = iMSCP::File->new( filename => $hostsFilePath );
-        my $fileContent = $file->get();
-        unless (defined $fileContent) {
-            error( sprintf( "Couldn't read %s file", $hostsFilePath ) );
-            return 1;
-        }
+        my $file = iMSCP::File->new( filename => $HOST_FILE_PATH );
+        return 1 unless defined( my $fileContent = $file->get());
 
-        $file->set( $fileContent.( join "\n", @hostsFileEntries )."\n" );
+        $file->set( $fileContent . ( join "\n", @HOST_ENTRIES ) . "\n" );
         $file->save();
     }
 );

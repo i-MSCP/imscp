@@ -30,23 +30,29 @@ use iMSCP::EventManager;
 ## Please, don't edit anything below this line unless you known what you're doing
 #
 
-iMSCP::EventManager->getInstance()->register( 'afterSetupTasks', sub
-{
-    my $file = iMSCP::File->new(
-        filename => "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/roundcube/config/config.inc.php"
-    );
-    return 1 unless defined( my $fileContent = $file->getAsRef());
+iMSCP::EventManager->getInstance()->register(
+    'afterSetupTasks',
+    sub
+    {
+        my $file = iMSCP::File->new(
+            filename => "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/roundcube/config/config.inc.php"
+        );
+        return 1 unless defined( my $fileContent = $file->getAsRef());
 
-    ${ $fileContent } =~ s/(\$config\['(?:default_host|smtp_server)?'\]\s+=\s+').*(';)/$1tls:\/\/$::imscpConfig{'BASE_SERVER_VHOST'}$2/g;
+        ${ $fileContent } =~ s/(\$config\['(?:default_host|smtp_server)?'\]\s+=\s+').*(';)/$1tls:\/\/$::imscpConfig{'BASE_SERVER_VHOST'}$2/g;
 
-    $file->save();
-} );
+        $file->save();
+    }
+);
 
-iMSCP::EventManager->getInstance()->register( 'beforeUpdateRoundCubeMailHostEntries', sub {
-    my ( $hostname ) = @_;
-    ${ $hostname } = $::imscpConfig{'BASE_SERVER_VHOST'};
-    0;
-} );
+iMSCP::EventManager->getInstance()->register(
+    'beforeUpdateRoundCubeMailHostEntries',
+    sub {
+        my ( $hostname ) = @_;
+        ${ $hostname } = $::imscpConfig{'BASE_SERVER_VHOST'};
+        0;
+    }
+);
 
 1;
 __END__

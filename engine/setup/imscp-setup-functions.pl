@@ -141,8 +141,11 @@ sub setupDialog
     my $rs = iMSCP::EventManager->getInstance()->trigger(
         'beforeSetupDialog', \@dialogStack
     );
+
+    iMSCP::Dialog->getInstance()->endGauge();
+
     $rs ||= iMSCP::Dialog->getInstance()->execute( \@dialogStack );
-    $rs ||=iMSCP::EventManager->getInstance()->trigger(
+    $rs ||= iMSCP::EventManager->getInstance()->trigger(
         'afterSetupDialog'
     );
 }
@@ -150,13 +153,10 @@ sub setupDialog
 sub setupTasks
 {
     my $rs = iMSCP::EventManager->getInstance()->trigger( 'beforeSetupTasks' );
+    $rs ||= setupSaveQuestions();
     return $rs if $rs;
 
     my @steps = (
-        [
-            \&setupSaveConfig,
-            'Saving configuration'
-        ],
         [
             \&setupCreateMasterUser,
             'Creating system master user'
@@ -204,10 +204,10 @@ sub setupTasks
     $rs ||= iMSCP::EventManager->getInstance()->trigger( 'afterSetupTasks' );
 }
 
-sub setupSaveConfig
+sub setupSaveQuestions
 {
     my $rs = iMSCP::EventManager->getInstance()->trigger(
-        'beforeSetupSaveConfig'
+        'beforeSetupSaveQuestions'
     );
     return $rs if $rs;
 
@@ -230,7 +230,7 @@ sub setupSaveConfig
         $::imscpConfig{$key} = $value;
     }
 
-    iMSCP::EventManager->getInstance()->trigger( 'afterSetupSaveConfig' );
+    iMSCP::EventManager->getInstance()->trigger( 'afterSetupSaveQuestions' );
 }
 
 sub setupCreateMasterUser
@@ -623,13 +623,12 @@ sub setupGetQuestion
     $default //= '';
 
     if ( iMSCP::Getopt->preseed ) {
-        return exists $::questions{$qname} && $::questions{$qname} ne ''
-            ? $::questions{$qname} : $default;
+        return length $::questions{$qname} ? $::questions{$qname} : $default;
     }
 
-    exists $::questions{$qname}
+    length $::questions{$qname}
         ? $::questions{$qname}
-        : ( exists $::imscpConfig{$qname} && $::imscpConfig{$qname} ne ''
+        : ( exists $::imscpConfig{$qname} && length $::imscpConfig{$qname}
             ? $::imscpConfig{$qname} : $default
     );
 }

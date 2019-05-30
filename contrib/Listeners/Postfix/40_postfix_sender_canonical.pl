@@ -30,7 +30,7 @@ use Servers::mta;
 ## Configuration variables
 #
 
-my $postfixSenderCanoncial = '/etc/postfix/sender_canonical';
+my $SENDER_CANONICAL_MAP_PATH = '/etc/postfix/sender_canonical';
 
 #
 ## Please, don't edit anything below this line
@@ -38,17 +38,18 @@ my $postfixSenderCanoncial = '/etc/postfix/sender_canonical';
 
 iMSCP::EventManager->getInstance()->register(
     'afterMtaBuildConf',
-    sub {
+    sub
+    {
+        return 0 unless length $SENDER_CANONICAL_MAP_PATH;
+
         my $mta = Servers::mta->factory();
-        my $rs = $mta->addMapEntry( $postfixSenderCanoncial );
-        $rs ||= $mta->postconf(
-            (
-                sender_canonical_maps => {
-                    action => 'add',
-                    values => [ "hash:$postfixSenderCanoncial" ]
-                }
-            )
-        );
+        my $rs = $mta->addMapEntry( $SENDER_CANONICAL_MAP_PATH );
+        $rs ||= $mta->postconf( (
+            sender_canonical_maps => {
+                action => 'add',
+                values => [ "hash:$SENDER_CANONICAL_MAP_PATH" ]
+            }
+        ));
     },
     -99
 );

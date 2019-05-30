@@ -35,21 +35,21 @@ use iMSCP::EventManager;
 
 iMSCP::EventManager->getInstance()->register(
     'afterMtaBuildConf',
-    sub {
-        return 0 unless -f '/etc/postfix/dh2048.pem' && -f '/etc/postfix/dh512.pem';
+    sub
+    {
+        return 0 unless -f '/etc/postfix/dh2048.pem'
+            && -f '/etc/postfix/dh512.pem';
 
-        Servers::mta->factory()->postconf(
-            (
-                smtpd_tls_dh1024_param_file => {
-                    action => 'replace',
-                    values => [ '/etc/postfix/dh2048.pem' ]
-                },
-                smtpd_tls_dh512_param_file  => {
-                    action => 'replace',
-                    values => [ '/etc/postfix/dh512.pem' ]
-                }
-            )
-        );
+        Servers::mta->factory()->postconf( (
+            smtpd_tls_dh1024_param_file => {
+                action => 'replace',
+                values => [ '/etc/postfix/dh2048.pem' ]
+            },
+            smtpd_tls_dh512_param_file  => {
+                action => 'replace',
+                values => [ '/etc/postfix/dh512.pem' ]
+            }
+        ));
     },
     -99
 );

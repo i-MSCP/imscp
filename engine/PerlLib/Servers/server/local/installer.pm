@@ -98,7 +98,7 @@ sub dialogForServerHostname
     );
 
     if ( $dialog->executeRetval != 30
-        && !grep ( $::reconfigure eq $_, qw/ local_server system_hostname hostnames all /)
+        && !grep ( $_ eq iMSCP::Getopt->reconfigure, qw/ local_server system_hostname hostnames all / )
         && isValidHostname( $value )
     ) {
         ::setupSetQuestion( 'SERVER_HOSTNAME', $value );
@@ -148,7 +148,7 @@ sub dialogForBaseServerIP
     my $value = ::setupGetQuestion( 'BASE_SERVER_IP' );
 
     if ( $dialog->executeRetval != 30
-        && !grep ( $::reconfigure eq $_, qw/ local server primary_ip all /)
+        && !grep ( $_ eq iMSCP::Getopt->reconfigure, qw/ local server primary_ip all / )
         && isValidIpAddr( $value )
         && ( $value eq '0.0.0.0' || grep( $_ eq $value, @ipList) )
     ) {
@@ -199,7 +199,7 @@ sub dialogForBaseServerPublicIP
         # If the WAN IP has been guessed and the user didn't asked for
         # reconfiguration, we skip dialog
         if ( length $value
-            && !grep ( $::reconfigure eq $_, qw/ local_server primary_ip all /)
+            && !grep ( $_ eq iMSCP::Getopt->reconfigure, qw/ local_server primary_ip all / )
         ) {
             ::setupSetQuestion( 'BASE_SERVER_PUBLIC_IP', $value );
             return 20;
@@ -210,7 +210,7 @@ sub dialogForBaseServerPublicIP
     # equal to the base server IP, but not equal to the INADDR_ANY IP, we
     # skip the dialog for the server public IP
     if ( $dialog->executeRetval != 30
-        && !grep ( $::reconfigure eq $_, qw/ local_server primary_ip all /)
+        && !grep ( $_ eq iMSCP::Getopt->reconfigure, qw/ local_server primary_ip all / )
         && ( $value eq $baseServerIp && $baseServerIp ne '0.0.0.0' )
     ) {
         return 20;
@@ -223,12 +223,12 @@ sub dialogForBaseServerPublicIP
     # IP inside private IP range?
     if ( $dialog->executeRetval == 30
         ||  $wanNotSetOrInsidePrivateRange
-        || grep ( $::reconfigure eq $_, qw/ local_server primary_ip all /)
+        || grep ( $_ eq iMSCP::Getopt->reconfigure, qw/ local_server primary_ip all / )
     ) {
         chomp( $value = get( 'https://ipinfo.io/ip' )
             || get( 'https://api.ipify.org/?format=txt' ) || ''
         ) unless length $value || grep (
-            $::reconfigure eq $_, qw/ local_server primary_ip all /
+            $_ eq iMSCP::Getopt->reconfigure, qw/ local_server primary_ip all /
         );
 
         my ( $ret, $msg ) = ( 0, '' );
@@ -289,7 +289,7 @@ sub dialogForServerTimezone
     );
 
     if ( $dialog->executeRetval != 30
-        && !grep ( $::reconfigure eq $_, qw/ local_server timezone all / )
+        && !grep ( $_ eq iMSCP::Getopt->reconfigure, qw/ local_server timezone all / )
         && isValidTimezone( $value )
     ) {
         ::setupSetQuestion( 'TIMEZONE', $value );
@@ -315,7 +315,7 @@ EOF
 
 =item preinstall( )
 
- Process preinstall tasks
+ Pre-installation tasks
 
  Return int 0 on success, other on failure
 
@@ -350,7 +350,7 @@ sub preinstall
 
 =item install( )
 
- Process install tasks
+ Installation tasks
 
  Return int 0 on success, other on failure
 
