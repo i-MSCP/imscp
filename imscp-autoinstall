@@ -64,25 +64,17 @@ newDebug( 'imscp-autoinstall.log' );
     no warnings 'once';
     $::execmode = 'setup';
     %::questions = ();
-    $::skippackages = FALSE;
+    iMSCP::Getopt->skipDistPackages( FALSE );
 }
 
 iMSCP::Getopt->parse( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq{
  -s,    --skip-dist-packages    Do not install distribution packages.},
-    '--skip-dist-packages|s' => \$::skippackages
+    '--skip-dist-packages|s' => \&iMSCP::Getopt::skipDistPackages
 );
 
 setDebug( iMSCP::Getopt->debug );
 setVerbose( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose );
-
-if ( iMSCP::Getopt->preseed ) {
-    require iMSCP::Getopt->preseed;
-    iMSCP::Getopt->reconfigure( 'none' );
-    iMSCP::Getopt->noprompt( TRUE );
-}
-
 loadConfig();
-
 exit install();
 
 =head1 AUTHOR

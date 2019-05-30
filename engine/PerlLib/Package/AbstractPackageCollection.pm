@@ -169,13 +169,13 @@ sub preinstall
             return $rs if $rs;
         }
 
-        unless ( $::skippackages ) {
+        unless ( iMSCP::Getopt->skipDistPackages ) {
             ( my $sub = $packageInstance->can( 'getDistributionPackages' ) ) or next;
             push @distributionPackages, $sub->( $packageInstance );
         }
     }
 
-    return 0 if $::skippackages;
+    return 0 if iMSCP::Getopt->skipDistPackages;
 
     $self->_installDistributionPackages( @distributionPackages );
 }

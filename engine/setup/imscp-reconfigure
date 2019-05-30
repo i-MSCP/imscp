@@ -60,12 +60,6 @@ newDebug( 'imscp-reconfigure.log' );
 setDebug( iMSCP::Getopt->debug );
 setVerbose( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose );
 
-if ( iMSCP::Getopt->preseed ) {
-    require iMSCP::Getopt->preseed;
-    iMSCP::Getopt->reconfigure( 'none' );
-    iMSCP::Getopt->noprompt( TRUE );
-}
-
 sub run
 {
     require "$FindBin::Bin/imscp-setup-functions.pl";

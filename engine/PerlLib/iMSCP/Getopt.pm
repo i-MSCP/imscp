@@ -29,7 +29,7 @@ use iMSCP::Boolean;
 use Text::Wrap;
 use fields qw/
     clearComposerCache debug fixPermissions noprompt preseed reconfigure
-    skipComposerUpdate verbose
+    skipDistPackages skipComposerUpdate verbose
 /;
 
 $Text::Wrap::columns = 80;
@@ -231,18 +231,27 @@ EOF
  Accessor/Mutator for the preseed command line option
 
  Param string $file OPTIONAL Preseed file path
- Return string Path to preseed file or empty string
+ Return boolean TRUE if preseeding is enabled, FALSE otherwise
 
 =cut
 
 sub preseed
 {
-    my ( undef, $file ) = @_;
+    my ( $self, $file ) = @_;
 
-    return $options->{'preseed'} unless defined $file;
+    return ( $options->{'preseed'} // FALSE ) unless defined $file;
 
     -f $file or die( sprintf( 'Preseed file not found: %s', $file ));
-    $options->{'preseed'} = $file;
+
+    $self->reconfigure( 'none' );
+    $self->noprompt( TRUE );
+
+    {
+        package main;
+        require $file;
+    }
+
+    $options->{'preseed'} = TRUE;
 }
 
 =item AUTOLOAD

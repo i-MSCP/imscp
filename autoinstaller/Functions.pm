@@ -46,7 +46,7 @@ use version;
 use parent 'Exporter';
 
 our @EXPORT_OK = qw/
-    loadConfig install buildDistFiles distributionCheckDialog
+    loadConfig install prepareDistFiles distributionCheckDialog
     showGitVersionWarnDialog showWelcomeDialog writeMasterConfigFile
 /;
 
@@ -317,15 +317,15 @@ EOF
     20;
 }
 
-=item buildDistFiles( )
+=item prepareDistFiles( )
 
- Build distribution files
+ Prepare distribution files
  
  Return int 0 on success, other on failure
 
 =cut
 
-sub buildDistFiles
+sub prepareDistFiles
 {
     my $rs = _buildLayout();
     $rs ||= _buildConfigFiles();

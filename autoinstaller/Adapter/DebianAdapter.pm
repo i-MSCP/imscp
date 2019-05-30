@@ -24,7 +24,7 @@ use warnings;
 use autouse 'iMSCP::Stepper' => qw/ startDetail endDetail step /;
 use autoinstaller::Functions qw/
     showWelcomeDialog showGitVersionWarnDialog distributionCheckDialog
-    buildDistFiles writeMasterConfigFile
+    prepareDistFiles writeMasterConfigFile
 /;
 use Class::Autouse qw/ :nostat File::HomeDir /;
 use File::Basename 'dirname';
@@ -64,8 +64,7 @@ sub preinstall
 {
     my ( $self ) = @_;
 
-    if ( !iMSCP::Getopt->preseed
-        && !( length $::imscpConfig{'FRONTEND_SERVER'}
+    if ( !( length $::imscpConfig{'FRONTEND_SERVER'}
         && length $::imscpConfig{'FTPD_SERVER'}
         && length $::imscpConfig{'HTTPD_SERVER'}
         && length $::imscpConfig{'NAMED_SERVER'}
@@ -74,11 +73,17 @@ sub preinstall
         && length $::imscpConfig{'PO_SERVER'}
         && length $::imscpConfig{'SQL_SERVER'}
     ) ) {
+        unless ( iMSCP::Getopt->preseed ) {
+            iMSCP::Getopt->skipDistPackages( TRUE );
+        }
+
         iMSCP::Getopt->noprompt( FALSE );
-        $::skippackages = FALSE;
+        iMSCP::Getopt->clearComposerCache( TRUE );
+        iMSCP::Getopt->skipComposerUpdate( FALSE );
+        iMSCP::Getopt->fixPermissions( TRUE );
     }
 
-    unless ( $::skippackages ) {
+    unless ( iMSCP::Getopt->skipDistPackages ) {
         unless ( iMSCP::ProgramFinder::find( 'debconf-apt-progress' ) ) {
             print STDOUT output(
                 'Satisfying prerequisites... Please wait.', 'info'
@@ -155,35 +160,41 @@ EOF
     ] );
     return $rs if $rs;
 
-    my @steps = (
-        [
-            sub { $self->_processPackagesFile() },
-            'Process packages file'
-        ],
-        [
-            sub { $self->_prefillDebconfDatabase() },
-            'Pre-fill Debconf database'
-        ],
-        [
-            sub { $self->_processAptRepositories() },
-            'Processing APT repositories'
-        ],
-        [
-            sub { $self->_processAptPreferences() },
-            'Processing APT preferences'
-        ],
-        [
-            sub { $self->_updatePackagesIndex() },
-            'Updating packages index'
-        ],
-        [
-            sub { $self->_installPackages() },
-            'Installing required packages'
-        ]
-    );
+    my @steps = ();
+
+    if( iMSCP::Getopt->skipDistPackages ) {
+        delete $self->{'_packagesFileData'};
+    } else {
+        push @steps, (
+            [
+                sub { $self->_processPackagesFile() },
+                'Process packages file'
+            ],
+            [
+                sub { $self->_prefillDebconfDatabase() },
+                'Pre-fill Debconf database'
+            ],
+            [
+                sub { $self->_processAptRepositories() },
+                'Processing APT repositories'
+            ],
+            [
+                sub { $self->_processAptPreferences() },
+                'Processing APT preferences'
+            ],
+            [
+                sub { $self->_updatePackagesIndex() },
+                'Updating packages index'
+            ],
+            [
+                sub { $self->_installPackages() },
+                'Installing required packages'
+            ]
+        );
+    }
 
     push @steps,
-        [ \&buildDistFiles, 'Building distribution files' ],
+        [ \&prepareDistFiles, 'Preparing distribution files' ],
         [ \&writeMasterConfigFile, 'Writing master configuration file' ];
 
     my ( $step, $nSteps ) = ( 1, scalar @steps );
