@@ -1,0 +1,123 @@
+# i-MSCP - internet Multi Server Control Panel
+# Copyright 2010-2018 by Laurent Declercq <l.declercq@nuxwin.com>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+Vagrant.configure("2") do |config|
+  ## Global settings
+
+  # Disable automatic box update checking.
+  config.vm.box_check_update = false
+
+  # Create a public network, which generally matched to bridged network.
+  # Bridged networks make the machine appear as another physical device on
+  # your network.
+  config.vm.network :public_network
+
+  # Rsync i-MSCP folder into /usr/local/src/imscp Vagrant box directory
+  config.vm.synced_folder "../.", "/usr/local/src/imscp", type: "rsync",
+    rsync__exclude: "Vagrant/"
+
+  ## Vagrant boxes definitions
+
+  # Debian 8.x/Jessie
+  config.vm.define "imscp_debian_jessie", autostart: false do |node|
+      node.vm.box = "debian/jessie64"
+
+      # VirtualBox provider configuration
+      node.vm.provider :virtualbox do |vb|
+          vb.customize ["modifyvm", :id,
+            "--memory", "1024",
+            "--name", "imscp_debian_jessie",
+            #"--natdnshostresolver1", "on"
+          ]
+      end
+
+      # LXC provider configuration
+      node.vm.provider :lxc do |lxc, override|
+          lxc.customize "cgroup.memory.limit_in_bytes", "1024M"
+          lxc.container_name = "imscp_debian_jessie"
+          override.vm.network = ""
+      end
+  end
+
+  # Debian 9.x/Stretch (default if no box name passed-in to vagrant CLI)
+  config.vm.define 'imscp_debian_stretch', autostart: true do |node|
+      node.vm.box = "debian/stretch64"
+
+      # VirtualBox provider configuration
+      node.vm.provider :virtualbox do |vb|
+          vb.customize ["modifyvm", :id,
+            "--memory", "1024",
+            "--name", "imscp_debian_stretch",
+            #"--natdnshostresolver1", "on"
+          ]
+      end
+
+      # LXC provider configuration
+      node.vm.provider :lxc do |lxc, override|
+          lxc.customize "cgroup.memory.limit_in_bytes", "1024M"
+          lxc.container_name = "imscp_debian_stretch"
+          override.vm.network = ""
+      end
+  end
+
+  # Ubuntu Xenial Xerus (16.04)
+  config.vm.define "imscp_ubuntu_xenial", autostart: false do |node|
+      node.vm.box = "bento/ubuntu-16.04"
+
+      # VirtualBox provider configuration
+      node.vm.provider :virtualbox do |vb|
+          vb.customize ["modifyvm", :id,
+            "--memory", "1024",
+            "--name", "imscp_ubuntu_xenial",
+            #"--natdnshostresolver1", "on"
+          ]
+      end
+  end
+  
+    # Ubuntu Bionic Beaver (18.04)
+    config.vm.define "imscp_ubuntu_bionic", autostart: false do |node|
+        node.vm.box = "bento/ubuntu-18.04"
+  
+        # VirtualBox provider configuration
+        node.vm.provider :virtualbox do |vb|
+            vb.customize ["modifyvm", :id,
+              "--memory", "1024",
+              "--name", "imscp_ubuntu_bionic",
+              #"--natdnshostresolver1", "on"
+            ]
+        end
+    end
+
+  ## Vagrant box upgrade
+
+  config.vm.provision "shell" do |s|
+    begin
+        s.path = "scripts/distro_update.sh"
+    rescue
+        puts "An unexpected error occurred while upgrading the Vagrant box."
+    end
+  end
+
+  # Reboot the Vagrant box (possible kernel update)
+  config.vm.provision :reload
+
+  ## Vagrant box provisioning (i-MSCP)
+
+  config.vm.provision "shell" do |s|
+    begin
+        s.path = "scripts/provision_imscp.sh"
+    rescue
+        puts "An unexpected error occurred while provisioning the Vagrant box with i-MSCP."
+    end
+  end
+end
