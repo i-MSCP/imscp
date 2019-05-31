@@ -486,11 +486,11 @@ sub addCustomDNS
     }
 
     # We don't want operate directly on the intermediate zone file as this
-    # would remove RRs which are overridden by custom DNS RRS, and this would
-    # make difficult to restore them later on without triggering a full
-    # reconfiguration. Thus, we copy the content of te intermediate zone file
-    # in a temporary file and we  work on that file instead. This necessarily
-    # means that custom DNS records won't never appears in intermediate zone
+    # would remove default RRs which are overridden by custom DNS RRs, and
+    # this would make difficult to restore them later on without triggering
+    # a full reconfiguration. Thus, we copy the content of te intermediate zone
+    # file in a temporary file and we work on that file instead. Doing this
+    # means that custom DNS records won't never be added in intermediate zone
     # files.
     my $fileTMP = File::Temp->new();
     print $fileTMP ${ $fileC };

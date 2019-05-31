@@ -162,19 +162,19 @@ sub _init
     $self->SUPER::_init();
 }
 
-=item _loadData( $domainType, $domainId )
+=item _loadData( $domainID, $domainType )
 
- Load all DNS resource records that belong to the given ID/TYPE DNS zone
+ Load all DNS resource records that belong to the given domain
 
- Param string domainType Domain Type (alias|domain)
- Param string $domainType Domain Type (alias|domain)
+ Param string $domainID Domain unique identifier
+ Param string $domainType Domain type (alias|domain)
  Return int 0 on success, other on failure
 
 =cut
 
 sub _loadData
 {
-    my ( $self, $domainId, $domainType ) = @_;
+    my ( $self, $domainID, $domainType ) = @_;
 
     eval {
         $self->{'dns_rr'} = $self->{'_dbh'}->selectall_arrayref(
@@ -202,26 +202,26 @@ sub _loadData
                 AND domain_dns_status NOT IN ('todisable','todelete','disabled')
             ",
             { Slice => {} },
-            $domainId
+            $domainID
         );
 
         if ( $domainType eq 'domain' ) {
             $self->{'dns_zone'} = $self->{'_dbh'}->selectcol_arrayref(
                 'SELECT domain_name FROM domain WHERE domain_id = ?',
                 undef,
-                $domainId
+                $domainID
             )->[0];
         } else {
             $self->{'dns_zone'} = $self->{'_dbh'}->selectcol_arrayref(
                 'SELECT alias_name FROM domain_aliasses WHERE alias_id = ?',
-                undef, $domainId
+                undef, $domainID
             )->[0];
         }
 
         defined $self->{'dns_zone'} or die( sprintf(
             'DNS zone not found for custom DNS RR group (%s/%d)',
             $domainType,
-            $domainId
+            $domainID
         ));
     };
     if ( $@ ) {
