@@ -55,8 +55,8 @@ sub getType
 
  Process module
 
- Note: Even if a DNS resource record is invalid, we always return 0 (success).
- It is the responsability of customers to fix their DNS resource records.
+ Even if a DNS resource record isn't valid, we always return 0 (success). It is
+ the responsability of the customers to fix their DNS resource records.
 
  Param hashref \%data Custom DNS record data
  Return int 0 on success, other on failure
@@ -70,6 +70,8 @@ sub process
     my $rs = $self->_loadData( $data->{'id'}, $data->{'type'} );
     return $rs if $rs;
 
+    $self->_normalizeRRs();
+
     if ( $self->add() ) {
         local $@;
         eval {
@@ -77,11 +79,14 @@ sub process
                 "
                     UPDATE domain_dns
                     SET domain_dns_status = ?
-                    WHERE @{ [ $data->{'type'} eq 'domain' ? 'domain_id = ? AND alias_id = 0' : 'alias_id = ?' ] }
+                    WHERE @{ [ $data->{'type'} eq 'domain'
+                        ? 'domain_id = ? AND alias_id = 0' : 'alias_id = ?'
+                    ] }
                     AND domain_dns_status <> 'disabled'
                 ",
                 undef,
-                ( getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Invalid DNS resource record' ),
+                getMessageByType( 'error', { amount => 1, remove => TRUE } )
+                    || 'Invalid DNS resource record',
                 $data->{'id'}
             );
         };
@@ -103,11 +108,12 @@ sub process
                     domain_dns_status = 'todisable',
                     'disabled',
                     IF(domain_dns_status NOT IN('todelete', 'disabled'),
-                        'ok',
-                        domain_dns_status
+                        'ok', domain_dns_status
                     )
                 )
-                WHERE @{ [ $data->{'type'} eq 'domain' ? 'domain_id = ? AND alias_id = 0' : 'alias_id = ?' ] }
+                WHERE @{ [ $data->{'type'} eq 'domain'
+                    ? 'domain_id = ? AND alias_id = 0' : 'alias_id = ?'
+                ] }
             ",
             undef,
             $data->{'id'}
@@ -115,7 +121,9 @@ sub process
         $self->{'_dbh'}->do(
             "
                 DELETE FROM domain_dns
-                WHERE @{ [ $data->{'type'} eq 'domain' ? 'domain_id = ? AND alias_id = 0' : 'alias_id = ?' ] }
+                WHERE @{ [ $data->{'type'} eq 'domain'
+                    ? 'domain_id = ? AND alias_id = 0' : 'alias_id = ?'
+                ] }
                 AND domain_dns_status = 'todelete'
             ",
             undef,
@@ -150,13 +158,13 @@ sub _init
 {
     my ( $self ) = @_;
 
-    @{ $self }{qw/ zone_name dns_records /} = ( undef, [] );
+    @{ $self }{qw/ dns_zone dns_rr /} = ( undef, [] );
     $self->SUPER::_init();
 }
 
 =item _loadData( $domainType, $domainId )
 
- Load data
+ Load all DNS resource records that belong to the given ID/TYPE DNS zone
 
  Param string domainType Domain Type (alias|domain)
  Param string $domainType Domain Type (alias|domain)
@@ -169,10 +177,9 @@ sub _loadData
     my ( $self, $domainId, $domainType ) = @_;
 
     eval {
-        my $customDnsRR = $self->{'_dbh'}->selectall_hashref(
+        $self->{'dns_rr'} = $self->{'_dbh'}->selectall_arrayref(
             "
                 SELECT
-                    domain_dns_id,
                     CASE
                         WHEN LOCATE('\t', domain_dns) THEN SUBSTRING_INDEX(domain_dns, '\t', 1)
                         WHEN LOCATE(' ', domain_dns) THEN SUBSTRING_INDEX(domain_dns, ' ', 1)
@@ -187,70 +194,35 @@ sub _loadData
                     END AS `ttl`,
                     domain_class AS `class`,
                     domain_type AS `type`,
-                    domain_text AS `rdata`,
-                    domain_dns_status AS `status`
+                    domain_text AS `rdata`
                 FROM domain_dns
-                WHERE @{ [ $domainType eq 'domain' ? 'domain_id = ? AND alias_id = 0' : 'alias_id = ?' ] }
+                WHERE @{ [ $domainType eq 'domain'
+                    ? 'domain_id = ? AND alias_id = 0' : 'alias_id = ?'
+                ] }
                 AND domain_dns_status NOT IN ('todisable','todelete','disabled')
             ",
-            'domain_dns_id',
-            undef,
+            { Slice => {} },
             $domainId
         );
 
         if ( $domainType eq 'domain' ) {
-            $self->{'zone'} = $self->{'_dbh'}->selectcol_arrayref(
+            $self->{'dns_zone'} = $self->{'_dbh'}->selectcol_arrayref(
                 'SELECT domain_name FROM domain WHERE domain_id = ?',
                 undef,
                 $domainId
             )->[0];
         } else {
-            $self->{'zone'} = $self->{'_dbh'}->selectcol_arrayref(
+            $self->{'dns_zone'} = $self->{'_dbh'}->selectcol_arrayref(
                 'SELECT alias_name FROM domain_aliasses WHERE alias_id = ?',
                 undef, $domainId
             )->[0];
         }
 
-        defined $self->{'zone'} or die( sprintf(
-            'Zone not found for custom DNS records (%s/%d)',
+        defined $self->{'dns_zone'} or die( sprintf(
+            'DNS zone not found for custom DNS RR group (%s/%d)',
             $domainType,
             $domainId
         ));
-
-        # Normalize TXT and SPF RRs
-        for my $rr ( values( %{ $customDnsRR } ) ) {
-            next unless grep ( $_ eq $rr->{'type'}, qw/ TXT SPF /);
-
-            # Turn line-breaks into whitespaces
-            $rr->{'rdata'} =~ s/\R+/ /go;
-            # Remove leading and trailing whitespaces if any
-            $rr->{'rdata'} =~ s/^\s+|\s+$//o;
-            # Make sure to work with quoted <character-string>
-            $rr->{'rdata'} = qq/"$rr->{'rdata'}"/ unless $rr->{'rdata'} =~ /^".*"$/o;
-
-            # Split data field into several <character-string>s when
-            # <character-string> is longer than 255 bytes, excluding delimiters.
-            # See: https://tools.ietf.org/html/rfc4408#section-3.1.3
-            if ( length $rr->{'rdata'} > 257 ) {
-                # Extract all quoted <character-string>s, excluding delimiters
-                $_ =~ s/^"(.*)"$/$1/o for my @chunks = extract_multiple(
-                    $rr->{'rdata'},
-                    [ sub { extract_delimited( $_[0], '"' ) } ],
-                    undef,
-                    TRUE
-                );
-                $rr->{'rdata'} = join '', @chunks if @chunks;
-                undef @chunks;
-
-                for ( my $i = 0, my $length = length $rr->{'rdata'}; $i < $length; $i += 255 ) {
-                    push( @chunks, substr( $rr->{'rdata'}, $i, 255 ));
-                }
-
-                $rr->{'rdata'} = join ' ', map ( qq/"$_"/, @chunks );
-            }
-
-            push @{ $self->{'dns_records'} }, $rr;
-        }
     };
     if ( $@ ) {
         error( $@ );
@@ -258,6 +230,54 @@ sub _loadData
     }
 
     0;
+}
+
+=item _normalizeRRs( )
+
+ Normalize all DNS resource records
+
+ Return void
+
+=cut
+
+sub _normalizeRRs
+{
+    my ( $self ) = @_;
+
+    # Normalize TXT and SPF RRs
+    for my $rr ( @{ $self->{'dns_rr'} } ) {
+        next unless grep ( $_ eq $rr->{'type'}, qw/ TXT SPF /);
+
+        # Turn line-breaks into whitespaces
+        $rr->{'rdata'} =~ s/\R+/ /go;
+        # Remove leading and trailing whitespaces if any
+        $rr->{'rdata'} =~ s/^\s+|\s+$//o;
+        # Make sure to work with quoted <character-string>
+        $rr->{'rdata'} = qq/"$rr->{'rdata'}"/ unless $rr->{'rdata'} =~ /^".*"$/o;
+
+        # Split data field into several <character-string>s when
+        # <character-string> is longer than 255 bytes, excluding delimiters.
+        # See: https://tools.ietf.org/html/rfc4408#section-3.1.3
+        if ( length $rr->{'rdata'} > 257 ) {
+            # Extract all quoted <character-string>s, excluding delimiters
+            $_ =~ s/^"(.*)"$/$1/o for my @chunks = extract_multiple(
+                $rr->{'rdata'},
+                [ sub { extract_delimited( $_[0], '"' ) } ],
+                undef,
+                TRUE
+            );
+            $rr->{'rdata'} = join '', @chunks if @chunks;
+            undef @chunks;
+
+            for ( my $i = 0, my $length = length $rr->{'rdata'};
+                $i < $length; $i += 255
+            ) {
+                push( @chunks, substr( $rr->{'rdata'}, $i, 255 ));
+            }
+
+            $rr->{'rdata'} = join ' ', map ( qq/"$_"/, @chunks );
+        }
+    }
 }
 
 =item _getData( $action )
@@ -274,9 +294,9 @@ sub _getData
     my ( $self, $action ) = @_;
 
     $self->{'_data'} = do { {
-        ACTION      => $action,
-        ZONE_NAME   => $self->{'zone'},
-        DNS_RECORDS => $self->{'dns_records'}
+        ACTION   => $action,
+        DNS_ZONE => $self->{'dns_zone'},
+        DNS_RR   => $self->{'dns_rr'}
     } } unless %{ $self->{'_data'} };
 
     $self->{'_data'};

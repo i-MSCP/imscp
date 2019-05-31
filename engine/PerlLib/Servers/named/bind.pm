@@ -473,14 +473,30 @@ sub addCustomDNS
     return 0 unless $self->{'config'}->{'BIND_MODE'} eq 'master';
 
     my $file = iMSCP::File->new(
-        filename => "$self->{'wrkDir'}/$data->{'ZONE_NAME'}.db"
+        filename => "$self->{'wrkDir'}/$data->{'DNS_ZONE'}.db"
     );
     return 1 unless defined( my $fileC = $file->getAsRef());
 
-    unless ( exists $self->{'serials'}->{$data->{'ZONE_NAME'}} ) {
-        my $rs = $self->_updateSerial( $data->{'ZONE_NAME'}, $fileC, $fileC );
+    unless ( exists $self->{'serials'}->{$data->{'DNS_ZONE'}} ) {
+        my $rs = $self->_updateSerial( $data->{'DNS_ZONE'}, $fileC, $fileC );
+        # Even though, we do not want operate directly on the intermediate zone
+        # file (see below), wee still need save changes regarding SOA rr.
+        $rs ||= $file->save();
         return $rs if $rs;
     }
+
+    # We don't want operate directly on the intermediate zone file as this
+    # would remove RRs which are overridden by custom DNS RRS, and this would
+    # make difficult to restore them later on without triggering a full
+    # reconfiguration. Thus, we copy the content of te intermediate zone file
+    # in a temporary file and we  work on that file instead. This necessarily
+    # means that custom DNS records won't never appears in intermediate zone
+    # files.
+    my $fileTMP = File::Temp->new();
+    print $fileTMP ${ $fileC };
+    $fileTMP->close();
+    $file = iMSCP::File->new( filename => $fileTMP->filename());
+    return 1 unless defined( $fileC = $file->getAsRef());
 
     my $rs = $self->{'events'}->trigger(
         'beforeNamedAddCustomDNS', $fileC, $data
@@ -494,7 +510,7 @@ sub addCustomDNS
     }
 
     my $defaultRRs = '';
-    my $origin = $data->{'ZONE_NAME'}. '.';
+    my $origin = $data->{'DNS_ZONE'} . '.';
 
     ENTRY: while ( my $entry = <$fh> ) {
         if ( $entry =~ /^\$ORIGIN\s+([^\s]+)/
@@ -508,13 +524,13 @@ sub addCustomDNS
         }
 
         # Remove default DNS RR which are overridden by a custom DNS RR
-        if ( @{ $data->{'DNS_RECORDS'} } ) {
+        if ( @{ $data->{'DNS_RR'} } ) {
             # Process $ORIGIN substitutions
             $entry =~ s/\@/$origin/g;
             # Add $ORIGIN to unqualified names
             $entry =~ s/^(\S+?[^\s.])\s+/$1.$origin\t/;
 
-            for my $rr ( @{ $data->{'DNS_RECORDS'} } ) {
+            for my $rr ( @{ $data->{'DNS_RR'} } ) {
                 # Custom DNS record is one of A, AAAA or CNAME and
                 # the default DNS RR name is equal to the custom DNS RR name
                 #next ENTRY if grep ( $_ eq $rr->{'type'}, qw/ A AAAA CNAME / )
@@ -556,7 +572,7 @@ $defaultRRs
 @{ [
     join "\n", map (
         "$_->{'name'}\t$_->{'ttl'}\t$_->{'class'}\t$_->{'type'}\t$_->{'rdata'}", 
-        @{ $data->{'DNS_RECORDS'} }
+        @{ $data->{'DNS_RR'} }
     )
 ] }
 ; custom DNS records ENDING
@@ -565,13 +581,9 @@ EOF
     $rs = $self->{'events'}->trigger(
         'afterNamedAddCustomDNS', $fileC, $data
     );
-    return $rs if $rs;
 
-    $file = File::Temp->new();
-    print $file ${ $fileC };
-    $file->close();
-
-    $rs = $self->_compileZone( $data->{'ZONE_NAME'}, $file );
+    $rs ||= $file->save();
+    $rs ||= $self->_compileZone( $data->{'DNS_ZONE'}, $fileTMP->filename());
     $self->{'reload'} = TRUE unless $rs;
     $rs;
 }
