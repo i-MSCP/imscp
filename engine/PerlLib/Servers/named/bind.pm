@@ -492,7 +492,7 @@ sub addCustomDNS
     # file in a temporary file and we work on that file instead. Doing this
     # means that custom DNS records won't never be added in intermediate zone
     # files.
-    my $fileTMP = File::Temp->new();
+    my $fileTMP = File::Temp->new( UNLINK => false );
     print $fileTMP ${ $fileC };
     $fileTMP->close();
     $file = iMSCP::File->new( filename => $fileTMP->filename());
@@ -523,7 +523,7 @@ sub addCustomDNS
             next ENTRY;
         }
 
-        # Remove default DNS RR which are overridden by a custom DNS RR
+        # Skip default DNS RR which are overridden by a custom DNS RR
         if ( @{ $data->{'DNS_RR'} } ) {
             # Process $ORIGIN substitutions
             $entry =~ s/\@/$origin/g;
@@ -532,9 +532,11 @@ sub addCustomDNS
 
             for my $rr ( @{ $data->{'DNS_RR'} } ) {
                 # Custom DNS record is one of A, AAAA or CNAME and
-                # the default DNS RR name is equal to the custom DNS RR name
-                #next ENTRY if grep ( $_ eq $rr->{'type'}, qw/ A AAAA CNAME / )
-                #    && $entry =~ /^\Q$rr->{'name'}\E\s+/;
+                # the default DNS RR name/type is equal to the custom DNS RR name
+                next ENTRY if grep ( $_ eq $rr->{'type'}, qw/ A CNAME / )
+                    && $entry =~ /^\Q$rr->{'name'}\E(?:\s+\d+)?\s+$rr->{'class'}\s+(A|CNAME)\s/;
+                next ENTRY if grep ( $_ eq $rr->{'type'}, qw/ AAAA CNAME / )
+                    && $entry =~ /^\Q$rr->{'name'}\E(?:\s+\d+)?\s+$rr->{'class'}\s+(AAAA|CNAME)\s/;
 
                 # Evaluates next custom DNS RR if there is no name/class/type
                 # matching
