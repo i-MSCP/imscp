@@ -581,7 +581,6 @@ EOF
     $rs = $self->{'events'}->trigger(
         'afterNamedAddCustomDNS', $fileC, $data
     );
-
     $rs ||= $file->save();
     $rs ||= $self->_compileZone( $data->{'DNS_ZONE'}, $fileTMP->filename());
     $self->{'reload'} = TRUE unless $rs;
