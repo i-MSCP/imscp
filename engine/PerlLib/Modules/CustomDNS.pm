@@ -77,12 +77,12 @@ sub process
         eval {
             $self->{'_dbh'}->do(
                 "
-                    UPDATE domain_dns
-                    SET domain_dns_status = ?
+                    UPDATE `domain_dns`
+                    SET `domain_dns_status` = ?
                     WHERE @{ [ $data->{'type'} eq 'domain'
-                        ? 'domain_id = ? AND alias_id = 0' : 'alias_id = ?'
+                        ? '`domain_id` = ? AND `alias_id` = 0' : '`alias_id` = ?'
                     ] }
-                    AND domain_dns_status <> 'disabled'
+                    AND `domain_dns_status` <> 'disabled'
                 ",
                 undef,
                 getMessageByType( 'error', { amount => 1, remove => TRUE } )
@@ -103,16 +103,16 @@ sub process
         $self->{'_dbh'}->begin_work();
         $self->{'_dbh'}->do(
             "
-                UPDATE domain_dns
-                SET domain_dns_status = IF(
-                    domain_dns_status = 'todisable',
+                UPDATE `domain_dns`
+                SET `domain_dns_status` = IF(
+                    `domain_dns_status` = 'todisable',
                     'disabled',
-                    IF(domain_dns_status NOT IN('todelete', 'disabled'),
-                        'ok', domain_dns_status
+                    IF(`domain_dns_status` NOT IN('todelete','disabled'),
+                        'ok', `domain_dns_status`
                     )
                 )
                 WHERE @{ [ $data->{'type'} eq 'domain'
-                    ? 'domain_id = ? AND alias_id = 0' : 'alias_id = ?'
+                    ? '`domain_id` = ? AND `alias_id` = 0' : '`alias_id` = ?'
                 ] }
             ",
             undef,
@@ -120,11 +120,11 @@ sub process
         );
         $self->{'_dbh'}->do(
             "
-                DELETE FROM domain_dns
+                DELETE FROM `domain_dns`
                 WHERE @{ [ $data->{'type'} eq 'domain'
-                    ? 'domain_id = ? AND alias_id = 0' : 'alias_id = ?'
+                    ? '`domain_id` = ? AND `alias_id` = 0' : '`alias_id` = ?'
                 ] }
-                AND domain_dns_status = 'todelete'
+                AND `domain_dns_status` = 'todelete'
             ",
             undef,
             $data->{'id'}
@@ -181,25 +181,25 @@ sub _loadData
             "
                 SELECT
                     CASE
-                        WHEN LOCATE('\t', domain_dns) THEN SUBSTRING_INDEX(domain_dns, '\t', 1)
-                        WHEN LOCATE(' ', domain_dns) THEN SUBSTRING_INDEX(domain_dns, ' ', 1)
+                        WHEN LOCATE('\t', `domain_dns`) THEN SUBSTRING_INDEX(`domain_dns`, '\t', 1)
+                        WHEN LOCATE(' ', `domain_dns`) THEN SUBSTRING_INDEX(`domain_dns`, ' ', 1)
                     ELSE
                         domain_dns
                     END AS `name`,
                     CASE
-                        WHEN LOCATE('\t', domain_dns) THEN SUBSTRING_INDEX(domain_dns, '\t', -1)
-                        WHEN LOCATE(' ', domain_dns) THEN SUBSTRING_INDEX(domain_dns, ' ', -1)
+                        WHEN LOCATE('\t', `domain_dns`) THEN SUBSTRING_INDEX(`domain_dns`, '\t', -1)
+                        WHEN LOCATE(' ', `domain_dns`) THEN SUBSTRING_INDEX(`domain_dns`, ' ', -1)
                     ELSE
                         10800
                     END AS `ttl`,
-                    domain_class AS `class`,
-                    domain_type AS `type`,
-                    domain_text AS `rdata`
-                FROM domain_dns
+                    `domain_class` AS `class`,
+                    `domain_type` AS `type`,
+                    `domain_text` AS `rdata`
+                FROM `domain_dns`
                 WHERE @{ [ $domainType eq 'domain'
-                    ? 'domain_id = ? AND alias_id = 0' : 'alias_id = ?'
+                    ? '`domain_id` = ? AND `alias_id` = 0' : '`alias_id` = ?'
                 ] }
-                AND domain_dns_status NOT IN ('todisable','todelete','disabled')
+                AND `domain_dns_status` NOT IN ('todisable','todelete','disabled')
             ",
             { Slice => {} },
             $domainID
@@ -207,13 +207,13 @@ sub _loadData
 
         if ( $domainType eq 'domain' ) {
             $self->{'dns_zone'} = $self->{'_dbh'}->selectcol_arrayref(
-                'SELECT domain_name FROM domain WHERE domain_id = ?',
+                'SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?',
                 undef,
                 $domainID
             )->[0];
         } else {
             $self->{'dns_zone'} = $self->{'_dbh'}->selectcol_arrayref(
-                'SELECT alias_name FROM domain_aliasses WHERE alias_id = ?',
+                'SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?',
                 undef, $domainID
             )->[0];
         }
@@ -249,18 +249,18 @@ sub _normalizeRRs
         next unless grep ( $_ eq $rr->{'type'}, qw/ TXT SPF /);
 
         # Turn line-breaks into whitespaces
-        $rr->{'rdata'} =~ s/\R+/ /go;
+        $rr->{'rdata'} =~ s/\R+/ /g;
         # Remove leading and trailing whitespaces if any
-        $rr->{'rdata'} =~ s/^\s+|\s+$//o;
+        $rr->{'rdata'} =~ s/^\s+|\s+$//;
         # Make sure to work with quoted <character-string>
-        $rr->{'rdata'} = qq/"$rr->{'rdata'}"/ unless $rr->{'rdata'} =~ /^".*"$/o;
+        $rr->{'rdata'} = qq/"$rr->{'rdata'}"/ unless $rr->{'rdata'} =~ /^".*"$/;
 
         # Split data field into several <character-string>s when
         # <character-string> is longer than 255 bytes, excluding delimiters.
         # See: https://tools.ietf.org/html/rfc4408#section-3.1.3
         if ( length $rr->{'rdata'} > 257 ) {
             # Extract all quoted <character-string>s, excluding delimiters
-            $_ =~ s/^"(.*)"$/$1/o for my @chunks = extract_multiple(
+            $_ =~ s/^"(.*)"$/$1/ for my @chunks = extract_multiple(
                 $rr->{'rdata'},
                 [ sub { extract_delimited( $_[0], '"' ) } ],
                 undef,
