@@ -61,8 +61,8 @@ sub preinstall
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'mta'}->stop();
-    $rs ||= $self->_createUserAndGroup();
+    #my $rs = $self->{'mta'}->stop();
+    my $rs = $self->_createUserAndGroup();
     $rs ||= $self->_makeDirs();
 }
 
@@ -122,7 +122,7 @@ sub postinstall
                             return $rs if $rs;
                         }
 
-                        $self->{'mta'}->start();
+                        $self->{'mta'}->restart();
                     },
                     'Postfix'
                 ];

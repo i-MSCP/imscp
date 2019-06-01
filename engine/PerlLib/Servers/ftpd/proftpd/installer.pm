@@ -89,7 +89,8 @@ sub preinstall
         'FTPD_PASSIVE_PORT_RANGE'
     );
 
-    $self->{'ftpd'}->stop();
+    #$self->{'ftpd'}->stop();
+    0;
 }
 
 =item install( )
@@ -135,7 +136,7 @@ sub postinstall
     $self->{'events'}->register(
         'beforeSetupRestartServices',
         sub {
-            push @{ $_[0] }, [ sub { $self->{'ftpd'}->start(); }, 'ProFTPD' ];
+            push @{ $_[0] }, [ sub { $self->{'ftpd'}->restart(); }, 'ProFTPD' ];
             0;
         },
         4

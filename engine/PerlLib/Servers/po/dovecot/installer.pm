@@ -105,7 +105,8 @@ sub preinstall
             $service->disable( 'dovecot.socket' );
         }
 
-        $self->{'po'}->stop();
+        #$self->{'po'}->stop();
+        0;
     };
     if ( $@ ) {
         error( $@ );
@@ -163,7 +164,7 @@ sub postinstall
     $self->{'events'}->register(
         'beforeSetupRestartServices',
         sub {
-            push @{ $_[0] }, [ sub { $self->{'po'}->start(); }, 'Dovecot' ];
+            push @{ $_[0] }, [ sub { $self->{'po'}->restart(); }, 'Dovecot' ];
             0;
         },
         5

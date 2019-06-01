@@ -97,7 +97,8 @@ sub preinstall
         $self->{'phpConfig'}->{$confVar} = ::setupGetQuestion( $confVar );
     }
 
-    $self->{'httpd'}->stop();
+    #$self->{'httpd'}->stop();
+    0;
 }
 
 =item install( )
@@ -152,7 +153,11 @@ sub postinstall
         'beforeSetupRestartServices',
         sub {
             push @{ $_[0] }, [
-                sub { $self->{'httpd'}->start(); },
+                sub {
+                    # Set forceRestart flag, else server will be reloaded only
+                    $self->{'httpd'}->forceRestart();
+                    $self->{'httpd'}->restart();
+                },
                 'Httpd (Apache2/php-fpm)'
             ];
             0;

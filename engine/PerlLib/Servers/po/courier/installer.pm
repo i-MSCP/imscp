@@ -90,7 +90,8 @@ sub preinstall
 {
     my ( $self ) = @_;
 
-    $self->{'po'}->stop();
+    #$self->{'po'}->stop();
+    0;
 }
 
 =item install( )
@@ -156,7 +157,7 @@ sub postinstall
         'beforeSetupRestartServices',
         sub {
             push @{ $_[0] }, [
-                sub { $self->{'po'}->start(); },
+                sub { $self->{'po'}->restart(); },
                 'Courier IMAP/POP, Courier Authdaemon'
             ];
             0;
