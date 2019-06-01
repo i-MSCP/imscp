@@ -80,10 +80,16 @@
 </script>
 
 <p class="static_info">
-    <?= tr('$ORIGIN is automatically appended to unqualified names, hosts and canonical names') ?>.<br>
+    <?= tr('This interface allows you to add / edit custom DNS resource records.') ?>
+    <br><br>
+    <?= tr('$ORIGIN is automatically appended to unqualified names, hosts and canonical names.') ?>.<br>
     <?= tr('If the name field is filled with the @ sign or left blank, it will be automatically substituted by $ORIGIN value.') ?>
     <br>
     <?= tr('$ORIGIN value is currently set to: %s', '<span id="origin" style="font-weight:bold;">{ORIGIN}</span>') ?>
+    <br><br>
+    <?= tr('If a custom DNS resource record clash with a default DNS resource record, that last will be skipped. This make possible to override default DNS resource records.') ?>
+    <br>
+    <?= tr('DNS round-robin is not supported. If you need it, please contact your administrator.') ?><br>
 </p>
 
 <form name="edit_dns_frm" method="post" action="{ACTION_MODE}">
