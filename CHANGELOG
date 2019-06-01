@@ -5,7 +5,6 @@ Git 1.5.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
-    
     Added: Array::Utils library (PerlVendor)
     Added: iMSCP::Database::mariadb adapter (for use with new DBD::MariaDB driver for DBI, in place of DBD::mysql when available)
     Added: Support for per-Milter and per-policy server timeout (Servers::mta::postfix::postconf() - Postfix >= 3.0.0)
@@ -13,6 +12,7 @@ BACKEND
     Fixed: Can't locate object method "remove" via package "iMSCP::File" (iMSCP::Service)
     Fixed: Create default sieve script (filters), even if sieve is not available (Dovecot IMAP/POP server implementation)
     Fixed: Create symlink for sieve filters on email account creation/update, even when those are not available (Dovecot IMAP/POP server implementation)
+    Fixed: Do not stop entities processing on failure (iMSCP::DbTasksProcessor)
     Fixed: Error output is badly captured, leading to 'Unknown error' (named-compilezone / Bind9 server implementation)
     Fixed: Missing check for SSL private key and SSL certificate matching (iMSCP::OpenSSL)
     Fixed: Symlinks must be copied AS THIS instead of being followed (iMSCP::Dir, iMSCP::File)
