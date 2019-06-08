@@ -82,7 +82,7 @@
 <p class="static_info">
     <?= tr('This interface allows you to add / edit custom DNS resource records.') ?>
     <br><br>
-    <?= tr('$ORIGIN is automatically appended to unqualified names, hosts and canonical names.') ?>.<br>
+    <?= tr('$ORIGIN is automatically appended to unqualified names, hosts and canonical names.') ?><br>
     <?= tr('If the name field is filled with the @ sign or left blank, it will be automatically substituted by $ORIGIN value.') ?>
     <br>
     <?= tr('$ORIGIN value is currently set to: %s', '<span id="origin" style="font-weight:bold;">{ORIGIN}</span>') ?>

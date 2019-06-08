@@ -132,6 +132,11 @@ function hasConflict($rrName, $rrType, $isNewRecord, &$errorString)
 
 /**
  * Validate name for a DNS resource record
+ * 
+ * - As per RFC 1034: Names that are not host names can consist of any printable
+ *   ASCII character
+ * - AS per RFC 4871: All DKIM keys are stored in a subdomain named
+ *   "_domainkey" ...
  *
  * @param string $name Name
  * @param string &$errorString Error string
@@ -145,10 +150,16 @@ function client_validate_NAME($name, &$errorString)
         return false;
     }
 
-    // As per RFC 1034: Names that are not host names can consist of any printable ASCII character
-    // AS per RFC 4871: All DKIM keys are stored in a subdomain named "_domainkey" ...
-    // Here we remove any underscore to pass hostname validation
-    if (!isValidDomainName(str_replace('_', '', $name))) {
+    
+    if(strpos($name, '_') == 0) {
+        $name = substr($name, 1);
+    }
+
+    if(strpos($name, '*.') == 0) {
+        $name = substr($name, 2);
+    }
+
+    if (!isValidDomainName($name)) {
         $errorString .= tr('Invalid field: %s', tr('Name'));
         return false;
     }

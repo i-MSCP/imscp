@@ -42,11 +42,13 @@ DISTRIBUTIONS
     Dropped: Support for Ubuntu Trusty Thar (14.04)
 
 FRONTEND
+    
     Added: ACL assertions for the navigation
     Added: Patches for zendframework/zendframework1 dependency (PHP deprecations, Zend_Navigation component enhancement, small fixes)
     Added: Route injector service for i-MSCP plugins
     Added: Service provider injector for i-MSCP plugins
     Added: Service provider for overriding of default Slim error handlers
+    Enhancement: Make it possible to add wildcard DNS record (custom DNS interface)
     Fixed: Hide E_STRICT, E_NOTICE, E_WARNING and E_DEPRECATED even for addons
     Fixed: Invalid parameter number: number of bound variables does not match number of tokens (client/mail_catchall_add.php)
     Fixed: Output buffer must be erased when an exception is throw while template rendering
