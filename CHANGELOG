@@ -42,7 +42,6 @@ DISTRIBUTIONS
     Dropped: Support for Ubuntu Trusty Thar (14.04)
 
 FRONTEND
-    
     Added: ACL assertions for the navigation
     Added: Patches for zendframework/zendframework1 dependency (PHP deprecations, Zend_Navigation component enhancement, small fixes)
     Added: Route injector service for i-MSCP plugins
@@ -75,9 +74,10 @@ LISTENER:
     Removed: 10_named_override_default_rr.pl (now included in core)
 
 PLUGINS
-    Updated: Plugin API to version 1.5.1
     Enhancement: Run frontEnd applications through the Slim microframework (with backward compatibility in mind)
         See http://www.slimframework.com/ for further details about offered possibilities
+    Fixed: Case where there are no longer migration files provided by a plugin isn't covered
+    Updated: Plugin API to version 1.5.1
 
 SERVICES
     Enhancement: Make it possible to extend/override Dovecot configuration with additional configuration files
