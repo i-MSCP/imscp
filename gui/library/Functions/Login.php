@@ -306,12 +306,17 @@ function change_user_interface($fromId, $toId)
 
         list($from, $to) = $stmt->fetchAll(PDO::FETCH_OBJ);
 
-        $fromToMap = [];
-        $fromToMap['admin']['BACK'] = 'users.php';
-        $fromToMap['admin']['reseller'] = 'index.php';
-        $fromToMap['admin']['user'] = 'index.php';
-        $fromToMap['reseller']['user'] = 'index.php';
-        $fromToMap['reseller']['BACK'] = 'users.php';
+        $fromToMap = [
+            'admin' => [
+                'reseller' => 'users.php',
+                'user'     => 'domains_manage.php',
+                'back'     => 'users.php'
+            ],
+            'reseller' => [
+                'user'     => 'domains_manage.php',
+                'back'     => 'users.php'
+            ]
+        ];
 
         if (!isset($fromToMap[$from->admin_type][$to->admin_type]) || ($from->admin_type == $to->admin_type)) {
             if (!isset($_SESSION['logged_from_id']) || $_SESSION['logged_from_id'] != $to->admin_id) {
@@ -323,7 +328,7 @@ function change_user_interface($fromId, $toId)
                 break;
             }
 
-            $toActionScript = $fromToMap[$to->admin_type]['BACK'];
+            $toActionScript = $fromToMap[$to->admin_type]['back'];
         }
 
         $toActionScript = $toActionScript ?: $fromToMap[$from->admin_type][$to->admin_type];
@@ -365,7 +370,7 @@ function change_user_interface($fromId, $toId)
  * @throws iMSCP_Exception in case ui level is unknown
  * @throws iMSCP_Exception_Database
  */
-function redirectToUiLevel($actionScript = 'index.php')
+function redirectToUiLevel($actionScript = null)
 {
     $auth = Auth::getInstance();
 
@@ -376,12 +381,21 @@ function redirectToUiLevel($actionScript = 'index.php')
     switch ($auth->getIdentity()->admin_type) {
         case 'user':
             $userType = 'client';
+            if(null === $actionScript) {
+                $actionScript = 'domains_manage.php';
+            }
             break;
         case 'admin':
             $userType = 'admin';
+            if(null === $actionScript) {
+                $actionScript = 'users.php';
+            }
             break;
         case 'reseller':
             $userType = 'reseller';
+            if(null === $actionScript) {
+                $actionScript = 'users.php';
+            }
             break;
         default:
             throw new iMSCPException('Unknown UI level');
