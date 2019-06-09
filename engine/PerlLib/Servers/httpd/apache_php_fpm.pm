@@ -380,7 +380,8 @@ sub disableDmn
         HTTP_URI_SCHEME => 'http://',
         HTTPD_LOG_DIR   => $self->{'config'}->{'HTTPD_LOG_DIR'},
         USER_WEB_DIR    => $::imscpConfig{'USER_WEB_DIR'},
-        SERVER_ALIASES  => "www.$data->{'DOMAIN_NAME'}"
+        SERVER_ALIASES         => ( $data->{'WILDCARD_ALIAS'} eq 'yes' ? '*.' : 'www.' )
+            . $data->{'DOMAIN_NAME'}
     } );
 
     # Create http vhost
@@ -1755,7 +1756,8 @@ sub _addCfg
             ? $confLevel
             : '127.0.0.1:' . ( $self->{'phpConfig'}->{'PHP_FPM_LISTEN_PORT_START'}+$data->{'PHP_FPM_LISTEN_PORT'} )
         ),
-        SERVER_ALIASES         => "www.$data->{'DOMAIN_NAME'}"
+        SERVER_ALIASES         => ( $data->{'WILDCARD_ALIAS'} eq 'yes' ? '*.' : 'www.' )
+            . $data->{'DOMAIN_NAME'}
     } );
 
     # Create http vhost

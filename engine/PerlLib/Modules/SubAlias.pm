@@ -255,7 +255,8 @@ sub _getData
             ALLOW_URL_FOPEN         => $phpini->{'allow_url_fopen'} || 'off',
             PHP_FPM_LISTEN_PORT     => ( $phpini->{'id'} // 1 )-1,
             EXTERNAL_MAIL           => $self->{'external_mail'},
-            MAIL_ENABLED            => ( $self->{'external_mail'} eq 'off' && ( $self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0 ) )
+            MAIL_ENABLED            => ( $self->{'external_mail'} eq 'off' && ( $self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0 ) ),
+            WILDCARD_ALIAS          => $self->{'subdomain_alias_wildcard_alias'} // 'no'
         }
     } unless %{ $self->{'_data'} };
 

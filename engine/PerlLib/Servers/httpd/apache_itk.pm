@@ -379,7 +379,8 @@ sub disableDmn
         HTTP_URI_SCHEME => 'http://',
         HTTPD_LOG_DIR   => $self->{'config'}->{'HTTPD_LOG_DIR'},
         USER_WEB_DIR    => $::imscpConfig{'USER_WEB_DIR'},
-        SERVER_ALIASES  => "www.$data->{'DOMAIN_NAME'}"
+        SERVER_ALIASES         => ( $data->{'WILDCARD_ALIAS'} eq 'yes' ? '*.' : 'www.' )
+            . $data->{'DOMAIN_NAME'}
     } );
 
     # Create http vhost
@@ -1719,7 +1720,8 @@ sub _addCfg
         } @domainIPs ),
         HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
         HTTPD_LOG_DIR          => $self->{'config'}->{'HTTPD_LOG_DIR'},
-        SERVER_ALIASES         => "www.$data->{'DOMAIN_NAME'}"
+        SERVER_ALIASES         => ( $data->{'WILDCARD_ALIAS'} eq 'yes' ? '*.' : 'www.' )
+            . $data->{'DOMAIN_NAME'}
     } );
 
     # Create http vhost

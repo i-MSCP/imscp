@@ -876,7 +876,8 @@ class iMSCP_Events
      *  - documentRoot  : Domain document root
      *  - forwardUrl    : Domain forward URL, 'no' if no forward URL has been set
      *  - forwardType   : Domain forward URL type
-     *  - forwardHost   : Domain forward URL preserve host option
+     *  - forwardHost   : Domain forward URL preserve host option,
+     *  - wildcardAlias : Wildcard alias option (yes|no)
      *
      * @const string
      */
@@ -895,7 +896,8 @@ class iMSCP_Events
      *  - documentRoot  : Domain document root
      *  - forwardUrl    : Domain forward URL, 'no' if no forward URL has been set
      *  - forwardType   : Domain forward URL type
-     *  - forwardHost   : Domain forward URL preserve host option
+     *  - forwardHost   : Domain forward URL preserve host option,
+     *  - wildcardAlias : Wildcard alias option (yes|no)
      *
      * @const string
      */
@@ -911,7 +913,8 @@ class iMSCP_Events
      *  - documentRoot : Domain document root
      *  - forwardUrl   : Domain forward URL, 'no' if no forward URL has been set
      *  - forwardType  : Domain forward URL type
-     *  - forwardHost  : Domain forward URL preserve host option
+     *  - forwardHost  : Domain forward URL preserve host option,
+     *  - wildcardAlias  : Wildcard alias option (yes|no)
      *
      * @const string
      */
@@ -947,6 +950,7 @@ class iMSCP_Events
      *  - forwardUrl     : Subdomain forward URL, 'no' if no forward URL has been set
      *  - forwardType    : Subdomain forward URL type
      *  - forwardHost    : Subdomain forward URL preserve host option
+     *  - wildcardAlias  : Wildcard alias option (yes|no)
      *  - customerId     : Subdomain owner unique identifier
      *
      * @const string
@@ -968,6 +972,7 @@ class iMSCP_Events
      *                     been set
      *  - forwardType    : Subdomain forward URL type
      *  - forwardHost    : Subdomain forward URL preserve host option
+     *  - wildcardAlias  : Wildcard alias option (yes|no)
      *  - customerId     : Subdomain owner unique identifier
      *
      * @const string
@@ -987,7 +992,8 @@ class iMSCP_Events
      *  - forwardUrl    : Subdomain forward URL, 'no' if no forward URL has
      *                    been set
      *  - forwardType   : Subdomain forward URL type
-     *  - forwardHost   : Subdomain forward URL preserve host option
+     *  - forwardHost   : Subdomain forward URL preserve host option,
+     *  - wildcardAlias  : Wildcard alias option (yes|no)
      *
      * @const string
      */
@@ -1006,7 +1012,8 @@ class iMSCP_Events
      *  - forwardUrl    : Subdomain forward URL, 'no' if no forward URL has
      *                    been set
      *  - forwardType   : Subdomain forward URL type
-     *  - forwardHost   : Subdomain forward URL preserve host option
+     *  - forwardHost   : Subdomain forward URL preserve host option,
+     *  - wildcardAlias  : Wildcard alias option (yes|no)
      *
      * @const string
      */
@@ -1054,6 +1061,7 @@ class iMSCP_Events
      *                set
      *  - forwardType: Domain alias forward URL type
      *  - forwardHost: Domain alias forward URL preserve host option
+     *  - wildcardAlias  : Wildcard alias option (yes|no)
      *
      * @const string
      */
@@ -1071,7 +1079,8 @@ class iMSCP_Events
      *  - forwardUrl: Domain alias forward URL, 'no' if no forward URL has been
      *                set
      *  - forwardType: Domain alias forward URL type
-     *  - forwardHost: Domain alias forward URL preserve host optio
+     *  - forwardHost: Domain alias forward URL preserve host option
+     *  - wildcardAlias  : Wildcard alias option (yes|no)
      *
      * @const string
      */
@@ -1089,6 +1098,7 @@ class iMSCP_Events
      *                     has been set
      *  - forwardType    : Domain alias forward URL type
      *  - forwardHost    : Domain alias forward URL preserve host option
+     *  - wildcardAlias  : Wildcard alias option (yes|no)
      *
      * @const string
      */
@@ -1097,7 +1107,7 @@ class iMSCP_Events
     /**
      * Event triggered after domain alias edition
      *
-     * iMSCP_Events_Event objectparameters:
+     * iMSCP_Events_Event object parameters:
      *  - domainAliasId   : Domain alias unique identifier
      *  - domainAliasName : Domain alias name
      *  - mountPoint      : Domain alias mount point
@@ -1105,7 +1115,8 @@ class iMSCP_Events
      *  - forwardUrl      : Domain alias forward URL, 'no' if no forward URL
      *                      has been set
      *  - forwardType     : Domain alias forward URL type
-     *  - forwardHost     : Domain alias forward URL preserve host option
+     *  - forwardHost     : Domain alias forward URL preserve host option,
+     *  - wildcardAlias  : Wildcard alias option (yes|no)
      *
      * @const string
      */

@@ -5,6 +5,7 @@ Git 1.5.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
+    Added: Apache2 wildcard alias feature
     Added: Array::Utils library (PerlVendor)
     Added: iMSCP::Database::mariadb adapter (for use with new DBD::MariaDB driver for DBI, in place of DBD::mysql when available)
     Added: Support for per-Milter and per-policy server timeout (Servers::mta::postfix::postconf() - Postfix >= 3.0.0)
@@ -43,6 +44,7 @@ DISTRIBUTIONS
 
 FRONTEND
     Added: ACL assertions for the navigation
+    Added: Apache2 wildcard alias feature
     Added: Patches for zendframework/zendframework1 dependency (PHP deprecations, Zend_Navigation component enhancement, small fixes)
     Added: Route injector service for i-MSCP plugins
     Added: Service provider injector for i-MSCP plugins

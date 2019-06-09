@@ -82,7 +82,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
   ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
   ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
   ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-  ('DATABASE_REVISION', '273');
+  ('DATABASE_REVISION', '274');
 
 -- --------------------------------------------------------
 
@@ -145,6 +145,7 @@ CREATE TABLE IF NOT EXISTS `domain` (
   `url_forward` varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT 'no',
   `type_forward` varchar(5) collate utf8_unicode_ci DEFAULT NULL,
   `host_forward` varchar(3) collate utf8_unicode_ci NOT NULL DEFAULT 'Off',
+  `wildcard_alias` enum('yes', 'no') NOT NULL DEFAULT 'no',
   PRIMARY KEY (`domain_id`),
   UNIQUE KEY `domain_name` (`domain_name`),
   INDEX `i_domain_admin_id` (`domain_admin_id`)
@@ -167,6 +168,7 @@ CREATE TABLE IF NOT EXISTS `domain_aliasses` (
   `url_forward` varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT 'no',
   `type_forward` varchar(5) collate utf8_unicode_ci DEFAULT NULL,
   `host_forward` varchar(3) collate utf8_unicode_ci NOT NULL DEFAULT 'Off',
+  `wildcard_alias` enum('yes', 'no') NOT NULL DEFAULT 'no',
   `external_mail` varchar(15) collate utf8_unicode_ci NOT NULL DEFAULT 'off',
   PRIMARY KEY (`alias_id`),
   INDEX `domain_id` (`domain_id`)
@@ -627,6 +629,7 @@ CREATE TABLE IF NOT EXISTS `subdomain` (
   `subdomain_url_forward` varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT 'no',
   `subdomain_type_forward` varchar(5) collate utf8_unicode_ci DEFAULT NULL,
   `subdomain_host_forward` varchar(3) collate utf8_unicode_ci NOT NULL DEFAULT 'Off',
+  `subdomain_wildcard_alias` enum('yes', 'no') NOT NULL DEFAULT 'no',
   `subdomain_status` varchar(255) collate utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`subdomain_id`),
   INDEX `domain_id` (`domain_id`)
@@ -647,6 +650,7 @@ CREATE TABLE IF NOT EXISTS `subdomain_alias` (
   `subdomain_alias_url_forward` varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT 'no',
   `subdomain_alias_type_forward` varchar(5) collate utf8_unicode_ci DEFAULT NULL,
   `subdomain_alias_host_forward` varchar(3) collate utf8_unicode_ci NOT NULL DEFAULT 'Off',
+  `subdomain_alias_wildcard_alias` enum('yes', 'no') NOT NULL DEFAULT 'no',
   `subdomain_alias_status` varchar(255) collate utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`subdomain_alias_id`),
   INDEX `alias_id` (`alias_id`)

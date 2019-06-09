@@ -64,7 +64,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 273;
+    protected $lastUpdate = 274;
 
     /**
      * Singleton - Make new unavailable
@@ -1976,5 +1976,36 @@ class iMSCP_Update_Database extends iMSCP_Update
         } catch (Exception $e) {
             throw new RuntimeException($e->getMessage());
         }
+    }
+
+    /**
+     * Add columns for the Apache2 wildcard alias feature
+     * 
+     * @return array SQL statements to be executed
+     */
+    protected function r274()
+    {
+        return [
+            $this->addColumn(
+                'domain',
+                'wildcard_alias',
+                "enum('yes', 'no') NOT NULL DEFAULT 'no' AFTER `host_forward`"
+            ),
+            $this->addColumn(
+                'subdomain',
+                'subdomain_wildcard_alias',
+                "enum('yes', 'no') NOT NULL DEFAULT 'no' AFTER `subdomain_host_forward`"
+            ),
+            $this->addColumn(
+                'domain_aliasses',
+                'wildcard_alias',
+                "enum('yes', 'no') NOT NULL DEFAULT 'no' AFTER `host_forward`"
+            ),
+            $this->addColumn(
+                'subdomain_alias',
+                'subdomain_alias_wildcard_alias',
+                "enum('yes', 'no') NOT NULL DEFAULT 'no' AFTER `subdomain_alias_host_forward`"
+            )
+        ];
     }
 }

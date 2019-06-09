@@ -102,6 +102,17 @@
             </td>
         </tr>
         <tr>
+            <td>{TR_WILDCARD_ALIAS} <span class="icon i_help" title="{TR_WILDCARD_ALIAS_TOOLTIP}"></span></td>
+            <td>
+                <span class="radio">
+                    <input type="radio" name="wildcard_alias" id="wildcard_alias_yes"{WILDCARD_ALIAS_YES} value="yes">
+                    <label for="wildcard_alias_yes">{TR_YES}</label>
+                    <input type="radio" name="wildcard_alias" id="wildcard_alias_no"{WILDCARD_ALIAS_NO} value="no">
+                    <label for="wildcard_alias_no">{TR_NO}</label>
+                </span>
+            </td>
+        </tr>
+        <tr>
             <td><label for="datepicker">{TR_DOMAIN_EXPIRE}</label></td>
             <td>
                 <input type="text" name="datepicker" id="datepicker" value="{DATEPICKER_VALUE}"{DATEPICKER_DISABLED}>

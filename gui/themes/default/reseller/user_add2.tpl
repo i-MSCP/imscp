@@ -45,7 +45,7 @@
         <tbody>
         <tr>
             <td>{TR_NAME}</td>
-            <td><input type="hidden" name="template" id="template" value="{VL_TEMPLATE_NAME}">{VL_TEMPLATE_NAME}</td>
+            <td><input type="hidden" name="template" id="template" value="{VL_TEMPLATE_NAME_VAL}">{VL_TEMPLATE_NAME}</td>
         </tr>
         </tbody>
     </table>
