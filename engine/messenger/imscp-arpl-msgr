@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,24 +19,28 @@
 
 use FindBin;
 use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
-use Encode qw/ encode /;
+use Encode qw/ decode encode /;
+use iMSCP::Boolean;
 use iMSCP::Bootstrapper;
 use Mail::Address;
 use MIME::Parser;
 use MIME::Entity;
 
-iMSCP::Bootstrapper->getInstance()->boot(
-    {
-        mode            => 'backend',
-        nolock          => 1,
-        norequirements  => 1,
-        config_readonly => 1
-    }
-);
+iMSCP::Bootstrapper->getInstance()->boot( {
+    mode            => 'backend',
+    nolock          => TRUE,
+    norequirements  => TRUE,
+    config_readonly => TRUE
+} );
 
 eval {
     my $dbh = iMSCP::Database->factory()->getRawDb();
-    $dbh->do( "DELETE FROM `autoreplies_log` WHERE ADDTIME(`time`, '24:00:00') < NOW()" );
+    $dbh->do(
+        "
+            DELETE FROM `autoreplies_log`
+            WHERE ADDTIME(`time`, '24:00:00') < NOW()
+        "
+    );
 
     ( my $from = $ARGV[0] ) =~ s/imscp-arpl\.//;
 
@@ -47,41 +51,81 @@ eval {
 
     # Setup MIME parser
     my $mimeParser = MIME::Parser->new();
-    $mimeParser->output_to_core( 1 );
-    $mimeParser->tmp_to_core( 1 );
+    $mimeParser->output_to_core( TRUE );
+    $mimeParser->tmp_to_core( TRUE );
 
     # Parse MIME message
-    my $mimeEntity = $mimeParser->parse_data( $message ) or die( "Couldn't parse MIME message" );
+    my $mimeEntity = $mimeParser->parse_data( $message ) or die(
+        "Couldn't parse MIME message"
+    );
     undef $mimeParser;
 
     # Retrieve MIME headers
-    my $mimeHeaders = $mimeEntity->head() or die( "Couldn't get MIME headers" );
+    my $mimeHeaders = $mimeEntity->head() or die(
+        "Couldn't get MIME headers"
+    );
     undef $mimeEntity;
 
-    # Return early if needed
-    return if ( $mimeHeaders->get( 'x-spam-flag' ) && $mimeHeaders->get( 'x-spam-flag' ) =~ /yes/i )
-        || ( $mimeHeaders->get( 'x-mailer' ) && $mimeHeaders->get( 'x-mailer' ) =~ /Auto-Reply/i )
-        || ( $mimeHeaders->get( 'auto-submitted' ) && $mimeHeaders->get( 'auto-submitted' ) =~ /auto-replied/i )
-        || ( $mimeHeaders->get( 'sender' ) && $mimeHeaders->get( 'sender' ) =~ /autoresponder/i )
+    # Return early if:
+    # - the message has been tagged has SPAM
+    # - the message look like a vacation message
+    # - the message look like an automatic answer
+    return if ( $mimeHeaders->get( 'x-spam-flag' )
+        && $mimeHeaders->get( 'x-spam-flag' ) =~ /yes/i )
+        || ( $mimeHeaders->get( 'x-mailer' )
+        && $mimeHeaders->get( 'x-mailer' ) =~ /Auto-Reply/i )
+        || ( $mimeHeaders->get( 'auto-submitted' )
+        && $mimeHeaders->get( 'auto-submitted' ) =~ /auto-replied/i )
+        || ( $mimeHeaders->get( 'sender' )
+        && $mimeHeaders->get( 'sender' ) =~ /autoresponder/i )
         || $mimeHeaders->get( 'x-autoresponse-from' );
 
-    # Get recipient address
-    my ($to) = Mail::Address->parse( $mimeHeaders->get( 'from' )) or die( "Couldn't parse 'From' MIME header" );
+    # Get sender address (address to which we need send the vacation message)
+    my ( $to ) = Mail::Address->parse( $mimeHeaders->get( 'from' )) or die(
+        "Couldn't parse 'From' MIME header"
+    );
     $to = $to->address();
+
+    # Return early if the sender look like a mail to which we should not send
+    # vacation message
+    # - the sender
+    for (
+        qr/bounces.*@/,
+        qr/subscribe.*@/,
+        qr/noreply.*@/,
+        qr/mailer-daemon@/
+    ) {
+        return if $to =~ /$_/i;
+    }
 
     # Get original subject
     my $subject = $mimeHeaders->get( 'subject' );
     undef $mimeHeaders;
 
     my $val = $dbh->selectrow_array(
-        "SELECT COUNT(`time`) FROM `autoreplies_log` WHERE `from` = ? AND `to` = ? AND ADDTIME(`time`, '24:00:00') > NOW()",
-        undef, $from, $to
+        "
+            SELECT COUNT(`time`)
+            FROM `autoreplies_log`
+            WHERE `from` = ?
+            AND `to` = ?
+            AND ADDTIME(`time`, '24:00:00') > NOW()
+        ",
+        undef,
+        $from,
+        $to
     );
 
     return if $val;
 
     $val = $dbh->selectrow_array(
-        'SELECT mail_auto_respond_text FROM mail_users WHERE mail_addr = ? AND mail_auto_respond = 1', undef, $from
+        '
+            SELECT `mail_auto_respond_text`
+            FROM `mail_users`
+            WHERE `mail_addr` = ?
+            AND `mail_auto_respond` = 1
+        ',
+        undef,
+        $from
     );
 
     return unless $val;
@@ -91,7 +135,7 @@ eval {
         Type                  => 'multipart/mixed; charset=utf-8',
         From                  => $from,
         To                    => $to,
-        Subject               => $subject,
+        Subject               => encode( 'UTF-8', decode( 'UTF-8', $subject )),
         'X-Autoresponse-From' => $from,
         'X-Mailer'            => "i-MSCP Auto-Reply Mailer"
     );
@@ -101,7 +145,7 @@ eval {
         Type        => 'text/plain; charset=utf-8',
         Encoding    => '8bit',
         Description => 'Mail User Auto-Reply Message',
-        Data        => encode( 'utf8', $val )
+        Data        => encode( 'UTF-8', decode( 'UTF-8', $val ))
     );
 
     # Attach original message
@@ -112,12 +156,25 @@ eval {
     );
 
     # Send message through sendmail command
-    open my $fh, '|-', '/usr/sbin/sendmail -t -oi' or die( sprintf( "Couldn't send auto-reply message: %s", $! ));
+    open my $fh, '|-', '/usr/sbin/sendmail -t -oi' or die( sprintf(
+        "Couldn't send auto-reply message: %s", $!
+    ));
     $mimeEntity->print( $fh );
     close $fh;
     undef $mimeEntity;
 
-    $dbh->do( 'INSERT INTO `autoreplies_log` (`time`, `from`, `to`) VALUES (NOW(),?,?)', undef, $from, $to );
+    $dbh->do(
+        '
+            INSERT INTO `autoreplies_log` (
+                `time`, `from`, `to`
+            ) VALUES (
+                NOW(),?,?
+            )
+        ',
+        undef,
+        $from,
+        $to
+    );
 };
 if ( $@ ) {
     print STDERR $@;
