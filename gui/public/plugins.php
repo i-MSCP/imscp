@@ -20,13 +20,19 @@
 
 /** @noinspection PhpUnhandledExceptionInspection */
 
-require_once __DIR__.'/../library/imscp-lib.php';
+use iMSCP\Application;
+use iMSCP\Plugin\PluginRoutesInjector;
+use iMSCP\Plugin\PluginServiceProvidersInjector;
 
-(function() {
-    /** @var \iMSCP\Application $app */
+require_once __DIR__ . '/../library/imscp-lib.php';
+
+(function () {
+    /** @var Application $app */
     $app = iMSCP_Registry::get('iMSCP_Application');
     $slim = $app->getSlimApplication();
-    (new \iMSCP\Plugin\PluginServiceProvidersInjector())($slim->getContainer(), $app->getPluginManager());
-    (new \iMSCP\Plugin\PluginRoutesInjector())($slim, $app->getPluginManager());
+    (new PluginServiceProvidersInjector())(
+        $slim->getContainer(), $app->getPluginManager()
+    );
+    (new PluginRoutesInjector())($slim, $app->getPluginManager());
     $slim->run();
 })();
