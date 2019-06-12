@@ -56,7 +56,6 @@ FRONTEND
     Review: Install dependencies through the PHP dependency manager (composer)
     Review: Load comments (PHP OPcache)
     Review: Save comments (PHP OPcache)
-        
 
 INSTALLER
     Added: 'gnupg' package to the list of pre-required packages (all distributions)
