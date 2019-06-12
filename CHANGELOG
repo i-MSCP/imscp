@@ -45,6 +45,7 @@ DISTRIBUTIONS
 FRONTEND
     Added: ACL assertions for the navigation
     Added: Apache2 wildcard alias feature
+    Added: iMSCP Database::getPDO() static method (return underlying PDO instance bound to the given connection)
     Added: Patches for zendframework/zendframework1 dependency (PHP deprecations, Zend_Navigation component enhancement, small fixes)
     Added: Route injector service for i-MSCP plugins
     Added: Service provider injector for i-MSCP plugins

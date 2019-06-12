@@ -191,6 +191,11 @@ class iMSCP_Database
     {
         return self::getInstance($connection);
     }
+    
+    public static function getPDO($connection = 'default')
+    {
+        return self::$_instances[$connection]->_db;
+    }
 
     /**
      * Prepares an SQL statement
