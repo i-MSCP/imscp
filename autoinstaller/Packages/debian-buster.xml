@@ -90,9 +90,10 @@
             <package
                     post_install_tasks="
                         /usr/sbin/phpenmod -v 5.6 -s ALL ctype fileinfo ftp
-                        gettext iconv pdo phar posix sockets bz2 curl gd gmp
-                        imap intl json mbstring mcrypt mysqlnd mysqli pdo_mysql
-                        opcache pspell dom xml xmlreader xmlwriter zip
+                        gettext iconv pdo phar posix sockets bcmath bz2 curl gd
+                        gmp imap intl json mbstring mcrypt mysqlnd mysqli
+                        pdo_mysql opcache pspell dom xml xmlreader xmlwriter
+                        zip
                     "
             >
                 php5.6
@@ -101,6 +102,7 @@
             <package>php5.6-cli</package>
             <package>php5.6-fpm</package>
             <package>php5.6-common</package>
+            <package>php5.6-bcmath</package>
             <package>php5.6-bz2</package>
             <package>php5.6-curl</package>
             <package>php5.6-gd</package>
@@ -125,10 +127,10 @@
             <package
                     post_install_tasks="
                         /usr/sbin/phpenmod -v 7.0 -s ALL ctype fileinfo ftp
-                        gettext iconv pdo phar posix sockets bz2 curl gd gmp
-                        imap intl json mbstring mcrypt mysqlnd mysqli pdo_mysql
-                        opcache pspell dom xml xmlreader xmlwriter zip
-                        apcu apcu_bc
+                        gettext iconv pdo phar posix sockets bcmath bz2 curl gd
+                        gmp imap intl json mbstring mcrypt mysqlnd mysqli
+                        pdo_mysql opcache pspell dom xml xmlreader xmlwriter
+                        zip apcu apcu_bc
                     "
             >
                 php7.0
@@ -137,6 +139,7 @@
             <package>php7.0-cgi</package>
             <package>php7.0-fpm</package>
             <package>php7.0-common</package>
+            <package>php7.0-bcmath</package>
             <package>php7.0-bz2</package>
             <package>php7.0-curl</package>
             <package>php7.0-gd</package>
@@ -161,10 +164,10 @@
             <package
                     post_install_tasks="
                         /usr/sbin/phpenmod -v 7.1 -s ALL ctype fileinfo ftp
-                        gettext iconv pdo phar posix sockets bz2 curl gd gmp
-                        imap intl json mbstring mcrypt mysqlnd mysqli pdo_mysql
-                        opcache pspell dom xml xmlreader xmlwriter zip
-                        apcu apcu_bc
+                        gettext iconv pdo phar posix sockets bcmath bz2 curl gd
+                        gmp imap intl json mbstring mcrypt mysqlnd mysqli
+                        pdo_mysql opcache pspell dom xml xmlreader xmlwriter
+                        zip apcu apcu_bc
                     "
             >
                 php7.1
@@ -173,6 +176,7 @@
             <package>php7.1-cgi</package>
             <package>php7.1-fpm</package>
             <package>php7.1-common</package>
+            <package>php7.1-bcmath</package>
             <package>php7.1-bz2</package>
             <package>php7.1-curl</package>
             <package>php7.1-gd</package>
@@ -197,10 +201,10 @@
             <package
                     post_install_tasks="
                         /usr/sbin/phpenmod -v 7.2 -s ALL ctype fileinfo ftp
-                        gettext iconv pdo phar posix sockets bz2 curl gd gmp
-                        imap intl json mbstring mysqlnd mysqli pdo_mysql
-                        opcache pspell dom xml xmlreader xmlwriter zip
-                        apcu apcu_bc
+                        gettext iconv pdo phar posix sockets bcmath bz2 curl gd
+                        gmp imap intl json mbstring mysqlnd mysqli pdo_mysql
+                        opcache pspell dom xml xmlreader xmlwriter zip apcu
+                        apcu_bc
                     "
             >
                 php7.2
@@ -209,6 +213,7 @@
             <package>php7.2-cgi</package>
             <package>php7.2-fpm</package>
             <package>php7.2-common</package>
+            <package>php7.2-bcmath</package>
             <package>php7.2-bz2</package>
             <package>php7.2-curl</package>
             <package>php7.2-gd</package>
@@ -233,10 +238,10 @@
             <package
                     post_install_tasks="
                         /usr/sbin/phpenmod -v 7.3 -s ALL ctype fileinfo ftp
-                        gettext iconv pdo phar posix sockets bz2 curl gd gmp
-                        imap intl json mbstring mysqlnd mysqli pdo_mysql
-                        opcache pspell dom xml xmlreader xmlwriter zip
-                        apcu apcu_bc
+                        gettext iconv pdo phar posix sockets bcmath bz2 curl gd
+                        gmp imap intl json mbstring mysqlnd mysqli pdo_mysql
+                        opcache pspell dom xml xmlreader xmlwriter zip apcu
+                        apcu_bc
                     "
             >
                 php7.3
@@ -260,6 +265,7 @@
             >
                 php7.3-common
             </package>
+            <package>php7.3-bcmath</package>
             <package>php7.3-bz2</package>
             <package>php7.3-curl</package>
             <package>php7.3-gd</package>

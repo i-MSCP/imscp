@@ -36,7 +36,7 @@ DAEMON
     Updated: Version to 1.4.0
 
 DISTRIBUTIONS
-    Added: bz2 PHP extension (all distributions, all PHP versions)
+    Added: bcmath and bz2 PHP extensions (all distributions, all PHP versions)
     Added: Support for Debian Buster (10.x) - Experimental
     Added: Support for Devuan ASCII (2.x)
     Added: Support for PHP 7.2, 7.3
@@ -54,6 +54,9 @@ FRONTEND
     Fixed: Invalid parameter number: number of bound variables does not match number of tokens (client/mail_catchall_add.php)
     Fixed: Output buffer must be erased when an exception is throw while template rendering
     Review: Install dependencies through the PHP dependency manager (composer)
+    Review: Load comments (PHP OPcache)
+    Review: Save comments (PHP OPcache)
+        
 
 INSTALLER
     Added: 'gnupg' package to the list of pre-required packages (all distributions)
