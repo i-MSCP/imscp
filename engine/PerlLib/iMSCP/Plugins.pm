@@ -26,7 +26,6 @@ package iMSCP::Plugins;
 use strict;
 use warnings;
 use iMSCP::Boolean;
-use File::Basename 'basename';
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -41,39 +40,39 @@ use parent 'Common::SingletonClass';
 
  Get list of available plugins
 
- Return server list
+ Return list of available plugins
 
 =cut
 
 sub getList
 {
-    @{ $_[0]->{'__plugins__'} };
+    keys %{ $_[0]->{'_plugins'} };
 }
 
-=item getClass( $pluginName )
+=item getClass( $plugin )
 
- Get class name of the given plugin
+ Get the full class name of the given plugin
  
  This will also load the plugin class if not already done.
 
- Param string $pluginName Plugin name
- Return string Plugin name or die if the plugin is not available
+ Param string $plugin Plugin name
+ Return string Plugin name, dieon failure
 =cut
 
 sub getClass
 {
-    my ( $self, $pluginName ) = @_;
+    my ( $self, $plugin ) = @_;
 
-    unless ( $self->{'__loaded__'}->{$pluginName} ) {
-        grep ( $_ eq $pluginName, @{ $self->{'__plugins__'} } ) or die(
-            sprintf( "Plugin %s isn't available", $pluginName )
-        );
+    unless ( $self->{'_loaded'}->{$plugin} ) {
+        $self->{'_plugins'}->{$plugin} or die( sprintf(
+            "Plugin %s not found.", $plugin
+        ));
 
-        require "$::imscpConfig{'PLUGINS_DIR'}/$pluginName/backend/$pluginName.pm";
-        $self->{'__loaded__'}->{$pluginName} = TRUE;
+        require $self->{'_plugins'}->{$plugin};
+        $self->{'_loaded'}->{$plugin} = TRUE;
     }
 
-    "Plugin::$pluginName";
+    "Plugin::$plugin";
 }
 
 =back
@@ -94,10 +93,15 @@ sub _init
 {
     my ( $self ) = @_;
 
-    $_ = basename( $_, '.pm' ) for @{ $self->{'__plugins__'} } = glob(
+    %{ $self->{'_plugins'} } = map {
+        s%.+?([^/]+)\.pm$%$1%r => $_
+    } grep {
+        m%([^/]+)/backend/(.+)\.pm$% && $1 eq $2;
+    } glob(
         "$::imscpConfig{'PLUGINS_DIR'}/*/backend/*.pm"
     );
-    $self->{'__loaded__'} = {};
+
+    $self->{'_loaded'} = {};
     $self;
 }
 
