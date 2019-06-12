@@ -18,12 +18,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/** @noinspection PhpIncludeInspection PhpUnusedParameterInspection */
+/** @noinspection PhpIncludeInspection PhpUnusedParameterInspection PhpIncludeInspection */
+
+declare(strict_types=1);
 
 namespace iMSCP\Plugin;
 
+use iMSCP_Plugin;
+use iMSCP_Plugin_Manager;
+use InvalidArgumentException;
+use Psr\Http\Message\RequestInterface;
 use Slim\App;
 
+/**
+ * Class PluginRoutesInjector
+ * @package iMSCP\Plugin
+ */
 class PluginRoutesInjector
 {
     const DEFAULT_METHODS = [
@@ -37,23 +47,27 @@ class PluginRoutesInjector
 
     /**
      * Inject plugin routes into Slim application
-     * 
+     *
      * @param App $app
-     * @param \iMSCP_Plugin_Manager $pm
+     * @param iMSCP_Plugin_Manager $pm
      * @return void
      */
-    public function __invoke(App $app, \iMSCP_Plugin_Manager $pm): void
+    public function __invoke(App $app, iMSCP_Plugin_Manager $pm): void
     {
         foreach ($pm->pluginGetLoaded('Action') as $plugin) {
             // For backward compatibility only (duck-typing).
             if (method_exists($plugin, 'route')) {
-                /** @var \Psr\Http\Message\RequestInterface $request */
+                /** @var RequestInterface $request */
                 $request = $app->getContainer()->get('request');
-                if (!($pluginActionScriptPath = $plugin->route(parse_url($request->getUri())))) {
+                if (!($pluginActionScriptPath = $plugin->route(
+                    parse_url($request->getUri())
+                ))) {
                     continue;
                 }
 
-                $routes = [$request->getUri()->getPath() => $pluginActionScriptPath];
+                $routes = [
+                    $request->getUri()->getPath() => $pluginActionScriptPath
+                ];
             } else {
                 $routes = $plugin->getRoutes();
             }
@@ -65,10 +79,14 @@ class PluginRoutesInjector
     /**
      * @param App $app
      * @param array $routes
-     * @param \iMSCP_Plugin $plugin
+     * @param iMSCP_Plugin $plugin
      * @return void
      */
-    private function injectRoutes(App $app, array $routes, \iMSCP_Plugin $plugin): void
+    private function injectRoutes(
+        App $app,
+        array $routes,
+        iMSCP_Plugin $plugin
+    ): void
     {
         foreach ($routes as $key => $spec) {
             // For backward compatibility only.
@@ -92,24 +110,30 @@ class PluginRoutesInjector
     /**
      * @param App $app
      * @param array $spec
-     * @param \iMSCP_Plugin $plugin
+     * @param iMSCP_Plugin $plugin
      * @return void
      */
-    private function injectRouteGroup(App $app, array $spec, \iMSCP_Plugin $plugin): void
+    private function injectRouteGroup(
+        App $app,
+        array $spec,
+        iMSCP_Plugin $plugin
+    ): void
     {
         if (!isset($spec['path'])) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Missing "path" key in route group specification for the "%s" plugin.',
                 $plugin->getName()
             ));
         }
 
-        $self = $this;
-        $group = $app->group($spec['path'], function () use ($app, $spec, $plugin, $self) {
-            foreach ($spec['routes'] as $routeSpec) {
-                $self->injectRoute($app, $routeSpec, $plugin);
+        $group = $app->group(
+            $spec['path'],
+            function () use ($app, $spec, $plugin) {
+                foreach ($spec['routes'] as $routeSpec) {
+                    $this->injectRoute($app, $routeSpec, $plugin);
+                }
             }
-        });
+        );
 
         // Add route group middleware if any
         if (isset($spec['middleware'])) {
@@ -122,13 +146,17 @@ class PluginRoutesInjector
     /**
      * @param App $app
      * @param array $spec
-     * @param \iMSCP_Plugin $plugin
+     * @param iMSCP_Plugin $plugin
      * @return void
      */
-    private function injectRoute(App $app, array $spec, \iMSCP_Plugin $plugin): void
+    private function injectRoute(
+        App $app,
+        array $spec,
+        iMSCP_Plugin $plugin
+    ): void
     {
         if (!isset($spec['path']) || !isset($spec['handler'])) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Missing "path" or "handler" key in route specification for the "%s" plugin.',
                 $plugin->getName()
             ));
@@ -137,7 +165,7 @@ class PluginRoutesInjector
         $methods = isset($spec['methods']) ? $spec['methods'] : self::DEFAULT_METHODS;
 
         if (!is_array($methods)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Allowed HTTP methods for a route must be in form of an array; received "%s" for the "%s" plugin',
                 gettype($methods),
                 $plugin->getName()

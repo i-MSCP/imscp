@@ -25,22 +25,32 @@
  * PhpUnhandledExceptionInspection
  */
 
+declare(strict_types=1);
+
 namespace iMSCP\Plugin;
 
+use iMSCP_Plugin_Manager;
 use Slim\Container;
 
+/**
+ * Class PluginServiceProvidersInjector
+ * @package iMSCP\Plugin
+ */
 class PluginServiceProvidersInjector
 {
     /**
      * Register plugin service providers with Slim dependency container
      *
      * @param Container $container
-     * @param \iMSCP_Plugin_Manager $pluginManager
+     * @param iMSCP_Plugin_Manager $pm
      * @return void
      */
-    public function __invoke(Container $container, \iMSCP_Plugin_Manager $pluginManager): void
+    public function __invoke(
+        Container $container,
+        iMSCP_Plugin_Manager $pm
+    ): void
     {
-        foreach ($pluginManager->pluginGetLoaded('Action') as $plugin) {
+        foreach ($pm->pluginGetLoaded('Action') as $plugin) {
             // Since 1.5.3-2019*
             if ($serviceProvider = $plugin->getServiceProvider()) {
                 $serviceProvider->register($container);

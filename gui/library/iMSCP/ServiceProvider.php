@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+/** @noinspection PhpUnusedParameterInspection */
+
 declare(strict_types=1);
 
 namespace iMSCP;
@@ -25,6 +27,10 @@ namespace iMSCP;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
+/**
+ * Class ServiceProvider
+ * @package iMSCP
+ */
 class ServiceProvider implements ServiceProviderInterface
 {
     /** 

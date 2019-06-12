@@ -30,9 +30,18 @@ require_once __DIR__ . '/../library/imscp-lib.php';
     /** @var Application $app */
     $app = iMSCP_Registry::get('iMSCP_Application');
     $slim = $app->getSlimApplication();
+    $app->getEventsManager()->dispatch(
+        iMSCP_Events::onBeforeInjectPluginServiceProviders,
+        [ 'pluginManager' => $app->getPluginManager()]
+    );
     (new PluginServiceProvidersInjector())(
         $slim->getContainer(), $app->getPluginManager()
     );
+    $app->getEventsManager()->dispatch(
+        iMSCP_Events::onBeforeInjectPluginRoutes,
+        [ 'pluginManager' => $app->getPluginManager()]
+    );
     (new PluginRoutesInjector())($slim, $app->getPluginManager());
+
     $slim->run();
 })();

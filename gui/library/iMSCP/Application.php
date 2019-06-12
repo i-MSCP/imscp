@@ -912,6 +912,7 @@ class Application
         if (PHP_SAPI == 'cli') {
             return;
         }
+
         $pluginManager = $this->getPluginManager();
 
         foreach ($pluginManager->pluginGetList() as $pluginName) {

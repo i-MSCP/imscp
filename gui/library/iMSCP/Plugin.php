@@ -1,4 +1,4 @@
-<?php /** @noinspection ALL */
+<?php
 /**
  * i-MSCP - internet Multi Server Control Panel
  * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
@@ -17,6 +17,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
+/** @noinspection PhpUnhandledExceptionInspection PhpDocMissingThrowsInspection PhpIncludeInspection */
 
 /**
  * iMSCP_Plugin class
@@ -59,11 +61,11 @@ abstract class iMSCP_Plugin
     /**
      * Constructor
      *
-     * @param iMSCP_Plugin_Manager $pluginManager
+     * @param iMSCP_Plugin_Manager $pm
      */
-    public function __construct(iMSCP_Plugin_Manager $pluginManager)
+    public function __construct(iMSCP_Plugin_Manager $pm)
     {
-        $this->pluginManager = $pluginManager;
+        $this->pluginManager = $pm;
         $this->init();
     }
 
@@ -90,13 +92,13 @@ abstract class iMSCP_Plugin
      * build: Last build of the plugin in YYYYMMDDNN format
      * name: Plugin name
      * desc: Plugin short description (text only)
-     * url: Website in which it's possible to found more information about the
+     * url: OPTIONAL Website URL at which it's possible to found more information about the
      *      plugin
      * priority: OPTIONAL priority which define priority for plugin backend
      *           processing
      *
      * A plugin can provide any other info for its own needs. However, the
-     * following keywords are reserved for internal use:
+     * following fields are reserved for internal use:
      *
      *  __nversion__      : Last available plugin version
      *  __installable__   : Whether or not the plugin is installable
@@ -323,7 +325,7 @@ abstract class iMSCP_Plugin
     }
 
     /**
-     * Allow plugin initialization
+     * Plugin initialization tasks
      *
      * This method allow to do some initialization tasks without overriding the
      * constructor.
@@ -335,97 +337,96 @@ abstract class iMSCP_Plugin
     }
 
     /**
-     * Plugin installation
+     * Plugin installation tasks
      *
      * This method is automatically called by the plugin manager when the
      * plugin is being installed.
      *
-     * @param iMSCP_Plugin_Manager $pluginManager
+     * @param iMSCP_Plugin_Manager $pm
      * @return void
      * @throws iMSCP_Plugin_Exception
      */
-    public function install(iMSCP_Plugin_Manager $pluginManager)
+    public function install(iMSCP_Plugin_Manager $pm)
     {
     }
 
     /**
-     * Plugin activation
+     * Plugin uninstallation tasks
      *
      * This method is automatically called by the plugin manager when the
-     * plugin is being enabled (activated).
+     * plugin is being uninstalled.
      *
-     * @param iMSCP_Plugin_Manager $pluginManager
+     * @param iMSCP_Plugin_Manager $pm
      * @return void
      * @throws iMSCP_Plugin_Exception
      */
-    public function enable(iMSCP_Plugin_Manager $pluginManager)
+    public function uninstall(iMSCP_Plugin_Manager $pm)
     {
     }
 
     /**
-     * Plugin deactivation
+     * Plugin deletion tasks
      *
      * This method is automatically called by the plugin manager when the
-     * plugin is being disabled (deactivated).
+     * plugin is being deleted.
      *
-     * @param iMSCP_Plugin_Manager $pluginManager
+     * @param iMSCP_Plugin_Manager $pm
      * @return void
      * @throws iMSCP_Plugin_Exception
      */
-    public function disable(iMSCP_Plugin_Manager $pluginManager)
+    public function delete(iMSCP_Plugin_Manager $pm)
     {
     }
 
     /**
-     * Plugin update
+     * Plugin update tasks
      *
      * This method is automatically called by the plugin manager when
      * the plugin is being updated.
      *
-     * @param iMSCP_Plugin_Manager $pluginManager
+     * @param iMSCP_Plugin_Manager $pm
      * @param string $fromVersion Version from which plugin update is initiated
      * @param string $toVersion Version to which plugin is updated
      * @return void
      * @throws iMSCP_Plugin_Exception
      */
-    public function update(iMSCP_Plugin_Manager $pluginManager, $fromVersion, $toVersion)
+    public function update(iMSCP_Plugin_Manager $pm, $fromVersion, $toVersion)
     {
     }
 
     /**
-     * Plugin uninstallation
+     * Plugin activation tasks
      *
      * This method is automatically called by the plugin manager when the
-     * plugin is being uninstalled.
+     * plugin is being enabled (activated).
      *
-     * @param iMSCP_Plugin_Manager $pluginManager
+     * @param iMSCP_Plugin_Manager $pm
      * @return void
      * @throws iMSCP_Plugin_Exception
      */
-    public function uninstall(iMSCP_Plugin_Manager $pluginManager)
+    public function enable(iMSCP_Plugin_Manager $pm)
     {
     }
 
     /**
-     * Plugin deletion
+     * Plugin deactivation tasks
      *
      * This method is automatically called by the plugin manager when the
-     * plugin is being deleted.
+     * plugin is being disabled (deactivated).
      *
-     * @param iMSCP_Plugin_Manager $pluginManager
+     * @param iMSCP_Plugin_Manager $pm
      * @return void
      * @throws iMSCP_Plugin_Exception
      */
-    public function delete(iMSCP_Plugin_Manager $pluginManager)
+    public function disable(iMSCP_Plugin_Manager $pm)
     {
     }
 
     /**
      * Get plugin item with error status
      *
-     * This method is called by the i-MSCP debugger.
-     *
-     * Note: *MUST* be implemented by any plugin which manage its own items.
+     * This method is called by the i-MSCP debugger and *MUST* be implemented
+     * by any plugin which manage its own items.
      *
      * @return array
      */
@@ -551,25 +552,25 @@ abstract class iMSCP_Plugin
      *
      * @param string $migrationMode Migration mode (up|down)
      * @return void
-     * @throws iMSCP_Plugin_Exception When an error occurs
+     * @throws iMSCP_Plugin_Exception
      */
     protected function migrateDb($migrationMode = 'up')
     {
-        try {
-            $pluginName = $this->getName();
-            $pluginManager = $this->getPluginManager();
-            $sqlDir = $pluginManager->pluginGetDirectory() . '/' . $pluginName . '/sql';
-            $pluginInfo = $pluginManager->pluginGetInfo($pluginName);
-            $dbSchemaVersion = isset($pluginInfo['db_schema_version']) ? $pluginInfo['db_schema_version'] : '000';
-            $migrationFiles = [];
+        $pluginName = $this->getName();
+        $pm = $this->getPluginManager();
+        $sqlDir = $pm->pluginGetDirectory() . '/' . $pluginName . '/sql';
+        $pluginInfo = $pm->pluginGetInfo($pluginName);
+        $dbSchemaVersion = isset($pluginInfo['db_schema_version']) ? $pluginInfo['db_schema_version'] : '000';
+        $migrationFiles = [];
 
+        try {
             if (!@is_dir($sqlDir)) {
                 // Cover case where there are no longer migration files provided by
                 // the plugin. In such a case, we need remove the db_schema_version field from
                 // the plugin info.
                 if ($migrationMode == 'down') {
                     unset($pluginInfo['db_schema_version']);
-                    $pluginManager->pluginUpdateInfo($pluginName, $pluginInfo->toArray());
+                    $pm->pluginUpdateInfo($pluginName, $pluginInfo->toArray());
                     return;
                 }
 
@@ -594,11 +595,15 @@ abstract class iMSCP_Plugin
 
             foreach ($migrationFiles as $migrationFile) {
                 if (!@is_readable($migrationFile)) {
-                    throw new iMSCP_Plugin_Exception(tr('Migration file %s is not readable.', $migrationFile));
+                    throw new iMSCP_Plugin_Exception(tohtml(tr(
+                        'Migration file %s is not readable.', $migrationFile
+                    )));
                 }
 
                 if (!preg_match('/(\d+)_[^\/]+\.php$/i', $migrationFile, $version)) {
-                    throw new iMSCP_Plugin_Exception(tr("File %s doesn't look like a migration file.", $migrationFile));
+                    throw new iMSCP_Plugin_Exception(tohtml(tr(
+                        "File %s doesn't look like a migration file.", $migrationFile
+                    )));
                 }
 
                 if (($migrationMode == 'up' && $version[1] > $dbSchemaVersion)
@@ -608,6 +613,7 @@ abstract class iMSCP_Plugin
                     if (isset($migrationFilesContent[$migrationMode])) {
                         $stmt = $db->prepare($migrationFilesContent[$migrationMode]);
                         $db->execute($stmt);
+                        /** @noinspection PhpStatementHasEmptyBodyInspection */
                         while ($stmt->nextRowset()) {
                             /* https://bugs.php.net/bug.php?id=61613 */
                         };
@@ -617,12 +623,16 @@ abstract class iMSCP_Plugin
                 }
             }
 
-            $pluginInfo['db_schema_version'] = ($migrationMode == 'up') ? $dbSchemaVersion : '000';
-            $pluginManager->pluginUpdateInfo($pluginName, $pluginInfo->toArray());
+            $pluginInfo['db_schema_version'] = ($migrationMode == 'up')
+                ? $dbSchemaVersion : '000';
+            $pm->pluginUpdateInfo($pluginName, $pluginInfo->toArray());
         } catch (Exception $e) {
             $pluginInfo['db_schema_version'] = $dbSchemaVersion;
-            $pluginManager->pluginUpdateInfo($pluginName, $pluginInfo->toArray());
-            throw new iMSCP_Plugin_Exception($e->getMessage(), $e->getCode(), $e);
+            $pm->pluginUpdateInfo($pluginName, $pluginInfo->toArray());
+
+            throw new iMSCP_Plugin_Exception(
+                $e->getMessage(), $e->getCode(), $e
+            );
         }
     }
 }

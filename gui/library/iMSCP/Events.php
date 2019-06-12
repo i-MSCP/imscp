@@ -626,25 +626,24 @@ class iMSCP_Events
     const onAfterDeleteCustomDNSrecord = 'onAfterDeleteCustomDNSrecord';
 
     /**
-     * Event triggered before plugin routing
+     * Event triggered before injection of plugin service providers
      *
      * iMSCP_Events_Event object parameter:
      *  - pluginManager : iMSCP_Plugin_Manager instance
      *
      * @const string
      */
-    const onBeforePluginsRoute = 'onBeforePluginsRoute';
+    const onBeforeInjectPluginServiceProviders = 'onBeforeInjectPluginServiceProviders';
 
     /**
-     * Event triggered after plugin routing
+     * Event triggered before injection of plugin routes
      *
      * iMSCP_Events_Event object parameter:
      *  - pluginManager : iMSCP_Plugin_Manager instance
-     *  - scriptPath    : Plugin action script path
      *
      * @const string
      */
-    const onAfterPluginsRoute = 'onAfterPluginsRoute';
+    const onBeforeInjectPluginRoutes = 'onBeforeInjectPluginRoutes';
 
     /**
      * Event triggered before plugin list update

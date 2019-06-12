@@ -469,7 +469,8 @@ sub _executePluginAction
                 action       => $self->{'pluginAction'},
                 config       => $self->{'pluginData'}->{'config'},
                 config_prev  => ( ( $self->{'pluginAction'} =~ /^(?:change|update)$/ )
-                    # On plugin change/update, make sure that prev config also contains any new parameter
+                    # On plugin change/update, make sure that prev config also
+                    # contains new parameters (left precedence, default behavior of merge())
                     ? merge( $self->{'pluginData'}->{'config_prev'}, $self->{'pluginData'}->{'config'} )
                     : $self->{'pluginData'}->{'config_prev'} ),
                 eventManager => $self->{'events'},

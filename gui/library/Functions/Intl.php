@@ -343,9 +343,9 @@ function i18n_changeDefaultLanguage()
 /**
  * Add translations
  *
- * This function allow any plugin to add its translations.
+ * This function allow any plugin to add its translation resources.
  *
- * @param string $dirPath Absolute path to the translations root directory
+ * @param string $dir Absolute path to the translations root directory
  * @param string $type Translations type (array, Csv, Gettext, Ini, Qt, Tbx, Tmx, Xliff, XmlTm)
  * @param string $tag Tag which is used for caching (eg. plugin name)
  * @param string|null $scan If set to NULL, no scanning of the directory structure will be done. If set to
@@ -355,7 +355,12 @@ function i18n_changeDefaultLanguage()
  * @throws Zend_Exception
  * @throws Zend_Translate_Exception
  */
-function l10n_addTranslations($dirPath, $type = 'Array', $tag = 'iMSCP_Translate', $scan = Translator::LOCALE_FILENAME)
+function l10n_addTranslations(
+    $dir,
+    $type = 'Array',
+    $tag = 'iMSCP_Translate',
+    $scan = Translator::LOCALE_FILENAME
+)
 {
     /** @var Zend_Translate_Adapter $primaryTranslator */
     $primaryTranslator = Registry::get('Zend_Translate')->getAdapter();
@@ -363,7 +368,7 @@ function l10n_addTranslations($dirPath, $type = 'Array', $tag = 'iMSCP_Translate
 
     $pluginTranslator = new Translator([
         'adapter'        => $type,
-        'content'        => $dirPath,
+        'content'        => $dir,
         'scan'           => $scan,
         'locale'         => $locale,
         'disableNotices' => true,
