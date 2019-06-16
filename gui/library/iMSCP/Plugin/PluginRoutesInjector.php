@@ -32,6 +32,9 @@ use Slim\App;
 
 /**
  * Class PluginRoutesInjector
+ *
+ * This class provides configuration-driven routing for i-MSCP plugin.
+ *
  * @package iMSCP\Plugin
  */
 class PluginRoutesInjector
@@ -56,9 +59,12 @@ class PluginRoutesInjector
     {
         foreach ($pm->pluginGetLoaded('Action') as $plugin) {
             // For backward compatibility only (duck-typing).
+            // the iMSCP_Plugin_Action::route() method is deprecated since
+            // the plugin API version 1.5.1
             if (method_exists($plugin, 'route')) {
                 /** @var RequestInterface $request */
                 $request = $app->getContainer()->get('request');
+
                 if (!($pluginActionScriptPath = $plugin->route(
                     parse_url($request->getUri())
                 ))) {
@@ -89,8 +95,8 @@ class PluginRoutesInjector
     ): void
     {
         foreach ($routes as $key => $spec) {
+            // Path => Action script
             // For backward compatibility only.
-            // Wrap execution in specific callback
             if (is_string($key)) {
                 $app->any($key, function ($request, $response) use ($spec) {
                     require $spec;
@@ -98,11 +104,13 @@ class PluginRoutesInjector
                 continue;
             }
 
+            // Route group specification
             if (isset($spec['routes'])) {
                 $this->injectRouteGroup($app, $spec, $plugin);
                 continue;
             }
 
+            // Single route specification
             $this->injectRoute($app, $spec, $plugin);
         }
     }
