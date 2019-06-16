@@ -33,7 +33,7 @@ use Slim\App;
 /**
  * Class PluginRoutesInjector
  *
- * This class provides configuration-driven routing for i-MSCP plugin.
+ * This class provides configuration-driven routing for i-MSCP plugins.
  *
  * @package iMSCP\Plugin
  */
