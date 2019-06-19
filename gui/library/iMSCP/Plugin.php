@@ -23,6 +23,8 @@
 /**
  * iMSCP_Plugin class
  *
+ * This is the base class for all i-MSCP plugins.
+ *
  * Please, do not inherit from this class. Instead, inherit from the
  * specialized classes localized into gui/library/iMSCP/Plugin/
  */
@@ -327,8 +329,8 @@ abstract class iMSCP_Plugin
     /**
      * Plugin initialization tasks
      *
-     * This method allow to do some initialization tasks without overriding the
-     * constructor.
+     * This method allows to do some initialization tasks without overriding
+     * the constructor.
      *
      * @return void
      */
@@ -342,9 +344,10 @@ abstract class iMSCP_Plugin
      * This method is automatically called by the plugin manager when the
      * plugin is being installed.
      *
+     * On failure, this method *MUST* throw an iMSCP_Plugin_Exception
+     *
      * @param iMSCP_Plugin_Manager $pm
      * @return void
-     * @throws iMSCP_Plugin_Exception
      */
     public function install(iMSCP_Plugin_Manager $pm)
     {
@@ -356,9 +359,10 @@ abstract class iMSCP_Plugin
      * This method is automatically called by the plugin manager when the
      * plugin is being uninstalled.
      *
+     * On failure, this method *MUST* throw an iMSCP_Plugin_Exception
+     *
      * @param iMSCP_Plugin_Manager $pm
      * @return void
-     * @throws iMSCP_Plugin_Exception
      */
     public function uninstall(iMSCP_Plugin_Manager $pm)
     {
@@ -370,9 +374,10 @@ abstract class iMSCP_Plugin
      * This method is automatically called by the plugin manager when the
      * plugin is being deleted.
      *
+     * On failure, this method *MUST* throw an iMSCP_Plugin_Exception
+     *
      * @param iMSCP_Plugin_Manager $pm
      * @return void
-     * @throws iMSCP_Plugin_Exception
      */
     public function delete(iMSCP_Plugin_Manager $pm)
     {
@@ -384,11 +389,12 @@ abstract class iMSCP_Plugin
      * This method is automatically called by the plugin manager when
      * the plugin is being updated.
      *
+     * On failure, this method *MUST* throw an iMSCP_Plugin_Exception
+     *
      * @param iMSCP_Plugin_Manager $pm
      * @param string $fromVersion Version from which plugin update is initiated
      * @param string $toVersion Version to which plugin is updated
      * @return void
-     * @throws iMSCP_Plugin_Exception
      */
     public function update(iMSCP_Plugin_Manager $pm, $fromVersion, $toVersion)
     {
@@ -400,9 +406,10 @@ abstract class iMSCP_Plugin
      * This method is automatically called by the plugin manager when the
      * plugin is being enabled (activated).
      *
+     * On failure, this method *MUST* throw an iMSCP_Plugin_Exception
+     *
      * @param iMSCP_Plugin_Manager $pm
      * @return void
-     * @throws iMSCP_Plugin_Exception
      */
     public function enable(iMSCP_Plugin_Manager $pm)
     {
@@ -414,9 +421,10 @@ abstract class iMSCP_Plugin
      * This method is automatically called by the plugin manager when the
      * plugin is being disabled (deactivated).
      *
+     * On failure, this method *MUST* throw an iMSCP_Plugin_Exception
+     *
      * @param iMSCP_Plugin_Manager $pm
      * @return void
-     * @throws iMSCP_Plugin_Exception
      */
     public function disable(iMSCP_Plugin_Manager $pm)
     {
@@ -473,7 +481,7 @@ abstract class iMSCP_Plugin
      *
      * This method considers each migration as being a new 'version' of the
      * database schema. A schema starts off with nothing in it, and each
-     * migation modifies it to add or remove tables, columns, or entries. Each
+     * migration modifies it to add or remove tables, columns, or entries. Each
      * time a new migration is applied, the 'db_schema_version' info field is
      * updated. This allow to keep track of the last applied database
      * migration.
@@ -531,11 +539,11 @@ abstract class iMSCP_Plugin
      *      '
      * );
      * </code>
-     * 
+     *
      * Finally, when a plugin doesn't longer provide migration files, it should
      * call this method in down mode through its update() method to remove the
      * 'db_schema_version' info field. For instance:
-     * 
+     *
      * <code>
      * public function update (iMSCP_Plugin_manager $pm, $fromVersion, $toVersion)
      * {
@@ -551,20 +559,23 @@ abstract class iMSCP_Plugin
      * </code>
      *
      * @param string $migrationMode Migration mode (up|down)
+     * @param string $migrationDir (default to <plugin>/sql directory)
      * @return void
      * @throws iMSCP_Plugin_Exception
      */
-    protected function migrateDb($migrationMode = 'up')
+    protected function migrateDb($migrationMode = 'up', $migrationDir = NULL)
     {
         $pluginName = $this->getName();
         $pm = $this->getPluginManager();
-        $sqlDir = $pm->pluginGetDirectory() . '/' . $pluginName . '/sql';
+        $migrationDir = is_string($migrationDir)
+            ? $migrationDir : $pm->pluginGetDirectory() . '/' . $pluginName . '/sql';
         $pluginInfo = $pm->pluginGetInfo($pluginName);
-        $dbSchemaVersion = isset($pluginInfo['db_schema_version']) ? $pluginInfo['db_schema_version'] : '000';
+        $dbSchemaVersion = isset($pluginInfo['db_schema_version'])
+            ? $pluginInfo['db_schema_version'] : '000';
         $migrationFiles = [];
 
         try {
-            if (!@is_dir($sqlDir)) {
+            if (!@is_dir($migrationDir)) {
                 // Cover case where there are no longer migration files provided by
                 // the plugin. In such a case, we need remove the db_schema_version field from
                 // the plugin info.
@@ -574,11 +585,13 @@ abstract class iMSCP_Plugin
                     return;
                 }
 
-                throw new iMSCP_Plugin_Exception(tr("Directory %s doesn't exists.", $sqlDir));
+                throw new iMSCP_Plugin_Exception(tr(
+                    "Directory %s doesn't exists.", $migrationDir
+                ));
             }
 
             /** @var $migrationFileInfo DirectoryIterator */
-            foreach (new DirectoryIterator($sqlDir) as $migrationFileInfo) {
+            foreach (new DirectoryIterator($migrationDir) as $migrationFileInfo) {
                 if (!$migrationFileInfo->isDot()) {
                     $migrationFiles[] = $migrationFileInfo->getRealPath();
                 }
