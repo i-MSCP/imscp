@@ -18,19 +18,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/** @noinspection
- * PhpIncludeInspection
- * PhpUnusedLocalVariableInspection
- * PhpUnusedParameterInspection
- * PhpUnhandledExceptionInspection
- */
-
 declare(strict_types=1);
 
 namespace iMSCP\Plugin;
 
 use iMSCP_Plugin_Manager;
-use Slim\Container;
+use Psr\Container\ContainerInterface;
 
 /**
  * Class PluginServiceProvidersInjector
@@ -39,19 +32,18 @@ use Slim\Container;
 class PluginServiceProvidersInjector
 {
     /**
-     * Register plugin service providers with Slim dependency container
+     * Register plugin service providers with the dependency container
      *
-     * @param Container $container
+     * @param ContainerInterface $container
      * @param iMSCP_Plugin_Manager $pm
      * @return void
      */
     public function __invoke(
-        Container $container,
+        ContainerInterface $container,
         iMSCP_Plugin_Manager $pm
     ): void
     {
         foreach ($pm->pluginGetLoaded('Action') as $plugin) {
-            // Since 1.5.3-2019*
             if ($serviceProvider = $plugin->getServiceProvider()) {
                 $serviceProvider->register($container);
             }

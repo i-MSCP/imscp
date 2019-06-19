@@ -22,7 +22,6 @@
 
 use iMSCP\Application;
 use iMSCP\Plugin\PluginRoutesInjector;
-use iMSCP\Plugin\PluginServiceProvidersInjector;
 
 require_once __DIR__ . '/../library/imscp-lib.php';
 
@@ -30,18 +29,11 @@ require_once __DIR__ . '/../library/imscp-lib.php';
     /** @var Application $app */
     $app = iMSCP_Registry::get('iMSCP_Application');
     $slim = $app->getSlimApplication();
-    $app->getEventsManager()->dispatch(
-        iMSCP_Events::onBeforeInjectPluginServiceProviders,
-        [ 'pluginManager' => $app->getPluginManager()]
-    );
-    (new PluginServiceProvidersInjector())(
-        $slim->getContainer(), $app->getPluginManager()
-    );
+    $pm = $app->getPluginManager();
     $app->getEventsManager()->dispatch(
         iMSCP_Events::onBeforeInjectPluginRoutes,
-        [ 'pluginManager' => $app->getPluginManager()]
+        ['pluginManager' => $pm]
     );
-    (new PluginRoutesInjector())($slim, $app->getPluginManager());
-
+    (new PluginRoutesInjector())($slim, $pm);
     $slim->run();
 })();
