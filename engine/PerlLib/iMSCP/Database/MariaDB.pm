@@ -62,8 +62,11 @@ sub connect
                 ? "port=$self->{'db'}->{'DATABASE_PORT'}" : ()
             )
         ),
-        'mariadb_init_command=SET NAMES utf8, SESSION sql_mode = '
-            . "'NO_AUTO_CREATE_USER', SESSION group_concat_max_len = 65535"
+        # Don't issue SET NAMES as the DBD::MariaDB driver already issue
+        # "SET NAMES utf8mb4" via C library function.
+        # See https://github.com/i-MSCP/imscp/commit/39185a0619eabdc317916817de22d5878e00ba11#r33912557
+        "SESSION sql_mode = 'NO_AUTO_CREATE_USER',"
+            . 'SESSION group_concat_max_len = 65535'
     );
 
     if ( $self->{'connection'}
