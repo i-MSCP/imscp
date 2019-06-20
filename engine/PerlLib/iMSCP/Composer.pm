@@ -357,6 +357,35 @@ sub update
     $self;
 }
 
+=item dumpAutoload( )
+
+ Dump the autoload
+ 
+ Return iMSCP::Composer, die on failure
+
+=cut
+
+sub dumpAutoload()
+{
+    my ( $self ) = @_;
+
+    $self->dumpComposerJson();
+
+    executeNoWait(
+        $self->_getSuCmd(
+            @{ $self->{'_php_cmd'} },
+            $self->{'composer_phar'}, 'dump-autoload',
+            "--working-dir=$self->{'composer_working_dir'}",
+            '--no-interaction',
+            '--no-ansi'
+        ),
+        $self->{'_stdout'},
+        $self->{'_stderr'}
+    ) == 0 or die( "Couldn't clear composer cache" );
+
+    $self;
+}
+
 =item clearCache( )
 
  Clear composer's internal package cache, including vendor directory
