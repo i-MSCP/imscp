@@ -2890,14 +2890,10 @@ class iMSCP_Update_Database extends iMSCP_Update
                 "`plugin_status` varchar(255) not null"
             ),
             $this->changeColumn(
-                'quotalimits',
-                'name',
-                "`name` varchar(255) not null"
+                'quotalimits', 'name', "`name` varchar(255) not null"
             ),
             $this->changeColumn(
-                'quotatallies',
-                'name',
-                "`name` varchar(255) not null"
+                'quotatallies', 'name', "`name` varchar(255) not null"
             ),
             // reseller_props table
             $this->changeColumn(
@@ -3137,7 +3133,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r276()
     {
-        // 1.Drop all indexes for which the key prefix length would be bigger
+        // Drop all indexes for which the key prefix length would be bigger
         // than 767 bytes when converting from utf8 to utf8mb4.
         $this->executeSqlStatements([
             $this->dropIndexByName('admin', 'admin_name'),
@@ -3186,7 +3182,6 @@ class iMSCP_Update_Database extends iMSCP_Update
         ];
 
         // Convert tables character set and collation from utf8 to utf8mb4
-
         foreach (
             [
                 'admin', 'autoreplies_log', 'config', 'custom_menus', 'domain',
