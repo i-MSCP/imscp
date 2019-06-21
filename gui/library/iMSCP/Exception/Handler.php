@@ -97,7 +97,7 @@ class iMSCP_Exception_Handler
      * @param Throwable $exception Uncaught exception
      * @return void
      */
-    public function handleException(\Throwable $exception)
+    public function handleException(Throwable $exception)
     {
         try {
             foreach ($this->writers as $writer) {
@@ -106,7 +106,7 @@ class iMSCP_Exception_Handler
 
             $this->em->dispatch(new iMSCP_Exception_Event($exception));
             exit;
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             die(sprintf(
                 'Unable to handle uncaught exception thrown in file %s at line %s with message: %s',
                 $e->getFile(),

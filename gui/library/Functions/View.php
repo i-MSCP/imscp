@@ -834,6 +834,9 @@ function showErrorPage($code)
         case 404:
             $message = 'Not Found';
             break;
+        case 405:
+            $message = 'Method Not Allowed';
+            break;
         default:
             throw new iMSCPException(500, 'Unknown error page');
     }
@@ -843,7 +846,7 @@ function showErrorPage($code)
     if (isset($_SERVER['HTTP_ACCEPT'])) {
         if (strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) {
             header("Content-type: application/json");
-            exit(json_encode(['code' => 404, 'message' => $message]));
+            exit(json_encode(['code' => $code, 'message' => $message]));
         }
 
         if (strpos($_SERVER['HTTP_ACCEPT'], 'application/xmls') !== false) {
@@ -889,6 +892,18 @@ function showBadRequestErrorPage()
 function showNotFoundErrorPage()
 {
     showErrorPage(404);
+}
+
+/**
+ * Show 405 error page
+ *
+ * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ */
+function showMethodNotAllowedErrorPage()
+{
+    showErrorPage(405);
 }
 
 /**

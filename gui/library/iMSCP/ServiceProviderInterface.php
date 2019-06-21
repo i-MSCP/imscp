@@ -18,45 +18,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/** @noinspection PhpUnusedParameterInspection */
-
 declare(strict_types=1);
 
 namespace iMSCP;
 
-use iMSCP\Handlers\ExceptionHandler;
-use iMSCP\Handlers\NotAllowedHandler;
-use iMSCP\Handlers\NotFoundHandler;
 use Psr\Container\ContainerInterface;
 
 /**
- * Class ServiceProvider
- *
- * Service provider that overrides default services as provided by the
- * Slim\DefaultServicesProvider
- *
+ * Interface ServiceProviderInterface
  * @package iMSCP
  */
-class ServiceProvider implements ServiceProviderInterface
+interface ServiceProviderInterface
 {
     /**
-     * Override default Slim services
+     * Registers services on the given container.
      *
-     * @inheritdoc
+     * This method should only be used to configure services and parameters.
+     * It should not get services.
+     *
+     * @param ContainerInterface $container A container instance
      */
-    public function register(ContainerInterface $c): void
-    {
-        $c['phpErrorHandler'] = function (ContainerInterface $c) {
-            return new ExceptionHandler();
-        };
-        $c['errorHandler'] = function (ContainerInterface $c) {
-            return new ExceptionHandler();
-        };
-        $c['notFoundHandler'] = function (ContainerInterface $c) {
-            return new NotFoundHandler();
-        };
-        $c['notAllowedHandler'] = function (ContainerInterface $c) {
-            return new NotAllowedHandler();
-        };
-    }
+    public function register(ContainerInterface $container);
 }
