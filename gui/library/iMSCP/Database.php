@@ -1,26 +1,24 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "ispCP - ISP Control Panel".
- *
- * The Initial Developer of the Original Code is ispCP Team.
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2017 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
+/** @noinspection PhpUnhandledExceptionInspection PhpDocMissingThrowsInspection */
 
 use iMSCP_Database_Events_Database as DatabaseEvents;
 use iMSCP_Database_Events_Statement as DatabaseEventsStatement;
@@ -36,7 +34,8 @@ use iMSCP_Exception_Database as DatabaseException;
 class iMSCP_Database
 {
     /**
-     * @var iMSCP_Database[] Array which contain Database objects, indexed by connection name
+     * @var iMSCP_Database[] Array which contain Database objects, indexed by
+     *                       connection name
      */
     protected static $_instances = [];
 
@@ -76,31 +75,41 @@ class iMSCP_Database
      * Creates a PDO object and connects to the database.
      *
      * According the PDO implementation, a PDOException is raised on error
-     * See {@link http://www.php.net/manual/en/pdo.construct.php} for more information about this issue.
+     * See {@link http://www.php.net/manual/en/pdo.construct.php} for more
+     * information about this issue.
      *
-     * @throws PDOException|iMSCP_Exception
      * @param string $user Sql username
      * @param string $pass Sql password
      * @param string $type PDO driver
      * @param string $host Mysql server hostname
      * @param string $name Database name
      * @param array $driverOptions OPTIONAL Driver options
+     * @throws PDOException|iMSCP_Exception
      */
-    private function __construct($user, $pass, $type, $host, $name, $driverOptions = [])
+    private function __construct(
+        $user, $pass, $type, $host, $name, $driverOptions = []
+    )
     {
         $driverOptions += [
             PDO::ATTR_CASE                     => PDO::CASE_NATURAL,
             PDO::ATTR_DEFAULT_FETCH_MODE       => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES         => true, # FIXME should be FALSE but we must first review all SQL queries
+            # FIXME should be FALSE but we must first review all SQL queries
+            PDO::ATTR_EMULATE_PREPARES         => true,
             PDO::ATTR_ERRMODE                  => PDO::ERRMODE_EXCEPTION,
             // Useless as long PDO::ATTR_EMULATE_PREPARES is TRUE
             // As long as ATTR_EMULATE_PREPARES is TRUE, numeric type will be returned as string
             // PDO::ATTR_STRINGIFY_FETCHES     => true,
             PDO::MYSQL_ATTR_INIT_COMMAND       => "SET SESSION sql_mode = 'NO_AUTO_CREATE_USER', SESSION group_concat_max_len = 65535",
-            PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true // FIXME should be FALSE but we must first review all SQL queries
+            // FIXME should be FALSE but we must first review all SQL queries
+            PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true
         ];
 
-        $this->_db = new PDO("$type:host=$host;dbname=$name;charset=utf8", $user, $pass, $driverOptions);
+        $this->_db = new PDO(
+            "$type:host=$host;dbname=$name;charset=utf8mb4",
+            $user,
+            $pass,
+            $driverOptions
+        );
     }
 
     /**
@@ -131,9 +140,10 @@ class iMSCP_Database
     /**
      * Establishes the connection to the database
      *
-     * Create and returns an new iMSCP_Database object which represents the connection to the database. If a connection
-     * with the same identifier is already referenced, the connection is automatically closed and then, the object is
-     * recreated.
+     * Create and returns an new iMSCP_Database object which represents the
+     * connection to the database. If a connection with the same identifier is
+     * already referenced, the connection is automatically closed and then, the
+     * object is recreated.
      *
      * @param string $user Sql username
      * @param string $pass Sql password
@@ -142,10 +152,18 @@ class iMSCP_Database
      * @param string $name Database name
      * @param string $connection OPTIONAL Connection key name
      * @param array $options OPTIONAL Driver options
-     * @return iMSCP_Database An iMSCP_Database instance that represents the connection to the database
-     * @throws iMSCP_Exception
+     * @return iMSCP_Database An iMSCP_Database instance that represents the
+     *         connection to the database
      */
-    public static function connect($user, $pass, $type, $host, $name, $connection = 'default', $options = NULL)
+    public static function connect(
+        $user,
+        $pass,
+        $type,
+        $host,
+        $name,
+        $connection = 'default',
+        $options = NULL
+    )
     {
         if (is_array($connection)) {
             $options = $connection;
@@ -156,24 +174,27 @@ class iMSCP_Database
             self::$_instances[$connection] = NULL;
         }
 
-        return self::$_instances[$connection] = new self($user, $pass, $type, $host, $name, (array)$options);
+        return self::$_instances[$connection] = new self(
+            $user, $pass, $type, $host, $name, (array)$options
+        );
     }
 
     /**
      * Returns a database connection object
      *
-     * Each database connection object are referenced by an unique identifier. The default identifier, if not one is
-     * provided, is 'default'.
+     * Each database connection object are referenced by an unique identifier.
+     * The default identifier, if not one is provided, is 'default'.
      *
-     * @throws DatabaseException
      * @param string $connection Connection key name
-     * @return iMSCP_Database A Database instance that represents the connection to the database
-     * @todo Rename the method name to 'getConnection' (Sounds better)
+     * @return iMSCP_Database A Database instance that represents the connection
+     *         to the database
      */
     public static function getInstance($connection = 'default')
     {
         if (!isset(self::$_instances[$connection])) {
-            throw new DatabaseException(sprintf("The Database connection %s doesn't exist.", $connection));
+            throw new DatabaseException(sprintf(
+                "The Database connection %s doesn't exist.", $connection
+            ));
         }
 
         return self::$_instances[$connection];
@@ -182,40 +203,47 @@ class iMSCP_Database
     /**
      * Same as getInstance()
      *
-     * @throws iMSCP_Exception
      * @param string $connection Connection unique identifier
      * @return self
-     * @deprecated Will be removed in a later release; now return self instead of underlying PDO instance
+     * @deprecated Will be removed in a later release; now return self instead
+     *             of underlying PDO instance
      */
     public static function getRawInstance($connection = 'default')
     {
         return self::getInstance($connection);
     }
-    
+
+    /**
+     * Return underlying PDO instance
+     *
+     * @param string $connection
+     * @return PDO
+     */
     public static function getPDO($connection = 'default')
     {
-        return self::$_instances[$connection]->_db;
+        return self::getInstance($connection)->_db;
     }
 
     /**
      * Prepares an SQL statement
      *
-     * The SQL statement can contains zero or more named or question mark parameters markers for which real values will
-     * be substituted when the statement will be executed.
+     * The SQL statement can contains zero or more named or question mark
+     * parameters markers for which real values will be substituted when the
+     * statement will be executed.
      *
      * See {@link http://www.php.net/manual/en/pdo.prepare.php}
      *
      * @param string $sql Sql statement to prepare
      * @param array $options OPTIONAL Attribute values for the PDOStatement object
-     * @return PDOStatement|false A PDOStatement instance or FALSE on failure. If prepared statements are emulated by PDO,
-     *                        FALSE is never returned.
-     * @throws iMSCP_Events_Exception
+     * @return PDOStatement|false A PDOStatement instance or FALSE on failure.
+     *         If prepared statements are emulated by PDO, FALSE is never
+     *         returned.
      */
     public function prepare($sql, $options = NULL)
     {
-        $this->events()->dispatch(
-            new DatabaseEvents(Events::onBeforeQueryPrepare, ['context' => $this, 'query' => $sql])
-        );
+        $this->events()->dispatch(new DatabaseEvents(
+            Events::onBeforeQueryPrepare, ['context' => $this, 'query' => $sql]
+        ));
 
         if (is_array($options)) {
             $stmt = $this->_db->prepare($sql, $options);
@@ -223,9 +251,9 @@ class iMSCP_Database
             $stmt = $this->_db->prepare($sql);
         }
 
-        $this->events()->dispatch(
-            new DatabaseEventsStatement(Events::onAfterQueryPrepare, ['context' => $this, 'statement' => $stmt])
-        );
+        $this->events()->dispatch(new DatabaseEventsStatement(
+            Events::onAfterQueryPrepare, ['context' => $this, 'statement' => $stmt]
+        ));
 
         if (!$stmt) {
             $errorInfo = $this->errorInfo();
@@ -243,16 +271,14 @@ class iMSCP_Database
      * @param PDOStatement|string $stmt
      * @param null $parameters
      * @return ResultSet|false
-     * @throws iMSCP_Exception_Database
-     * @throws iMSCP_Events_Exception
-     * @throws iMSCP_Events_Exception
      */
     public function execute($stmt, $parameters = NULL)
     {
         if ($stmt instanceof PDOStatement) {
-            $this->events()->dispatch(
-                new DatabaseEventsStatement(Events::onBeforeQueryExecute, ['context' => $this, 'statement' => $stmt])
-            );
+            $this->events()->dispatch(new DatabaseEventsStatement(
+                Events::onBeforeQueryExecute,
+                ['context' => $this, 'statement' => $stmt]
+            ));
 
             if (NULL === $parameters) {
                 $rs = $stmt->execute();
@@ -260,9 +286,10 @@ class iMSCP_Database
                 $rs = $stmt->execute((array)$parameters);
             }
         } elseif (is_string($stmt)) {
-            $this->events()->dispatch(
-                new DatabaseEvents(Events::onBeforeQueryExecute, ['context' => $this, 'query' => $stmt])
-            );
+            $this->events()->dispatch(new DatabaseEvents(
+                Events::onBeforeQueryExecute,
+                ['context' => $this, 'query' => $stmt]
+            ));
 
             if (is_null($parameters)) {
                 $rs = $this->_db->query($stmt);
@@ -271,13 +298,16 @@ class iMSCP_Database
                 $rs = call_user_func_array([$this->_db, 'query'], $parameters);
             }
         } else {
-            throw new DatabaseException('Wrong parameter. Expects either a string or PDOStatement object');
+            throw new DatabaseException(
+                'Wrong parameter. Expects either a string or PDOStatement object'
+            );
         }
 
         if ($rs) {
             $stmt = ($rs === true) ? $stmt : $rs;
             $this->events()->dispatch(new DatabaseEventsStatement(
-                Events::onAfterQueryExecute, ['context' => $this, 'statement' => $stmt]
+                Events::onAfterQueryExecute,
+                ['context' => $this, 'statement' => $stmt]
             ));
 
             return new ResultSet($stmt);
@@ -339,8 +369,10 @@ class iMSCP_Database
      * Quotes a string for use in a query
      *
      * @param string $string The string to be quoted
-     * @param null|int $parameterType Provides a data type hint for drivers that have alternate quoting styles.
-     * @return string A quoted string that is theoretically safe to pass into an SQL statement
+     * @param null|int $parameterType Provides a data type hint for drivers that
+     *                                have alternate quoting styles.
+     * @return string A quoted string that is theoretically safe to pass into an
+     *                SQL statement
      */
     public function quote($string, $parameterType = NULL)
     {
@@ -350,7 +382,8 @@ class iMSCP_Database
     /**
      * Sets an attribute on the database handle
      *
-     * See @link http://www.php.net/manual/en/book.pdo.php} PDO guideline for more information about this.
+     * See @link http://www.php.net/manual/en/book.pdo.php} PDO guideline for
+     * more information about this.
      *
      * @param int $attribute Attribute identifier
      * @param mixed $value Attribute value
@@ -383,7 +416,9 @@ class iMSCP_Database
         if ($this->transactionCounter == 0) {
             $this->_db->beginTransaction();
         } else {
-            $this->_db->exec("SAVEPOINT TRANSACTION{$this->transactionCounter}");
+            $this->_db->exec(
+                "SAVEPOINT TRANSACTION{$this->transactionCounter}"
+            );
         }
 
         $this->transactionCounter++;
@@ -404,7 +439,9 @@ class iMSCP_Database
             return;
         }
 
-        $this->_db->exec("RELEASE SAVEPOINT TRANSACTION{$this->transactionCounter}");
+        $this->_db->exec(
+            "RELEASE SAVEPOINT TRANSACTION{$this->transactionCounter}"
+        );
     }
 
     /**
@@ -427,7 +464,9 @@ class iMSCP_Database
             return;
         }
 
-        $this->_db->exec("ROLLBACK TO SAVEPOINT TRANSACTION{$this->transactionCounter}");
+        $this->_db->exec(
+            "ROLLBACK TO SAVEPOINT TRANSACTION{$this->transactionCounter}"
+        );
     }
 
     /**
@@ -454,9 +493,11 @@ class iMSCP_Database
     /**
      * Gets the last error message
      *
-     * This method returns the last error message set by the {@link execute()} or {@link prepare()} methods.
+     * This method returns the last error message set by the {@link execute()}
+     * or {@link prepare()} methods.
      *
-     * @return string Last error message set by the {@link execute()} or {@link prepare()} methods.
+     * @return string Last error message set by the {@link execute()} or
+     *                {@link prepare()} methods.
      */
     public function getLastErrorMessage()
     {
@@ -466,9 +507,11 @@ class iMSCP_Database
     /**
      * Stringified error information
      *
-     * This method returns a stringified version of the error information associated with the last database operation.
+     * This method returns a stringified version of the error information
+     * associated with the last database operation.
      *
-     * @return string Error information associated with the last database operation
+     * @return string Error information associated with the last database
+     *                operation
      */
     public function errorMsg()
     {
@@ -478,9 +521,11 @@ class iMSCP_Database
     /**
      * Error information associated with the last operation on the database
      *
-     * This method returns a array that contains error information associated with the last database operation.
+     * This method returns a array that contains error information associated
+     * with the last database operation.
      *
-     * @return array Array that contains error information associated with the last database operation
+     * @return array Array that contains error information associated with the
+     *               last database operation
      */
     public function errorInfo()
     {
