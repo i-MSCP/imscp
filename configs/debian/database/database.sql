@@ -1,7 +1,3 @@
-drop database if exists `new_schema`;
-create database `new_schema`;
-use `new_schema`;
-
 --
 -- Table structure for table `admin`
 --
