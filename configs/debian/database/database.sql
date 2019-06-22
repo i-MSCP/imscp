@@ -85,7 +85,7 @@ insert ignore into `config` (`name`, `value`) values
   ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
   ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
   ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-  ('DATABASE_REVISION', '278');
+  ('DATABASE_REVISION', '279');
 
 -- --------------------------------------------------------
 
@@ -390,6 +390,7 @@ create table if not exists `login` (
   `captcha_count` tinyint(1) default '0',
   `user_name` varchar(255) not null,
   primary key (`session_id`),
+  index `ipaddr` (`ipaddr`),
   index `lastaccess` (`lastaccess`),
   index `user_name` (`user_name`(191))
 ) engine=InnoDB default charset=utf8mb4 collate=utf8mb4_unicode_ci;

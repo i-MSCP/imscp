@@ -66,7 +66,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 278;
+    protected $lastUpdate = 279;
 
     /**
      * Singleton - Make new unavailable
@@ -248,8 +248,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      * Execute the given SQL statements
      *
      * @param array $queries
-     * @throws iMSCP_Events_Exception
-     * @throws iMSCP_Exception_Database
+     * @return void
      */
     protected function executeSqlStatements(array $queries)
     {
@@ -2849,6 +2848,7 @@ class iMSCP_Update_Database extends iMSCP_Update
             $this->changeColumn(
                 'htaccess_users', 'status', "`status` varchar(255) not null"
             ),
+            'TRUNCATE `login`',
             $this->changeColumn(
                 'login', 'session_id', "`session_id` varchar(255) not null"
             ),
@@ -3317,5 +3317,15 @@ class iMSCP_Update_Database extends iMSCP_Update
     protected function r278()
     {
         return $this->addIndex('log', 'log_time', 'index', 'log_time');
+    }
+
+    /**
+     * Add login.ipaddr index
+     *
+     * @return string|null SQL statement to be executed
+     */
+    protected function r279()
+    {
+        return $this->addIndex('login', 'ipaddr', 'index', 'ipaddr');
     }
 }
