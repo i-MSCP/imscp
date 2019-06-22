@@ -66,7 +66,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 277;
+    protected $lastUpdate = 278;
 
     /**
      * Singleton - Make new unavailable
@@ -3307,5 +3307,15 @@ class iMSCP_Update_Database extends iMSCP_Update
                 'software_master_id'
             )
         ];
+    }
+
+    /**
+     * Add log.log_time index
+     *
+     * @return string|null SQL statement to be executed
+     */
+    protected function r278()
+    {
+        return $this->addIndex('log', 'log_time', 'index', 'log_time');
     }
 }

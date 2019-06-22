@@ -85,7 +85,7 @@ insert ignore into `config` (`name`, `value`) values
   ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
   ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
   ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-  ('DATABASE_REVISION', '277');
+  ('DATABASE_REVISION', '278');
 
 -- --------------------------------------------------------
 
@@ -372,7 +372,8 @@ create table if not exists `log` (
   `log_time` timestamp not null default current_timestamp   
     on update current_timestamp,
   `log_message` text ,
-  primary key (`log_id`)
+  primary key (`log_id`),
+  index `log_time` (`log_time`)
 ) engine=InnoDB default charset=utf8mb4 collate=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
