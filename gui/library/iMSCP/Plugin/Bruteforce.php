@@ -315,8 +315,11 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
     {
         exec_query(
             "
-                REPLACE INTO login (session_id, ipaddr, {$this->targetForm}_count, user_name, lastaccess) VALUES (
-                    ?, ?, 1, NULL, UNIX_TIMESTAMP()
+                REPLACE INTO login (
+                    session_id, ipaddr, {$this->targetForm}_count, user_name,
+                    lastaccess
+                ) VALUES (
+                    ?, ?, 1, 'guest', UNIX_TIMESTAMP()
                 )
             ",
             [$this->sessionId, $this->clientIpAddr]
