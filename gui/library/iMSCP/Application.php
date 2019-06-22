@@ -181,6 +181,8 @@ class Application
     }
 
     /**
+     * Return the service container
+     *
      * @return Container
      */
     public function getContainer()
@@ -193,7 +195,8 @@ class Application
     }
 
     /**
-     * Get Slim application
+     * Return the Slim application
+     *
      * @return SlimApplication
      */
     public function getSlimApplication()
@@ -353,21 +356,29 @@ class Application
      */
     protected function setErrorHandling()
     {
-        if ($this->getEnvironment() == 'production') {
+        // Don't show notices and deprecation warnings if we are in
+        // production, unless we are in debug mode
+        if ($this->getEnvironment() == 'production'
+            && !$this->config['DEBUG']
+        ) {
             error_reporting(
                 E_ALL & ~E_NOTICE & ~E_USER_NOTICE & ~E_DEPRECATED
                 & ~E_USER_DEPRECATED
             );
             ini_set('display_errors', 0);
-            //ini_set('log_errors', 1);
-            //ini_set('error_log', GUI_ROOT_DIR . '/data/logs/errors.log');
         } else {
             error_reporting(E_ALL);
             ini_set('display_errors', 1);
         }
 
+        // Log all frontend errors in the ./gui/data/logs/frontend_errors.log
+        // file
+        ini_set('log_errors', 1);
+        ini_set('error_log', GUI_ROOT_DIR . '/data/logs/frontend_errors.log');
+
         $exceptionHandler = new iMSCP_Exception_Handler();
 
+        // Set default error handler (turn any error to exception)
         set_error_handler(
             function ($severity, $message, $file, $line) use (
                 $exceptionHandler
@@ -381,6 +392,7 @@ class Application
                 );
             });
 
+        // Register default exception handler
         iMSCP_Registry::set('exceptionHandler', $exceptionHandler);
     }
 
