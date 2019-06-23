@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,38 +18,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_Events as Events;
-use iMSCP_pTemplate as TemplateEngine;
-use iMSCP_Services as Services;
-
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpUnhandledExceptionInspection
+ * PhpDocMissingThrowsInspection
+ * PhpIncludeInspection
  */
 
 /**
  * Generate page
  *
- * @param TemplateEngine $tpl
+ * @param iMSCP_pTemplate $tpl
  * @return void
- * @throws Zend_Cache_Exception
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
  */
-function generatePage(TemplateEngine $tpl)
+function generatePage(iMSCP_pTemplate $tpl)
 {
-    $services = new Services();
+    $services = new iMSCP_Services(isset($_GET['refresh']));
 
     foreach ($services as $service) {
-        $isRunning = $services->isRunning(isset($_GET['refresh']));
-
-        if ($isRunning && $service[0] == 23) {
-            set_page_message(
-                tr('The Telnet-Server is currently running on your server. This legacy service is not secure.'),
-                'static_warning'
-            );
-        }
+        $isRunning = $services->isRunning();
 
         if (!$service[3]) {
             continue;
@@ -57,31 +44,33 @@ function generatePage(TemplateEngine $tpl)
 
         $tpl->assign([
             'SERVICE'        => tohtml($service[2]),
-            'IP'             => ($service[4] === '0.0.0.0') ? tr('Any') : tohtml($service[4]),
+            'IP'             => $service[4] === '0.0.0.0'
+                ? tr('Any') : tohtml($service[4]),
             'PORT'           => tohtml($service[0]),
             'STATUS'         => $isRunning ? tr('UP') : tr('DOWN'),
             'CLASS'          => $isRunning ? 'up' : 'down',
-            'STATUS_TOOLTIP' => tohtml($isRunning ? tr('Service is running') : tr('Service is not running'), 'htmlAttr')
+            'STATUS_TOOLTIP' => tohtml($isRunning
+                ? tr('Service is running') : tr('Service is not running'),
+                'htmlAttr'
+            )
         ]);
         $tpl->parse('SERVICE_STATUS', '.service_status');
     }
-    
-    if(isset($_GET['refresh'])) {
+
+    if (isset($_GET['refresh'])) {
         set_page_message('Service statuses were refreshed.', 'success');
         redirectTo('service_statuses.php');
     }
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require 'imscp-lib.php';
 
 check_login('admin');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(
+    iMSCP_Events::onAdminScriptStart
+);
 
-$tpl = new TemplateEngine();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
     'layout'         => 'shared/layouts/ui.tpl',
     'page'           => 'admin/service_statuses.tpl',
@@ -98,17 +87,21 @@ $tpl->assign([
     'TR_FORCE_REFRESH' => tohtml(tr('Force refresh', 'htmlAttr'))
 ]);
 
-EventsManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
-    /** @var $e \iMSCP_Events_Event */
-    $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
-});
+iMSCP_Events_Aggregator::getInstance()->registerListener(
+    iMSCP_Events::onGetJsTranslations,
+    function (iMSCP_Events_Event $e) {
+        $e->getParam('translations')->core['dataTable'] =
+            getDataTablesPluginTranslations(false);
+    }
+);
 
 generateNavigation($tpl);
 generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+iMSCP_Events_Aggregator::getInstance()->dispatch(
+    iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();
-
 unsetMessages();

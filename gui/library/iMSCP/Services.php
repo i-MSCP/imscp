@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,22 +18,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Registry as Registry;
+/**
+ * @noinspection
+ * PhpUnhandledExceptionInspection
+ * PhpDocMissingThrowsInspection
+ */
+
+declare(strict_types=1);
 
 /**
- * Class that allows to get services properties and their status
+ * Class iMSCP_Services
  */
 class iMSCP_Services implements iterator, countable
 {
     /**
-     * @var array[] Array of services where keys are service names and valus are arrays containing service properties
+     * @var array[] Array of services where keys are service names and values
+     *              are arrays containing service properties
      */
     private $services = [];
 
     /**
      * @var string Service name currently queried
      */
-    private $queriedService = NULL;
+    private $queriedService;
 
     /**
      * @var Zend_Cache_Core $cache
@@ -41,20 +48,26 @@ class iMSCP_Services implements iterator, countable
     private $cache;
 
     /**
-     * Constructor
+     * @var bool Whether or not data need to be refreshed
      */
-    public function __construct()
+    private $refresh;
+
+    /**
+     * iMSCP_Services constructor.
+     *
+     * @param bool $refresh Whether or not data need to be refreshed
+     * @return void
+     */
+    public function __construct(bool $refresh = false)
     {
-        $this->cache = Registry::get('iMSCP_Application')->getCache();
-        $values = Registry::get('dbConfig')->toArray();
+        $this->refresh = $refresh;
+        $this->cache = iMSCP_Registry::get('iMSCP_Application')->getCache();
+        $values = iMSCP_Registry::get('dbConfig')->toArray();
 
         // Gets list of services port names
-        $services = array_filter(
-            array_keys($values),
-            function ($name) {
-                return (strlen($name) > 5 && substr($name, 0, 5) == 'PORT_');
-            }
-        );
+        $services = array_filter(array_keys($values), function ($name) {
+            return (strlen($name) > 5 && substr($name, 0, 5) == 'PORT_');
+        });
 
         foreach ($services as $name) {
             $this->services[$name] = explode(';', $values[$name]);
@@ -62,14 +75,16 @@ class iMSCP_Services implements iterator, countable
     }
 
     /**
-     * Set service to be queried
+     * Set service to be queried.
      *
-     * @throws iMSCP_Exception
-     * @param  string $serviceName Service name
-     * @param  bool $normalize Tell whether or not the service name must be normalized
+     * @param string $serviceName Service name
+     * @param bool $normalize Tell whether or not the service name must be
+     *                        normalized
      * @return void
      */
-    public function setService($serviceName, $normalize = true)
+    public function setService(
+        string $serviceName, bool $normalize = true
+    ): void
     {
         // Normalise service name (ex. 'dns' to 'PORT_DNS')
         if ($normalize) {
@@ -84,91 +99,78 @@ class iMSCP_Services implements iterator, countable
     }
 
     /**
-     * Get service listening port
+     * Get service listening port.
      *
      * @return int
-     * @throws iMSCP_Exception
      */
-    public function getPort()
+    public function getPort(): int
     {
-        return $this->getProperty(0);
+        return (int)$this->getProperty(0);
     }
 
     /**
-     * Get service protocol
+     * Get service protocol.
      *
      * @return string
-     * @throws iMSCP_Exception
      */
-    public function getProtocol()
+    public function getProtocol(): string
     {
         return $this->getProperty(1);
     }
 
     /**
-     * Get service name
+     * Get service name.
      *
      * @return string
-     * @throws iMSCP_Exception
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->getProperty(2);
     }
 
     /**
-     * Check if the service is visible
+     * Check if the service is visible.
      *
      * @return bool TRUE if the service is visible, FALSE otherwise
      * @throws iMSCP_Exception
      */
-    public function isVisible()
+    public function isVisible(): bool
     {
         return (bool)$this->getProperty(3);
     }
 
     /**
-     * Get service IP
+     * Get service IP address
      *
-     * @return array
-     * @throws iMSCP_Exception
+     * @return string
      */
-    public function getIp()
+    public function getIp(): string
     {
         return $this->getProperty(4);
     }
 
     /**
-     * Check if a service is running
+     * Check if a service is running.
      *
-     * @param bool $refresh Flag indicating whether or not cached values must be refreshed
-     * @return bool return TRUE if the service is currently running, FALSE otherwise
-     * @throws Zend_Cache_Exception
-     * @throws iMSCP_Exception
+     * @return bool TRUE if the service is currently running, FALSE otherwise
      */
-    public function isRunning($refresh = false)
+    public function isRunning(): bool
     {
-        return $this->getStatus($refresh);
+        return $this->getStatus();
     }
 
     /**
      * Check if a service is down
      *
-     * @param bool $refresh Flag indicating whether or not cached values must be refreshed
-     * @return bool return TRUE if the service is currently down, FALSE otherwise
-     * @throws Zend_Cache_Exception
-     * @throws iMSCP_Exception
+     * @return bool TRUE if the service is currently down, FALSE otherwise
      */
-    public function isDown($refresh = false)
+    public function isDown(): bool
     {
-        return !$this->getStatus($refresh);
+        return !$this->getStatus();
     }
 
     /**
-     * Returns the current element
-     *
-     * @return mixed Returns the current element
-     * @throws iMSCP_Exception
+     * @inheritDoc
      */
     public function current()
     {
@@ -178,9 +180,7 @@ class iMSCP_Services implements iterator, countable
     }
 
     /**
-     * Returns the key of the current element
-     *
-     * @return string Return the key of the current element or NULL on failure
+     * @inheritDoc
      */
     public function key()
     {
@@ -188,9 +188,7 @@ class iMSCP_Services implements iterator, countable
     }
 
     /**
-     * Moves the current position to the next element
-     *
-     * @return void
+     * @inheritDoc
      */
     public function next()
     {
@@ -198,12 +196,7 @@ class iMSCP_Services implements iterator, countable
     }
 
     /**
-     * Rewinds back to the first element of the Iterator
-     *
-     * <b>Note:</b> This is the first method called when starting a foreach
-     * loop. It will not be executed after foreach loops.
-     *
-     * @return void
+     * @inheritDoc
      */
     public function rewind()
     {
@@ -211,9 +204,7 @@ class iMSCP_Services implements iterator, countable
     }
 
     /**
-     * Checks if current position is valid
-     *
-     * @return boolean TRUE on success or FALSE on failure
+     * @inheritDoc
      */
     public function valid()
     {
@@ -221,9 +212,7 @@ class iMSCP_Services implements iterator, countable
     }
 
     /**
-     * Count number of service
-     *
-     * @return int The custom count as an integer
+     * @inheritDoc
      */
     public function count()
     {
@@ -233,32 +222,30 @@ class iMSCP_Services implements iterator, countable
     /**
      * Get a service property value
      *
-     * @throws iMSCP_Exception
      * @param int $index Service property index
      * @return mixed Service property value
      */
-    private function getProperty($index)
+    private function getProperty(int $index)
     {
-        if (!is_null($this->queriedService)) {
-            return $this->services[$this->queriedService][$index];
-        } else {
+        if (NULL === $this->queriedService) {
             throw new iMSCP_Exception('Name of service to query is not set');
         }
+
+        return $this->services[$this->queriedService][$index];
     }
 
     /**
      * Get service status
      *
-     * @param bool $refresh Flag indicating whether or not cached values must be refreshed
      * @return bool TRUE if the service is currently running, FALSE otherwise
-     * @throws Zend_Cache_Exception
-     * @throws iMSCP_Exception
      */
-    private function getStatus($refresh = false)
+    private function getStatus(): bool
     {
-        $identifier = __CLASS__ . '_' . __FUNCTION__ . '_' . preg_replace('/[^a-zA-Z0-9_]/', '_', $this->getName());
+        $identifier = static::class
+            . '_'
+            . preg_replace('/[^a-zA-Z0-9_]/', '_', $this->key());
 
-        if ($refresh || !($this->cache->test($identifier))) {
+        if ($this->refresh || !($this->cache->test($identifier))) {
             $ip = $this->getIp();
 
             if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
@@ -266,12 +253,18 @@ class iMSCP_Services implements iterator, countable
             }
 
             $status = false;
-            if (($fp = @fsockopen($this->getProtocol() . '://' . $ip, $this->getPort(), $errno, $errstr, 0.5))) {
+            if ($fp = @fsockopen(
+                $this->getProtocol() . '://' . $ip,
+                $this->getPort(),
+                $errno,
+                $errstr,
+                0.5
+            )) {
                 fclose($fp);
                 $status = true;
             }
 
-            $this->cache->save($status, $identifier, [], 1200);
+            $this->cache->save($status, $identifier, [], 300);
         } else {
             $status = $this->cache->load($identifier);
         }

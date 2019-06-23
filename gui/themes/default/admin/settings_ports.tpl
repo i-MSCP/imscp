@@ -28,7 +28,7 @@
     });
 </script>
 <!-- start form edit -->
-<form name="editFrm" method="post" action="settings_ports.php"">
+<form name="editFrm" method="post" action="settings_ports.php" autocomplete="off">
     <table class="datatable">
         <thead>
         <tr>
@@ -82,7 +82,7 @@
         <input name="submitForReset" type="submit" value="{VAL_FOR_SUBMIT_ON_RESET}">
     </div>
 </form>
-<form name="addFrm" method="post" action="settings_ports.php">
+<form name="addFrm" method="post" action="settings_ports.php" autocomplete="off">
     <table>
         <thead>
         <tr>
@@ -95,9 +95,9 @@
         </thead>
         <tbody>
         <tr>
-            <td><label><input name="name_new" type="text" id="name" value="{VAL_FOR_NAME_NEW}" maxlength="25"></label></td>
-            <td><label><input name="ip_new" type="text" id="ip" value="{VAL_FOR_IP_NEW}" maxlength="45"></label></td>
-            <td><label><input name="port_new" type="number" id="port" value="{VAL_FOR_PORT_NEW}" min="1" max="65535"></label></td>
+            <td><label><input name="srv_new" type="text" id="namek" value="{VAL_FOR_SRV_NEW}" maxlength="25" autocomplete="off"></label></td>
+            <td><label><input name="ip_new" type="text" id="ip" value="{VAL_FOR_IP_NEW}" maxlength="45" autocomplete="off"></label></td>
+            <td><label><input name="port_new" type="number" id="port" value="{VAL_FOR_PORT_NEW}" min="1" max="65535" autocomplete="off"></label></td>
             <td>
                 <label>
                     <select name="port_type_new" id="port_type">

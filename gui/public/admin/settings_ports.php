@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,15 +18,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Config_Handler as ConfigArray;
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_Exception as iMSCPException;
-use iMSCP_pTemplate as TemplateEngine;
-use iMSCP_Registry as Registry;
-
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpUnhandledExceptionInspection
+ * PhpDocMissingThrowsInspection
+ * PhpIncludeInspection
  */
 
 /**
@@ -35,19 +31,17 @@ use iMSCP_Registry as Registry;
  * @param string $name Service name
  * @param string $ip Ip address
  * @param int $port Port
- * @param string $protocol Protocle
+ * @param string $protocol Protocol
  * @param bool $show Tell whether or not service must be show on status page
  * @param string $index Item index on update, empty value otherwise
  * @return bool TRUE if valid, FALSE otherwise
- * @throws Zend_Exception
- * @throws iMSCP_Exception
  */
 function validatesService($name, $ip, $port, $protocol, $show, $index = '')
 {
-    $dbConfig = Registry::get('dbConfig');
+    $dbConfig = iMSCP_Registry::get('dbConfig');
 
-    if (Registry::isRegistered('errorFieldsIds')) {
-        $errorFieldsIds = Registry::get('errorFieldsIds');
+    if (iMSCP_Registry::isRegistered('errorFieldsIds')) {
+        $errorFieldsIds = iMSCP_Registry::get('errorFieldsIds');
     } else {
         $errorFieldsIds = [];
     }
@@ -59,33 +53,48 @@ function validatesService($name, $ip, $port, $protocol, $show, $index = '')
         set_page_message(tr("Invalid service name: %s", $name), 'error');
         $errorFieldsIds[] = "name$index";
     } elseif (strlen($name) > 25) {
-        set_page_message(tr("Service name cannot be greater than 25 characters.", $name), 'error');
+        set_page_message(
+            tohtml(
+                tr("Service name cannot be greater than 25 characters.", $name)
+            ),
+            'error'
+        );
         $errorFieldsIds[] = "name$index";
     }
 
     if (filter_var($ip, FILTER_VALIDATE_IP) === false) {
-        set_page_message(tr(' Wrong IP address.'), 'error');
+        set_page_message(tohtml(tr(' Wrong IP address.')), 'error');
         $errorFieldsIds[] = "ip$index";
     }
 
     if (!is_number($port) || $port < 1 || $port > 65535) {
-        set_page_message(tr('Only numbers in range from 0 to 65535 are allowed.'), 'error');
+        set_page_message(
+            tohtml(tr('Only numbers in range from 0 to 65535 are allowed.')),
+            'error'
+        );
         $errorFieldsIds[] = "port$index";
     }
 
     if (!is_int($index) && isset($dbConfig[$dbServiceName])) {
-        set_page_message(tr('Service with same name already exists.'), 'error');
+        set_page_message(
+            tohtml(tr('Service with same name already exists.')), 'error'
+        );
         $errorFieldsIds[] = "name$index";
     }
 
-    if (($protocol != 'tcp' && $protocol != 'udp') || ($show != '0' && $show != '1')) {
+    if (($protocol != 'tcp' && $protocol != 'udp')
+        || ($show != '0' && $show != '1')
+    ) {
         showBadRequestErrorPage();
     }
 
-    if (Registry::isRegistered('errorFieldsIds')) {
-        Registry::set('errorFieldsIds', Registry::get('errorFieldsIds') + $errorFieldsIds);
+    if (iMSCP_Registry::isRegistered('errorFieldsIds')) {
+        iMSCP_Registry::set(
+            'errorFieldsIds',
+            iMSCP_Registry::get('errorFieldsIds') + $errorFieldsIds
+        );
     } elseif (!empty($errorFieldsIds)) {
-        Registry::set('errorFieldsIds', $errorFieldsIds);
+        iMSCP_Registry::set('errorFieldsIds', $errorFieldsIds);
     }
 
     return empty($errorFieldsIds);
@@ -95,26 +104,40 @@ function validatesService($name, $ip, $port, $protocol, $show, $index = '')
  * Remove a service port from the database
  *
  * @param string $serviceName Service name
- * @return bool TRUE on success, FALSE otherwise
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
+ * @return void
  */
 function deleteService($serviceName)
 {
-    $dbConfig = Registry::get('dbConfig');
+    $dbConfig = iMSCP_Registry::get('dbConfig');
 
-    if (!isset($dbConfig[$serviceName])) {
-        set_page_message(tr("Unknown service name '%s'.", $serviceName), 'error');
-        return false;
+    if (isset($dbConfig[$serviceName])) {
+        unset($dbConfig[$serviceName]);
+
+        // Remove cache entry for this service if any
+        $identifier = iMSCP_Services::class
+            . '_'
+            . preg_replace('/[^a-zA-Z0-9_]/', '_', $serviceName);
+        /** @var Zend_Cache_Core $cache */
+        $cache = iMSCP_Registry::get('iMSCP_Application')->getCache();
+        $cache->remove($identifier);
+
+        write_log(
+            sprintf(
+                'A service port (%s) has been removed by %s',
+                $serviceName,
+                $_SESSION['user_logged']
+            ),
+            E_USER_NOTICE
+        );
+        set_page_message(tr('Service port successfully removed.'), 'success');
+    } else {
+       set_page_message(
+            tohtml(tr("Unknown service name '%s'.", $serviceName)),
+            'error'
+        );
     }
 
-    unset($dbConfig[$serviceName]);
-    write_log(
-        sprintf('A service port (%s) has been removed by %s', $serviceName, $_SESSION['user_logged']), E_USER_NOTICE
-    );
-    set_page_message(tr('Service port successfully removed.'), 'success');
-    return true;
+    redirectTo('settings_ports.php');
 }
 
 /**
@@ -122,13 +145,10 @@ function deleteService($serviceName)
  *
  * @param string $mode Mode in witch act (add or update)
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function addOrUpdateServices($mode = 'add')
 {
-    $dbConfig = Registry::get('dbConfig');
+    $dbConfig = iMSCP_Registry::get('dbConfig');
 
     if ($mode == 'add') {
         if (!isset($_POST['port_new'])
@@ -142,7 +162,7 @@ function addOrUpdateServices($mode = 'add')
 
         $port = clean_input($_POST['port_new']);
         $protocol = clean_input($_POST['port_type_new']);
-        $name = strtoupper(clean_input($_POST['name_new']));
+        $name = strtoupper(clean_input($_POST['srv_new']));
         $show = clean_input($_POST['show_val_new']);
         $ip = clean_input($_POST['ip_new']);
 
@@ -150,7 +170,12 @@ function addOrUpdateServices($mode = 'add')
             $dbServiceName = "PORT_$name";
             $dbConfig[$dbServiceName] = "$port;$protocol;$name;$show;$ip";
             write_log(
-                sprintf('A service port (%s:%s) has been added by %s', $name, $port, $_SESSION['user_logged']),
+                sprintf(
+                    'A service port (%s:%s) has been added by %s',
+                    $name,
+                    $port,
+                    $_SESSION['user_logged']
+                ),
                 E_USER_NOTICE
             );
         }
@@ -184,16 +209,30 @@ function addOrUpdateServices($mode = 'add')
             if (validatesService($name, $ip, $port, $protocol, $show, $index)) {
                 $dbServiceName = $_POST['var_name'][$index];
                 $dbConfig[$dbServiceName] = "$port;$protocol;$name;$show;$ip";
+
+                if (!$show) {
+                    // Remove cache entry for this service if any
+                    $identifier = iMSCP_Services::class
+                        . '_'
+                        . preg_replace('/[^a-zA-Z0-9_]/', '_', $dbServiceName);
+                    /** @var Zend_Cache_Core $cache */
+                    $cache = iMSCP_Registry::get(
+                        'iMSCP_Application'
+                    )->getCache();
+                    $cache->remove($identifier);
+                }
             }
         }
     } else {
-        throw new iMSCPException('addOrUpdateServices(): Wrong argument for $mode');
+        throw new iMSCP_Exception(
+            'addOrUpdateServices(): Wrong argument for $mode'
+        );
     }
 
-    if (Registry::isRegistered('errorFieldsIds')) {
+    if (iMSCP_Registry::isRegistered('errorFieldsIds')) {
         if ($mode == 'add') {
-            Registry::set('error_on_add', [
-                'name_new'      => $_POST['name_new'],
+            iMSCP_Registry::set('error_on_add', [
+                'srv_new'      => $_POST['srv_new'],
                 'ip_new'        => $_POST['ip_new'],
                 'port_new'      => $_POST['port_new'],
                 'port_type_new' => $_POST['port_type_new'],
@@ -210,7 +249,7 @@ function addOrUpdateServices($mode = 'add')
                 $errorOnUpdt[] = "$port;$protocol;$name;$show;$ip";
             }
 
-            Registry::set('error_on_updt', $errorOnUpdt);
+            iMSCP_Registry::set('error_on_updt', $errorOnUpdt);
         }
 
         return;
@@ -225,11 +264,16 @@ function addOrUpdateServices($mode = 'add')
 
     if ($updateCount > 0) {
         set_page_message(
-            ntr('Service port has been updated.', '%d service ports were updated.', $updateCount, $updateCount),
+            tohtml(ntr(
+                'Service port has been updated.',
+                '%d service ports were updated.',
+                $updateCount,
+                $updateCount
+            )),
             'success'
         );
     } else {
-        set_page_message(tr('Nothing has been changed.'), 'info');
+        set_page_message(tohtml(tr('Nothing has been changed.')), 'info');
     }
 
     redirectTo('settings_ports.php');
@@ -238,19 +282,18 @@ function addOrUpdateServices($mode = 'add')
 /**
  * Generate page
  *
- * @param TemplateEngine $tpl
+ * @param iMSCP_pTemplate $tpl
  * @return void;
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
  */
-function generatePage($tpl)
+function generatePage(iMSCP_pTemplate $tpl)
 {
-    if (Registry::isRegistered('error_on_updt')) {
-        $values = new ConfigArray(Registry::get('error_on_updt'));
+    if (iMSCP_Registry::isRegistered('error_on_updt')) {
+        $values = new iMSCP_Config_Handler(
+            iMSCP_Registry::get('error_on_updt')
+        );
         $services = array_keys($values->toArray());
     } else {
-        $values = Registry::get('dbConfig');
+        $values = iMSCP_Registry::get('dbConfig');
         $services = array_filter(
             array_keys($values->toArray()),
             function ($name) {
@@ -258,8 +301,10 @@ function generatePage($tpl)
             }
         );
 
-        if (Registry::isRegistered('error_on_add')) {
-            $errorOnAdd = new ConfigArray(Registry::get('error_on_add'));
+        if (iMSCP_Registry::isRegistered('error_on_add')) {
+            $errorOnAdd = new iMSCP_Config_Handler(
+                iMSCP_Registry::get('error_on_add')
+            );
         }
     }
 
@@ -270,7 +315,9 @@ function generatePage($tpl)
     }
 
     foreach ($services as $index => $service) {
-        list($port, $protocol, $name, $status, $ip) = explode(';', $values->{$service});
+        list($port, $protocol, $name, $status, $ip) = explode(
+            ';', $values->{$service}
+        );
 
         $tpl->assign([
             'NAME'         => tohtml($name, 'htmlAttr'),
@@ -278,23 +325,24 @@ function generatePage($tpl)
             'DELETE_ID'    => tourl($service),
             'NUM'          => tohtml($index, 'htmlAttr'),
             'VAR_NAME'     => tohtml($service, 'htmlAttr'),
-            'IP'           => ($ip == 'localhost') ? '127.0.0.1' : (!$ip ? '0.0.0.0' : tohtml($ip, 'htmlAttr')),
+            'IP'           => $ip == 'localhost'
+                ? '127.0.0.1' : (!$ip ? '0.0.0.0' : tohtml($ip, 'htmlAttr')),
             'PORT'         => tohtml($port, 'htmlAttr'),
-            'SELECTED_UDP' => ($protocol == 'udp') ? ' selected' : '',
-            'SELECTED_TCP' => ($protocol == 'udp') ? '' : ' selected',
-            'SELECTED_ON'  => ($status) ? ' selected' : '',
-            'SELECTED_OFF' => ($status) ? '' : ' selected'
+            'SELECTED_UDP' => $protocol == 'udp' ? ' selected' : '',
+            'SELECTED_TCP' => $protocol == 'udp' ? '' : ' selected',
+            'SELECTED_ON'  => $status ? ' selected' : '',
+            'SELECTED_OFF' => $status ? '' : ' selected'
         ]);
         $tpl->parse('SERVICE_PORTS', '.service_ports');
     }
 
     $tpl->assign(
         isset($errorOnAdd) ? [
-            'VAL_FOR_NAME_NEW' => $errorOnAdd['name_new'],
+            'VAL_FOR_SRV_NEW' => $errorOnAdd['srv_new'],
             'VAL_FOR_IP_NEW'   => $errorOnAdd['ip_new'],
             'VAL_FOR_PORT_NEW' => $errorOnAdd['port_new']
         ] : [
-            'VAL_FOR_NAME_NEW' => '',
+            'VAL_FOR_SRV_NEW' => '',
             'VAL_FOR_IP_NEW'   => '',
             'VAL_FOR_PORT_NEW' => ''
         ]
@@ -302,18 +350,17 @@ function generatePage($tpl)
 
     $tpl->assign(
         'ERROR_FIELDS_IDS',
-        Registry::isRegistered('errorFieldsIds') ? json_encode(Registry::get('errorFieldsIds')) : '[]'
+        iMSCP_Registry::isRegistered('errorFieldsIds')
+            ? json_encode(iMSCP_Registry::get('errorFieldsIds')) : '[]'
     );
 }
-
-/***********************************************************************************************************************
- * Main
- */
 
 require 'imscp-lib.php';
 
 check_login('admin');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(
+    iMSCP_Events::onAdminScriptStart
+);
 
 if (isset($_POST['uaction']) && $_POST['uaction'] != 'reset') {
     addOrUpdateServices((clean_input($_POST['uaction'])));
@@ -321,7 +368,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] != 'reset') {
     deleteService(clean_input($_GET['delete']));
 }
 
-$tpl = new TemplateEngine();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
     'layout'        => 'shared/layouts/ui.tpl',
     'page'          => 'admin/settings_ports.tpl',
@@ -329,7 +376,9 @@ $tpl->define_dynamic([
     'service_ports' => 'page'
 ]);
 $tpl->assign([
-    'TR_PAGE_TITLE'            => tohtml(tr('Admin / Settings / Service Ports')),
+    'TR_PAGE_TITLE'            => tohtml(tr(
+        'Admin / Settings / Service Ports'
+    )),
     'TR_YES'                   => tohtml(tr('Yes'), 'htmlAttr'),
     'TR_NO'                    => tohtml(tr('No'), 'htmlAttr'),
     'TR_SERVICE'               => tohtml(tr('Service name')),
@@ -338,24 +387,30 @@ $tpl->assign([
     'TR_PROTOCOL'              => tohtml(tr('Protocol')),
     'TR_SHOW'                  => tohtml(tr('Show')),
     'TR_DELETE'                => tohtml(tr('Delete')),
-    'TR_MESSAGE_DELETE'        => tojs(tr('Are you sure you want to delete the %s service port ?', '%s')),
+    'TR_MESSAGE_DELETE'        => tojs(tr(
+        'Are you sure you want to delete the %s service port ?', '%s'
+    )),
     'TR_ACTION'                => tohtml(tr('Actions')),
     'VAL_FOR_SUBMIT_ON_UPDATE' => tohtml(tr('Update'), 'htmlAttr'),
     'VAL_FOR_SUBMIT_ON_ADD'    => tohtml(tr('Add'), 'htmlAttr'),
     'VAL_FOR_SUBMIT_ON_RESET'  => tohtml(tr('Reset'), 'htmlAttr')
 ]);
 
-EventsManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
-    /** @var $e \iMSCP_Events_Event */
-    $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
-});
+iMSCP_Events_Aggregator::getInstance()->registerListener(
+    iMSCP_Events::onGetJsTranslations,
+    function (iMSCP_Events_Event $e) {
+        $e->getParam('translations')->core['dataTable']
+            = getDataTablesPluginTranslations(false);
+    }
+);
 
 generateNavigation($tpl);
 generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+iMSCP_Events_Aggregator::getInstance()->dispatch(
+    iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();
-
 unsetMessages();
