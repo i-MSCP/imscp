@@ -666,6 +666,26 @@ class iMSCP_Events
     const onAfterUpdatePluginList = 'onAfterUpdatePluginList';
 
     /**
+     * Event triggered before plugin data synchronization
+     *
+     * iMSCP_Events_Event object parameter:
+     *  - pluginManager : iMSCP_Plugin_Manager instance
+     *
+     * @const string
+     */
+    const onBeforeSyncPluginData = 'onBeforeSyncPluginData';
+
+    /**
+     * Event triggered after plugin data synchronization
+     *
+     * iMSCP_Events_Event object parameter:
+     *  - pluginManager : iMSCP_Plugin_Manager instance
+     *
+     * @const string
+     */
+    const onAfterSyncPluginData = 'onAfterSyncPluginData';
+    
+    /**
      * Event triggered before plugin installation
      *
      * iMSCP_Events_Event object parameters:

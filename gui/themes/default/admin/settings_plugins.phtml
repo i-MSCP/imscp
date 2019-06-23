@@ -1,0 +1,208 @@
+<?php
+/** @noinspection PhpUnhandledExceptionInspection */
+?>
+<script>
+    $(function () {
+        var $dataTable = $(".datatable").dataTable({
+            language: imscp_i18n.core.dataTable,
+            displayLength: 10,
+            stateSave: true,
+            pagingType: "simple"
+        });
+
+        $('#bulkActionsTop, #bulkActionsBottom').change(function () {
+            $("select[name=\"bulkActions\"] option[value=" + $(this).val() + "]").attr("selected", "selected");
+        });
+
+        $("thead :checkbox, tfoot :checkbox").change(function () {
+            $("table :checkbox").prop('checked', $(this).is(':checked'));
+        });
+
+        $dataTable.on("click", ".plugin_error", function () {
+            var errDialog = $('<div>' + '<pre>' + $.trim($(this).html()) + '</pre>' + '</div>');
+            var pluginName = $(this).attr('id');
+
+            errDialog.dialog({
+                modal: true,
+                title: pluginName + " " + imscp_i18n.core.error_details,
+                show: "clip",
+                hide: "clip",
+                minHeight: 200,
+                minWidth: 500,
+                buttons: [
+                    {
+                        text: imscp_i18n.core.force_retry,
+                        click: function () {
+                            window.location.replace("?retry=" + pluginName)
+                        }
+                    },
+                    {
+                        text: imscp_i18n.core.close,
+                        click: function () {
+                            $(this).dialog("close").dialog("destroy")
+                        }
+                    }
+                ]
+            });
+
+            return false;
+        });
+
+        $('#bulk_actions').on("change", function () {
+            var $button = $("#bulk_actions_submit");
+            if ($(this).val() == 'noaction') {
+                $button.prop("disabled", true);
+            } else {
+                $button.prop("disabled", false);
+            }
+
+            $button.button("refresh");
+        });
+    });
+</script>
+<p class="hint" style="font-variant: small-caps;font-size: small;">
+    <?= tohtml(tr('Plugins hook into i-MSCP core to extend its functionality with custom features. Plugins are developed independently from the core i-MSCP application.'));?>
+    <br>
+    <?= tohtml(tr('You can find new plugins to install by visiting the official i-MSCP plugin store.')); ?>
+</p>
+<br>
+<h3 class="plugin"><span><?= tohtml(tr('Plugins Upload')) ?> </span></h3>
+<form name="plugin_upload_frm" action="settings_plugins.php"
+      method="post" enctype="multipart/form-data"
+>
+    <table class="firstColFixed">
+        <thead>
+        <tr>
+            <th colspan="2"><?= tohtml(tr('Upload'))?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <?= tohtml(tr('Plugin archive')) ?>
+                <span class="icon i_help" title="<?= tohtml(tr('Only tar.gz, tar.bz2 and zip archives are accepted.'), 'htmlAttr') ?>"></span>
+            </td>
+            <td>
+                <input type="hidden" name="MAX_FILE_SIZE" value="<?= tohtml(utils_getMaxFileUpload(), 'htmlAttr') ?>">
+                <input type="file" name="plugin_archive">
+                <input type="submit" value="<?= tohtml(tr('Upload', 'htmlAttr'))?>">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+<br>
+<h3 class="plugin"><span><?= tohtml(tr('Plugins management')) ?> </span></h3>
+<!-- BDP: plugins_list_empty_block -->
+<div class="message static_info">
+    <?= tohtml(tr('Plugin list is empty.')) ?>
+</div>
+<!-- EDP: plugins_list_empty_block -->
+<!-- BDP: plugins_block -->
+<form name="plugin_frm" action="settings_plugins.php" method="post">
+    <table class="datatable">
+        <thead>
+        <tr style="border: none;">
+            <th style="width:21px;"><label><input type="checkbox"></label></th>
+            <th style="width:200px"><?= tohtml(tr('Plugin')) ?></th>
+            <th><?= tohtml(tr('Description')) ?></th>
+            <th><?= tohtml(tr('Status')) ?></th>
+            <th><?= tohtml(tr('Actions')) ?></th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <td><label><input type="checkbox"></label></td>
+            <td><?= tohtml(tr('Plugin')) ?></td>
+            <td><?= tohtml(tr('Description')) ?></td>
+            <td><?= tohtml(tr('Status')) ?></td>
+            <td><?= tohtml(tr('Actions')) ?></td>
+        </tr>
+        </tfoot>
+        <tbody>
+        <!-- BDP: plugin_block -->
+        <tr>
+            <td>
+                <label>
+                    <input type='checkbox' name='checked[]' value="{PLUGIN_NAME}">
+                </label>
+            </td>
+            <td>
+                <p style="font-size: 110%"><strong>{PLUGIN_NAME}</strong></p>
+            </td>
+            <td>
+                <p class="bold" style="font-size: 110%">{PLUGIN_DESCRIPTION}</p>
+                <span class="italic" style="font-size: 90%">
+                    <span class="bold">
+                        <?= tohtml(tr('Version')) ?> {PLUGIN_VERSION}
+                    </span>
+                    (Build {PLUGIN_BUILD})
+                    <br>
+                    <a href="mailto:{PLUGIN_MAILTO}">
+                        <?= tohtml(tr('By')) ?> {PLUGIN_AUTHOR}
+                    </a> |
+                    <a href="{PLUGIN_SITE}" target="_blank">
+                        <?= tohtml(tr('Visit plugin site')) ?>
+                    </a>
+                </span>
+            </td>
+            <td>
+                {PLUGIN_STATUS}
+                <!-- BDP: plugin_status_details_block -->
+                <span id="{PLUGIN_NAME}" class="plugin_error icon i_help"
+                      title="<?= tohtml(tr('Click here for more details'), 'htmlAttr') ?>"
+                >
+                    {PLUGIN_STATUS_DETAILS}
+                </span>
+                <!-- EDP: plugin_status_details_block -->
+            </td>
+            <td>
+                <!-- BDP: plugin_activate_link -->
+                <a style="vertical-align: middle;" class="icon i_open"
+                   href="settings_plugins.php?action={ACTIVATE_ACTION}&plugin={PLUGIN_NAME}"
+                   title="{TR_ACTIVATE_TOOLTIP}"></a>
+                
+                <a style="vertical-align: middle;" class="icon i_close"
+                   href="settings_plugins.php?action={UNINSTALL_ACTION}&plugin={PLUGIN_NAME}"
+                   title="{TR_UNINSTALL_TOOLTIP}"></a>
+                <!-- EDP: plugin_activate_link -->
+                <!-- BDP: plugin_deactivate_link -->
+                <a style="vertical-align: middle;" class="icon i_close"
+                   href="settings_plugins.php?action=disable&plugin={PLUGIN_NAME}"
+                   title="{TR_DEACTIVATE_TOOLTIP}"></a>
+                <a style="vertical-align: middle;" class="icon i_lock"
+                   href="settings_plugins.php?action=protect&plugin={PLUGIN_NAME}"
+                   title="<?= tohtml(tr('Protect this plugin'), 'htmlAttr') ?>"></a>
+                <!-- EDP: plugin_deactivate_link -->
+                <!-- BDP: plugin_protected_link -->
+                <span style="vertical-align: middle;" class="icon i_unlock"
+                      title="{TR_UNPROTECT_TOOLTIP}">&nbsp;</span>
+                <!-- EDP: plugin_protected_link -->
+            </td>
+        </tr>
+        <!-- EDP: plugin_block -->
+        </tbody>
+    </table>
+    <div style="float:left;">
+        <label>
+        <select name="bulk_actions" id="bulk_actions">
+            <option value="noaction" selected><?= tohtml(tr('Bulk Actions')) ?></option>
+            <option value="install"><?= tohtml(tr('Install'))?></option>
+            <option value="enable"><?= tohtml(tr('Activate')) ?></option>
+            <option value="disable"><?= tohtml(tr('Deactivate')) ?></option>
+            <option value="uninstall"><?= tohtml(tr('Uninstall')) ?></option>
+            <option value="protect"><?= tohtml(tr('Protect')) ?></option>
+            <option value="delete"><?= tohtml(tr('Delete')) ?></option>
+        </select>
+        </label>
+        <button type="submit" name="Submit" id="bulk_actions_submit" disabled>
+            <?= tohtml(tr('Apply'))?>
+        </button>
+    </div>
+</form>
+<!-- EDP: plugins_block -->
+<div class="buttons">
+    <a href="settings_plugins.php?sync=1" class="link_as_button">
+        <?= tohtml(tr('Synchronize')) ?>
+    </a>
+</div>

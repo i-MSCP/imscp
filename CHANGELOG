@@ -54,17 +54,20 @@ DISTRIBUTIONS
 FRONTEND
     Added: ACL assertions for the navigation
     Added: Apache2 wildcard alias feature
+    Added: Filter for plugin archives
     Added: iMSCP Database::getPDO() static method (return underlying PDO instance bound to the given connection)
     Added: Patches for zendframework/zendframework1 dependency (PHP deprecations, Zend_Navigation component enhancement, small fixes)
     Added: Route injector service for i-MSCP plugins
     Added: Service provider injector for i-MSCP plugins
     Added: Service provider for overriding of default Slim error handlers
+    Added: Validator for plugin archives
     Enhancement: Log the frontEnd errors into the ./gui/data/log/frontend_errors.log file and rotate it when its size is bigger than 10 MiB
     Enhancement: Make it possible to add wildcard DNS record (custom DNS interface)
     Fixed: Hide E_STRICT, E_NOTICE, E_WARNING and E_DEPRECATED even for addons
     Fixed: Invalid parameter number: number of bound variables does not match number of tokens (client/mail_catchall_add.php)
     Fixed: Output buffer must be erased when an exception is throw while template rendering
     Removed: Telnet service port
+    Removed: iMSCP_Plugin base class (replaced by iMSCP_Plugin_Action class)
     Review: Install dependencies through the PHP dependency manager (composer)
     Review: Load comments (PHP OPcache)
     Review: Save comments (PHP OPcache)
