@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by i-MSCP Team
+ * Copyright (C) 2010-2019 by i-MSCP Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,8 +18,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpUnhandledExceptionInspection
+ * PhpDocMissingThrowsInspection
+ * PhpIncludeInspection
  */
 
 /**
@@ -27,10 +30,6 @@
  *
  * @param iMSCP_pTemplate $tpl
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function listIPDomains($tpl)
 {
@@ -58,14 +57,18 @@ function listIPDomains($tpl)
         $domainsCount = $stmt2->rowCount();
 
         $tpl->assign([
-            'IP'           => tohtml(($ip['ip_number'] == '0.0.0.0') ? tr('Any') : $ip['ip_number']),
+            'IP'           => tohtml($ip['ip_number'] == '0.0.0.0'
+                ? tr('Any') : $ip['ip_number']
+            ),
             'RECORD_COUNT' => tr('Total Domains') . ': ' . ($domainsCount)
         ]);
 
         if ($domainsCount) {
             while ($data = $stmt2->fetchRow(PDO::FETCH_ASSOC)) {
                 $tpl->assign([
-                    'DOMAIN_NAME'   => tohtml(idn_to_utf8($data['domain_name'])),
+                    'DOMAIN_NAME'   => tohtml(
+                        decode_idna($data['domain_name'])
+                    ),
                     'RESELLER_NAME' => tohtml($data['admin_name'])
                 ]);
                 $tpl->parse('DOMAIN_ROW', '.domain_row');
@@ -80,14 +83,13 @@ function listIPDomains($tpl)
     }
 }
 
-/***********************************************************************************************************************
- * Main
- */
 
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(
+    iMSCP_Events::onAdminScriptStart
+);
 
 if (!systemHasCustomers()) {
     showBadRequestErrorPage();
@@ -95,17 +97,20 @@ if (!systemHasCustomers()) {
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
-    'layout'     => 'shared/layouts/ui.tpl',
-    'page'       => 'admin/ip_usage.tpl',
-    'ip_row'     => 'page',
-    'domain_row' => 'ip_row'
+    'layout'       => 'shared/layouts/ui.tpl',
+    'page'         => 'admin/ip_usage.tpl',
+    'page_message' => 'layout',
+    'ip_row'       => 'page',
+    'domain_row'   => 'ip_row'
 ]);
 $tpl->assign([
-    'TR_PAGE_TITLE'                => tr('Admin / Statistics / IP Usage'),
-    'TR_SERVER_STATISTICS'         => tr('Server statistics'),
-    'TR_IP_ADMIN_USAGE_STATISTICS' => tr('Admin/IP usage statistics'),
-    'TR_DOMAIN_NAME'               => tr('Domain Name'),
-    'TR_RESELLER_NAME'             => tr('Reseller Name')
+    'TR_PAGE_TITLE'                => tohtml(
+        tr('Admin / Statistics / IP Usage')
+    ),
+    'TR_SERVER_STATISTICS'         => tohtml(tr('Server statistics')),
+    'TR_IP_ADMIN_USAGE_STATISTICS' => tohtml(tr('Admin/IP usage statistics')),
+    'TR_DOMAIN_NAME'               => tohtml(tr('Domain Name')),
+    'TR_RESELLER_NAME'             => tohtml(tr('Reseller Name'))
 ]);
 
 generateNavigation($tpl);
@@ -113,7 +118,9 @@ listIPDomains($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+iMSCP_Events_Aggregator::getInstance()->dispatch(
+    iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();
 
 unsetMessages();
