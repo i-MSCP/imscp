@@ -71,7 +71,6 @@ insert ignore into `config` (`name`, `value`) values
   ('PORT_IMSCP_DAEMON', '9876;tcp;i-MSCP-Daemon;1;127.0.0.1'),
   ('PORT_FTP', '21;tcp;FTP;1;0.0.0.0'),
   ('PORT_SSH', '22;tcp;SSH;1;0.0.0.0'),
-  ('PORT_TELNET', '23;tcp;TELNET;1;0.0.0.0'),
   ('PORT_SMTP', '25;tcp;SMTP;1;0.0.0.0'),
   ('PORT_SMTP-SSL', '465;tcp;SMTP-SSL;0;0.0.0.0'),
   ('PORT_DNS', '53;tcp;DNS;1;0.0.0.0'),
@@ -85,7 +84,7 @@ insert ignore into `config` (`name`, `value`) values
   ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
   ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
   ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-  ('DATABASE_REVISION', '279');
+  ('DATABASE_REVISION', '280');
 
 -- --------------------------------------------------------
 

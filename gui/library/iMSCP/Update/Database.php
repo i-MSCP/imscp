@@ -66,7 +66,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 279;
+    protected $lastUpdate = 280;
 
     /**
      * Singleton - Make new unavailable
@@ -3327,5 +3327,19 @@ class iMSCP_Update_Database extends iMSCP_Update
     protected function r279()
     {
         return $this->addIndex('login', 'ipaddr', 'index', 'ipaddr');
+    }
+
+    /**
+     * Delete TELNET service port
+     *
+     * return void
+     */
+    protected function r280()
+    {
+        if (isset($this->dbConfig['PORT_TELNET'])) {
+            unset($this->dbConfig['PORT_TELNET']);
+        }
+
+        return NULL;
     }
 }

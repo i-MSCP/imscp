@@ -64,6 +64,7 @@ FRONTEND
     Fixed: Hide E_STRICT, E_NOTICE, E_WARNING and E_DEPRECATED even for addons
     Fixed: Invalid parameter number: number of bound variables does not match number of tokens (client/mail_catchall_add.php)
     Fixed: Output buffer must be erased when an exception is throw while template rendering
+    Removed: Telnet service port
     Review: Install dependencies through the PHP dependency manager (composer)
     Review: Load comments (PHP OPcache)
     Review: Save comments (PHP OPcache)
