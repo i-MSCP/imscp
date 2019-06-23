@@ -18,27 +18,36 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP\Assertion\AdminCanMoveCustomersAssertion;
+use iMSCP\Assertion\AdminCanMoveResellersAssertion;
+use iMSCP\Assertion\AdminCanViewAntiAntiRootkitsAssertion;
+use iMSCP\Assertion\AdminCanViewImscpUpdatesAssertion;
+use iMSCP\Assertion\AdminCanViewIpUsageStatisticsAssertion;
+use iMSCP\Assertion\AdminCanViewResellerStatisticsAssertion;
+use iMSCP\Assertion\AdminHasCircularFeatureAssertion;
+use iMSCP\Assertion\AdminHasSupportFeatureAssertion;
+
 return [
     'general'      => [
         'label' => tr('General'),
         'uri'   => '/admin/index.php',
         'class' => 'general',
         'pages' => [
-            'overview'          => [
-                'label'       => tr('Overview'),
+            'account_overview'          => [
+                'label'       => tr('Accounts overview'),
                 'uri'         => '/admin/index.php',
                 'title_class' => 'general'
+            ],
+            'admin_log'         => [
+                'label'       => tr('Admin log'),
+                'uri'         => '/admin/admin_log.php',
+                'title_class' => 'adminlog'
             ],
             'services_statuses' => [
                 'label'       => tr('Service statuses'),
                 'uri'         => '/admin/service_statuses.php',
                 'title_class' => 'serverstatus'
             ],
-            'admin_log'         => [
-                'label'       => tr('Admin log'),
-                'uri'         => '/admin/admin_log.php',
-                'title_class' => 'adminlog'
-            ]
         ]
     ],
     'users'        => [
@@ -52,9 +61,9 @@ return [
                 'title_class' => 'users',
                 'pages'       => [
                     'user_edit'     => [
-                        'label' => '{TR_DYNAMIC_TITLE}',
-                        'uri'           => '/admin/user_edit.php',
-                        'title_class'   => '{DYNAMIC_TITLE_CLASS}',
+                        'label'       => '{TR_DYNAMIC_TITLE}',
+                        'uri'         => '/admin/user_edit.php',
+                        'title_class' => '{DYNAMIC_TITLE_CLASS}',
                     ],
                     'reseller_edit' => [
                         'label'       => tr('Edit reseller'),
@@ -83,21 +92,21 @@ return [
                 'uri'         => '/admin/manage_reseller_owners.php',
                 'title_class' => 'users2',
                 'resource'    => 'resellers_assignment',
-                'assertion'   => \iMSCP\Assertion\AdminCanMoveResellersAssertion::class,
+                'assertion'   => AdminCanMoveResellersAssertion::class,
             ],
             'customers_assignment' => [
                 'label'       => tr('Customer assignments'),
                 'uri'         => '/admin/manage_reseller_users.php',
                 'title_class' => 'users2',
                 'resource'    => 'customers_assignment',
-                'assertion'   => \iMSCP\Assertion\AdminCanMoveCustomersAssertion::class
+                'assertion'   => AdminCanMoveCustomersAssertion::class
             ],
             'circular'             => [
                 'label'       => tr('Circular'),
                 'uri'         => '/admin/circular.php',
                 'title_class' => 'email',
                 'resource'    => 'circular',
-                'assertion'   => \iMSCP\Assertion\AdminHasCircularFeatureAssertion::class,
+                'assertion'   => AdminHasCircularFeatureAssertion::class,
             ],
             'sessions_management'  => [
                 'label'       => tr('Sessions'),
@@ -126,7 +135,7 @@ return [
                 'uri'         => '/admin/imscp_updates.php',
                 'title_class' => 'update',
                 'resource'    => 'imscp_updates',
-                'assertion'   => \iMSCP\Assertion\AdminCanViewImscpUpdatesAssertion::class,
+                'assertion'   => AdminCanViewImscpUpdatesAssertion::class,
             ],
             'debugger'             => [
                 'label'       => tr('Debugger'),
@@ -138,7 +147,7 @@ return [
                 'uri'         => '/admin/rootkit_log.php',
                 'title_class' => 'general',
                 'resource'    => 'antirootkits',
-                'assertion'   => \iMSCP\Assertion\AdminCanViewAntiAntiRootkitsAssertion::class
+                'assertion'   => AdminCanViewAntiAntiRootkitsAssertion::class
             ]
         ]
     ],
@@ -157,7 +166,7 @@ return [
                 'uri'         => '/admin/reseller_statistics.php',
                 'title_class' => 'stats',
                 'resource'    => 'reseller_statistics',
-                'assertion'   => \iMSCP\Assertion\AdminCanViewResellerStatisticsAssertion::class,
+                'assertion'   => AdminCanViewResellerStatisticsAssertion::class,
                 'pages'       => [
                     'reseller_user_statistics' => [
                         'label'       => tr('User statistics'),
@@ -178,7 +187,7 @@ return [
                 'uri'         => '/admin/ip_usage.php',
                 'title_class' => 'ip',
                 'resource'    => 'ip_usage',
-                'assertion'   => \iMSCP\Assertion\AdminCanViewIpUsageStatisticsAssertion::class
+                'assertion'   => AdminCanViewIpUsageStatisticsAssertion::class
             ]
         ]
     ],
@@ -187,14 +196,14 @@ return [
         'uri'       => '/admin/ticket_system.php',
         'class'     => 'support',
         'resource'  => 'support',
-        'assertion' => \iMSCP\Assertion\AdminHasSupportFeatureAssertion::class,
+        'assertion' => AdminHasSupportFeatureAssertion::class,
         'pages'     => [
             'open_tickets'   => [
                 'label'       => tr('Open tickets'),
                 'uri'         => '/admin/ticket_system.php',
                 'title_class' => 'support',
-                'pages' => [
-                    'view_ticket'    => [
+                'pages'       => [
+                    'view_ticket' => [
                         'label'       => tr('View ticket'),
                         'uri'         => '/admin/ticket_view.php',
                         'title_class' => 'support'
@@ -213,68 +222,68 @@ return [
         'uri'   => '/admin/settings.php',
         'class' => 'settings',
         'pages' => [
-            'general'              => [
+            'general_settings'    => [
                 'label'       => tr('General settings'),
                 'uri'         => '/admin/settings.php',
                 'title_class' => 'general'
             ],
-            'language'             => [
+            'ip_management'     => [
+                'label'       => tr('IP addresses'),
+                'uri'         => '/admin/ip_manage.php',
+                'title_class' => 'ip'
+            ],
+            'language'          => [
                 'label'       => tr('Languages'),
                 'uri'         => '/admin/multilanguage.php',
                 'title_class' => 'multilanguage'
             ],
-            'custom_menus'         => [
-                'label'         => tr('Custom menus'),
-                'uri'           => '/admin/custom_menus.php',
-                'title_class'   => 'custom_link'
-            ],
-            'ip_management'        => [
-                'label'       => tr('IP management'),
-                'uri'         => '/admin/ip_manage.php',
-                'title_class' => 'ip'
-            ],
-            'server_traffic'       => [
-                'label'       => tr('Monthly server traffic'),
-                'uri'         => '/admin/settings_server_traffic.php',
-                'title_class' => 'traffic'
-            ],
-            'welcome_mail'         => [
-                'label'       => tr('Welcome email'),
-                'uri'         => '/admin/settings_welcome_mail.php',
-                'title_class' => 'email'
-            ],
-            'lostpassword_mail'    => [
+            'lostpassword_mail' => [
                 'label'       => tr('Lost password email'),
                 'uri'         => '/admin/settings_lostpassword.php',
                 'title_class' => 'email'
             ],
-            'service_ports'        => [
+            'menus'             => [
+                'label'       => tr('Menus'),
+                'uri'         => '/admin/custom_menus.php',
+                'title_class' => 'custom_link'
+            ],
+            'plugins'           => [
+                'label'       => tr('Plugins'),
+                'uri'         => '/admin/settings_plugins.php',
+                'title_class' => 'plugin'
+            ],
+            'server_traffic'    => [
+                'label'       => tr('Server traffic'),
+                'uri'         => '/admin/settings_server_traffic.php',
+                'title_class' => 'traffic'
+            ],
+            'service_ports'     => [
                 'label'       => tr('Service ports'),
                 'uri'         => '/admin/settings_ports.php',
                 'title_class' => 'general'
             ],
-            'softwares_management' => [
-                'label'       => tr('Software management'),
+            'software'          => [
+                'label'       => tr('Software'),
                 'uri'         => '/admin/software_manage.php',
                 'title_class' => 'apps_installer',
                 'pages'       => [
-                    'softwares_permissions' => [
+                    'software_permissions' => [
                         'label'       => tr('Software permissions'),
                         'uri'         => '/admin/software_rights.php',
                         'title_class' => 'apps_installer'
                     ]
                 ]
             ],
-            'softwares_options'    => [
+            'software_options'  => [
                 'label'       => tr('Software options'),
                 'uri'         => '/admin/software_options.php',
                 'title_class' => 'apps_installer'
             ],
-            'plugins_management'   => [
-                'label'       => tr('Plugin management'),
-                'uri'         => '/admin/settings_plugins.php',
-                'title_class' => 'plugin'
-            ]
+            'welcome_mail'      => [
+                'label'       => tr('Welcome email'),
+                'uri'         => '/admin/settings_welcome_mail.php',
+                'title_class' => 'email'
+            ],
         ]
     ],
     'profile'      => [
@@ -282,30 +291,30 @@ return [
         'uri'   => '/admin/profile.php',
         'class' => 'profile',
         'pages' => [
-            'overview'         => [
+            'account_summary' => [
                 'label'       => tr('Account summary'),
                 'uri'         => '/admin/profile.php',
                 'title_class' => 'profile'
             ],
-            'personal_change'  => [
-                'label'       => tr('Personal data'),
-                'uri'         => '/admin/personal_change.php',
-                'title_class' => 'profile'
-            ],
-            'passsword_change' => [
-                'label'       => tr('Password'),
-                'uri'         => '/admin/password_update.php',
-                'title_class' => 'profile'
-            ],
-            'language'         => [
+            'language'        => [
                 'label'       => tr('Language'),
                 'uri'         => '/admin/language.php',
                 'title_class' => 'multilanguage',
             ],
-            'layout'           => [
+            'layout'          => [
                 'label'       => tr('Layout'),
                 'uri'         => '/admin/layout.php',
                 'title_class' => 'layout'
+            ],
+            'password_change' => [
+                'label'       => tr('Password'),
+                'uri'         => '/admin/password_update.php',
+                'title_class' => 'profile'
+            ],
+            'personal_data'   => [
+                'label'       => tr('Personal data'),
+                'uri'         => '/admin/personal_change.php',
+                'title_class' => 'profile'
             ]
         ]
     ]

@@ -18,6 +18,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP\Assertion\ClientCanAddSqlDatabasesAssertion;
+use iMSCP\Assertion\ClientHasApsFeatureAssertion;
+use iMSCP\Assertion\ClientHasBackupFeatureAssertion;
+use iMSCP\Assertion\ClientHasCustomDnsFeatureAssertion;
+use iMSCP\Assertion\ClientHasCustomErrorPagesFeatureAssertion;
+use iMSCP\Assertion\ClientHasDomainAliasesFeatureAssertion;
+use iMSCP\Assertion\ClientHasExternalMailFeatureAssertion;
+use iMSCP\Assertion\ClientHasFtpFeatureAssertion;
+use iMSCP\Assertion\ClientHasMailFeatureAssertion;
+use iMSCP\Assertion\ClientHasMailOrExternalMailFeatureAssertion;
+use iMSCP\Assertion\ClientHasPhpEditorFeatureAssertion;
+use iMSCP\Assertion\ClientHasProtectedAreasFeatureAssertion;
+use iMSCP\Assertion\ClientHasSqlFeatureAssertion;
+use iMSCP\Assertion\ClientHasSubdomainsFeatureAssertion;
+use iMSCP\Assertion\ClientHasSupportFeatureAssertion;
+
 return [
     'general'    => [
         'label' => tr('General'),
@@ -73,28 +89,28 @@ return [
                 'uri'         => '/client/alias_add.php',
                 'title_class' => 'domains',
                 'resource'    => 'domain_aliases',
-                'assertion'   => \iMSCP\Assertion\ClientHasDomainAliasesFeatureAssertion::class,
+                'assertion'   => ClientHasDomainAliasesFeatureAssertion::class,
             ],
             'add_subdomain'         => [
                 'label'       => tr('Add subdomain'),
                 'uri'         => '/client/subdomain_add.php',
                 'title_class' => 'domains',
                 'resource'    => 'subdomains',
-                'assertion'   => \iMSCP\Assertion\ClientHasSubdomainsFeatureAssertion::class,
+                'assertion'   => ClientHasSubdomainsFeatureAssertion::class,
             ],
             'add_custom_dns_record' => [
                 'label'       => tr('Add DNS resource record'),
                 'uri'         => '/client/dns_add.php',
                 'title_class' => 'domains',
                 'resource'    => 'custom_dns_records',
-                'assertion'   => \iMSCP\Assertion\ClientHasCustomDnsFeatureAssertion::class,
+                'assertion'   => ClientHasCustomDnsFeatureAssertion::class,
             ],
             'php_settings'          => [
                 'label'       => tr('PHP settings'),
                 'uri'         => '/client/phpini.php',
                 'title_class' => 'domains',
                 'resource'    => 'php_editor',
-                'assertion'   => \iMSCP\Assertion\ClientHasPhpEditorFeatureAssertion::class,
+                'assertion'   => ClientHasPhpEditorFeatureAssertion::class,
             ]
         ]
     ],
@@ -103,7 +119,7 @@ return [
         'uri'       => '/client/ftp_accounts.php',
         'class'     => 'ftp',
         'resource'  => 'ftp',
-        'assertion' => \iMSCP\Assertion\ClientHasFtpFeatureAssertion::class,
+        'assertion' => ClientHasFtpFeatureAssertion::class,
         'pages'     => [
             'overview'        => [
                 'label'       => tr('Overview'),
@@ -129,7 +145,7 @@ return [
         'uri'       => '/client/sql_manage.php',
         'class'     => 'database',
         'resource'  => 'databases',
-        'assertion' => \iMSCP\Assertion\ClientHasSqlFeatureAssertion::class,
+        'assertion' => ClientHasSqlFeatureAssertion::class,
         'pages'     => [
             'overview'         => [
                 'label'       => tr('Overview'),
@@ -153,7 +169,7 @@ return [
                 'uri'         => '/client/sql_database_add.php',
                 'title_class' => 'sql',
                 'resource'    => 'add_sql_database',
-                'assertion'   => \iMSCP\Assertion\ClientCanAddSqlDatabasesAssertion::class,
+                'assertion'   => ClientCanAddSqlDatabasesAssertion::class,
             ]
         ]
     ],
@@ -162,7 +178,7 @@ return [
         'uri'       => '/client/mail_accounts.php',
         'class'     => 'email',
         'resource'  => 'mail',
-        'assertion' => \iMSCP\Assertion\ClientHasMailOrExternalMailFeatureAssertion::class,
+        'assertion' => ClientHasMailOrExternalMailFeatureAssertion::class,
         'pages'     => [
             'overview'              => [
                 'label'       => tr('Overview'),
@@ -191,14 +207,14 @@ return [
                 'uri'         => '/client/mail_add.php',
                 'title_class' => 'email',
                 'resource'    => 'add_email_account',
-                'assertion'   => \iMSCP\Assertion\ClientHasMailFeatureAssertion::class,
+                'assertion'   => ClientHasMailFeatureAssertion::class,
             ],
             'catchall'              => [
                 'label'       => tr('Catch-all accounts'),
                 'uri'         => '/client/mail_catchall.php',
                 'title_class' => 'email',
                 'resource'    => 'catchall',
-                'assertion'   => \iMSCP\Assertion\ClientHasMailFeatureAssertion::class,
+                'assertion'   => ClientHasMailFeatureAssertion::class,
                 'pages'       => [
                     'add_catchall' => [
                         'label'       => tr('Add catch-all account'),
@@ -212,7 +228,7 @@ return [
                 'uri'         => '/client/mail_external.php',
                 'title_class' => 'email',
                 'resource'    => 'external_mail',
-                'assertion'   => \iMSCP\Assertion\ClientHasExternalMailFeatureAssertion::class
+                'assertion'   => ClientHasExternalMailFeatureAssertion::class
             ]
         ]
     ],
@@ -243,12 +259,12 @@ return [
                 'uri'         => '/client/protected_areas.php',
                 'title_class' => 'htaccess',
                 'resource'    => 'protected_areas',
-                'assertion'   => \iMSCP\Assertion\ClientHasProtectedAreasFeatureAssertion::class,
+                'assertion'   => ClientHasProtectedAreasFeatureAssertion::class,
                 'pages'       => [
                     'add_protected_area'               => [
-                        'label' => '{TR_DYNAMIC_TITLE}',
-                        'uri'           => '/client/protected_areas_add.php',
-                        'title_class'   => 'htaccess',
+                        'label'       => '{TR_DYNAMIC_TITLE}',
+                        'uri'         => '/client/protected_areas_add.php',
+                        'title_class' => 'htaccess',
                     ],
                     'manage_htaccess_users_and_groups' => [
                         'label'       => tr('Manage htaccess users and groups'),
@@ -284,7 +300,7 @@ return [
                 'uri'         => '/client/error_pages.php',
                 'title_class' => 'errors',
                 'resource'    => 'custom_error_pages',
-                'assertion'   => \iMSCP\Assertion\ClientHasCustomErrorPagesFeatureAssertion::class,
+                'assertion'   => ClientHasCustomErrorPagesFeatureAssertion::class,
                 'pages'       => [
                     'custom_error_page_edit' => [
                         'label'       => tr('Edit custom error page'),
@@ -298,7 +314,7 @@ return [
                 'uri'         => '/client/software.php',
                 'title_class' => 'apps_installer',
                 'resource'    => 'aps',
-                'assertion'   => \iMSCP\Assertion\ClientHasApsFeatureAssertion::class,
+                'assertion'   => ClientHasApsFeatureAssertion::class,
                 'pages'       => [
                     'software_view'    => [
                         'label'       => tr('Software details'),
@@ -317,7 +333,7 @@ return [
                 'uri'         => '/client/backup.php',
                 'title_class' => 'hdd',
                 'resource'    => 'backup',
-                'assertion'   => \iMSCP\Assertion\ClientHasBackupFeatureAssertion::class,
+                'assertion'   => ClientHasBackupFeatureAssertion::class,
             ]
         ]
     ],
@@ -327,7 +343,7 @@ return [
         'target'    => '{SUPPORT_SYSTEM_TARGET}',
         'class'     => 'support',
         'resource'  => 'support',
-        'assertion' => \iMSCP\Assertion\ClientHasSupportFeatureAssertion::class,
+        'assertion' => ClientHasSupportFeatureAssertion::class,
         'pages'     => [
             'open_tickets'   => [
                 'label'       => tr('Open tickets'),
@@ -358,30 +374,30 @@ return [
         'uri'   => '/client/profile.php',
         'class' => 'profile',
         'pages' => [
-            'overview'      => [
+            'account_overview' => [
                 'label'       => tr('Account summary'),
                 'uri'         => '/client/profile.php',
                 'title_class' => 'profile'
             ],
-            'personal_data' => [
-                'label'       => tr('Personal data'),
-                'uri'         => '/client/personal_change.php',
-                'title_class' => 'profile'
-            ],
-            'passsword'     => [
-                'label'       => tr('Password'),
-                'uri'         => '/client/password_update.php',
-                'title_class' => 'profile'
-            ],
-            'language'      => [
+            'language'         => [
                 'label'       => tr('Language'),
                 'uri'         => '/client/language.php',
                 'title_class' => 'multilanguage'
             ],
-            'layout'        => [
+            'layout'           => [
                 'label'       => tr('Layout'),
                 'uri'         => '/client/layout.php',
                 'title_class' => 'layout'
+            ],
+            'password'         => [
+                'label'       => tr('Password'),
+                'uri'         => '/client/password_update.php',
+                'title_class' => 'profile'
+            ],
+            'personal_data'    => [
+                'label'       => tr('Personal data'),
+                'uri'         => '/client/personal_change.php',
+                'title_class' => 'profile'
             ]
         ]
     ]

@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,6 +17,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
+use iMSCP\Assertion\ResellerCanViewCustomerStatisticsAssertion;
+use iMSCP\Assertion\ResellerHasApsFeatureAssertion;
+use iMSCP\Assertion\ResellerHasCircularFeatureAssertion;
+use iMSCP\Assertion\ResellerHasDomainAliasesFeatureAssertion;
+use iMSCP\Assertion\ResellerHasSupportFeatureAssertion;
 
 return [
     'general'       => [
@@ -34,7 +40,7 @@ return [
                 'uri'         => '/reseller/software_upload.php',
                 'title_class' => 'apps_installer',
                 'resource'    => 'aps',
-                'assertion'   => \iMSCP\Assertion\ResellerHasApsFeatureAssertion::class
+                'assertion'   => ResellerHasApsFeatureAssertion::class
             ]
         ]
     ],
@@ -92,7 +98,7 @@ return [
                 'uri'         => '/reseller/alias.php',
                 'title_class' => 'domains',
                 'resource'    => 'domain_aliases',
-                'assertion'   => \iMSCP\Assertion\ResellerHasDomainAliasesFeatureAssertion::class,
+                'assertion'   => ResellerHasDomainAliasesFeatureAssertion::class,
                 'pages'       => [
                     'add_alias'  => [
                         'label'       => tr('Add domain alias'),
@@ -121,7 +127,7 @@ return [
                 'uri'         => '/reseller/circular.php',
                 'title_class' => 'email',
                 'resource'    => 'circular',
-                'assertion'   => \iMSCP\Assertion\ResellerHasCircularFeatureAssertion::class
+                'assertion'   => ResellerHasCircularFeatureAssertion::class
             ]
         ]
     ],
@@ -155,7 +161,7 @@ return [
         'uri'       => '/reseller/user_statistics.php',
         'class'     => 'statistics',
         'resource'  => 'user_statistics',
-        'assertion' => \iMSCP\Assertion\ResellerCanViewCustomerStatisticsAssertion::class,
+        'assertion' => ResellerCanViewCustomerStatisticsAssertion::class,
         'pages'     => [
             'user_statistics' => [
                 'label'       => tr('User statistics'),
@@ -176,20 +182,20 @@ return [
             ]
         ]
     ],
-    'support'      => [
+    'support'       => [
         'label'     => tr('Support'),
         'uri'       => '{SUPPORT_SYSTEM_PATH}',
         'target'    => '{SUPPORT_SYSTEM_TARGET}',
         'class'     => 'support',
         'resource'  => 'support',
-        'assertion' => \iMSCP\Assertion\ResellerHasSupportFeatureAssertion::class,
+        'assertion' => ResellerHasSupportFeatureAssertion::class,
         'pages'     => [
             'open_tickets'   => [
                 'label'       => tr('Open tickets'),
                 'uri'         => '/reseller/ticket_system.php',
                 'title_class' => 'support',
-                'pages' => [
-                    'view_ticket'    => [
+                'pages'       => [
+                    'view_ticket' => [
                         'label'       => tr('View ticket'),
                         'uri'         => '/reseller/ticket_view.php',
                         'title_class' => 'support'
@@ -213,30 +219,30 @@ return [
         'uri'   => '/reseller/profile.php',
         'class' => 'profile',
         'pages' => [
-            'overview'      => [
+            'account_summary' => [
                 'label'       => tr('Account summary'),
                 'uri'         => '/reseller/profile.php',
                 'title_class' => 'profile'
             ],
-            'personal_data' => [
-                'label'       => tr('Personal data'),
-                'uri'         => '/reseller/personal_change.php',
-                'title_class' => 'profile'
-            ],
-            'passsword'     => [
-                'label'       => tr('Password'),
-                'uri'         => '/reseller/password_update.php',
-                'title_class' => 'profile'
-            ],
-            'language'      => [
+            'language'        => [
                 'label'       => tr('Language'),
                 'uri'         => '/reseller/language.php',
                 'title_class' => 'multilanguage'
             ],
-            'layout'        => [
+            'layout'          => [
                 'label'       => tr('Layout'),
                 'uri'         => '/reseller/layout.php',
                 'title_class' => 'layout'
+            ],
+            'password'        => [
+                'label'       => tr('Password'),
+                'uri'         => '/reseller/password_update.php',
+                'title_class' => 'profile'
+            ],
+            'personal_data'   => [
+                'label'       => tr('Personal data'),
+                'uri'         => '/reseller/personal_change.php',
+                'title_class' => 'profile'
             ]
         ]
     ]
