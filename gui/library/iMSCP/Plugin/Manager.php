@@ -23,6 +23,8 @@
 declare(strict_types=1);
 
 use iMSCP\Json\LazyDecoder;
+use iMSCP\Plugin\Filter\PluginArchive as PluginArchiveFilter;
+use iMSCP\Plugin\Validate\PluginArchive as PluginArchiveValidator;
 
 /**
  * Plugin Manager class
@@ -506,32 +508,31 @@ class iMSCP_Plugin_Manager
      */
     public function pluginUpload(): void
     {
-        /** @var Zend_File_Transfer_Adapter_Abstract $upload */
-        $upload = new Zend_File_Transfer();
-        $upload->setTranslator(iMSCP_Registry::get('translator'));
-        $upload->addPrefixPath(
-            'iMSCP_Plugin_Validate_PluginArchive',
-            'iMSCP/Plugin/Validate/PluginArchive',
-            Zend_File_Transfer_Adapter_Abstract::VALIDATE
+        /** @var Zend_File_Transfer_Adapter_Abstract $fileTransfer */
+        $fileTransfer = new Zend_File_Transfer();
+        $fileTransfer->setTranslator(iMSCP_Registry::get('translator'));
+        // We don't accept more than one plugin archive at time
+        $fileTransfer->addValidator('Count', true, 1);
+        // We want restrict size of accepted plugin archives
+        $fileTransfer->addValidator('Size', true, utils_getMaxFileUpload());
+        // Add plugin archive validator
+        $fileTransfer->addValidator(
+            new PluginArchiveValidator(['plugin_manager' => $this]),
+            true
         );
-        $upload->addValidator('Count', true, 1);
-        $upload->addValidator('Size', true, utils_getMaxFileUpload());
-        $upload->addValidator('PluginArchive', true, $this);
-        $upload->addPrefixPath(
-            'iMSCP_Plugin_Filter_PluginArchive',
-            'iMSCP/Plugin/Filter/PluginArchive',
-            Zend_File_Transfer_Adapter_Abstract::FILTER
-        );
-        $upload->addFilter('PluginArchive', $this->pluginGetRootDir());
+        // Add plugin archive filter
+        $fileTransfer->addFilter(new PluginArchiveFilter([
+            'destination' => $this->pluginGetRootDir(),
+        ]));
 
-        if (!$upload->receive()) {
+        if (!$fileTransfer->receive()) {
             throw new iMSCP_Plugin_Exception(
-                implode("<br>", $upload->getMessages())
+                implode("<br>", $fileTransfer->getMessages())
             );
         }
 
-        $info = include $this->pluginGetRootDir() . DIRECTORY_SEPARATOR
-            . $upload->getFileName() . DIRECTORY_SEPARATOR . 'info.php';
+        $info = include $fileTransfer->getFileName() . DIRECTORY_SEPARATOR
+            . 'info.php';
 
         $this->pluginUpdateData($info['name']);
     }
@@ -1442,7 +1443,7 @@ class iMSCP_Plugin_Manager
 
             $info = include $this->pluginGetRootDir() . DIRECTORY_SEPARATOR
                 . $dentry->getBasename() . DIRECTORY_SEPARATOR . 'info.php';
-            
+
             $this->pluginUpdateData($info['name']);
         }
 
@@ -1742,8 +1743,8 @@ class iMSCP_Plugin_Manager
             'priority'    => $infoNew['priority'],
             'status'      => $status,
             'backend'     => file_exists($this->pluginGetRootDir()
-                .DIRECTORY_SEPARATOR . $plugin . DIRECTORY_SEPARATOR
-                . 'backend' . DIRECTORY_SEPARATOR ."$plugin.pm"
+                . DIRECTORY_SEPARATOR . $plugin . DIRECTORY_SEPARATOR
+                . 'backend' . DIRECTORY_SEPARATOR . "$plugin.pm"
             ) ? 'yes' : 'no',
             'lockers'     => json_encode($lockers->toArray(), JSON_FORCE_OBJECT)
         ]);

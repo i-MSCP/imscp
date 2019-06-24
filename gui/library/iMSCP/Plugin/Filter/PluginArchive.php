@@ -22,14 +22,26 @@
 
 declare(strict_types=1);
 
+namespace iMSCP\Plugin\Filter;
+
+use Archive_Tar;
+use Exception;
+use iMSCP_Utility_OpcodeCache;
+use Zend_Config;
+use Zend_Exception;
+use Zend_Filter_Exception;
+use Zend_Filter_Interface;
+use Zend_Loader;
+use ZipArchive;
+
 /**
- * Class PluginFile
+ * Class PluginArchive
  *
- * Filter that extract uploaded plugin archive into plugins directory
+ * Filter that extract uploaded plugin archive into the plugins directory
  *
  * @package iMSCP\Plugin\Filter
  */
-class iMSCP_Plugin_Filter_PluginArchive implements Zend_Filter_Interface
+class PluginArchive implements Zend_Filter_Interface
 {
     /**
      * @var array Validator options
@@ -78,18 +90,18 @@ class iMSCP_Plugin_Filter_PluginArchive implements Zend_Filter_Interface
      * Sets the options for this filter
      *
      * @param array $options
-     * @return iMSCP_Plugin_Filter_PluginArchive
+     * @return PluginArchive
      */
     public function setOptions(
         array $options
-    ): iMSCP_Plugin_Filter_PluginArchive
+    ): PluginArchive
     {
         if (array_key_exists('destination', $options)) {
             $this->setDestination($options['destination']);
         }
 
         if (array_key_exists('magic_file', $options)) {
-            $this->setDestination($options['magic_file']);
+            $this->setMagicFile($options['magic_file']);
         }
 
         return $this;
@@ -108,12 +120,12 @@ class iMSCP_Plugin_Filter_PluginArchive implements Zend_Filter_Interface
     /**
      * Set the 'destination' option
      *
-     * @param string $destination
-     * @return iMSCP_Plugin_Filter_PluginArchive
+     * @param string|null $destination
+     * @return PluginArchive
      */
     public function setDestination(
-        string $destination
-    ): iMSCP_Plugin_Filter_PluginArchive
+        ?string $destination
+    ): PluginArchive
     {
         if (NULL === $destination) {
             $destination = GUI_ROOT_DIR . DIRECTORY_SEPARATOR . 'plugins';
@@ -147,14 +159,15 @@ class iMSCP_Plugin_Filter_PluginArchive implements Zend_Filter_Interface
      * Set the 'magic_file' option
      *
      * @param null|string $magicFile
-     * @return iMSCP_Plugin_Filter_PluginArchive
+     * @return PluginArchive
      */
     public function setMagicFile(
         ?string $magicFile
-    ): iMSCP_Plugin_Filter_PluginArchive
+    ): PluginArchive
     {
         if (NULL === $magicFile) {
             $this->_options['magic_file'] = NULL;
+            return $this;
         }
 
         $magicFile = (string)$magicFile;
@@ -178,7 +191,7 @@ class iMSCP_Plugin_Filter_PluginArchive implements Zend_Filter_Interface
     public function filter($value): string
     {
         umask(027);
-        $archName = explode('.', basename($value))[0];
+        $name = explode('.', basename($value))[0];
         $destination = $this->getDestination();
 
         try {
@@ -187,14 +200,14 @@ class iMSCP_Plugin_Filter_PluginArchive implements Zend_Filter_Interface
             if (!in_array($mimeType, [
                 'application/zip', 'application/x-gzip', 'application/x-bzip2'
             ])) {
-                throw new Zend_Validate_Exception(sprintf(
+                throw new Zend_Filter_Exception(sprintf(
                     'Unsupported plugin archive type. Only zip, tar.gz and tar.bz2 archive type are supported.',
                     ));
             }
 
             if ($mimeType == 'application/zip') {
                 if (!extension_loaded('zip')) {
-                    throw new Zend_Validate_Exception(sprintf(
+                    throw new Zend_Filter_Exception(sprintf(
                         'Missing %s PHP extension.', 'zip'
                     ));
                 }
@@ -203,23 +216,23 @@ class iMSCP_Plugin_Filter_PluginArchive implements Zend_Filter_Interface
 
                 if (true !== $arch->open($value)) {
                     throw new Zend_Filter_Exception(sprintf(
-                        'Error while opening the %s plugin archive.', $archName
+                        'Error while opening the %s plugin archive.', $name
                     ));
                 }
 
                 if (!$this->_backupPluginDir(
-                    $destination . DIRECTORY_SEPARATOR . $archName
+                    $destination . DIRECTORY_SEPARATOR . $name
                 )) {
                     throw new Zend_Filter_Exception(sprintf(
                         "Couldn't backup the current %s plugin directory.",
-                        $archName
+                        $name
                     ));
                 }
 
                 if (false === @$arch->extractTo($destination)) {
                     throw new Zend_Filter_Exception(sprintf(
                         'Error while extracting the %s plugin archive.',
-                        $archName
+                        $name
                     ));
                 }
 
@@ -228,7 +241,7 @@ class iMSCP_Plugin_Filter_PluginArchive implements Zend_Filter_Interface
                 try {
                     Zend_Loader::loadClass('Archive_Tar');
                 } catch (Zend_Exception $e) {
-                    throw new Zend_Validate_Exception(
+                    throw new Zend_Filter_Exception(
                         'Missing PEARs Archive_Tar.'
                     );
                 }
@@ -236,18 +249,18 @@ class iMSCP_Plugin_Filter_PluginArchive implements Zend_Filter_Interface
                 if (!extension_loaded(
                     $mimeType == 'application/x-gzip' ? 'zlib' : 'bz2'
                 )) {
-                    throw new Zend_Validate_Exception(sprintf(
+                    throw new Zend_Filter_Exception(sprintf(
                         'Missing %s PHP extension.',
                         $mimeType == 'application/x-gzip' ? 'zlib' : 'bz2'
                     ));
                 }
 
                 if (!$this->_backupPluginDir(
-                    $destination . DIRECTORY_SEPARATOR . $archName
+                    $destination . DIRECTORY_SEPARATOR . $name
                 )) {
                     throw new Zend_Filter_Exception(sprintf(
                         "Couldn't backup the current %s plugin directory.",
-                        $archName
+                        $name
                     ));
                 }
 
@@ -258,13 +271,13 @@ class iMSCP_Plugin_Filter_PluginArchive implements Zend_Filter_Interface
                 if (false === $arch->extract($destination)) {
                     throw new Zend_Filter_Exception(sprintf(
                         'Error while extracting the %s plugin archive.',
-                        $archName
+                        $name
                     ));
                 }
             }
         } catch (Exception $e) {
             $this->_restorePluginDir(
-                $destination . DIRECTORY_SEPARATOR . $archName
+                $destination . DIRECTORY_SEPARATOR . $name
             );
             @unlink($value);
             throw $e;
@@ -272,11 +285,11 @@ class iMSCP_Plugin_Filter_PluginArchive implements Zend_Filter_Interface
 
         @unlink($value);
         @utils_removeDir(
-            $destination . DIRECTORY_SEPARATOR . $archName . '-old'
+            $destination . DIRECTORY_SEPARATOR . $name . '-old'
         );
         iMSCP_Utility_OpcodeCache::clearAllActive();
 
-        return $destination . DIRECTORY_SEPARATOR . $archName;
+        return $destination . DIRECTORY_SEPARATOR . $name;
     }
 
     /**

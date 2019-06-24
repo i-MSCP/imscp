@@ -22,13 +22,28 @@
 
 declare(strict_types=1);
 
+namespace iMSCP\Plugin\Validate;
+
+use Archive_Tar;
+use iMSCP_Plugin_Manager;
+use ParseError;
+use Zend_Config;
+use Zend_Exception;
+use Zend_Loader;
+use Zend_Uri;
+use Zend_Validate_Abstract;
+use Zend_Validate_EmailAddress;
+use Zend_Validate_Exception;
+use ZipArchive;
+
 /**
- * Class iMSCP_Validate_File_Plugin
+ * Class PluginArchive
  *
- * Validator for plugin archives
+ * Validator that validate a plugin archive
  *
+ * @package iMSCP\Plugin\Validate
  */
-class iMSCP_Plugin_Validate_PluginArchive extends Zend_Validate_Abstract
+class PluginArchive extends Zend_Validate_Abstract
 {
     /**
      * @const string Error constants
@@ -48,16 +63,16 @@ class iMSCP_Plugin_Validate_PluginArchive extends Zend_Validate_Abstract
      * @var array Error message templates
      */
     protected $_messageTemplates = [
-        self::NO_PLUGIN_INFO            => "Plugin info.php file is missing inside the plugin archive.",
-        self::NO_PLUGIN_ENTRY_POINT     => "Plugin entry point (class) is missing inside the plugin archive.",
-        self::NOT_PLUGIN                => "File '%value%' doesn't look like an i-MSCP plugin archive.",
-        self::NOT_READABLE              => "File '%value%' is not readable or does not exist.",
+        self::NO_PLUGIN_INFO            => "Invalid plugin archive: The plugin info.php file is missing inside the plugin archive.",
+        self::NO_PLUGIN_ENTRY_POINT     => "Invalid plugin archive: The plugin entry point (class) is missing inside the plugin archive.",
+        self::NOT_PLUGIN                => "Invalid plugin archive: The '%value%' file doesn't look like an i-MSCP plugin archive.",
+        self::NOT_READABLE              => "The '%value%' file is not readable or does not exist.",
         self::NOT_COMPATIBLE            => "Plugin '%value%' is not compatible with this i-MSCP version.",
-        self::NOT_ALLOWED_PROTECTED     => "Plugin '%value%' cannot be updated because it is protected.",
-        self::NOT_ALLOWED_PENDING       => "Plugin '%value%' cannot be updated due to pending task.",
-        self::INVALID_PLUGIN_INFO_FILE  => "Plugin '%value%' file is invalid.",
-        self::INVALID_PLUGIN_INFO_FIELD => "Plugin '%value%' info field is invalid.",
-        self::MISSING_PLUGIN_INFO_FIELD => "Plugin '%value%' info field is missing.",
+        self::NOT_ALLOWED_PROTECTED     => "The '%value%' plugin cannot be updated because it is protected.",
+        self::NOT_ALLOWED_PENDING       => "The '%value%' plugin cannot be updated due to pending task.",
+        self::INVALID_PLUGIN_INFO_FILE  => "Invalid plugin archive: The %value%' plugin info file is not valid.",
+        self::INVALID_PLUGIN_INFO_FIELD => "Invalid plugin archive: The plugin '%value%' info field is not valid.",
+        self::MISSING_PLUGIN_INFO_FIELD => "Invalid plugin archive: The '%value%' plugin info field is missing.",
     ];
 
     /**
@@ -68,7 +83,7 @@ class iMSCP_Plugin_Validate_PluginArchive extends Zend_Validate_Abstract
     ];
 
     /**
-     * iMSCP_Plugin_Validate_File_Plugin constructor.
+     * PluginArchive constructor.
      *
      * @param array $options
      */
@@ -100,11 +115,11 @@ class iMSCP_Plugin_Validate_PluginArchive extends Zend_Validate_Abstract
      * Sets the options for this validator
      *
      * @param array $options
-     * @return iMSCP_Plugin_Validate_PluginArchive
+     * @return PluginArchive
      */
     public function setOptions(
         array $options
-    ): iMSCP_Plugin_Validate_PluginArchive
+    ): PluginArchive
     {
         if (array_key_exists('plugin_manager', $options)) {
             $this->setPluginManager($options['plugin_manager']);
@@ -127,11 +142,11 @@ class iMSCP_Plugin_Validate_PluginArchive extends Zend_Validate_Abstract
      * Set the plugin manager
      *
      * @param iMSCP_Plugin_Manager|NULL $pm
-     * @return iMSCP_Plugin_Validate_PluginArchive
+     * @return PluginArchive
      */
     public function setPluginManager(
         iMSCP_Plugin_Manager $pm = NULL
-    ): iMSCP_Plugin_Validate_PluginArchive
+    ): PluginArchive
     {
         if ($pm === NULL) {
             $pm = new iMSCP_Plugin_Manager();
@@ -151,56 +166,77 @@ class iMSCP_Plugin_Validate_PluginArchive extends Zend_Validate_Abstract
             return $this->_throw($file['name'], self::NOT_READABLE);
         }
 
-        // Only tar.gz, tar.bz2 and zip archives are accepted
+        // Only tar.gz, tar.bz2 and zip archives are supported
         if (!in_array($file['type'], [
             'application/zip', 'application/x-gzip', 'application/x-bzip2'
         ])) {
             return $this->_throw($file['name'], self::NOT_PLUGIN);
         }
 
-        // Retrieve archive name
-        $archName = explode('.', $file['name'])[0];
-
         if ($file['type'] == 'application/zip') {
-            if (!extension_loaded('zip')) {
-                throw new Zend_Validate_Exception(sprintf(
-                    'Missing %s PHP extension.', 'zip'
-                ));
-            }
+            return $this->_isValidZipArchive($value, $file);
+        }
 
-            $arch = new ZipArchive();
+        return $this->_isValidTarArchive($value, $file);
+    }
 
-            if (true !== $arch->open($value)) {
-                throw new Zend_Validate_Exception(sprintf(
-                    'Error while opening the %s plugin archive.', $archName
-                ));
-            }
+    /**
+     * Internal method to validate a plugin Zip Archive
+     *
+     * @param string $value
+     * @param array $file
+     * @return bool TRUE if the Zip archive is valid, FALSE otherwise
+     */
+    protected function _isValidZipArchive($value, $file)
+    {
+        if (!extension_loaded('zip')) {
+            throw new Zend_Validate_Exception(sprintf(
+                'Missing %s PHP extension.', 'zip'
+            ));
+        }
 
-            $infoAsString = @$arch->getFromName("$archName/info.php");
+        $arch = new ZipArchive();
+        $name = explode('.', $file['name'])[0];
 
-            if (false === $infoAsString) {
-                return $this->_throw($file['name'], self::NO_PLUGIN_INFO);
-            }
+        if (true !== $arch->open($value)) {
+            throw new Zend_Validate_Exception(sprintf(
+                'Error while opening the %s plugin archive.', $name
+            ));
+        }
 
-            if (NULL !== ($info = $this->_isValidPlugin($infoAsString))) {
-                $name = $info['name'];
+        $infoAsString = @$arch->getFromName("$name/info.php");
 
-                // Checks that plugin archive contains the <pluginName>.php
-                // class (plugin entry point)
-                if (false === @$arch->locateName("$archName/$name.php")) {
-                    return $this->_throw(
-                        $file['name'], self::NO_PLUGIN_ENTRY_POINT
-                    );
-                }
+        if (false === $infoAsString) {
+            return $this->_throw($file['name'], self::NO_PLUGIN_INFO);
+        }
 
-                $arch->close();
-                return true;
+        $info = $this->_isValidPlugin($infoAsString);
+        if (false !== $info) {
+            $entryPointFile = $info['name'] . '.php';
+
+            if (false === @$arch->locateName("$name/$entryPointFile")) {
+                return $this->_throw(
+                    $file['name'], self::NO_PLUGIN_ENTRY_POINT
+                );
             }
 
             $arch->close();
-            return false;
+            return true;
         }
 
+        $arch->close();
+        return false;
+    }
+
+    /**
+     * Internal method to validate a Tar Archive
+     *
+     * @param string $value
+     * @param array $file
+     * @return bool TRUE if the Zip archive is valid, FALSE otherwise
+     */
+    protected function _isValidTarArchive($value, $file)
+    {
         try {
             Zend_Loader::loadClass('Archive_Tar');
         } catch (Zend_Exception $e) {
@@ -219,20 +255,20 @@ class iMSCP_Plugin_Validate_PluginArchive extends Zend_Validate_Abstract
         $arch = new Archive_Tar(
             $value, $file['type'] == 'application/x-gzip' ? 'gz' : 'bz2'
         );
+        $name = explode('.', $file['name'])[0];
 
         /** @var string $infoAsString */
-        $infoAsString = @$arch->extractInString("$archName/info.php");
+        $infoAsString = @$arch->extractInString("$name/info.php");
 
         if (false === $infoAsString) {
             return $this->_throw($file['name'], self::NO_PLUGIN_INFO);
         }
 
-        if (NULL !== ($info = $this->_isValidPlugin($infoAsString))) {
-            $name = $info['name'];
+        $info = $this->_isValidPlugin($infoAsString);
+        if (false !== $info) {
+            $entryPointFile = $info['name'] . '.php';
 
-            // Checks that plugin archive contains the <pluginName>.php
-            // class (plugin entry point)
-            if (false === @$arch->extractInString("$archName/$name.php")) {
+            if (false === @$arch->extractInString("$name/$entryPointFile")) {
                 return $this->_throw(
                     $file['name'], self::NO_PLUGIN_ENTRY_POINT
                 );
@@ -248,16 +284,23 @@ class iMSCP_Plugin_Validate_PluginArchive extends Zend_Validate_Abstract
      * Internal method to check plugin validity
      *
      * @param string $infoAsString Plugin info as string
-     * @return array|null array containing plugin info if the plugin is valid,
-     *               NULL otherwise
+     * @return array|false array containing plugin info if the plugin archive is
+     *                    valid, NULL otherwise
      */
-    protected function _isValidPlugin(string $infoAsString): ?array
+    protected function _isValidPlugin(string $infoAsString)
     {
-        // This is a bit unsafe but that validator is only involved in admin UI
-        $info = eval('?>' . $infoAsString);
-        if (false === $info || !is_array($info)) {
-            $this->_throw('info.php', self::INVALID_PLUGIN_INFO_FILE);
-            return NULL;
+        $info = (static function (string $infoAsString) {
+            try {
+                $info = eval('?>' . $infoAsString);
+            } catch (ParseError $e) {
+                $info = NULL;
+            }
+
+            return $info;
+        })($infoAsString);
+
+        if (NULL === $info || !is_array($info)) {
+            return $this->_throw('info.php', self::INVALID_PLUGIN_INFO_FILE);
         }
 
         // Check for plugin info fields
@@ -267,8 +310,7 @@ class iMSCP_Plugin_Validate_PluginArchive extends Zend_Validate_Abstract
             ['name', 'desc', 'version', 'build', 'require_api'] as $field
         ) {
             if (!isset($info[$field])) {
-                $this->_throw($field, self::MISSING_PLUGIN_INFO_FIELD);
-                return NULL;
+                return $this->_throw($field, self::MISSING_PLUGIN_INFO_FIELD);
             }
 
             switch ($field) {
@@ -276,22 +318,25 @@ class iMSCP_Plugin_Validate_PluginArchive extends Zend_Validate_Abstract
                     if (!is_string($info[$field])
                         || !preg_match('/^[a-z]+$/i', $info[$field])
                     ) {
-                        $this->_throw($field, self::INVALID_PLUGIN_INFO_FIELD);
-                        return NULL;
+                        return $this->_throw(
+                            $field, self::INVALID_PLUGIN_INFO_FIELD
+                        );
                     }
                     break;
                 case 'desc':
                     if (!is_string($info[$field]) || $info[$field] === '') {
-                        $this->_throw($field, self::INVALID_PLUGIN_INFO_FIELD);
-                        return NULL;
+                        return $this->_throw(
+                            $field, self::INVALID_PLUGIN_INFO_FIELD
+                        );
                     }
                     break;
                 case 'version':
                     if (!is_string($info[$field])
                         || !preg_match('/^\d+\.\d+\.\d+$/', $info[$field])
                     ) {
-                        $this->_throw($field, self::INVALID_PLUGIN_INFO_FIELD);
-                        return NULL;
+                        return $this->_throw(
+                            $field, self::INVALID_PLUGIN_INFO_FIELD
+                        );
                     }
                     break;
                 case 'build':
@@ -299,16 +344,18 @@ class iMSCP_Plugin_Validate_PluginArchive extends Zend_Validate_Abstract
                             || is_int($info[$field]))
                         || !preg_match('/^\d{10}$/', $info[$field])
                     ) {
-                        $this->_throw($field, self::INVALID_PLUGIN_INFO_FIELD);
-                        return NULL;
+                        return $this->_throw(
+                            $field, self::INVALID_PLUGIN_INFO_FIELD
+                        );
                     }
                     break;
                 case 'require_api':
                     if (!is_string($info[$field])
                         || !preg_match('/^\d+\.\d+\.\d+$/', $info[$field])
                     ) {
-                        $this->_throw($field, self::INVALID_PLUGIN_INFO_FIELD);
-                        return NULL;
+                        return $this->_throw(
+                            $field, self::INVALID_PLUGIN_INFO_FIELD
+                        );
                     }
             }
         }
@@ -316,43 +363,34 @@ class iMSCP_Plugin_Validate_PluginArchive extends Zend_Validate_Abstract
         // Optional fields
 
         if (isset($info['author'])) {
-            if (is_string($info['author']) && $info['author'] === '') {
-                $this->_throw('author', self::INVALID_PLUGIN_INFO_FIELD);
-                return NULL;
-            } elseif (is_array($info['author'])) {
-                foreach ($info['author'] as $author) {
-                    if (!is_string($author) || $author === '') {
-                        $this->_throw('author', self::INVALID_PLUGIN_INFO_FIELD);
-                        return NULL;
-                    }
+            foreach ((array)$info['author'] as $author) {
+                if (!is_string($author) || $author === '') {
+                    return $this->_throw(
+                        'author', self::INVALID_PLUGIN_INFO_FIELD
+                    );
                 }
-            } else {
-                $this->_throw('author', self::INVALID_PLUGIN_INFO_FIELD);
-                return NULL;
             }
-
         }
 
         if (isset($info['email'])
-            && !(is_string($info['email'] && $info['email'] !== ''))
+            && !(is_string($info['email'])
+                || !(new Zend_Validate_EmailAddress)->isValid($info['email'])
+            )
         ) {
-            $this->_throw('email', self::INVALID_PLUGIN_INFO_FIELD);
-            return NULL;
+            return $this->_throw('email', self::INVALID_PLUGIN_INFO_FIELD);
         }
 
         if (isset($info['url']) &&
             !(is_string($info['url']) && Zend_Uri::check($info['url']))
         ) {
-            $this->_throw('url', self::INVALID_PLUGIN_INFO_FIELD);
-            return NULL;
+            return $this->_throw('url', self::INVALID_PLUGIN_INFO_FIELD);
         }
 
         if (isset($info['priority'])
             && (!(is_string($info['priority']) || is_int($info['priority']))
                 || !preg_match('/^\d+$/', $info['priority']))
         ) {
-            $this->_throw('priority', self::INVALID_PLUGIN_INFO_FIELD);
-            return NULL;
+            return $this->_throw('priority', self::INVALID_PLUGIN_INFO_FIELD);
         }
 
         $pm = $this->getPluginManager();
@@ -364,8 +402,9 @@ class iMSCP_Plugin_Validate_PluginArchive extends Zend_Validate_Abstract
         if ($pm->pluginIsKnown($info['name'])) {
             // If the plugin is protected, update is forbidden
             if ($pm->pluginIsProtected($info['name'])) {
-                $this->_throw($info['name'], self::NOT_ALLOWED_PROTECTED);
-                return NULL;
+                return $this->_throw(
+                    $info['name'], self::NOT_ALLOWED_PROTECTED
+                );
             }
 
             // If there is a pending task for the plugin, update is forbidden
@@ -373,8 +412,7 @@ class iMSCP_Plugin_Validate_PluginArchive extends Zend_Validate_Abstract
                 $pm->pluginGetStatus($info['name']),
                 ['uninstalled', 'disabled', 'enabled']
             )) {
-                $this->_throw($info['name'], self::NOT_ALLOWED_PENDING);
-                return NULL;
+                return $this->_throw($info['name'], self::NOT_ALLOWED_PENDING);
             }
         }
 
