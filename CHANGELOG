@@ -30,12 +30,12 @@ CONFIG
     Removed: DATABASE_TYPE configuration parameter form master i-MSCP configuration file
 
 DATABASE
-    Added: log.log_time index (r278)
-    Added: login.ipaddr index (r279)
-    Added: Several indexes (r277)
+    Added: log.log_time index (r283)
+    Added: login.ipaddr index (r284)
+    Added: Several indexes (r282)
     Fixed: Unwanted default values (r275)
-    Review: Switched from 'utf8' character set to 'utf8mb4' character set (r276)
-    Review: Switched from 'utf8_unicode_ci' collation to 'utf8mb4_unicode_ci' collation (r276)
+    Review: Switched from 'utf8' character set to 'utf8mb4' character set (r281)
+    Review: Switched from 'utf8_unicode_ci' collation to 'utf8mb4_unicode_ci' collation (r281)
 
 DAEMON
     Enhancement: Make it possible to override default (9876) listen port

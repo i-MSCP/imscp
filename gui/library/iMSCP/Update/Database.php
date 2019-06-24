@@ -66,7 +66,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 280;
+    protected $lastUpdate = 285;
 
     /**
      * Singleton - Make new unavailable
@@ -3127,11 +3127,11 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
     /**
-     * Switch from utf8 to utf8mb4
+     * Switch from utf8 to utf8mb4 (character set and collation)
      *
      * @return array SQL statements to be executed
      */
-    protected function r276()
+    protected function r281()
     {
         // Drop all indexes for which the key prefix length would be bigger
         // than 767 bytes when converting from utf8 to utf8mb4.
@@ -3197,7 +3197,7 @@ class iMSCP_Update_Database extends iMSCP_Update
                 'web_software_options'
             ] AS $table
         ) {
-            $statements = "
+            $statements[] = "
                 ALTER TABLE `$table`
                 CONVERT TO CHARACTER SET utf8mb4
                 COLLATE utf8mb4_unicode_ci
@@ -3212,7 +3212,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      *
      * @çeturn SQL statements to be executed
      */
-    protected function r277()
+    protected function r282()
     {
         return [
             $this->addIndex(
@@ -3314,7 +3314,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      *
      * @return string|null SQL statement to be executed
      */
-    protected function r278()
+    protected function r283()
     {
         return $this->addIndex('log', 'log_time', 'index', 'log_time');
     }
@@ -3324,7 +3324,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      *
      * @return string|null SQL statement to be executed
      */
-    protected function r279()
+    protected function r284()
     {
         return $this->addIndex('login', 'ipaddr', 'index', 'ipaddr');
     }
@@ -3334,7 +3334,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      *
      * return void
      */
-    protected function r280()
+    protected function r285()
     {
         if (isset($this->dbConfig['PORT_TELNET'])) {
             unset($this->dbConfig['PORT_TELNET']);
