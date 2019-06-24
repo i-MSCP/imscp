@@ -48,6 +48,18 @@
             return false;
         });
 
+        $("input[name='plugin_archive']").on("change", function () {
+            var $button = $("input[name='plugin_archive_submit']");
+
+            if (!$(this).val()) {
+                $button.prop("disabled", true);
+            } else {
+                $button.prop("disabled", false);
+            }
+
+            $button.button("refresh");
+        });
+
         $('#bulk_actions').on("change", function () {
             var $button = $("#bulk_actions_submit");
             if ($(this).val() == 'noaction') {
@@ -85,7 +97,7 @@
             <td>
                 <input type="hidden" name="MAX_FILE_SIZE" value="<?= tohtml(utils_getMaxFileUpload(), 'htmlAttr') ?>">
                 <input type="file" name="plugin_archive">
-                <input type="submit" value="<?= tohtml(tr('Upload', 'htmlAttr'))?>">
+                <input type="submit" name="plugin_archive_submit" value="<?= tohtml(tr('Upload', 'htmlAttr'))?>" disabled>
             </td>
         </tr>
         </tbody>
