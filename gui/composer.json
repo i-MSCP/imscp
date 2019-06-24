@@ -120,7 +120,8 @@
         "Patch for PHP deprecations (Zend Framework 1)": "patches/001_php_deprecations.patch",
         "Patch for Zend_Form component (docblock fix)": "patches/002_zend_form_docblock_fix.patch",
         "Patch for Zend_Navigation component (isActive() implementation for URI page)": "patches/003_zend_navigation_patch",
-        "Patch for Zend_Validate_File_Upload validator (count() fix)": "patches/004_zend_validate_file_upload.patch"
+        "Patch for Zend_Validate_File_Upload validator (count() fix)": "patches/004_zend_validate_file_upload.patch",
+        "Patch for Zend_Validate_File_Count validator (count() fix)": "patches/005_zend_validate_file_count.patch"
       }
     }
   }
