@@ -1383,7 +1383,7 @@ function utils_removeDir($directory)
     $directory = rtrim($directory, '/');
 
     if (!is_dir($directory)) {
-        return false;
+        return true;
     }
 
     if (!is_readable($directory)) {
