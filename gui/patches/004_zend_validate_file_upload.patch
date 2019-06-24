@@ -1,0 +1,16 @@
+Index: library/Zend/Validate/File/Upload.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- a/library/Zend/Validate/File/Upload.php	(revision 136735e776f520b081cd374012852cb88cef9a88)
++++ b/library/Zend/Validate/File/Upload.php	(date 1561369646000)
+@@ -223,7 +223,7 @@
+             }
+         }
+ 
+-        if (count($this->_messages) > 0) {
++        if (null !== $this->_messages && count($this->_messages) > 0) {
+             return false;
+         } else {
+             return true;
