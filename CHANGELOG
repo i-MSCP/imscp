@@ -90,8 +90,9 @@ INSTALLER
     Removed: --listener command line option from both imscp-autoinstall and imscp-reconfigure scripts
     Review: SQL users for various services such as proftpd, vsftpd, dovecot, courier-authdaemon are now randomly generated
 
-LISTENER:
+LISTENER
     Removed: 10_named_override_default_rr.pl (now included in core)
+    Removed: 20_dovecot_connections.pl (can now be done through i-MSCP's Dovecot configuration file (persistent configuration)
 
 PLUGINS
     Enhancement: Run frontEnd applications through the Slim microframework (with backward compatibility in mind)
