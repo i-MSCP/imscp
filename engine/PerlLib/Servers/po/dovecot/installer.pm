@@ -84,7 +84,7 @@ sub registerSetupListeners
 sub preinstall
 {
     my ( $self ) = @_;
-    
+
     my $rs = $self->_setDovecotVersion();
     return $rs if $rs;
 
@@ -112,7 +112,7 @@ sub preinstall
         error( $@ );
         $rs = 1;
     }
-    
+
     $rs;
 }
 
@@ -179,7 +179,8 @@ sub postinstall
 
 =item configurePostfix( $fileContent, $fileName )
 
- Injects configuration for both, Dovecot LDA and Dovecot SASL in Postfix configuration files.
+ Injects configuration for both, Dovecot LDA and Dovecot SASL in Postfix
+ configuration files.
 
  Listener that listen on the following events:
   - beforeMtaBuildMainCfFile
@@ -518,63 +519,81 @@ sub _buildConf
     ( my $dbPass = $self->{'_dovecot_sql_user_passwd'} ) =~ s%('|"|\\)%\\$1%g;
 
     my $data = {
-        DATABASE_HOST                 => ::setupGetQuestion( 'DATABASE_HOST' ),
-        DATABASE_PORT                 => ::setupGetQuestion( 'DATABASE_PORT' ),
-        DATABASE_NAME                 => $dbName,
-        DATABASE_USER                 => $dbUser,
-        DATABASE_PASSWORD             => $dbPass,
-        HOSTNAME                      => ::setupGetQuestion( 'SERVER_HOSTNAME' ),
-        IMSCP_GROUP                   => $::imscpConfig{'IMSCP_GROUP'},
-        MTA_VIRTUAL_MAIL_DIR          => $self->{'mta'}->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
-        MTA_MAILBOX_UID_NAME          => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'},
-        MTA_MAILBOX_GID_NAME          => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},
-        MTA_MAILBOX_UID               => ( scalar getpwnam( $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'} ) ),
-        MTA_MAILBOX_GID               => ( scalar getgrnam( $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'} ) ),
-        NETWORK_PROTOCOLS             => ::setupGetQuestion( 'IPV6_SUPPORT' ) ? '*, [::]' : '*',
-        POSTFIX_SENDMAIL_PATH         => $self->{'mta'}->{'config'}->{'POSTFIX_SENDMAIL_PATH'},
-        DOVECOT_CONF_DIR              => $self->{'config'}->{'DOVECOT_CONF_DIR'},
-        DOVECOT_DELIVER_PATH          => $self->{'config'}->{'DOVECOT_DELIVER_PATH'},
-        DOVECOT_LDA_AUTH_SOCKET_PATH  => $self->{'config'}->{'DOVECOT_LDA_AUTH_SOCKET_PATH'},
-        DOVECOT_SASL_AUTH_SOCKET_PATH => $self->{'config'}->{'DOVECOT_SASL_AUTH_SOCKET_PATH'},
-        ENGINE_ROOT_DIR               => $::imscpConfig{'ENGINE_ROOT_DIR'},
-        POSTFIX_USER                  => $self->{'mta'}->{'config'}->{'POSTFIX_USER'},
-        POSTFIX_GROUP                 => $self->{'mta'}->{'config'}->{'POSTFIX_GROUP'},
+        DATABASE_HOST                            => ::setupGetQuestion( 'DATABASE_HOST' ),
+        DATABASE_PORT                            => ::setupGetQuestion( 'DATABASE_PORT' ),
+        DATABASE_NAME                            => $dbName,
+        DATABASE_USER                            => $dbUser,
+        DATABASE_PASSWORD                        => $dbPass,
+        HOSTNAME                                 => ::setupGetQuestion( 'SERVER_HOSTNAME' ),
+        IMSCP_GROUP                              => $::imscpConfig{'IMSCP_GROUP'},
+        MTA_VIRTUAL_MAIL_DIR                     => $self->{'mta'}->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
+        MTA_MAILBOX_UID_NAME                     => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+        MTA_MAILBOX_GID_NAME                     => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},
+        MTA_MAILBOX_UID                          => scalar getpwnam( $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'} ),
+        MTA_MAILBOX_GID                          => scalar getgrnam( $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'} ),
+        NETWORK_PROTOCOLS                        => ::setupGetQuestion( 'IPV6_SUPPORT' ) ? '*, [::]' : '*',
+        POSTFIX_SENDMAIL_PATH                    => $self->{'mta'}->{'config'}->{'POSTFIX_SENDMAIL_PATH'},
+        DOVECOT_CONF_DIR                         => $self->{'config'}->{'DOVECOT_CONF_DIR'},
+        DOVECOT_DELIVER_PATH                     => $self->{'config'}->{'DOVECOT_DELIVER_PATH'},
+        DOVECOT_LDA_AUTH_SOCKET_PATH             => $self->{'config'}->{'DOVECOT_LDA_AUTH_SOCKET_PATH'},
+        DOVECOT_SASL_AUTH_SOCKET_PATH            => $self->{'config'}->{'DOVECOT_SASL_AUTH_SOCKET_PATH'},
+        DOVECOT_DEFAULT_CLIENT_LIMIT             => $self->{'config'}->{'DOVECOT_DEFAULT_CLIENT_LIMIT'},
+        DOVECOT_IMAP_LOGIN_PROCESS_LIMIT         => $self->{'config'}->{'DOVECOT_IMAP_LOGIN_PROCESS_LIMIT'},
+        DOVECOT_IMAP_LOGIN_PROCESS_MIN_AVAIL     => $self->{'config'}->{'DOVECOT_IMAP_LOGIN_PROCESS_MIN_AVAIL'},
+        DOVECOT_IMAP_LOGIN_PROCESS_SERVICE_COUNT => $self->{'config'}->{'DOVECOT_IMAP_LOGIN_PROCESS_SERVICE_COUNT'},
+        DOVECOT_IMAP_PROCESS_LIMIT               => $self->{'config'}->{'DOVECOT_IMAP_PROCESS_LIMIT'},
+        DOVECOT_IMAP_PROCESS_MIN_AVAIL           => $self->{'config'}->{'DOVECOT_IMAP_PROCESS_MIN_AVAIL'},
+        DOVECOT_IMAP_PROCESS_SERVICE_COUNT       => $self->{'config'}->{'DOVECOT_IMAP_PROCESS_SERVICE_COUNT'},
+        DOVECOT_IMAP_VSZ_LIMIT                   => $self->{'config'}->{'DOVECOT_IMAP_VSZ_LIMIT'},
+        DOVECOT_POP3_LOGIN_PROCESS_LIMIT         => $self->{'config'}->{'DOVECOT_POP3_LOGIN_PROCESS_LIMIT'},
+        DOVECOT_POP3_LOGIN_PROCESS_MIN_AVAIL     => $self->{'config'}->{'DOVECOT_POP3_LOGIN_PROCESS_MIN_AVAIL'},
+        DOVECOT_POP3_LOGIN_PROCESS_SERVICE_COUNT => $self->{'config'}->{'DOVECOT_POP3_LOGIN_PROCESS_SERVICE_COUNT'},
+        DOVECOT_POP3_PROCESS_LIMIT               => $self->{'config'}->{'DOVECOT_POP3_PROCESS_LIMIT'},
+        DOVECOT_POP3_PROCESS_MIN_AVAIL           => $self->{'config'}->{'DOVECOT_POP3_PROCESS_MIN_AVAIL'},
+        DOVECOT_POP3_PROCESS_SERVICE_COUNT       => $self->{'config'}->{'DOVECOT_POP3_PROCESS_SERVICE_COUNT'},
+        DOVECOT_MAX_USERIP_CONNECTIONS           => $self->{'config'}->{'DOVECOT_MAX_USERIP_CONNECTIONS'},
+        ENGINE_ROOT_DIR                          => $::imscpConfig{'ENGINE_ROOT_DIR'},
+        POSTFIX_USER                             => $self->{'mta'}->{'config'}->{'POSTFIX_USER'},
+        POSTFIX_GROUP                            => $self->{'mta'}->{'config'}->{'POSTFIX_GROUP'}
     };
 
     # Transitional code (should be removed in later version)
     if ( -f "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-dict-sql.conf" ) {
-        iMSCP::File->new( filename => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-dict-sql.conf" )->delFile();
+        iMSCP::File->new(
+            filename => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-dict-sql.conf"
+        )->delFile();
     }
 
     my %cfgFiles = (
         'dovecot.conf'             => [
-            "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot.conf", # Dest path
-            $::imscpConfig{'ROOT_USER'},                            # Owner
-            $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},   # Group
-            0640                                                    # Permissions
+            "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot.conf",
+            $::imscpConfig{'ROOT_USER'},
+            $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},
+            0640
         ],
         'dovecot-sql.conf'         => [
-            "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf", # Dest path
-            $::imscpConfig{'ROOT_USER'},                                # owner
-            $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},       # Group
-            0640                                                        # Permissions
+            "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf",
+            $::imscpConfig{'ROOT_USER'},
+            $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},
+            0640
         ],
         'dovecot-managesieve.conf' => [
-            "$self->{'config'}->{'DOVECOT_CONF_DIR'}/imscp.d/dovecot-managesieve.conf", # Dest path
-            $::imscpConfig{'ROOT_USER'},                                                # owner
-            $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},                       # Group
-            0640                                                                        # Permissions
+            "$self->{'config'}->{'DOVECOT_CONF_DIR'}/imscp.d/dovecot-managesieve.conf",
+            $::imscpConfig{'ROOT_USER'},
+            $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},
+            0640
         ],
         'quota-warning'            => [
-            "$::imscpConfig{'ENGINE_ROOT_DIR'}/quota/imscp-dovecot-quota.sh", # Dest path
-            $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'},             # Owner
-            $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},             # Group
-            0750                                                              # Permissions
+            "$::imscpConfig{'ENGINE_ROOT_DIR'}/quota/imscp-dovecot-quota.sh",
+            $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+            $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},
+            0750
         ]
     );
 
     {
-        local $UMASK = 027; # dovecot-sql.conf file must not be created/copied world-readable
+        # dovecot-sql.conf file must not be created/copied world-readable
+        local $UMASK = 027;
 
         for my $conffile ( keys %cfgFiles ) {
             my $rs = $self->{'events'}->trigger(

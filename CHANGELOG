@@ -27,6 +27,7 @@ BACKEND
     Rewritten: Packages (addons)
 
 CONFIG
+    Enhancement: Make it possible to change process limits (and more) through the i-MSCP's dovecot configuration file
     Removed: DATABASE_TYPE configuration parameter form master i-MSCP configuration file
 
 DATABASE
