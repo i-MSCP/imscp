@@ -32,7 +32,7 @@ use iMSCP::Debug qw/ debug error getMessageByType newDebug endDebug /;
 use iMSCP::Execute qw/ execute escapeShell /;
 use iMSCP::Stepper;
 use JSON;
-use MIME::Base64 qw/ encode_base64 /;
+use MIME::Base64 'encode_base64';
 use parent 'Common::SingletonClass';
 
 # Ensure backward compatibility with plugins
@@ -518,7 +518,7 @@ sub _init
 {
     my ( $self ) = @_;
 
-    $self->{'mode'} // 'backend';
+    $self->{'mode'} //= 'backend';
     $self->{'_dbh'} = iMSCP::Database->factory()->getRawDb();
     $self;
 }

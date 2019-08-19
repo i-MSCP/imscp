@@ -1224,24 +1224,17 @@ sub _dialogForCpSSL
     );
     my $pkPath = ::setupGetQuestion(
         'PANEL_SSL_PRIVATE_KEY_PATH',
-        iMSCP::Getopt->preseed
-            ? ''
-            : "$::imscpConfig{'CONF_DIR'}/$hostname.pem"
+        iMSCP::Getopt->preseed ? '' : "$::imscpConfig{'CONF_DIR'}/$hostname.pem"
     );
-    my $passphrase = ::setupGetQuestion(
-        'PANEL_SSL_PRIVATE_KEY_PASSPHRASE'
-    );
+    my $passphrase = ::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PASSPHRASE' );
     my $crtPath = ::setupGetQuestion(
         'PANEL_SSL_CERTIFICATE_PATH',
-        iMSCP::Getopt->preseed
-            ? ''
-            : "$::imscpConfig{'CONF_DIR'}/$hostname.pem"
+        iMSCP::Getopt->preseed ? '' : "$::imscpConfig{'CONF_DIR'}/$hostname.pem"
     );
     my $caPath = ::setupGetQuestion(
         'PANEL_SSL_CA_BUNDLE_PATH',
         iMSCP::Getopt->preseed
-            ? ''
-            : "$::imscpConfig{'CONF_DIR'}/$hostname.pem"
+            ? '' : "$::imscpConfig{'CONF_DIR'}/$hostname.pem"
     );
     my $openSSL = iMSCP::OpenSSL->new();
 
@@ -1253,7 +1246,7 @@ sub _dialogForCpSSL
 
     SSL_DIALOG:
     my $ret = $dialog->boolean( <<'EOF', $ssl eq 'no' );
-Do you want to enable secure connections (SSL) for the control panel?
+Do you want to enable the secure connections (SSL) for the control panel?
 EOF
     return 30 if $ret == 30;
 
@@ -1370,7 +1363,7 @@ EOF
 
     CHECK_SSL_CHAIN:
     
-    if ( iMSCP::Getopt->preseed && $selfSignedCrt ) {
+    if ( $selfSignedCrt eq 'yes' ) {
         ::setupSetQuestion( 'PANEL_SSL_ENABLED', $ssl );
         ::setupSetQuestion(
             'PANEL_SSL_SELFSIGNED_CERTIFICATE', $selfSignedCrt

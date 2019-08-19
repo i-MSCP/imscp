@@ -186,7 +186,7 @@ sub _dialogForServicesSSL
 
     SSL_DIALOG:
     my $ret = $dialog->boolean( <<'EOF', $ssl eq 'no' );
-Do you want to enable secure connections (SSL) for the FTP, IMAP/POP, and SMTP services?
+Do you want to enable the secure connections (SSL) for the FTP, IMAP/POP, and SMTP services?
 EOF
     return 30 if $ret == 30;
 
@@ -199,7 +199,7 @@ EOF
 
     SSL_SELF_SIGNED_DIALOG:
     $ret = $dialog->boolean( <<"EOF", $selfSignedCrt eq 'no' );
-Do you have an SSL certificate for the $idn domain?
+Do you have an SSL certificate for the $idn hostname?
     
 If you say 'no', a self-signed SSL certificate will be generated.
 EOF
