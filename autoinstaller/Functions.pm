@@ -195,7 +195,7 @@ Thank you for choosing i-MSCP.
 EOF
         system( 'clear' );
     }
-    
+
     0;
 }
 

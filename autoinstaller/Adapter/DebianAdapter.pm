@@ -64,7 +64,7 @@ sub preinstall
 {
     my ( $self ) = @_;
 
-    if ( !( length $::imscpConfig{'FRONTEND_SERVER'}
+    unless ( length $::imscpConfig{'FRONTEND_SERVER'}
         && length $::imscpConfig{'FTPD_SERVER'}
         && length $::imscpConfig{'HTTPD_SERVER'}
         && length $::imscpConfig{'NAMED_SERVER'}
@@ -72,14 +72,11 @@ sub preinstall
         && length $::imscpConfig{'PHP_SERVER'}
         && length $::imscpConfig{'PO_SERVER'}
         && length $::imscpConfig{'SQL_SERVER'}
-    ) ) {
-        unless ( iMSCP::Getopt->preseed ) {
-            iMSCP::Getopt->skipDistPackages( TRUE );
-            iMSCP::Getopt->noprompt( FALSE );
-        }
-
+    ) {
+        iMSCP::Getopt->skipDistPackages( FALSE );
         iMSCP::Getopt->skipComposerUpdate( FALSE );
         iMSCP::Getopt->fixPermissions( TRUE );
+        iMSCP::Getopt->noprompt( FALSE ) unless iMSCP::Getopt->preseed;
     }
 
     unless ( iMSCP::Getopt->skipDistPackages ) {
@@ -116,7 +113,7 @@ There are distribution packages available for update.
 Please update your distribution before running the i-MSCP installer.
 EOF
             } elsif ( iMSCP::Getopt->verbose ) {
-                print STDERR output( 'Your distribution is not up-to date. You need first update it.', 'error' );
+                print STDERR output( 'Your distribution is not up-to date. You need to update it first.', 'error' );
             }
 
             exit 1;
@@ -161,7 +158,7 @@ EOF
 
     my @steps = ();
 
-    if( iMSCP::Getopt->skipDistPackages ) {
+    if ( iMSCP::Getopt->skipDistPackages ) {
         delete $self->{'_packagesFileData'};
     } else {
         push @steps, (
@@ -199,7 +196,7 @@ EOF
     my ( $step, $nSteps ) = ( 1, scalar @steps );
     for my $task ( @steps ) {
         $rs = step( @{ $task }, $nSteps, $step );
-        error( 'An error occurred while pre-installation steps.' ) if $rs;
+        error( 'An error occurred while the pre-installation steps.' ) if $rs;
         return $rs if $rs;
         $step++;
     }
@@ -263,7 +260,7 @@ EOF
     my ( $step, $nSteps ) = ( 1, scalar @steps );
     for my $task ( @steps ) {
         my $rs = step( @{ $task }, $nSteps, $step );
-        error( 'An error occurred while installation steps.' ) if $rs;
+        error( 'An error occurred while the installation steps.' ) if $rs;
         return $rs if $rs;
         $step++;
     }
@@ -330,7 +327,9 @@ sub _init
 
     delete $ENV{'DEBCONF_FORCE_DIALOG'};
     $ENV{'DEBIAN_FRONTEND'} = 'noninteractive' if iMSCP::Getopt->noprompt;
-    @{ENV}{qw/ DEBFULLNAME DEBEMAIL /} = ( 'i-MSCP Installer', 'team@i-mscp.net' );
+    @{ENV}{qw/ DEBFULLNAME DEBEMAIL /} = (
+        'i-MSCP Installer', 'team@i-mscp.net'
+    );
 
     $self->_setupGetAddrInfoPrecedence();
     $self;
@@ -624,7 +623,7 @@ sub _setupGetAddrInfoPrecedence
     my $fileC = '';
 
     if ( -f '/etc/gai.conf' ) {
-        return 1 unless defined( $fileC = $file->get());
+        return 1 unless defined( $fileC = $file->get() );
         return 0 if $fileC =~ m%^precedence\s+::ffff:0:0/96\s+100\n%m;
     }
 
@@ -746,7 +745,7 @@ sub _processAptRepositories
     my $rs = $file->copyFile( '/etc/apt/sources.list.bkp' );
     return $rs if $rs;
 
-    return 1 unless defined( my $fileC = $file->get());
+    return 1 unless defined( my $fileC = $file->get() );
 
     # Cleanup APT sources.list file
     for my $repository (
@@ -965,7 +964,8 @@ sub _getPackagesDialog
                     || !length $sAlt
                     || $sAlt eq $_
                     || !defined $data->{$_}->{'allow_upgrade_from'}
-                    || grep { $sAlt eq $_ } split ',', $data->{$_}->{'allow_upgrade_from'}
+                    || grep { $sAlt eq $_ } split ',',
+                        $data->{$_}->{'allow_upgrade_from'}
                 )
         } keys %{ $data };
 
@@ -975,9 +975,12 @@ sub _getPackagesDialog
         );
 
         if ( $section eq 'sql' ) {
-            $::questions{'KEEP_LOCAL_SQL_SERVER'} //= $::imscpConfig{'KEEP_LOCAL_SQL_SERVER'};
+            $::questions{'KEEP_LOCAL_SQL_SERVER'} //=
+                $::imscpConfig{'KEEP_LOCAL_SQL_SERVER'};
 
-            unless( length $::questions{'KEEP_LOCAL_SQL_SERVER'} || !iMSCP::Getopt->preseed ) {
+            unless ( length $::questions{'KEEP_LOCAL_SQL_SERVER'}
+                || !iMSCP::Getopt->preseed
+            ) {
                 $::questions{'KEEP_LOCAL_SQL_SERVER'} = 'yes';
             }
 
@@ -985,7 +988,7 @@ sub _getPackagesDialog
                 $::questions{'KEEP_LOCAL_SQL_SERVER'}, qw/ yes no /
             );
         }
-        
+
         my %choices;
         for my $alt ( @alts ) {
             $choices{ $data->{$alt}->{'description'} // $alt } = $alt;
@@ -998,17 +1001,17 @@ sub _getPackagesDialog
                 $sAlt = $alt;
                 # We don't show setup dialog, unless the user asked for
                 # reconfiguration
-                $needDialog = grep(
+                $needDialog = grep (
                     $_ eq iMSCP::Getopt->reconfigure, 'all', 'servers', $section
                 );
             }
         }
-        
+
         # If no alternative is set, that means that the distribution packages
         # file doesn't define one... In such case, we  select the first
         # alternative.
         $sAlt = $alts[0] unless length $sAlt;
-            
+
         @{main::questions}{
             uc( $section ) . '_SERVER', uc( $section ) . '_PACKAGE'
         } = (
@@ -1017,7 +1020,7 @@ sub _getPackagesDialog
 
         # If a dialog is needed, prepare it, unless there is only one
         # alternative available.
-        if ( $needDialog && keys %{choices} > 1) {
+        if ( $needDialog && keys %{choices} > 1 ) {
             push @dialogStack, sub {
                 my ( $ret, $value ) = $_[0]->select(
                     <<"EOF", \%choices, $::questions{ uc( $section ) . '_SERVER' } );
@@ -1712,7 +1715,7 @@ EOF
                     filename => 'debian/patches/'
                         . ( $patchFormat eq 'quilt' ? 'series' : '00list'
                     ));
-                return 1 unless defined( my $serieFileC = $serieFile->get());
+                return 1 unless defined( my $serieFileC = $serieFile->get() );
 
                 for my $patch ( sort { $a cmp $b } iMSCP::Dir->new(
                     dirname => $patchesDir )->getFiles()
