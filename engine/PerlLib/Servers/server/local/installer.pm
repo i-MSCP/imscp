@@ -476,17 +476,23 @@ sub _setupPrimaryIP
 {
     my ( $self ) = @_;
 
-    my $primaryIP = ::setupGetQuestion( 'BASE_SERVER_IP' );
-    my $rs = $self->{'events'}->trigger( 'beforeSetupPrimaryIP', $primaryIP );
+    my $ipAddr = ::setupGetQuestion( 'BASE_SERVER_IP' );
+
+    my $rs = $self->{'events'}->trigger( 'beforeSetupPrimaryIP', $ipAddr );
     return $rs if $rs;
 
     local $@;
     eval {
-        my $netCard = ( $primaryIP eq '0.0.0.0' )
-            ? 'any' : iMSCP::Net->getInstance()->getAddrDevice( $primaryIP
-        );
-        defined $netCard or die( sprintf(
-            "Couldn't find network card for the '%s' IP address", $primaryIP
+        my $ipNetmask = $ipAddr eq '0.0.0.0'
+            ? 24 : iMSCP::Net->getInstance()->getAddrNetmask( $ipAddr );
+        defined $ipNetmask or die( sprintf(
+            "Couldn't find netmask for the '%s' IP address", $ipAddr
+        ));
+
+        my $nic = $ipAddr eq '0.0.0.0'
+            ? 'any' : iMSCP::Net->getInstance()->getAddrDevice( $ipAddr );
+        defined $nic or die( sprintf(
+            "Couldn't find network card for the '%s' IP address", $ipAddr
         ));
 
         my $db = iMSCP::Database->factory();
@@ -495,26 +501,17 @@ sub _setupPrimaryIP
         );
 
         my $dbh = $db->getRawDb();
-        $dbh->selectrow_hashref(
-            'SELECT 1 FROM server_ips WHERE ip_number = ?', undef, $primaryIP
-        ) ? $dbh->do(
-            'UPDATE server_ips SET ip_card = ? WHERE ip_number = ?',
-            undef,
-            $netCard,
-            $primaryIP
-        ) : $dbh->do(
-            '
+
+        $dbh->do(
+            "
                 INSERT INTO server_ips (
-                    ip_number, ip_card, ip_config_mode, ip_status
+                    ip_number, ip_netmask, ip_card, ip_config_mode, ip_status
                 ) VALUES(
-                    ?, ?, ?, ?
-                )
-            ',
-            undef,
-            $primaryIP,
-            $netCard,
-            'manual',
-            'ok'
+                    ?, ?, ?, 'manual', 'ok'
+                ) ON DUPLICATE KEY UPDATE
+                    ip_netmask = ?, ip_card = ?
+            ",
+            undef, $ipAddr, $ipNetmask, $nic, $ipNetmask, $nic,
         );
 
         $db->useDatabase( $oldDbName ) if $oldDbName;
@@ -524,7 +521,7 @@ sub _setupPrimaryIP
         return 1;
     }
 
-    $self->{'events'}->trigger( 'afterSetupPrimaryIP', $primaryIP );
+    $self->{'events'}->trigger( 'afterSetupPrimaryIP', $ipAddr );
 }
 
 =back
