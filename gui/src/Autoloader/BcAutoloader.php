@@ -34,7 +34,7 @@ class BcAutoloader
     private static $map = [
         // library/iMSCP
         'iMSCP_Application'                        => 'iMSCP\\Application',
-        'iMSCP_Authentications'                    => 'iMSCP\\Authentication\\AuthService',
+        'iMSCP_Authentication'                    => 'iMSCP\\Authentication\\AuthService',
         'iMSCP_Config'                             => 'iMSCP\\Config\\Config',
         'iMSCP_Database'                           => 'iMSCP\\Database\\DatabaseMySQL',
         'iMSCP_Events'                             => 'iMSCP\\Event\\Events',
@@ -111,12 +111,12 @@ class BcAutoloader
      *
      * This autoloader is prepended to the stack of already registered
      * autoloaders. If the class/interface to be loaded is a legacy one, it will
-     * be mapped to the new one which in turn will be loaded by the composer
+     * be aliased to the new one which in turn will be loaded by the composer
      * autoloader.
      *
      * @return void
      */
-    public static function register()
+    public static function register(): void
     {
         spl_autoload_register(
             self::createAutoloader(), true, true
@@ -128,7 +128,7 @@ class BcAutoloader
      *
      * @return callable
      */
-    private static function createAutoloader()
+    private static function createAutoloader(): callable
     {
         return function ($class) {
             if (!isset(self::$map[$class])) {
