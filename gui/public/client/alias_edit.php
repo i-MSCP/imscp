@@ -18,7 +18,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/** @noinspection PhpUnhandledExceptionInspection PhpDocMissingThrowsInspection */
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
+ */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\EventDescription;
+use iMSCP\Event\Events;
+use iMSCP\Exception\Exception;
+use iMSCP\TemplateEngine;
+use iMSCP\Uri\UriException;
+use iMSCP\Uri\UriRedirect;
+use iMSCP\VirtualFileSystem;
 
 /**
  * Get domain alias data
@@ -61,10 +75,10 @@ function _client_getAliasData($domainAliasId)
 /**
  * Generate page
  *
- * @param $tpl iMSCP_pTemplate
+ * @param $tpl TemplateEngine
  * @return void
  */
-function client_generatePage($tpl)
+function client_generatePage(TemplateEngine $tpl)
 {
     if (!isset($_GET['id'])) {
         showBadRequestErrorPage();
@@ -85,7 +99,7 @@ function client_generatePage($tpl)
 
         if ($domainAliasData['url_forward'] != 'no') {
             $urlForwarding = true;
-            $uri = iMSCP_Uri_Redirect::fromString($domainAliasData['url_forward']);
+            $uri = UriRedirect::fromString($domainAliasData['url_forward']);
             $uri->setHost(decode_idna($uri->getHost()));
             $forwardUrlScheme = $uri->getScheme() . '://';
             $forwardUrl = substr($uri->getUri(), strlen($forwardUrlScheme));
@@ -103,18 +117,18 @@ function client_generatePage($tpl)
         $documentRoot = isset($_POST['document_root'])
             ? $_POST['document_root'] : '';
         $urlForwarding = isset($_POST['url_forwarding'])
-            && $_POST['url_forwarding'] == 'yes'
-                ? true : false;
+        && $_POST['url_forwarding'] == 'yes'
+            ? true : false;
         $forwardUrlScheme = isset($_POST['forward_url_scheme'])
-                ? $_POST['forward_url_scheme'] : 'http://';
+            ? $_POST['forward_url_scheme'] : 'http://';
         $forwardUrl = isset($_POST['forward_url'])
             ? $_POST['forward_url'] : '';
         $forwardType = isset($_POST['forward_type'])
-            && in_array(
-                $_POST['forward_type'],
-                ['301', '302', '303', '307', 'proxy'],
-                true
-            )
+        && in_array(
+            $_POST['forward_type'],
+            ['301', '302', '303', '307', 'proxy'],
+            true
+        )
             ? $_POST['forward_type'] : '302';
 
         if ($forwardType == 'proxy' && isset($_POST['forward_host'])) {
@@ -122,8 +136,8 @@ function client_generatePage($tpl)
         }
 
         $wildcardAlias = isset($_POST['wildcard_alias'])
-            && in_array($_POST['wildcard_alias'], ['yes', 'no'], true)
-                ? $_POST['wildcard_alias'] : 0;
+        && in_array($_POST['wildcard_alias'], ['yes', 'no'], true)
+            ? $_POST['wildcard_alias'] : 0;
     }
 
     $tpl->assign([
@@ -220,9 +234,9 @@ function client_editDomainAlias()
 
         try {
             try {
-                $uri = iMSCP_Uri_Redirect::fromString($forwardUrl);
-            } catch (Zend_Uri_Exception $e) {
-                throw new iMSCP_Exception(tohtml(
+                $uri = UriRedirect::fromString($forwardUrl);
+            } catch (UriException $e) {
+                throw new Exception(tohtml(
                     tr('Forward URL %s is not valid.', $forwardUrl)
                 ));
             }
@@ -235,7 +249,7 @@ function client_editDomainAlias()
             if ($uri->getHost() == $domainAliasData['alias_name']
                 && ($uri->getPath() == '/' && in_array($uri->getPort(), ['', 80, 443]))
             ) {
-                throw new iMSCP_Exception(
+                throw new Exception(
                     tr('Forward URL %s is not valid.', $forwardUrl) . ' ' .
                     tr(
                         'Domain alias %s cannot be forwarded on itself.',
@@ -247,7 +261,7 @@ function client_editDomainAlias()
             if ($forwardType == 'proxy') {
                 $port = $uri->getPort();
                 if ($port && $port < 1025) {
-                    throw new iMSCP_Exception(tohtml(
+                    throw new Exception(tohtml(
                         tr('Unallowed port in forward URL. Only ports above 1024 are allowed.')
                     ));
                 }
@@ -263,13 +277,13 @@ function client_editDomainAlias()
         $documentRoot = utils_normalizePath('/' . clean_input($_POST['document_root']));
 
         if ($documentRoot !== '') {
-            $vfs = new iMSCP\VirtualFileSystem(
+            $vfs = new VirtualFileSystem(
                 $_SESSION['user_logged'],
                 $domainAliasData['alias_mount'] . '/htdocs'
             );
 
             if ($documentRoot !== '/'
-                && !$vfs->exists($documentRoot, iMSCP\VirtualFileSystem::VFS_TYPE_DIR)
+                && !$vfs->exists($documentRoot, VirtualFileSystem::VFS_TYPE_DIR)
             ) {
                 set_page_message(
                     tohtml(tr('The new document root must pre-exists inside the /htdocs directory.')),
@@ -283,11 +297,11 @@ function client_editDomainAlias()
     }
 
     $wildcardAlias = isset($_POST['wildcard_alias'])
-        && in_array($_POST['wildcard_alias'], ['yes', 'no'], true)
-            ? $_POST['wildcard_alias'] : 'no';
+    && in_array($_POST['wildcard_alias'], ['yes', 'no'], true)
+        ? $_POST['wildcard_alias'] : 'no';
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(
-        iMSCP_Events::onBeforeEditDomainAlias,
+    EventAggregator::getInstance()->dispatch(
+        Events::onBeforeEditDomainAlias,
         [
             'domainAliasId' => $domainAliasId,
             'mountPoint'    => $domainAliasData['alias_mount'],
@@ -312,8 +326,8 @@ function client_editDomainAlias()
         ]
     );
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(
-        iMSCP_Events::onAfterEditDomainAlias,
+    EventAggregator::getInstance()->dispatch(
+        Events::onAfterEditDomainAlias,
         [
             'domainAliasId' => $domainAliasId,
             'mountPoint'    => $domainAliasData['alias_mount'],
@@ -340,7 +354,7 @@ function client_editDomainAlias()
 require_once 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 customerHasFeature('domain_aliases') or showBadRequestErrorPage();
 
 if (!empty($_POST) && client_editDomainAlias()) {
@@ -348,7 +362,7 @@ if (!empty($_POST) && client_editDomainAlias()) {
     redirectTo('domains_manage.php');
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'             => 'shared/layouts/ui.tpl',
     'page'               => 'client/alias_edit.tpl',
@@ -382,15 +396,14 @@ $tpl->assign([
     'TR_CANCEL'                 => tohtml(tr('Cancel'))
 ]);
 
-iMSCP_Events_Aggregator::getInstance()->registerListener(
-    iMSCP_Events::onGetJsTranslations,
-    function (iMSCP_Events_Event $e) {
-        $translations = $e->getParam('translations');
-        $translations['core']['close'] = tr('Close');
-        $translations['core']['ftp_directories'] = tr(
-            'Select your own document root'
-        );
-    }
+EventAggregator::getInstance()->registerListener(
+    Events::onGetJsTranslations, function (EventDescription $e) {
+    $translations = $e->getParam('translations');
+    $translations['core']['close'] = tr('Close');
+    $translations['core']['ftp_directories'] = tr(
+        'Select your own document root'
+    );
+}
 );
 
 generateNavigation($tpl);
@@ -398,9 +411,7 @@ client_generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]
-);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

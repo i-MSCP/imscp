@@ -18,7 +18,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/** @noinspection PhpUnhandledExceptionInspection PhpDocMissingThrowsInspection */
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
+ */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\EventDescription;
+use iMSCP\Event\Events;
+use iMSCP\Exception\Exception;
+use iMSCP\TemplateEngine;
+use iMSCP\Uri\UriException;
+use iMSCP\Uri\UriRedirect;
+use iMSCP\VirtualFileSystem;
 
 /**
  * Get domain data
@@ -59,10 +73,10 @@ function _client_getDomainData($domainId)
 /**
  * Generate page
  *
- * @param $tpl iMSCP_pTemplate
+ * @param $tpl TemplateEngine
  * @return void
  */
-function client_generatePage($tpl)
+function client_generatePage(TemplateEngine $tpl)
 {
     if (!isset($_GET['id'])) {
         showBadRequestErrorPage();
@@ -100,22 +114,22 @@ function client_generatePage($tpl)
         $documentRoot = isset($_POST['document_root'])
             ? $_POST['document_root'] : '';
         $urlForwarding = isset($_POST['url_forwarding'])
-            && $_POST['url_forwarding'] == 'yes'
-                ? true : false;
+        && $_POST['url_forwarding'] == 'yes'
+            ? true : false;
         $forwardUrlScheme = isset($_POST['forward_url_scheme'])
             ? $_POST['forward_url_scheme'] : 'http://';
         $forwardUrl = isset($_POST['forward_url']) ? $_POST['forward_url'] : '';
         $forwardType = isset($_POST['forward_type'])
-            && in_array($_POST['forward_type'], ['301', '302', '303', '307', 'proxy'], true)
-                ? $_POST['forward_type'] : '302';
+        && in_array($_POST['forward_type'], ['301', '302', '303', '307', 'proxy'], true)
+            ? $_POST['forward_type'] : '302';
 
         if ($forwardType == 'proxy' && isset($_POST['forward_host'])) {
             $forwardHost = 'On';
         }
 
         $wildcardAlias = isset($_POST['wildcard_alias'])
-            && in_array($_POST['wildcard_alias'], ['yes', 'no'], true)
-                ? $_POST['wildcard_alias'] : 'no';
+        && in_array($_POST['wildcard_alias'], ['yes', 'no'], true)
+            ? $_POST['wildcard_alias'] : 'no';
     }
 
     $tpl->assign([
@@ -142,7 +156,7 @@ function client_generatePage($tpl)
     // Cover the case where URL forwarding feature is activated and that the
     // default /htdocs directory doesn't exists yet
     if ($domainData['url_forward'] != 'no') {
-        $vfs = new iMSCP\VirtualFileSystem($_SESSION['user_logged']);
+        $vfs = new VirtualFileSystem($_SESSION['user_logged']);
         if (!$vfs->exists('/htdocs')) {
             $tpl->assign('DOCUMENT_ROOT_BLOC', '');
             return;
@@ -207,9 +221,9 @@ function client_editDomain()
 
         try {
             try {
-                $uri = iMSCP_Uri_Redirect::fromString($forwardUrl);
-            } catch (Zend_Uri_Exception $e) {
-                throw new iMSCP_Exception(
+                $uri = UriRedirect::fromString($forwardUrl);
+            } catch (UriException $e) {
+                throw new Exception(
                     tr('Forward URL %s is not valid.', $forwardUrl)
                 );
             }
@@ -254,12 +268,12 @@ function client_editDomain()
         );
 
         if ($documentRoot !== '') {
-            $vfs = new iMSCP\VirtualFileSystem(
+            $vfs = new VirtualFileSystem(
                 $_SESSION['user_logged'], '/htdocs'
             );
 
             if ($documentRoot !== '/'
-                && !$vfs->exists($documentRoot, iMSCP\VirtualFileSystem::VFS_TYPE_DIR)
+                && !$vfs->exists($documentRoot, VirtualFileSystem::VFS_TYPE_DIR)
             ) {
                 set_page_message(
                     tohtml(tr('The new document root must pre-exists inside the /htdocs directory.')),
@@ -273,11 +287,11 @@ function client_editDomain()
     }
 
     $wildcardAlias = isset($_POST['wildcard_alias'])
-        && in_array($_POST['wildcard_alias'], ['yes', 'no'], true)
-            ? $_POST['wildcard_alias'] : 'no';
+    && in_array($_POST['wildcard_alias'], ['yes', 'no'], true)
+        ? $_POST['wildcard_alias'] : 'no';
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(
-        iMSCP_Events::onBeforeEditDomain,
+    EventAggregator::getInstance()->dispatch(
+        Events::onBeforeEditDomain,
         [
             'domainId'      => $domainId,
             'domainName'    => $domainData['domain_name'],
@@ -303,8 +317,8 @@ function client_editDomain()
         ]
     );
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(
-        iMSCP_Events::onAfterEditDomain,
+    EventAggregator::getInstance()->dispatch(
+        Events::onAfterEditDomain,
         [
             'domainId'      => $domainId,
             'domainName'    => $domainData['domain_name'],
@@ -320,7 +334,7 @@ function client_editDomain()
     send_request();
     write_log(
         sprintf(
-            'The %s domain properties were updated by',
+            'The %s domain properties were updated by %s',
             $_SESSION['user_logged'],
             $_SESSION['user_logged']
         ),
@@ -341,7 +355,7 @@ if (!empty($_POST) && client_editDomain()) {
     redirectTo('domains_manage.php');
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'             => 'shared/layouts/ui.tpl',
     'page'               => 'client/domain_edit.tpl',
@@ -375,9 +389,9 @@ $tpl->assign([
     'TR_CANCEL'                 => tohtml(tr('Cancel'))
 ]);
 
-iMSCP_Events_Aggregator::getInstance()->registerListener(
-    iMSCP_Events::onGetJsTranslations,
-    function (iMSCP_Events_Event $e) {
+EventAggregator::getInstance()->registerListener(
+    Events::onGetJsTranslations,
+    function (EventDescription $e) {
         $translations = $e->getParam('translations');
         $translations['core']['close'] = tr('Close');
         $translations['core']['ftp_directories'] = tr('Select your own document root');
@@ -389,7 +403,7 @@ client_generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

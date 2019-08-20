@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,14 +18,39 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/***********************************************************************************************************************
- * Main
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Registry;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Config\DbConfig;
+use iMSCP\Config\FileConfig;
+use iMSCP\Config\ArrayConfig;
+use iMSCP\Services;
+use iMSCP\PhpEditor;
+use iMSCP\Database\DatabaseMySQL;
+use iMSCP\Exception\Exception;
+use iMSCP\Database\DatabaseException;
+use Zend_Form;
+use iMSCP\TemplateEngine;
+use iMSCP\Event\Events;
+use iMSCP\Event\EventDescription;
+use iMSCP\Uri\UriRedirect;
+use iMSCP\Uri\UriException;
+use iMSCP\Authentication\AuthService;
+use iMSCP\VirtualFileSystem;
+use Net_DNS2_Resolver;
+use Net_DNS2_Exception;
+use iMSCP\Crypt;
 
 require_once 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 customerHasFeature('mail') or showBadRequestErrorPage();
 
 if (!isset($_GET['id'])) {
@@ -47,11 +72,11 @@ if ($stmt->fetchRow(PDO::FETCH_COLUMN) == 0) {
     showBadRequestErrorPage();
 }
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteMailCatchall, [
+EventAggregator::getInstance()->dispatch(Events::onBeforeDeleteMailCatchall, [
     'mailCatchallId' => $catchallId
 ]);
 exec_query("UPDATE mail_users SET status = 'todelete' WHERE mail_id = ?", $catchallId);
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteMailCatchall, [
+EventAggregator::getInstance()->dispatch(Events::onAfterDeleteMailCatchall, [
     'mailCatchallId' => $catchallId
 ]);
 send_request();

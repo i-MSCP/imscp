@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,18 +18,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP\Crypt as Crypt;
-use iMSCP_Database as Database;
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_PHPini as PhpIni;
-use iMSCP_pTemplate as TemplateEngine;
-use iMSCP_Registry as Registry;
-use Zend_Form as Form;
-
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Crypt;
+use iMSCP\Database\DatabaseMySQL;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\EventDescription;
+use iMSCP\Event\Events;
+use iMSCP\Exception\Exception;
+use iMSCP\PhpEditor;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 /**
  * Retrieve form data
@@ -37,9 +41,6 @@ use Zend_Form as Form;
  * @param int $resellerId Domain unique identifier
  * @param bool $forUpdate Tell whether or not data are fetched for update
  * @return array Reference to array of data
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function getFormData($resellerId, $forUpdate = false)
 {
@@ -105,7 +106,7 @@ function getFormData($resellerId, $forUpdate = false)
 
     $data = array_merge($data, $fallbackData);
 
-    $phpini = PhpIni::getInstance();
+    $phpini = PhpEditor::getInstance();
 
     $data['php_ini_system'] = $phpini->getResellerPermission('phpiniSystem');
     $data['php_ini_al_disable_functions'] = $phpini->getResellerPermission('phpiniDisableFunctions');
@@ -192,9 +193,6 @@ function getFormData($resellerId, $forUpdate = false)
  *
  * @param TemplateEngine $tpl Template engine instance
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
  */
 function generateIpListForm(TemplateEngine $tpl)
 {
@@ -211,8 +209,7 @@ function generateIpListForm(TemplateEngine $tpl)
         'TR_STATUS'     => tr('Usage status')
     ]);
 
-    EventsManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
-        /** @var $e \iMSCP_Events_Event */
+    EventAggregator::getInstance()->registerListener(Events::onGetJsTranslations, function (EventDescription $e) {
         $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
     });
 
@@ -235,8 +232,6 @@ function generateIpListForm(TemplateEngine $tpl)
  *
  * @param TemplateEngine $tpl Template engine instance
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Exception
  */
 function generateLimitsForm(TemplateEngine $tpl)
 {
@@ -271,8 +266,6 @@ function generateLimitsForm(TemplateEngine $tpl)
  *
  * @param TemplateEngine $tpl Template engine instance
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Exception
  */
 function generateFeaturesForm(TemplateEngine $tpl)
 {
@@ -328,8 +321,7 @@ function generateFeaturesForm(TemplateEngine $tpl)
         'TR_SEC'                           => tr('Sec.')
     ]);
 
-    EventsManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
-        /** @var iMSCP_Events_Event $e */
+    EventAggregator::getInstance()->registerListener(Events::onGetJsTranslations, function (EventDescription $e) {
         $translations = $e->getParam('translations');
         $translations['core']['close'] = tr('Close');
         $translations['core']['fields_ok'] = tr('All fields are valid.');
@@ -359,17 +351,16 @@ function generateFeaturesForm(TemplateEngine $tpl)
 /**
  * Update reseller user
  *
- * @throws Exception
- * @param Form $form
+ * @param Zend_Form $form
  * @return void
  */
-function updateResellerUser(Form $form)
+function updateResellerUser(Zend_Form $form)
 {
     global $resellerId;
 
     $error = false;
     $errFieldsStack = [];
-    $db = Database::getInstance();
+    $db = DatabaseMySQL::getInstance();
 
     try {
         $data = getFormData($resellerId, true);
@@ -569,7 +560,7 @@ function updateResellerUser(Form $form)
         $db->beginTransaction();
 
         // Check for PHP settings
-        $phpini = iMSCP_PHPini::getInstance();
+        $phpini = PhpEditor::getInstance();
         $curResPhpPerms = $phpini->getResellerPermission();
         $phpini->setResellerPermission('phpiniSystem', $data['php_ini_system']);
 
@@ -594,7 +585,7 @@ function updateResellerUser(Form $form)
         }
 
         if (empty($errFieldsStack) && !$error) {
-            EventsManager::getInstance()->dispatch(Events::onBeforeEditUser, [
+            EventAggregator::getInstance()->dispatch(Events::onBeforeEditUser, [
                 'userId'   => $resellerId,
                 'userData' => $form->getValues()
             ]);
@@ -726,7 +717,7 @@ function updateResellerUser(Form $form)
             // Force user to login again (needed due to possible password or email change)
             exec_query('DELETE FROM login WHERE user_name = ?', $data['fallback_admin_name']);
 
-            EventsManager::getInstance()->dispatch(Events::onAfterEditUser, [
+            EventAggregator::getInstance()->dispatch(Events::onAfterEditUser, [
                 'userId'   => $resellerId,
                 'userData' => $form->getValues()
             ]);
@@ -752,7 +743,7 @@ function updateResellerUser(Form $form)
             set_page_message('Reseller has been updated.', 'success');
             redirectTo('users.php');
         } elseif (!empty($errFieldsStack)) {
-            iMSCP_Registry::set('errFieldsStack', $errFieldsStack);
+            Registry::set('errFieldsStack', $errFieldsStack);
         }
     } catch (Exception $e) {
         $db->rollBack();
@@ -769,7 +760,6 @@ function updateResellerUser(Form $form)
  * @param bool $unlimitedService Tells whether or not the service is set as unlimited for a reseller's customer
  * @param String $serviceName Service name for which new limit is verified
  * @return bool TRUE if new limit is valid, FALSE otherwise
- * @throws Zend_Exception
  */
 function checkResellerLimit($newLimit, $assignedByReseller, $consumedByCustomers, $unlimitedService, $serviceName)
 {
@@ -840,10 +830,10 @@ function checkResellerLimit($newLimit, $assignedByReseller, $consumedByCustomers
  * Generate page
  *
  * @param TemplateEngine $tpl Template engine instance
- * @param Form $form
+ * @param Zend_Form $form
  * @return void
  */
-function generatePage(TemplateEngine $tpl, Form $form)
+function generatePage(TemplateEngine $tpl, Zend_Form $form)
 {
     global $resellerId;
 
@@ -860,14 +850,10 @@ function generatePage(TemplateEngine $tpl, Form $form)
     generateFeaturesForm($tpl);
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require 'imscp-lib.php';
 
 check_login('admin');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptStart);
 
 if (!isset($_GET['edit_id'])) {
     showBadRequestErrorPage();
@@ -876,7 +862,7 @@ if (!isset($_GET['edit_id'])) {
 global $resellerId;
 $resellerId = intval($_GET['edit_id']);
 
-$phpini = iMSCP_PHPini::getInstance();
+$phpini = PhpEditor::getInstance();
 $phpini->loadResellerPermissions($resellerId); // Load reseller PHP permissions
 
 $form = getUserLoginDataForm(false, false)->addElements(getUserPersonalDataForm()->getElements());
@@ -905,7 +891,7 @@ generatePage($tpl, $form);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

@@ -1,33 +1,36 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2017 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Database\DatabaseException;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\EventDescription;
+use iMSCP\Event\Events;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 /**
  * Send JSON response
@@ -67,10 +70,7 @@ function admin_sendJsonResponse($statusCode = 200, array $data = [])
 /**
  * Clear logs
  *
- * @throws iMSCP_Exception
  * @return void
- * @throws Zend_Exception
- * @throws Zend_Exception
  */
 function admin_clearLogs()
 {
@@ -114,17 +114,13 @@ function admin_clearLogs()
         } else {
             admin_sendJsonResponse(202, ['message' => tr('Nothing has been deleted.')]);
         }
-    } catch (iMSCP_Exception_Database $e) {
+    } catch (DatabaseException $e) {
         admin_sendJsonResponse(500, ['message' => tr('An unexpected error occurred: %s', $e->getMessage())]);
     }
 }
 
 /**
  * Get logs
- *
- * @throws iMSCP_Exception
- * @throws Zend_Exception
- * @throws Zend_Exception
  */
 function admin_getLogs()
 {
@@ -203,12 +199,12 @@ function admin_getLogs()
 
         /* Data set length after filtering */
         $resultFilterTotal = execute_query('SELECT FOUND_ROWS()');
-        $resultFilterTotal = $resultFilterTotal->fetchRow(\PDO::FETCH_NUM);
+        $resultFilterTotal = $resultFilterTotal->fetchRow(PDO::FETCH_NUM);
         $filteredTotal = $resultFilterTotal[0];
 
         /* Total data set length */
         $resultTotal = exec_query("SELECT COUNT($indexColumn) FROM $table");
-        $resultTotal = $resultTotal->fetchRow(\PDO::FETCH_NUM);
+        $resultTotal = $resultTotal->fetchRow(PDO::FETCH_NUM);
         $total = $resultTotal[0];
 
         /* Output */
@@ -219,7 +215,7 @@ function admin_getLogs()
             'aaData'               => []
         ];
 
-        $dateFormat = iMSCP_Registry::get('config')['DATE_FORMAT'] . ' H:i:s';
+        $dateFormat = Registry::get('config')['DATE_FORMAT'] . ' H:i:s';
 
         while ($data = $rResult->fetchRow(PDO::FETCH_ASSOC)) {
             $row = [];
@@ -253,7 +249,7 @@ function admin_getLogs()
         }
 
         admin_sendJsonResponse(200, $output);
-    } catch (iMSCP_Exception_Database $e) {
+    } catch (DatabaseException $e) {
         write_log(sprintf('Unable to get logs: %s', $e->getMessage()), E_USER_ERROR);
 
         admin_sendJsonResponse(
@@ -264,14 +260,10 @@ function admin_getLogs()
     admin_sendJsonResponse(400, ['message' => tr('Bad request.')]);
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptStart);
 
 if (isset($_REQUEST['action'])) {
     if (is_xhr()) {
@@ -290,7 +282,7 @@ if (isset($_REQUEST['action'])) {
     showBadRequestErrorPage();
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'admin/admin_log.tpl',
@@ -299,7 +291,7 @@ $tpl->define_dynamic([
 $tpl->assign([
     'TR_PAGE_TITLE'           => tr('Admin / General / Admin Log'),
     'TR_CLEAR_LOG'            => tr('Clear log'),
-    'ROWS_PER_PAGE'           => json_encode(iMSCP_Registry::get('config')['DOMAIN_ROWS_PER_PAGE']),
+    'ROWS_PER_PAGE'           => json_encode(Registry::get('config')['DOMAIN_ROWS_PER_PAGE']),
     'TR_DATE'                 => tr('Date'),
     'TR_MESSAGE'              => tr('Message'),
     'TR_CLEAR_LOG_MESSAGE'    => tr('Delete from log:'),
@@ -314,8 +306,7 @@ $tpl->assign([
     'TR_UNEXPECTED_ERROR'     => json_encode(tr('An unexpected error occurred.'))
 ]);
 
-iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
-    /** @var $e \iMSCP_Events_Event */
+EventAggregator::getInstance()->registerListener('onGetJsTranslations', function (EventDescription $e) {
     $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
 });
 
@@ -323,7 +314,7 @@ generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

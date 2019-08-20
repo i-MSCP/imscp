@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,15 +18,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Config_Handler_File as ConfigFile;
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_pTemplate as TemplateEngine;
-use iMSCP_Registry as Registry;
-
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Config\FileConfig;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 /**
  * Get count of default mail accounts
@@ -40,8 +43,6 @@ use iMSCP_Registry as Registry;
  *
  * @param int $mainDmnId Main domain id
  * @return int Number of default mail accounts
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception_Database
  */
 function countDefaultMailAccounts($mainDmnId)
 {
@@ -80,11 +81,8 @@ function countDefaultMailAccounts($mainDmnId)
  * @param string $mailAcc Mail account
  * @param string $mailType Mail account type
  * @param string $mailStatus Mail account status
- * @param int $mailAutoResponder Flag indicating whether or not autoresponder is enabled
+ * @param int $mailAutoResponder Flag indicating whether or not auto-responder is enabled
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
  */
 function generateDynamicTplParts($tpl, $mailAcc, $mailType, $mailStatus, $mailAutoResponder)
 {
@@ -164,10 +162,6 @@ function generateDynamicTplParts($tpl, $mailAcc, $mailType, $mailStatus, $mailAu
  * @param TemplateEngine $tpl Template engine
  * @param int $mainDmnId Customer main domain unique identifier
  * @return int number of mail accounts
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generateMailAccountsList($tpl, $mainDmnId)
 {
@@ -221,7 +215,7 @@ function generateMailAccountsList($tpl, $mainDmnId)
         return 0;
     }
 
-    $postfixConfig = new ConfigFile(utils_normalizePath(Registry::get('config')['CONF_DIR'] . '/postfix/postfix.data'));
+    $postfixConfig = new FileConfig(utils_normalizePath(Registry::get('config')['CONF_DIR'] . '/postfix/postfix.data'));
     $syncQuotaInfo = isset($_GET['sync_quota_info']);
     $hasMailboxes = $overQuota = false;
 
@@ -321,9 +315,6 @@ function generateMailAccountsList($tpl, $mainDmnId)
  *
  * @param TemplateEngine $tpl Reference to the pTemplate object
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generatePage($tpl)
 {
@@ -367,14 +358,10 @@ function generatePage($tpl)
     set_page_message(tr('Mail accounts list is empty.'), 'static_info');
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require_once 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 
 if (!customerHasMailOrExtMailFeatures()) {
     showBadRequestErrorPage();
@@ -411,7 +398,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,16 +18,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP\Crypt as Crypt;
-use iMSCP\VirtualFileSystem as VirtualFileSystem;
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_Exception as iMSCPException;
-use iMSCP_Registry as Registry;
-
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Crypt;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\EventDescription;
+use iMSCP\Event\Events;
+use iMSCP\Exception\Exception;
+use iMSCP\Registry;
+use iMSCP\VirtualFileSystem;
 
 /**
  * Generate domain type list
@@ -35,10 +39,6 @@ use iMSCP_Registry as Registry;
  * @param int $mainDmnId Customer main domain id
  * @param iMSCP_pTemplate $tpl
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generateDomainTypeList($mainDmnId, $tpl)
 {
@@ -83,10 +83,6 @@ function generateDomainTypeList($mainDmnId, $tpl)
  * @param string $mainDmnId Customer main domain id
  * @param string $dmnType Domain type (dmn|sub|als|alssub) for which list must be generated
  * @return array Domain list
- * @throws Zend_Exception
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function getDomainList($mainDmnName, $mainDmnId, $dmnType = 'dmn')
 {
@@ -144,9 +140,6 @@ function getDomainList($mainDmnName, $mainDmnId, $dmnType = 'dmn')
  * Add Ftp account
  *
  * @return bool TRUE on success, FALSE on failure
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function addAccount()
 {
@@ -223,7 +216,7 @@ function addAccount()
     try {
         $db->beginTransaction();
 
-        EventsManager::getInstance()->dispatch(Events::onBeforeAddFtp, [
+        EventAggregator::getInstance()->dispatch(Events::onBeforeAddFtp, [
             'ftpUserId'    => $username,
             'ftpPassword'  => $passwd,
             'ftpUserUid'   => $row1['admin_sys_uid'],
@@ -268,7 +261,7 @@ function addAccount()
             );
         }
 
-        EventsManager::getInstance()->dispatch(Events::onAfterAddFtp, [
+        EventAggregator::getInstance()->dispatch(Events::onAfterAddFtp, [
             'ftpUserId'    => $username,
             'ftpPassword'  => $passwd,
             'ftpUserUid'   => $row1['admin_sys_uid'],
@@ -283,7 +276,7 @@ function addAccount()
             sprintf('A new FTP account (%s) has been created by %s', $username, $_SESSION['user_logged']), E_USER_NOTICE
         );
         set_page_message(tr('FTP account successfully added.'), 'success');
-    } catch (iMSCPException $e) {
+    } catch (Exception $e) {
         $db->rollBack();
         if ($e->getCode() == 23000) {
             set_page_message(tr('FTP account already exists.'), 'error');
@@ -301,10 +294,6 @@ function addAccount()
  *
  * @param iMSCP_pTemplate $tpl
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generatePage($tpl)
 {
@@ -340,14 +329,10 @@ function generatePage($tpl)
     }
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require_once 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 customerHasFeature('ftp') or showBadRequestErrorPage();
 
 $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
@@ -395,19 +380,20 @@ $tpl->assign([
     'TR_CANCEL'            => tr('Cancel')
 ]);
 
-EventsManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
-    /** @var $e iMSCP_Events_Event */
-    $translations = $e->getParam('translations');
-    $translations['core']['close'] = tr('Close');
-    $translations['core']['ftp_directories'] = tr('FTP home directory');
-});
+EventAggregator::getInstance()->registerListener(
+    Events::onGetJsTranslations,
+    function (EventDescription $e) {
+        $tr = $e->getParam('translations');
+        $tr['core']['close'] = tr('Close');
+        $tr['core']['ftp_directories'] = tr('FTP home directory');
+    });
 
 generateNavigation($tpl);
 generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

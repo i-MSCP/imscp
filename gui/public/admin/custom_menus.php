@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,19 +18,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\EventDescription;
+use iMSCP\Event\Events;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 /**
  * Generates menus list
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function admin_generateMenusList($tpl)
 {
@@ -75,11 +80,7 @@ function admin_generateMenusList($tpl)
 /**
  * Generate form.
  *
- * @param iMSCP_pTemplate $tpl Template engine
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
+ * @param TemplateEngine $tpl Template engine
  */
 function admin_generateForm($tpl)
 {
@@ -163,8 +164,6 @@ function admin_generateForm($tpl)
  * @param string $menuLevel Menu level
  * @param int $menuOrder Menu order
  * @return bool TRUE if menu data are valid, FALSE otherwise
- * @throws Zend_Exception
- * @throws iMSCP_Exception
  */
 function admin_isValidMenu($menuName, $menuLink, $menuTarget, $menuLevel, $menuOrder)
 {
@@ -197,7 +196,7 @@ function admin_isValidMenu($menuName, $menuLink, $menuTarget, $menuLevel, $menuO
     }
 
     if (!empty($errorFieldsStack)) {
-        iMSCP_Registry::set('errorFieldsStack', $errorFieldsStack);
+        Registry::set('errorFieldsStack', $errorFieldsStack);
         return false;
     }
 
@@ -208,10 +207,6 @@ function admin_isValidMenu($menuName, $menuLink, $menuTarget, $menuLevel, $menuO
  * Add custom menu
  *
  * @return bool TRUE on success, FALSE otherwise
- * @throws Zend_Exception
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception_Database
- * @throws iMSCP_Exception
  */
 function admin_addMenu()
 {
@@ -244,10 +239,6 @@ function admin_addMenu()
  *
  * @param int $menuId menu unique identifier
  * @return bool TRUE on success, FALSE otherwise
- * @throws Zend_Exception
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception_Database
- * @throws iMSCP_Exception
  */
 function admin_updateMenu($menuId)
 {
@@ -278,9 +269,6 @@ function admin_updateMenu($menuId)
  *
  * @param int $menuId menu unique identifier
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception_Database
  */
 function admin_deleteMenu($menuId)
 {
@@ -291,14 +279,10 @@ function admin_deleteMenu($menuId)
     }
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptStart);
 
 if (isset($_POST['uaction'])) {
     if ($_POST['uaction'] == 'menu_add') {
@@ -316,7 +300,7 @@ if (isset($_POST['uaction'])) {
     admin_deleteMenu($_GET['delete_id']);
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'            => 'shared/layouts/ui.tpl',
     'page'              => 'admin/custom_menus.tpl',
@@ -346,12 +330,11 @@ $tpl->assign([
     'TR_TH_ORDER'               => tr('Order'),
     'TR_CANCEL'                 => tr('Cancel'),
     'TR_MESSAGE_DELETE_JS'      => tojs(tr('Are you sure you want to delete the %s menu?', '%s')),
-    'ERR_FIELDS_STACK'          => iMSCP_Registry::isRegistered('errorFieldsStack')
-        ? json_encode(iMSCP_Registry::get('errorFieldsStack')) : '[]'
+    'ERR_FIELDS_STACK'          => Registry::isRegistered('errorFieldsStack')
+        ? json_encode(Registry::get('errorFieldsStack')) : '[]'
 ]);
 
-iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
-    /** @var $e \iMSCP_Events_Event */
+EventAggregator::getInstance()->registerListener('onGetJsTranslations', function (EventDescription $e) {
     $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
 });
 
@@ -361,7 +344,7 @@ admin_generateForm($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

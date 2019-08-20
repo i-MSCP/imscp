@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,11 +18,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP\VirtualFileSystem as VirtualFileSystem;
-
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Database\DatabaseException;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\EventDescription;
+use iMSCP\Event\Events;
+use iMSCP\TemplateEngine;
+use iMSCP\VirtualFileSystem;
 
 /**
  * Is allowed directory?
@@ -54,9 +62,6 @@ function isAllowedDir($directory)
  * Add/update protected area
  *
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function handleProtectedArea()
 {
@@ -171,7 +176,7 @@ function handleProtectedArea()
         );
 
         $db->commit();
-    } catch (iMSCP_Exception_Database $e) {
+    } catch (DatabaseException $e) {
         $db->rollBack();
         throw $e;
     }
@@ -192,10 +197,6 @@ function handleProtectedArea()
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generatePage($tpl)
 {
@@ -297,14 +298,10 @@ function generatePage($tpl)
     }
 }
 
-/***********************************************************************************************************************
- * main
- */
-
 require_once 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 customerHasFeature('protected_areas') or showBadRequestErrorPage();
 
 $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
@@ -313,7 +310,7 @@ $mountpoints = getMountpoints($mainDmnProps['domain_id']);
 if (!empty($_POST))
     handleProtectedArea();
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'              => 'shared/layouts/ui.tpl',
     'page'                => 'client/protect_it.tpl',
@@ -340,19 +337,21 @@ $tpl->assign([
     'TR_CANCEL'              => tr('Cancel')
 ]);
 
-iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
-    /** @var $e iMSCP_Events_Event */
-    $translations = $e->getParam('translations');
-    $translations['core']['close'] = tr('Close');
-    $translations['core']['ftp_directories'] = tr('Protected area path');
-});
+EventAggregator::getInstance()->registerListener(
+    Events::onGetJsTranslations,
+    function (EventDescription $e) {
+        $tr = $e->getParam('translations');
+        $tr['core']['close'] = tr('Close');
+        $tr['core']['ftp_directories'] = tr('Protected area path');
+    }
+);
 
 generateNavigation($tpl);
 generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

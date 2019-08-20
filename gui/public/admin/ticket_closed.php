@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,15 +18,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/***********************************************************************************************************************
- * Main
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 require_once 'imscp-lib.php';
 require_once LIBRARY_PATH . '/Functions/Tickets.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptStart);
 
 if (!hasTicketSystem()) {
     redirectTo('index.php');
@@ -40,7 +48,7 @@ if (isset($_GET['psi'])) {
     $start = 0;
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'           => 'shared/layouts/ui.tpl',
     'page'             => 'admin/ticket_closed.tpl',
@@ -74,12 +82,12 @@ $tpl->assign([
 
 generateNavigation($tpl);
 generateTicketList(
-    $tpl, $_SESSION['user_id'], $start, iMSCP_Registry::get('config')['DOMAIN_ROWS_PER_PAGE'], 'admin', 'closed'
+    $tpl, $_SESSION['user_id'], $start, Registry::get('config')['DOMAIN_ROWS_PER_PAGE'], 'admin', 'closed'
 );
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

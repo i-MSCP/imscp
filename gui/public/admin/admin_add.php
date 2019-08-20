@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,26 +18,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP\Crypt as Crypt;
-use iMSCP_Database as Database;
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_pTemplate as TemplateEngine;
-use Zend_Form as Form;
-use iMSCP_Registry as Registry;
-
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Crypt;
+use iMSCP\Database\DatabaseMySQL;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 /**
  * Add admin user
  *
- * @throws Exception
- * @param Form $form
+ * @param Zend_Form $form
  * @return void
  */
-function addAdminUser(Form $form)
+function addAdminUser(Zend_Form $form)
 {
     if (!$form->isValid($_POST)) {
         foreach ($form->getMessages() as $fieldname => $msgsStack) {
@@ -46,13 +47,13 @@ function addAdminUser(Form $form)
 
         return;
     }
-    
-    $db = Database::getInstance();
+
+    $db = DatabaseMySQL::getInstance();
 
     try {
         $db->beginTransaction();
 
-        EventsManager::getInstance()->dispatch(Events::onBeforeAddUser, [
+        EventAggregator::getInstance()->dispatch(Events::onBeforeAddUser, [
             'userData' => $form->getValues()
         ]);
 
@@ -81,7 +82,7 @@ function addAdminUser(Form $form)
             $adminId, $cfg['USER_INITIAL_LANG'], $cfg['USER_INITIAL_THEME']
         ]);
 
-        EventsManager::getInstance()->dispatch(Events::onAfterAddUser, [
+        EventAggregator::getInstance()->dispatch(Events::onAfterAddUser, [
             'userId'   => $adminId,
             'userData' => $form->getValues()
         ]);
@@ -104,14 +105,10 @@ function addAdminUser(Form $form)
     redirectTo('users.php');
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require 'imscp-lib.php';
 
 check_login('admin');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptStart);
 
 $form = getUserLoginDataForm(true, true)->addElements(getUserPersonalDataForm()->getElements());
 $form->setDefault('gender', 'U');
@@ -135,7 +132,7 @@ generatePageMessage($tpl);
 $tpl->form = $form;
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

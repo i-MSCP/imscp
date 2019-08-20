@@ -1,45 +1,46 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2017 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Database\DatabaseMySQL;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Exception\Exception;
+use iMSCP\Plugin\AbstractPlugin as AbstractPluginAlias;
+use iMSCP\Plugin\PluginManager;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 /**
  * Get user errors
  *
- * @param  iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
-function debugger_getUserErrors($tpl)
+function debugger_getUserErrors(TemplateEngine $tpl)
 {
     $stmt = execute_query(
         "
@@ -71,14 +72,10 @@ function debugger_getUserErrors($tpl)
 /**
  * Get domain errors
  *
- * @param  iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
-function debugger_getDmnErrors($tpl)
+function debugger_getDmnErrors(TemplateEngine $tpl)
 {
     $stmt = execute_query(
         "
@@ -110,14 +107,10 @@ function debugger_getDmnErrors($tpl)
 /**
  * Get domain aliases errors
  *
- * @param  iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
-function debugger_getAlsErrors($tpl)
+function debugger_getAlsErrors(TemplateEngine $tpl)
 {
     $stmt = execute_query(
         "
@@ -150,14 +143,10 @@ function debugger_getAlsErrors($tpl)
 /**
  * Get subdomains errors
  *
- * @param  iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
-function debugger_getSubErrors($tpl)
+function debugger_getSubErrors(TemplateEngine $tpl)
 {
     $stmt = execute_query(
         "
@@ -191,14 +180,10 @@ function debugger_getSubErrors($tpl)
 /**
  * Get subdomain aliases errors
  *
- * @param  iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
-function debugger_getAlssubErrors($tpl)
+function debugger_getAlssubErrors(TemplateEngine $tpl)
 {
     $stmt = execute_query(
         "
@@ -232,14 +217,10 @@ function debugger_getAlssubErrors($tpl)
 /**
  * Get custom dns errors
  *
- * @param  iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
-function debugger_getCustomDNSErrors($tpl)
+function debugger_getCustomDNSErrors(TemplateEngine $tpl)
 {
     $stmt = execute_query(
         "
@@ -272,14 +253,10 @@ function debugger_getCustomDNSErrors($tpl)
 /**
  * Gets htaccess errors
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
-function debugger_getHtaccessErrors($tpl)
+function debugger_getHtaccessErrors(TemplateEngine $tpl)
 {
     $stmt = execute_query(
         "
@@ -319,13 +296,10 @@ function debugger_getHtaccessErrors($tpl)
 /**
  * Get FTP user errors
  *
- * @param iMSCP_pTemplate $tpl
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
+ * @param TemplateEngine $tpl
+ * @return void
  */
-function debugger_getFtpUserErrors($tpl)
+function debugger_getFtpUserErrors(TemplateEngine $tpl)
 {
     $stmt = execute_query(
         "
@@ -358,14 +332,10 @@ function debugger_getFtpUserErrors($tpl)
 /**
  * Get mails errors
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
-function debugger_getMailsErrors($tpl)
+function debugger_getMailsErrors(TemplateEngine $tpl)
 {
     $stmt = execute_query(
         "
@@ -412,7 +382,7 @@ function debugger_getMailsErrors($tpl)
             case MT_ALSSUB_MAIL . ',' . MT_ALSSUB_FORWARD:
                 $query = "
                     SELECT CONCAT('@', t1.subdomain_alias_name, '.', IF(t2.alias_name IS NULL,'" . tr('missing alias')
-                        . "',t2.alias_name) ) AS domain_name
+                    . "',t2.alias_name) ) AS domain_name
                     FROM subdomain_alias AS t1
                     LEFT JOIN domain_aliasses AS t2 ON (t1.alias_id = t2.alias_id)
                     WHERE subdomain_alias_id = ?
@@ -432,7 +402,7 @@ function debugger_getMailsErrors($tpl)
                 $query = "SELECT CONCAT('@', alias_name) AS domain_name FROM domain_aliasses WHERE alias_id = ?";
                 break;
             default:
-                throw new iMSCP_Exception('FIXME: ' . __FILE__ . ':' . __LINE__ . $mailType);
+                throw new Exception('FIXME: ' . __FILE__ . ':' . __LINE__ . $mailType);
         }
 
         $domainName = ltrim(exec_query($query, $searchedId)->fetchRow(PDO::FETCH_COLUMN), '@');
@@ -452,14 +422,10 @@ function debugger_getMailsErrors($tpl)
 /**
  * Get IP errors
  *
- * @param  iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
-function debugger_getIpErrors($tpl)
+function debugger_getIpErrors(TemplateEngine $tpl)
 {
     $stmt = execute_query(
         "
@@ -492,18 +458,15 @@ function debugger_getIpErrors($tpl)
 /**
  * Get plugin items errors
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
  */
-function debugger_getPluginItemErrors($tpl)
+function debugger_getPluginItemErrors(TemplateEngine $tpl)
 {
-    /** @var iMSCP_Plugin_Manager $pluginManager */
-    $pluginManager = iMSCP_Registry::get('pluginManager');
+    /** @var PluginManager $pluginManager */
+    $pluginManager = Registry::get('pluginManager');
 
-    /** @var iMSCP_Plugin[] $plugins */
+    /** @var AbstractPluginAlias[] $plugins */
     $plugins = $pluginManager->pluginGetLoaded();
 
     $itemFound = false;
@@ -541,13 +504,11 @@ function debugger_getPluginItemErrors($tpl)
  * @param string $field Status field name
  * @param int $itemId item unique identifier
  * @return bool
- * @throws Zend_Exception
- * @throws iMSCP_Plugin_Exception
  */
 function debugger_changePluginItemStatus($pluginName, $table, $field, $itemId)
 {
-    /** @var iMSCP_Plugin_Manager $pluginManager */
-    $pluginManager = iMSCP_Registry::get('pluginManager');
+    /** @var PluginManager $pluginManager */
+    $pluginManager = Registry::get('pluginManager');
 
     if ($pluginManager->pluginIsLoaded($pluginName)) {
         $pluginManager->pluginGet($pluginName)->changeItemStatus($table, $field, $itemId);
@@ -563,11 +524,8 @@ function debugger_changePluginItemStatus($pluginName, $table, $field, $itemId)
  * Note: Without any argument, this function will trigger the getCountRequests() method on all enabled plugins
  *
  * @param string $statusField status database field name
- * @param  string $tableName i-MSCP database table name
+ * @param string $tableName i-MSCP database table name
  * @return int Number of request
- * @throws Zend_Exception
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception_Database
  */
 function debugger_countRequests($statusField = NULL, $tableName = NULL)
 {
@@ -585,10 +543,10 @@ function debugger_countRequests($statusField = NULL, $tableName = NULL)
         return $stmt->rowCount();
     }
 
-    /** @var iMSCP_Plugin_Manager $pluginManager */
-    $pluginManager = iMSCP_Registry::get('pluginManager');
+    /** @var PluginManager $pluginManager */
+    $pluginManager = Registry::get('pluginManager');
 
-    /** @var iMSCP_Plugin[] $plugins */
+    /** @var AbstractPluginAlias[] $plugins */
     $plugins = $pluginManager->pluginGetLoaded();
     $nbRequests = 0;
 
@@ -601,18 +559,13 @@ function debugger_countRequests($statusField = NULL, $tableName = NULL)
     return $nbRequests;
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
-
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptStart);
 
-/** @var iMSCP_Plugin_Manager $plugingManager */
-$plugingManager = iMSCP_Registry::get('pluginManager');
+/** @var PluginManager $plugingManager */
+$plugingManager = Registry::get('pluginManager');
 
 $rqstCount = debugger_countRequests('admin_status', 'admin');
 $rqstCount += debugger_countRequests('domain_status', 'domain');
@@ -633,11 +586,11 @@ if (isset($_GET['action'])) {
         // Make it possible to trigger backend requests through GUI manually
         // even if there are not perceptible tasks from the frontEnd POV.
         //if ($rqstCount > 0) {
-            if (send_request()) {
-                set_page_message(tr('Daemon request successful.'), 'success');
-            } else {
-                set_page_message(tr('Daemon request failed.'), 'error');
-            }
+        if (send_request()) {
+            set_page_message(tr('Daemon request successful.'), 'success');
+        } else {
+            set_page_message(tr('Daemon request failed.'), 'error');
+        }
         //} else {
         //    set_page_message(tr('There is no pending task. Operation canceled.'), 'warning');
         //}
@@ -703,7 +656,7 @@ if (isset($_GET['action'])) {
         if ($stmt !== false) {
             set_page_message(tr('Done'), 'success');
         } else {
-            $db = iMSCP_Database::getInstance();
+            $db = DatabaseMySQL::getInstance();
             set_page_message(tr('Unknown Error') . '<br>' . $db->errorMsg(), 'error');
         }
 
@@ -711,7 +664,7 @@ if (isset($_GET['action'])) {
     }
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'              => 'shared/layouts/ui.tpl',
     'page'                => 'admin/imscp_debugger.tpl',
@@ -778,7 +731,7 @@ generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

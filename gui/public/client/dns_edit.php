@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,14 +18,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-use Net_DNS2_Exception as DnsResolverException;
-use Net_DNS2_Resolver as DnsResolver;
-
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Database\DatabaseMySQL;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Exception\Exception;
+use iMSCP\TemplateEngine;
 
 /**
  * Get quoted and unquoted strings from the given string
@@ -105,11 +109,10 @@ function client_getPost($varname, $defaultValue = '')
  * @param bool $isNewRecord
  * @param string &$errorString Reference to error string
  * @return bool TRUE if a conflict is found, FALSE otherwise
- * @throws Zend_Exception
  */
 function hasConflict($rrName, $rrType, $isNewRecord, &$errorString)
 {
-    $resolver = new DnsResolver(['nameservers' => ['127.0.0.1']]);
+    $resolver = new Net_DNS2_Resolver(['nameservers' => ['127.0.0.1']]);
 
     try {
         /** @var Net_DNS2_Packet_Response $response */
@@ -123,7 +126,7 @@ function hasConflict($rrName, $rrType, $isNewRecord, &$errorString)
 
         $errorString = tr("Conflict with the `%s' DNS resource record.", $response->answer[0]);
         return true;
-    } catch (DnsResolverException $e) {
+    } catch (Net_DNS2_Exception $e) {
         // In case of failure, we just go ahead.
     }
 
@@ -132,7 +135,7 @@ function hasConflict($rrName, $rrType, $isNewRecord, &$errorString)
 
 /**
  * Validate name for a DNS resource record
- * 
+ *
  * - As per RFC 1034: Names that are not host names can consist of any printable
  *   ASCII character
  * - AS per RFC 4871: All DKIM keys are stored in a subdomain named
@@ -141,7 +144,6 @@ function hasConflict($rrName, $rrType, $isNewRecord, &$errorString)
  * @param string $name Name
  * @param string &$errorString Error string
  * @return bool TRUE if name is valid, FALSE otherwise
- * @throws Zend_Exception
  */
 function client_validate_NAME($name, &$errorString)
 {
@@ -150,12 +152,12 @@ function client_validate_NAME($name, &$errorString)
         return false;
     }
 
-    
-    if(strpos($name, '_') == 0) {
+
+    if (strpos($name, '_') == 0) {
         $name = substr($name, 1);
     }
 
-    if(strpos($name, '*.') == 0) {
+    if (strpos($name, '*.') == 0) {
         $name = substr($name, 2);
     }
 
@@ -173,7 +175,6 @@ function client_validate_NAME($name, &$errorString)
  * @param string $cname Cname
  * @param string &$errorString Error string
  * @return bool TRUE if cname is valid, FALSE otherwise
- * @throws Zend_Exception
  */
 function client_validate_CNAME($cname, &$errorString)
 {
@@ -199,7 +200,6 @@ function client_validate_CNAME($cname, &$errorString)
  * @param string $ip IPv4 address
  * @param string &$errorString Error string
  * @return bool
- * @throws Zend_Exception
  */
 function client_validate_A($ip, &$errorString)
 {
@@ -222,7 +222,6 @@ function client_validate_A($ip, &$errorString)
  * @param string $ip IPv6 address
  * @param string &$errorString Reference to variable, which contain error string
  * @return bool TRUE if the record is valid, FALSE otherwise
- * @throws Zend_Exception
  */
 function client_validate_AAAA($ip, &$errorString)
 {
@@ -246,8 +245,6 @@ function client_validate_AAAA($ip, &$errorString)
  * @param string $host MX host
  * @param string &$errorString Reference to variable, which contain error string
  * @return bool TRUE if the record is valid, FALSE otherwise
- * @throws Zend_Exception
- * @throws iMSCP_Exception
  */
 function client_validate_MX($pref, $host, &$errorString)
 {
@@ -274,7 +271,6 @@ function client_validate_MX($pref, $host, &$errorString)
  * @param string $host MX host
  * @param string &$errorString Reference to variable, which contain error string
  * @return bool TRUE if the record is valid, FALSE otherwise
- * @throws Zend_Exception
  */
 function client_validate_NS($host, &$errorString)
 {
@@ -297,7 +293,6 @@ function client_validate_NS($host, &$errorString)
  * @param string $data DNS record data
  * @param string &$errorString Reference to variable, which contain error string
  * @return bool TRUE if the record is valid, FALSE otherwise
- * @throws Zend_Exception
  */
 function client_validateAndFormat_TXT(&$data, &$errorString)
 {
@@ -365,8 +360,6 @@ function client_validateAndFormat_TXT(&$data, &$errorString)
  * @param string $host Target host
  * @param string $errorString Error string
  * @return bool
- * @throws Zend_Exception
- * @throws iMSCP_Exception
  */
 function client_validate_SRV($srvName, $proto, $priority, $weight, $port, $host, &$errorString)
 {
@@ -420,8 +413,6 @@ function client_validate_SRV($srvName, $proto, $priority, $weight, $port, $host,
  *
  * @param int $ttl TTL value
  * @return int TTL
- * @throws Zend_Exception
- * @throws iMSCP_Exception
  */
 function client_validate_TTL($ttl)
 {
@@ -538,9 +529,6 @@ function client_decodeDnsRecordData($data)
  *
  * @param int $dnsRecordId DNS record unique identifier (0 for new record)
  * @return bool
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function client_saveDnsRecord($dnsRecordId)
 {
@@ -796,13 +784,13 @@ function client_saveDnsRecord($dnsRecordId)
     $dnsRecordName .= '.'; // Add trailing dot
     $dnsRecordName .= "\t$ttl"; // Add TTL
 
-    $db = iMSCP_Database::getInstance();
+    $db = DatabaseMySQL::getInstance();
 
     try {
         $db->beginTransaction();
 
         if (!$dnsRecordId) {
-            EventsManager::getInstance()->dispatch(Events::onBeforeAddCustomDNSrecord, [
+            EventAggregator::getInstance()->dispatch(Events::onBeforeAddCustomDNSrecord, [
                 'domainId' => $mainDmnId,
                 'aliasId'  => $domainId,
                 'name'     => $dnsRecordName,
@@ -825,7 +813,7 @@ function client_saveDnsRecord($dnsRecordId)
                 ]
             );
 
-            EventsManager::getInstance()->dispatch(Events::onAfterAddCustomDNSrecord, [
+            EventAggregator::getInstance()->dispatch(Events::onAfterAddCustomDNSrecord, [
                 'id'       => $db->insertId(),
                 'domainId' => $mainDmnId,
                 'aliasId'  => $domainId,
@@ -835,7 +823,7 @@ function client_saveDnsRecord($dnsRecordId)
                 'data'     => $dnsRecordData
             ]);
         } else {
-            EventsManager::getInstance()->dispatch(Events::onBeforeEditCustomDNSrecord, [
+            EventAggregator::getInstance()->dispatch(Events::onBeforeEditCustomDNSrecord, [
                 'id'       => $dnsRecordId,
                 'domainId' => $mainDmnId,
                 'aliasId'  => $domainId,
@@ -868,7 +856,7 @@ function client_saveDnsRecord($dnsRecordId)
             );
             */
 
-            EventsManager::getInstance()->dispatch(Events::onAfterEditCustomDNSrecord, [
+            EventAggregator::getInstance()->dispatch(Events::onAfterEditCustomDNSrecord, [
                 'id'       => $dnsRecordId,
                 'domainId' => $mainDmnId,
                 'aliasId'  => $domainId,
@@ -889,7 +877,7 @@ function client_saveDnsRecord($dnsRecordId)
             ),
             E_USER_NOTICE
         );
-    } catch (iMSCP_Exception $e) {
+    } catch (Exception $e) {
         $db->rollBack();
         if ($e->getCode() == 23000) { // Duplicate entries
             set_page_message(tr('DNS record already exist.'), 'error');
@@ -908,10 +896,6 @@ function client_saveDnsRecord($dnsRecordId)
  * @param iMSCP_pTemplate $tpl
  * @param int $dnsRecordId DNS record unique identifier (0 for new record)
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generatePage($tpl, $dnsRecordId)
 {
@@ -956,10 +940,10 @@ function generatePage($tpl, $dnsRecordId)
 
         $data = $stmt->fetchRow();
 
-        if($data['alias_id'] == 0) {
-            $origin = exec_query('SELECT domain_name FROM domain WHERE domain_id = ?', [ $mainDomainId ])->fetchRow(\PDO::FETCH_COLUMN);
+        if ($data['alias_id'] == 0) {
+            $origin = exec_query('SELECT domain_name FROM domain WHERE domain_id = ?', [$mainDomainId])->fetchRow(PDO::FETCH_COLUMN);
         } else {
-            $origin = exec_query("SELECT alias_name FROM domain_aliasses WHERE alias_id = ?", [$data['alias_id']])->fetchRow(\PDO::FETCH_COLUMN);
+            $origin = exec_query("SELECT alias_name FROM domain_aliasses WHERE alias_id = ?", [$data['alias_id']])->fetchRow(PDO::FETCH_COLUMN);
         }
 
         $idnaOrigin = decode_idna($origin);
@@ -979,7 +963,7 @@ function generatePage($tpl, $dnsRecordId)
     if ($ownedBy != 'custom_dns_feature') {
         showBadRequestErrorPage();
     }
-    
+
     $dnsTypes = client_create_options(
         ['A', 'AAAA', 'SRV', 'CNAME', 'MX', 'NS', 'SPF', 'TXT'],
         client_getPost('type', $data['domain_type'])
@@ -1004,14 +988,10 @@ function generatePage($tpl, $dnsRecordId)
     ]);
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require_once 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 customerHasFeature('custom_dns_records') or showBadRequestErrorPage();
 
 $dnsRecordId = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -1028,7 +1008,7 @@ if (!empty($_POST)) {
     }
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'        => 'shared/layouts/ui.tpl',
     'page'          => 'client/dns_edit.tpl',
@@ -1071,7 +1051,7 @@ generatePage($tpl, $dnsRecordId);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

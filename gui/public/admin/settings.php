@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,19 +18,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/***********************************************************************************************************************
- * Main
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Config\DbConfig;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptStart);
 
-$cfg = iMSCP_Registry::get('config');
+$cfg = Registry::get('config');
 
 if (!empty($_POST)) {
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditAdminGeneralSettings);
+    EventAggregator::getInstance()->dispatch(Events::onBeforeEditAdminGeneralSettings);
 
     $checkForUpdate = isset($_POST['checkforupdate']) ? clean_input($_POST['checkforupdate']) : $cfg['CHECK_FOR_UPDATES'];
 
@@ -101,8 +110,8 @@ if (!empty($_POST)) {
     } elseif ($domainRowsPerPage < 1) {
         $domainRowsPerPage = 1;
     } else {
-        /** @var iMSCP_Config_Handler_Db $dbCfg */
-        $dbCfg = iMSCP_Registry::get('dbConfig');
+        /** @var DbConfig $dbCfg */
+        $dbCfg = Registry::get('dbConfig');
 
         $dbCfg['CHECK_FOR_UPDATES'] = $checkForUpdate;
         $dbCfg['LOSTPASSWORD'] = $lostPasswd;
@@ -131,7 +140,7 @@ if (!empty($_POST)) {
         $dbCfg['ENABLE_SSL'] = $enableSSL;
 
         $cfg->merge($dbCfg);
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditAdminGeneralSettings);
+        EventAggregator::getInstance()->dispatch(Events::onAfterEditAdminGeneralSettings);
 
         $updtCount = $dbCfg->countQueries('update');
         $newCount = $dbCfg->countQueries('insert');
@@ -168,7 +177,7 @@ if (!empty($_POST)) {
     redirectTo('settings.php');
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'admin/settings.tpl',
@@ -452,7 +461,7 @@ generateLanguagesList($tpl, $cfg['USER_INITIAL_LANG']);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

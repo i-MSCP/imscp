@@ -20,10 +20,19 @@
 
 /**
  * @noinspection
- * PhpUnhandledExceptionInspection
  * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
  * PhpIncludeInspection
  */
+
+use iMSCP\Config\ArrayConfig;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\EventDescription;
+use iMSCP\Event\Events;
+use iMSCP\Exception\Exception;
+use iMSCP\Registry;
+use iMSCP\Services;
+use iMSCP\TemplateEngine;
 
 /**
  * Validates a service port and sets an appropriate message on error
@@ -38,10 +47,10 @@
  */
 function validatesService($name, $ip, $port, $protocol, $show, $index = '')
 {
-    $dbConfig = iMSCP_Registry::get('dbConfig');
+    $dbConfig = Registry::get('dbConfig');
 
-    if (iMSCP_Registry::isRegistered('errorFieldsIds')) {
-        $errorFieldsIds = iMSCP_Registry::get('errorFieldsIds');
+    if (Registry::isRegistered('errorFieldsIds')) {
+        $errorFieldsIds = Registry::get('errorFieldsIds');
     } else {
         $errorFieldsIds = [];
     }
@@ -88,13 +97,12 @@ function validatesService($name, $ip, $port, $protocol, $show, $index = '')
         showBadRequestErrorPage();
     }
 
-    if (iMSCP_Registry::isRegistered('errorFieldsIds')) {
-        iMSCP_Registry::set(
-            'errorFieldsIds',
-            iMSCP_Registry::get('errorFieldsIds') + $errorFieldsIds
+    if (Registry::isRegistered('errorFieldsIds')) {
+        Registry::set(
+            'errorFieldsIds', Registry::get('errorFieldsIds') + $errorFieldsIds
         );
     } elseif (!empty($errorFieldsIds)) {
-        iMSCP_Registry::set('errorFieldsIds', $errorFieldsIds);
+        Registry::set('errorFieldsIds', $errorFieldsIds);
     }
 
     return empty($errorFieldsIds);
@@ -108,17 +116,16 @@ function validatesService($name, $ip, $port, $protocol, $show, $index = '')
  */
 function deleteService($serviceName)
 {
-    $dbConfig = iMSCP_Registry::get('dbConfig');
+    $dbConfig = Registry::get('dbConfig');
 
     if (isset($dbConfig[$serviceName])) {
         unset($dbConfig[$serviceName]);
 
         // Remove cache entry for this service if any
-        $identifier = iMSCP_Services::class
-            . '_'
-            . preg_replace('/[^a-zA-Z0-9_]/', '_', $serviceName);
+        $identifier = Services::class
+            . '_' . preg_replace('/[^a-zA-Z0-9_]/', '_', $serviceName);
         /** @var Zend_Cache_Core $cache */
-        $cache = iMSCP_Registry::get('iMSCP_Application')->getCache();
+        $cache = Registry::get('iMSCP_Application')->getCache();
         $cache->remove($identifier);
 
         write_log(
@@ -131,7 +138,7 @@ function deleteService($serviceName)
         );
         set_page_message(tr('Service port successfully removed.'), 'success');
     } else {
-       set_page_message(
+        set_page_message(
             tohtml(tr("Unknown service name '%s'.", $serviceName)),
             'error'
         );
@@ -148,7 +155,7 @@ function deleteService($serviceName)
  */
 function addOrUpdateServices($mode = 'add')
 {
-    $dbConfig = iMSCP_Registry::get('dbConfig');
+    $dbConfig = Registry::get('dbConfig');
 
     if ($mode == 'add') {
         if (!isset($_POST['port_new'])
@@ -212,11 +219,11 @@ function addOrUpdateServices($mode = 'add')
 
                 if (!$show) {
                     // Remove cache entry for this service if any
-                    $identifier = iMSCP_Services::class
+                    $identifier = Services::class
                         . '_'
                         . preg_replace('/[^a-zA-Z0-9_]/', '_', $dbServiceName);
                     /** @var Zend_Cache_Core $cache */
-                    $cache = iMSCP_Registry::get(
+                    $cache = Registry::get(
                         'iMSCP_Application'
                     )->getCache();
                     $cache->remove($identifier);
@@ -224,15 +231,15 @@ function addOrUpdateServices($mode = 'add')
             }
         }
     } else {
-        throw new iMSCP_Exception(
+        throw new Exception(
             'addOrUpdateServices(): Wrong argument for $mode'
         );
     }
 
-    if (iMSCP_Registry::isRegistered('errorFieldsIds')) {
+    if (Registry::isRegistered('errorFieldsIds')) {
         if ($mode == 'add') {
-            iMSCP_Registry::set('error_on_add', [
-                'srv_new'      => $_POST['srv_new'],
+            Registry::set('error_on_add', [
+                'srv_new'       => $_POST['srv_new'],
                 'ip_new'        => $_POST['ip_new'],
                 'port_new'      => $_POST['port_new'],
                 'port_type_new' => $_POST['port_type_new'],
@@ -249,7 +256,7 @@ function addOrUpdateServices($mode = 'add')
                 $errorOnUpdt[] = "$port;$protocol;$name;$show;$ip";
             }
 
-            iMSCP_Registry::set('error_on_updt', $errorOnUpdt);
+            Registry::set('error_on_updt', $errorOnUpdt);
         }
 
         return;
@@ -282,18 +289,16 @@ function addOrUpdateServices($mode = 'add')
 /**
  * Generate page
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @return void;
  */
-function generatePage(iMSCP_pTemplate $tpl)
+function generatePage(TemplateEngine $tpl)
 {
-    if (iMSCP_Registry::isRegistered('error_on_updt')) {
-        $values = new iMSCP_Config_Handler(
-            iMSCP_Registry::get('error_on_updt')
-        );
+    if (Registry::isRegistered('error_on_updt')) {
+        $values = new ArrayConfig(Registry::get('error_on_updt'));
         $services = array_keys($values->toArray());
     } else {
-        $values = iMSCP_Registry::get('dbConfig');
+        $values = Registry::get('dbConfig');
         $services = array_filter(
             array_keys($values->toArray()),
             function ($name) {
@@ -301,10 +306,8 @@ function generatePage(iMSCP_pTemplate $tpl)
             }
         );
 
-        if (iMSCP_Registry::isRegistered('error_on_add')) {
-            $errorOnAdd = new iMSCP_Config_Handler(
-                iMSCP_Registry::get('error_on_add')
-            );
+        if (Registry::isRegistered('error_on_add')) {
+            $errorOnAdd = new ArrayConfig(Registry::get('error_on_add'));
         }
     }
 
@@ -338,11 +341,11 @@ function generatePage(iMSCP_pTemplate $tpl)
 
     $tpl->assign(
         isset($errorOnAdd) ? [
-            'VAL_FOR_SRV_NEW' => $errorOnAdd['srv_new'],
+            'VAL_FOR_SRV_NEW'  => $errorOnAdd['srv_new'],
             'VAL_FOR_IP_NEW'   => $errorOnAdd['ip_new'],
             'VAL_FOR_PORT_NEW' => $errorOnAdd['port_new']
         ] : [
-            'VAL_FOR_SRV_NEW' => '',
+            'VAL_FOR_SRV_NEW'  => '',
             'VAL_FOR_IP_NEW'   => '',
             'VAL_FOR_PORT_NEW' => ''
         ]
@@ -350,17 +353,15 @@ function generatePage(iMSCP_pTemplate $tpl)
 
     $tpl->assign(
         'ERROR_FIELDS_IDS',
-        iMSCP_Registry::isRegistered('errorFieldsIds')
-            ? json_encode(iMSCP_Registry::get('errorFieldsIds')) : '[]'
+        Registry::isRegistered('errorFieldsIds')
+            ? json_encode(Registry::get('errorFieldsIds')) : '[]'
     );
 }
 
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptStart
-);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptStart);
 
 if (isset($_POST['uaction']) && $_POST['uaction'] != 'reset') {
     addOrUpdateServices((clean_input($_POST['uaction'])));
@@ -368,7 +369,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] != 'reset') {
     deleteService(clean_input($_GET['delete']));
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'        => 'shared/layouts/ui.tpl',
     'page'          => 'admin/settings_ports.tpl',
@@ -396,12 +397,11 @@ $tpl->assign([
     'VAL_FOR_SUBMIT_ON_RESET'  => tohtml(tr('Reset'), 'htmlAttr')
 ]);
 
-iMSCP_Events_Aggregator::getInstance()->registerListener(
-    iMSCP_Events::onGetJsTranslations,
-    function (iMSCP_Events_Event $e) {
-        $e->getParam('translations')->core['dataTable']
-            = getDataTablesPluginTranslations(false);
-    }
+EventAggregator::getInstance()->registerListener(
+    Events::onGetJsTranslations, function (EventDescription $e) {
+    $e->getParam('translations')->core['dataTable']
+        = getDataTablesPluginTranslations(false);
+}
 );
 
 generateNavigation($tpl);
@@ -409,8 +409,6 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]
-);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 unsetMessages();

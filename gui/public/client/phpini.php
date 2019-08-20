@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,15 +18,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Config\FileConfig;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\PhpEditor;
+use iMSCP\TemplateEngine;
 
 /**
  * Tells whether or not the status of the given domain
  *
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  * @param int $domainId Domain unique identifier
  * @param string $domainType Domain type (dmn|als|sub|subals)
  * @return bool TRUE if domain status is 'ok', FALSE otherwise
@@ -67,8 +74,6 @@ function isDomainStatusOk($domainId, $domainType)
  *
  * @param string $configLevel PHP configuration level
  * @return array
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception_Database
  */
 function getDomainData($configLevel)
 {
@@ -117,9 +122,6 @@ function getDomainData($configLevel)
  *
  * @param iMSCP_PHPini $phpini PHP editor instance
  * @param string $configLevel PHP configuration level
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  * @çeturn void
  */
 function updatePhpConfig($phpini, $configLevel)
@@ -215,17 +217,13 @@ function updatePhpConfig($phpini, $configLevel)
 /**
  * Generate page
  *
- * @param iMSCP_pTemplate $tpl Template engine
- * @param iMSCP_PHPini $phpini PHP editor instance
- * @param iMSCP_Config_Handler_File $config Configuration handler
+ * @param TemplateEngine $tpl Template engine
+ * @param PhpEditor $phpini PHP editor instance
+ * @param FileConfig $config Configuration handler
  * @param string $configLevel PHP configuration level
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
-function generatePage($tpl, $phpini, $config, $configLevel)
+function generatePage(TemplateEngine $tpl, PhpEditor $phpini, FileConfig $config, $configLevel)
 {
     if (isset($_GET['domain_id']) && isset($_GET['domain_type'])) {
         $dmnId = intval($_GET['domain_id']);
@@ -352,17 +350,13 @@ function generatePage($tpl, $phpini, $config, $configLevel)
     ]);
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require_once 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 customerHasFeature('php_editor') or showBadRequestErrorPage();
 
-$phpini = iMSCP_PHPini::getInstance();
+$phpini = PhpEditor::getInstance();
 $phpini->loadResellerPermissions($_SESSION['user_created_by']); // Load reseller PHP permissions
 $phpini->loadClientPermissions($_SESSION['user_id']); // Load client PHP permissions
 
@@ -375,7 +369,7 @@ if (!empty($_POST)) {
     updatePhpConfig($phpini, $configLevel);
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'                  => 'shared/layouts/ui.tpl',
     'page'                    => 'client/phpini.tpl',
@@ -404,7 +398,7 @@ generatePage($tpl, $phpini, $config, $configLevel);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

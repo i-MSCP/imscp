@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2019 by i-MSCP Team
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,18 +20,22 @@
 
 /**
  * @noinspection
- * PhpUnhandledExceptionInspection
  * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
  * PhpIncludeInspection
  */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\TemplateEngine;
 
 /**
  * Generate List of Domains assigned to IPs
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @return void
  */
-function listIPDomains($tpl)
+function listIPDomains(TemplateEngine $tpl)
 {
     $stmt = execute_query('SELECT ip_id, ip_number FROM server_ips');
 
@@ -87,15 +91,15 @@ function listIPDomains($tpl)
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptStart
+EventAggregator::getInstance()->dispatch(
+    Events::onAdminScriptStart
 );
 
 if (!systemHasCustomers()) {
     showBadRequestErrorPage();
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'admin/ip_usage.tpl',
@@ -118,8 +122,8 @@ listIPDomains($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]
+EventAggregator::getInstance()->dispatch(
+    Events::onAdminScriptEnd, ['templateEngine' => $tpl]
 );
 $tpl->prnt();
 

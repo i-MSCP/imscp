@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,13 +18,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_pTemplate as TemplateEngine;
-
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\TemplateEngine;
 
 /**
  * Checks the given mail account
@@ -36,8 +39,6 @@ use iMSCP_pTemplate as TemplateEngine;
  *
  * @param int $mailAccountId Mail account unique identifier
  * @return bool TRUE if all conditions are meet, FALSE otherwise
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception_Database
  */
 function checkMailAccount($mailAccountId)
 {
@@ -61,9 +62,6 @@ function checkMailAccount($mailAccountId)
  * @param int $mailAccountId Mail account id
  * @param string $autoresponderMessage Auto-responder message
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function updateAutoresponderMessage($mailAccountId, $autoresponderMessage)
 {
@@ -91,8 +89,6 @@ function updateAutoresponderMessage($mailAccountId, $autoresponderMessage)
  * @param TemplateEngine $tpl Template engine instance
  * @param int $mailAccountId Mail account id
  * @return void
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generatePage($tpl, $mailAccountId)
 {
@@ -101,14 +97,10 @@ function generatePage($tpl, $mailAccountId)
     $tpl->assign('AUTORESPONDER_MESSAGE', tohtml($row['mail_auto_respond_text']));
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require_once 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 
 if (!customerHasFeature('mail')
     || !isset($_REQUEST['id'])
@@ -142,7 +134,7 @@ if (!isset($_POST['id'])) {
     generatePageMessage($tpl);
 
     $tpl->parse('LAYOUT_CONTENT', 'page');
-    EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+    EventAggregator::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
     $tpl->prnt();
 
     unsetMessages();

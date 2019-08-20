@@ -18,28 +18,33 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
+use iMSCP\Update\VersionUpdate;
 
 /**
  * Generate page
  *
- * @param  iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
-function admin_generatePage($tpl)
+function admin_generatePage(TemplateEngine $tpl)
 {
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
 
     if (!isset($cfg['CHECK_FOR_UPDATES']) || !$cfg['CHECK_FOR_UPDATES']) {
         set_page_message(tr('i-MSCP version update checking is disabled'), 'static_warning');
     } else {
-        /** @var iMSCP_Update_Version $updateVersion */
-        $updateVersion = iMSCP_Update_Version::getInstance();
+        $updateVersion = VersionUpdate::getInstance();
 
         if ($updateVersion->isAvailableUpdate()) {
             if (($updateInfo = $updateVersion->getUpdateInfo())) {
@@ -74,19 +79,15 @@ function admin_generatePage($tpl)
     $tpl->assign('UPDATE_INFO', '');
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptStart);
 
-stripos(iMSCP_Registry::get('config')['Version'], 'git') === false
-    && iMSCP_Registry::get('config')['CHECK_FOR_UPDATES'] or showBadRequestErrorPage();
+stripos(Registry::get('config')['Version'], 'git') === false
+&& Registry::get('config')['CHECK_FOR_UPDATES'] or showBadRequestErrorPage();
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic(
     [
         'layout'       => 'shared/layouts/ui.tpl',
@@ -102,7 +103,7 @@ admin_generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,17 +18,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
+ */
+
+use iMSCP\Database\DatabaseException;
+use iMSCP\Database\DatabaseMySQL;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+
 require_once 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 
 if (!customerHasFeature('protected_areas') || !isset($_GET['uname'])) {
     showBadRequestErrorPage();
 }
 
 try {
-    iMSCP_Database::getInstance()->beginTransaction();
+    DatabaseMySQL::getInstance()->beginTransaction();
 
     $htuserId = intval($_GET['uname']);
     $domainId = get_user_domain_id($_SESSION['user_id']);
@@ -86,12 +98,12 @@ try {
         'todelete', $htuserId, $domainId
     ]);
 
-    iMSCP_Database::getInstance()->commit();
+    DatabaseMySQL::getInstance()->commit();
 
     set_page_message(tr('User scheduled for deletion.'), 'success');
     send_request();
     write_log(sprintf('%s deletes user ID (protected areas): %s', $_SESSION['user_logged'], $htuserName), E_USER_NOTICE);
-} catch (iMSCP_Exception_Database $e) {
+} catch (DatabaseException $e) {
     iMSCP_Database::getInstance()->rollBack();
     set_page_message(tr('An unexpected error occurred. Please contact your reseller.'), 'error');
     write_log(sprintf('Could not delete htaccess user: %s', $e->getMessage()));

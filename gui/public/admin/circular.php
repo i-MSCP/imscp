@@ -18,9 +18,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 /**
  * Send email
@@ -31,10 +39,6 @@
  * @param string $body Body
  * @param array $rcptToData Recipient data
  * @return bool TRUE on success, FALSE on failure
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function admin_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToData)
 {
@@ -70,10 +74,6 @@ function admin_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToData
  * @param string $subject Subject
  * @param string $body Body
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function admin_sendToAdministrators($senderName, $senderEmail, $subject, $body)
 {
@@ -103,10 +103,6 @@ function admin_sendToAdministrators($senderName, $senderEmail, $subject, $body)
  * @param string $subject Subject
  * @param string $body Body
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function admin_sendToResellers($senderName, $senderEmail, $subject, $body)
 {
@@ -135,10 +131,6 @@ function admin_sendToResellers($senderName, $senderEmail, $subject, $body)
  * @param string $subject Subject
  * @param string $body Body
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function admin_sendToCustomers($senderName, $senderEmail, $subject, $body)
 {
@@ -167,7 +159,6 @@ function admin_sendToCustomers($senderName, $senderEmail, $subject, $body)
  * @param string $subject Subject
  * @param string $body Body
  * @return bool TRUE if circular is valid, FALSE otherwise
- * @throws Zend_Exception
  */
 function admin_isValidCircular($senderName, $senderEmail, $subject, $body)
 {
@@ -202,10 +193,6 @@ function admin_isValidCircular($senderName, $senderEmail, $subject, $body)
  * Send circular
  *
  * @return bool TRUE on success, FALSE otherwise
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function admin_sendCircular()
 {
@@ -228,7 +215,7 @@ function admin_sendCircular()
         return false;
     }
 
-    $responses = iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeSendCircular, [
+    $responses = EventAggregator::getInstance()->dispatch(Events::onBeforeSendCircular, [
         'sender_name'  => $senderName,
         'sender_email' => $senderEmail,
         'rcpt_to'      => $rcptTo,
@@ -267,7 +254,7 @@ function admin_sendCircular()
         admin_sendToCustomers($senderName, $senderEmail, $subject, $body);
     }
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterSendCircular, [
+    EventAggregator::getInstance()->dispatch(Events::onAfterSendCircular, [
         'sender_name'  => $senderName,
         'sender_email' => $senderEmail,
         'rcpt_to'      => $rcptTo,
@@ -282,12 +269,8 @@ function admin_sendCircular()
 /**
  * Generate page
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generatePage($tpl)
 {
@@ -316,7 +299,7 @@ function generatePage($tpl)
         if ($row['email'] != '') {
             $senderEmail = $row['email'];
         } else {
-            $config = iMSCP_Registry::get('config');
+            $config = Registry::get('config');
             if (isset($config['DEFAULT_ADMIN_ADDRESS']) && $config['DEFAULT_ADMIN_ADDRESS'] != '') {
                 $senderEmail = $config['DEFAULT_ADMIN_ADDRESS'];
             } else {
@@ -370,14 +353,10 @@ function generatePage($tpl)
     }
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptStart);
 
 if (!systemHasAdminsOrResellersOrCustomers()) {
     showBadRequestErrorPage();
@@ -387,7 +366,7 @@ if (!empty($_POST) && admin_sendCircular()) {
     redirectTo('users.php');
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'         => 'shared/layouts/ui.tpl',
     'page'           => 'admin/circular.tpl',
@@ -411,7 +390,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

@@ -20,21 +20,30 @@
 
 /**
  * @noinspection
- * PhpUnhandledExceptionInspection
  * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
  * PhpIncludeInspection
  */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\EventDescription;
+use iMSCP\Event\Events;
+use iMSCP\Plugin\PluginActionStoppedException;
+use iMSCP\Plugin\PluginException;
+use iMSCP\Plugin\PluginManager;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 /**
  * Execute the given action on the given plugin
  *
- * @param iMSCP_Plugin_Manager $pm
+ * @param PluginManager $pm
  * @param string $action Action (install|uninstall|update|change|enable|disable|
  *                       delete|protect)
  * @param string $plugin Plugin name
  * @return void
  */
-function execPluginAction(iMSCP_Plugin_Manager $pm, $action, $plugin)
+function execPluginAction(PluginManager $pm, $action, $plugin)
 {
     call_user_func([$pm, 'plugin' . ucfirst($action)], $plugin);
 
@@ -71,11 +80,11 @@ function execPluginAction(iMSCP_Plugin_Manager $pm, $action, $plugin)
 /**
  * Generates page
  *
- * @param iMSCP_pTemplate $tpl
- * @param iMSCP_Plugin_Manager $pm
+ * @param TemplateEngine $tpl
+ * @param PluginManager $pm
  * @return void
  */
-function generatePage(iMSCP_pTemplate $tpl, iMSCP_Plugin_Manager $pm)
+function generatePage(TemplateEngine $tpl, PluginManager $pm)
 {
     $plugins = $pm->pluginGetList(false);
 
@@ -89,7 +98,7 @@ function generatePage(iMSCP_pTemplate $tpl, iMSCP_Plugin_Manager $pm)
     foreach ($plugins as $plugin) {
         try {
             $pluginInstance = $pm->pluginGet($plugin);
-        } catch (iMSCP_Plugin_Exception $e) {
+        } catch (PluginException $e) {
             set_page_message($e->getMessage(), 'static_error');
             continue;
         }
@@ -211,12 +220,10 @@ function generatePage(iMSCP_pTemplate $tpl, iMSCP_Plugin_Manager $pm)
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptStart
-);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptStart);
 
-/** @var iMSCP_Plugin_Manager $pm */
-$pm = iMSCP_Registry::get('pluginManager');
+/** @var PluginManager $pm */
+$pm = Registry::get('pluginManager');
 
 if (!empty($_POST) || !empty($_FILES['plugin_archive']) || !empty($_GET)) {
     try {
@@ -245,10 +252,10 @@ if (!empty($_POST) || !empty($_FILES['plugin_archive']) || !empty($_GET)) {
         } else {
             showBadRequestErrorPage();
         }
-    } catch (iMSCP_Plugin_Exception $e) {
+    } catch (PluginException $e) {
         set_page_message(
             $e->getMessage(),
-            $e instanceof iMSCP_Plugin_Exception_ActionStopped
+            $e instanceof PluginActionStoppedException
                 ? 'static_warning' : 'error'
         );
     }
@@ -256,7 +263,7 @@ if (!empty($_POST) || !empty($_FILES['plugin_archive']) || !empty($_GET)) {
     redirectTo('settings_plugins.php');
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'                      => 'shared/layouts/ui.tpl',
     'page'                        => 'admin/settings_plugins.phtml',
@@ -270,27 +277,24 @@ $tpl->define_dynamic([
     'plugin_protected_link'       => 'plugin_block'
 ]);
 $tpl->assign([
-    'TR_PAGE_TITLE'             => tohtml(
+    'TR_PAGE_TITLE'         => tohtml(
         tr('Admin / Settings / Plugin Management')
     ),
-    'TR_DEACTIVATE_TOOLTIP'     => tohtml(tr('Deactivate this plugin'), 'htmlAttr'),
+    'TR_DEACTIVATE_TOOLTIP' => tohtml(tr('Deactivate this plugin'), 'htmlAttr'),
 ]);
-iMSCP_Events_Aggregator::getInstance()->registerListener(
-    iMSCP_Events::onGetJsTranslations,
-    function (iMSCP_Events_Event $event) {
-        $tr = $event->getParam('translations');
-        $tr['core']['dataTable'] = getDataTablesPluginTranslations(false);
-        $tr['core']['retry'] = tohtml(tr('Retry'));
-        $tr['core']['close'] = tohtml(tr('Close'));
-        $tr['core']['error_details'] = tohtml(tr('Error details'));
-    }
+EventAggregator::getInstance()->registerListener(
+    Events::onGetJsTranslations, function (EventDescription $e) {
+    $tr = $e->getParam('translations');
+    $tr['core']['dataTable'] = getDataTablesPluginTranslations(false);
+    $tr['core']['retry'] = tohtml(tr('Retry'));
+    $tr['core']['close'] = tohtml(tr('Close'));
+    $tr['core']['error_details'] = tohtml(tr('Error details'));
+}
 );
 generateNavigation($tpl);
 generatePage($tpl, $pm);
 generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]
-);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 unsetMessages();

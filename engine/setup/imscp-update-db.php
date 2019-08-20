@@ -18,30 +18,51 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+/** @noinspection PhpIncludeInspection */
+
 define('IMSCP_SETUP', true);
+
+use iMSCP\Registry;
+use iMSCP\Update\DatabaseUpdate;
+use iMSCP\Update\UpdateException;
 
 try {
     chdir(dirname(__FILE__));
-    require_once '../../gui/library/imscp-lib.php';
+    require_once '../../gui/include/imscp-lib.php';
 
-    $dbUpdater = iMSCP_Update_Database::getInstance();
+    // Update database schema
+
+    $dbUpdater = DatabaseUpdate::getInstance();
 
     if ($dbUpdater->getLastAppliedUpdate() > $dbUpdater->getLastUpdate()) {
-        throw new iMSCP_Exception('An i-MSCP downgrade attempt has been detected. Downgrade not supported.');
+        throw new UpdateException("i-MSCP downgrade isn't supported.");
     }
 
     if (!$dbUpdater->applyUpdates()) {
-        throw new \RuntimeException($dbUpdater->getError());
+        throw new UpdateException($dbUpdater->getError());
     }
 
     // Optimize the database unless last optimization date is less than 24 hours
-    $lastOptimization = intval(iMSCP_Registry::get('config')['DATABASE_LAST_OPTIMIZATION']);
+
+    $lastOptimization = intval(
+        Registry::get('config')['DATABASE_LAST_OPTIMIZATION']
+    );
+
     if (time() > $lastOptimization + 604800) {
         $dbUpdater->optimizeTables();
     }
 
+    // Update language index in database
+
     i18n_buildLanguageIndex();
-} catch (\Throwable $e) {
-    fwrite(STDERR, sprintf("[ERROR] %s \n\nStack trace:\n\n%s\n", $e->getMessage(), $e->getTraceAsString()));
+} catch (Throwable $e) {
+    fwrite(
+        STDERR,
+        sprintf(
+            "[ERROR] %s \n\nStack trace:\n\n%s\n",
+            $e->getMessage(),
+            $e->getTraceAsString()
+        )
+    );
     exit(1);
 }

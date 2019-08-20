@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,17 +18,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
+use iMSCP\Update\VersionUpdate;
 
 /**
  * Generates support questions notice for administrator
  *
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception_Database
  */
 function admin_generateSupportQuestionsMessage()
 {
@@ -51,17 +57,16 @@ function admin_generateSupportQuestionsMessage()
  * Generates update messages for both database updates and i-MSCP updates.
  *
  * @return void
- * @throws Zend_Exception
  */
 function admin_generateUpdateMessages()
 {
-    if (!iMSCP_Registry::get('config')['CHECK_FOR_UPDATES']
-        || stripos(iMSCP_Registry::get('config')['Version'], 'git') !== false
+    if (!Registry::get('config')['CHECK_FOR_UPDATES']
+        || stripos(Registry::get('config')['Version'], 'git') !== false
     ) {
         return;
     }
 
-    $updateVersion = iMSCP_Update_Version::getInstance();
+    $updateVersion = VersionUpdate::getInstance();
 
     if ($updateVersion->isAvailableUpdate()) {
         set_page_message('<a href="imscp_updates.php" class="link">' . tr('A new i-MSCP version is available') . '</a>', 'static_info');
@@ -71,15 +76,12 @@ function admin_generateUpdateMessages()
 }
 
 /**
- * Generates admin general informations
+ * Generates admin general information
  *
- * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
+ * @param TemplateEngine $tpl
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
-function admin_getAdminGeneralInfo($tpl)
+function admin_getAdminGeneralInfo(TemplateEngine $tpl)
 {
     $tpl->assign([
         'ADMIN_USERS'     => tohtml(get_administrators_count()),
@@ -89,7 +91,7 @@ function admin_getAdminGeneralInfo($tpl)
         'SUBDOMAINS'      => tohtml(get_subdomains_count()),
         'DOMAINS_ALIASES' => tohtml(get_domain_aliases_count()),
         'MAIL_ACCOUNTS'   => tohtml(get_mail_accounts_count())
-            . (!iMSCP_Registry::get('config')['COUNT_DEFAULT_EMAIL_ADDRESSES']
+            . (!Registry::get('config')['COUNT_DEFAULT_EMAIL_ADDRESSES']
                 ? ' (' . tohtml('Excl. default mail accounts') . ')' : ''
             ),
         'FTP_ACCOUNTS'    => tohtml(get_ftp_users_count()),
@@ -101,16 +103,12 @@ function admin_getAdminGeneralInfo($tpl)
 /**
  * Generates server traffic bar
  *
- * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
+ * @param TemplateEngine $tpl
  * @return void
- * @throws Zend_Date_Exception
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
-function admin_generateServerTrafficInfo($tpl)
+function admin_generateServerTrafficInfo(TemplateEngine $tpl)
 {
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
     $trafficLimitBytes = filter_digits($cfg['SERVER_TRAFFIC_LIMIT']) * 1048576;
     $trafficWarningBytes = filter_digits($cfg['SERVER_TRAFFIC_WARN']) * 1048576;
 
@@ -158,16 +156,12 @@ function admin_generateServerTrafficInfo($tpl)
     ]);
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require 'imscp-lib.php';
 
-check_login('admin', iMSCP_Registry::get('config')['PREVENT_EXTERNAL_LOGIN_ADMIN']);
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+check_login('admin', Registry::get('config')['PREVENT_EXTERNAL_LOGIN_ADMIN']);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptStart);
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'                  => 'shared/layouts/ui.tpl',
     'page'                    => 'admin/index.tpl',
@@ -199,7 +193,7 @@ admin_generateServerTrafficInfo($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

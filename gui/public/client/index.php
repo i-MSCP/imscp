@@ -1,33 +1,34 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2017 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 /**
  * Generates limit
@@ -35,7 +36,6 @@
  * @param $num
  * @param $limit
  * @return string
- * @throws Zend_Exception
  */
 function gen_num_limit_msg($num, $limit)
 {
@@ -54,9 +54,6 @@ function gen_num_limit_msg($num, $limit)
  * Generate mail quota limit msg
  *
  * @return string
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function gen_mail_quota_limit_mgs()
 {
@@ -76,9 +73,6 @@ function gen_mail_quota_limit_mgs()
  * Generates notice for support system
  *
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception_Database
  */
 function client_generateSupportSystemNotices()
 {
@@ -101,14 +95,12 @@ function client_generateSupportSystemNotices()
 /**
  * Generates traffic usage bar
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @param int $usage Usage in bytes
  * @param int $maxUsage Max usage in bytes
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Exception
  */
-function client_generateTrafficUsageBar($tpl, $usage, $maxUsage)
+function client_generateTrafficUsageBar(TemplateEngine $tpl, $usage, $maxUsage)
 {
 
     $trafficUsagePercent = getPercentUsage($usage, $maxUsage);
@@ -135,8 +127,6 @@ function client_generateTrafficUsageBar($tpl, $usage, $maxUsage)
  * @param int $usage Usage in bytes
  * @param int $maxUsage Max usage in bytes
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Exception
  */
 function client_generateDiskUsageBar($tpl, $usage, $maxUsage)
 {
@@ -163,9 +153,6 @@ function client_generateDiskUsageBar($tpl, $usage, $maxUsage)
  *
  * @param iMSCP_pTemplate $tpl Template engine
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  * @todo hide features that are not available for reseller
  */
 function client_generateFeatureStatus($tpl)
@@ -225,11 +212,6 @@ function client_generateFeatureStatus($tpl)
  *
  * @param int $domainId Domain unique identifier
  * @return array An array that contain traffic information
- * @throws Zend_Date_Exception
- * @throws Zend_Exception
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function client_makeTrafficUsage($domainId)
 {
@@ -288,10 +270,6 @@ function _client_getDomainRemainingTime($domainExpireDate)
  *
  * @param iMSCP_pTemplate $tpl Template engine
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function client_generateDomainExpiresInformation($tpl)
 {
@@ -329,17 +307,13 @@ function client_generateDomainExpiresInformation($tpl)
     }
 }
 
-/***********************************************************************************************************************
- * Main script
- */
-
 require_once 'imscp-lib.php';
 
-$cfg = iMSCP_Registry::get('config');
+$cfg = Registry::get('config');
 check_login('user', $cfg['PREVENT_EXTERNAL_LOGIN_CLIENT']);
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'                 => 'shared/layouts/ui.tpl',
     'page'                   => 'client/index.tpl',
@@ -416,7 +390,7 @@ $tpl->assign([
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

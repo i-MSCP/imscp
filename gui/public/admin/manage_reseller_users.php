@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,17 +18,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Database as Database;
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_PHPini as PhpEditor;
-use iMSCP_pTemplate as TemplateEngine;
-use iMSCP_Registry as Registry;
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
+ */
+
+use iMSCP\Database\DatabaseMySQL;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\PhpEditor;
+use iMSCP\PhpEditor as PhpEditorAlias;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 /**
  * Move the given customer from the given reseller to the given reseller
  *
- * @throws Exception
  * @param int $customerId Customer unique identifier
  * @param int $fromResellerId Reseller unique identifier
  * @param int $toResellerId Reseller unique identifier
@@ -36,7 +43,7 @@ use iMSCP_Registry as Registry;
  */
 function moveCustomer($customerId, $fromResellerId, $toResellerId)
 {
-    $db = Database::getInstance();
+    $db = DatabaseMySQL::getInstance();
 
     try {
         $toResellerProps = imscp_getResellerProperties($toResellerId);
@@ -132,7 +139,7 @@ function moveCustomer($customerId, $fromResellerId, $toResellerId)
         exec_query('UPDATE domain SET domain_software_allowed = ? WHERE domain_admin_id = ?', [
             $customerProps['domain_software_allowed'], $customerId
         ]);
-        PhpEditor::getInstance()->syncClientPermissionsWithResellerPermissions($toResellerId, $customerId);
+        PhpEditorAlias::getInstance()->syncClientPermissionsWithResellerPermissions($toResellerId, $customerId);
 
         // Update the target reseller limits, permissions and IP addresses 
         exec_query(
@@ -173,8 +180,6 @@ function moveCustomer($customerId, $fromResellerId, $toResellerId)
  * Move selected customers
  *
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Exception
  */
 function moveCustomers()
 {
@@ -214,9 +219,6 @@ function moveCustomers()
  *
  * @param TemplateEngine $tpl
  * @return void
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generatePage(TemplateEngine $tpl)
 {
@@ -264,7 +266,7 @@ function generatePage(TemplateEngine $tpl)
 require 'imscp-lib.php';
 
 check_login('admin');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptStart);
 systemHasResellers(2) or showBadRequestErrorPage();
 
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'move_customers') {
@@ -288,7 +290,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

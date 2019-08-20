@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2018 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,15 +18,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Database as Database;
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_pTemplate as TemplateEngine;
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
+ */
+
+use iMSCP\Database\DatabaseMySQL;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\TemplateEngine;
 
 /**
  * Move the given reseller from the given administrator to the given administrator
  *
- * @throws Exception
  * @param int $resellerId Reseller unique identifier
  * @param int $fromAdministratorId Administrator unique identifier
  * @param int $toAdministratorId Administrator unique identifier
@@ -34,7 +40,7 @@ use iMSCP_pTemplate as TemplateEngine;
  */
 function moveReseller($resellerId, $fromAdministratorId, $toAdministratorId)
 {
-    $db = Database::getInstance();
+    $db = DatabaseMySQL::getInstance();
 
     try {
         $db->beginTransaction();
@@ -42,7 +48,7 @@ function moveReseller($resellerId, $fromAdministratorId, $toAdministratorId)
         // Move reseller to (TO) administrator
         exec_query('UPDATE admin SET created_by = ? WHERE admin_id = ?', [$toAdministratorId, $resellerId]);
 
-        EventsManager::getInstance()->dispatch(Events::onMoveReseller, [
+        EventAggregator::getInstance()->dispatch(Events::onMoveReseller, [
             'resellerId'          => $resellerId,
             'fromAdministratorId' => $fromAdministratorId,
             'toAdministratorId'   => $toAdministratorId
@@ -59,8 +65,6 @@ function moveReseller($resellerId, $fromAdministratorId, $toAdministratorId)
 /**
  * Move selected resellers
  *
- * @throws Zend_Exception
- * @throws iMSCP_Exception
  * @return void
  */
 function moveResellers()
@@ -100,9 +104,6 @@ function moveResellers()
  *
  * @param TemplateEngine $tpl
  * @return void
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generatePage(TemplateEngine $tpl)
 {
@@ -148,7 +149,7 @@ function generatePage(TemplateEngine $tpl)
 require 'imscp-lib.php';
 
 check_login('admin');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptStart);
 systemHasManyAdmins() or showBadRequestErrorPage();
 
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'move_resellers') {
@@ -172,7 +173,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,13 +18,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_pTemplate as TemplateEngine;
-
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\EventDescription;
+use iMSCP\Event\Events;
+use iMSCP\TemplateEngine;
 
 /**
  * Genrate statistics entry for the given user
@@ -32,10 +36,6 @@ use iMSCP_pTemplate as TemplateEngine;
  * @param TemplateEngine $tpl Template engine instance
  * @param int $adminId User unique identifier
  * @return void
- * @throws Zend_Date_Exception
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function _generateUserStatistics(TemplateEngine $tpl, $adminId)
 {
@@ -78,9 +78,6 @@ function _generateUserStatistics(TemplateEngine $tpl, $adminId)
  * @param TemplateEngine $tpl Template engine instance
  * @param int $resellerId Reseller unique identifier
  * @return void
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generatePage(TemplateEngine $tpl, $resellerId)
 {
@@ -97,14 +94,10 @@ function generatePage(TemplateEngine $tpl, $resellerId)
     }
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require 'imscp-lib.php';
 
 check_login('admin');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptStart);
 
 if (isset($_GET['reseller_id'])) {
     $resellerId = intval($_GET['reseller_id']);
@@ -142,8 +135,7 @@ $tpl->assign([
     'TR_DETAILED_STATS_TOOLTIP' => tohtml(tr('Show detailed statistics for this user'), 'htmlAttr')
 ]);
 
-EventsManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
-    /** @var $e \iMSCP_Events_Event */
+EventAggregator::getInstance()->registerListener(Events::onGetJsTranslations, function (EventDescription $e) {
     $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
 });
 
@@ -152,7 +144,7 @@ generatePage($tpl, $resellerId);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

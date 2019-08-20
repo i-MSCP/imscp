@@ -18,19 +18,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_Exception as iMSCPException;
-use iMSCP_Registry as Registry;
-
-/***********************************************************************************************************************
- * Main
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Exception\Exception;
+use iMSCP\Registry;
 
 require_once 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 
 if (!customerHasFeature('ftp')
     || !isset($_GET['id'])
@@ -57,7 +60,7 @@ $db = iMSCP_Database::getInstance();
 try {
     $db->beginTransaction();
 
-    EventsManager::getInstance()->dispatch(Events::onBeforeDeleteFtp, ['ftpUserId' => $userid]);
+    EventAggregator::getInstance()->dispatch(Events::onBeforeDeleteFtp, ['ftpUserId' => $userid]);
 
     $stmt = exec_query('SELECT members FROM ftp_group WHERE groupname = ?', $groupname);
 
@@ -75,7 +78,7 @@ try {
                 exec_query('DELETE FROM quotatallies WHERE name = ?', $groupname);
             } else {
                 exec_query('UPDATE ftp_group SET members = ? WHERE groupname = ?', [
-                    implode(',', $members), $groupname]
+                        implode(',', $members), $groupname]
                 );
             }
         }
@@ -85,13 +88,13 @@ try {
 
     $cfg = Registry::get('config');
 
-    EventsManager::getInstance()->dispatch(Events::onAfterDeleteFtp, ['ftpUserId' => $userid]);
+    EventAggregator::getInstance()->dispatch(Events::onAfterDeleteFtp, ['ftpUserId' => $userid]);
 
     $db->commit();
     send_request();
     write_log(sprintf('An FTP account has been deleted by %s', $_SESSION['user_logged']), E_USER_NOTICE);
     set_page_message(tr('FTP account successfully deleted.'), 'success');
-} catch (iMSCPException $e) {
+} catch (Exception $e) {
     $db->rollBack();
     throw $e;
 }

@@ -18,7 +18,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/** @noinspection PhpUnhandledExceptionInspection PhpDocMissingThrowsInspection */
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
+ */
+
+use iMSCP\Authentication\AuthService;
+use iMSCP\Database\DatabaseMySQL;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Exception\Exception;
+use iMSCP\PhpEditor;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
+use iMSCP\Uri\UriException;
+use iMSCP\Uri\UriRedirect;
 
 /**
  * Send alias order email
@@ -132,10 +148,10 @@ function getDomainsList()
 /**
  * Generate page
  *
- * @param $tpl iMSCP_pTemplate
+ * @param $tpl TemplateEngine
  * @return void
  */
-function generatePage(iMSCP_pTemplate $tpl)
+function generatePage(TemplateEngine $tpl)
 {
     $forwardType = (
         isset($_POST['forward_type'])
@@ -149,24 +165,24 @@ function generatePage(iMSCP_pTemplate $tpl)
         ? 'On' : 'Off';
 
     $wildcardAlias = isset($_POST['wildcard_alias'])
-        && in_array($_POST['wildcard_alias'], ['yes', 'no'], true)
-            ? $_POST['wildcard_alias'] : 'no';
+    && in_array($_POST['wildcard_alias'], ['yes', 'no'], true)
+        ? $_POST['wildcard_alias'] : 'no';
 
     $tpl->assign([
         'DOMAIN_ALIAS_NAME'  => isset($_POST['domain_alias_name'])
             ? tohtml($_POST['domain_alias_name']) : '',
         'FORWARD_URL_YES'    => isset($_POST['url_forwarding'])
-            && $_POST['url_forwarding'] == 'yes'
-                ? ' checked' : '',
+        && $_POST['url_forwarding'] == 'yes'
+            ? ' checked' : '',
         'FORWARD_URL_NO'     => isset($_POST['url_forwarding'])
-            && $_POST['url_forwarding'] == 'yes'
-                ? '' : ' checked',
+        && $_POST['url_forwarding'] == 'yes'
+            ? '' : ' checked',
         'HTTP_YES'           => isset($_POST['forward_url_scheme'])
-            && $_POST['forward_url_scheme'] == 'http://'
-                ? ' selected' : '',
+        && $_POST['forward_url_scheme'] == 'http://'
+            ? ' selected' : '',
         'HTTPS_YES'          => isset($_POST['forward_url_scheme'])
-            && $_POST['forward_url_scheme'] == 'https://'
-                ? ' selected' : '',
+        && $_POST['forward_url_scheme'] == 'https://'
+            ? ' selected' : '',
         'FORWARD_URL'        => isset($_POST['forward_url'])
             ? tohtml($_POST['forward_url']) : '',
         'FORWARD_TYPE_301'   => $forwardType == '301' ? ' checked' : '',
@@ -184,11 +200,11 @@ function generatePage(iMSCP_pTemplate $tpl)
     if (!empty($domainList)) {
         $tpl->assign([
             'SHARED_MOUNT_POINT_YES' => isset($_POST['shared_mount_point'])
-                && $_POST['shared_mount_point'] == 'yes'
-                    ? ' checked' : '',
+            && $_POST['shared_mount_point'] == 'yes'
+                ? ' checked' : '',
             'SHARED_MOUNT_POINT_NO'  => isset($_POST['shared_mount_point'])
-                && $_POST['shared_mount_point'] == 'yes'
-                    ? '' : ' checked',
+            && $_POST['shared_mount_point'] == 'yes'
+                ? '' : ' checked',
         ]);
 
         foreach ($domainList as $domain) {
@@ -196,8 +212,8 @@ function generatePage(iMSCP_pTemplate $tpl)
                 'DOMAIN_NAME'                        => tohtml($domain['name'], 'htmlAttr'),
                 'DOMAIN_NAME_UNICODE'                => tohtml(decode_idna($domain['name'])),
                 'SHARED_MOUNT_POINT_DOMAIN_SELECTED' => isset($_POST['shared_mount_point_domain'])
-                    && $_POST['shared_mount_point_domain'] == $domain['name']
-                        ? ' selected' : ''
+                && $_POST['shared_mount_point_domain'] == $domain['name']
+                    ? ' selected' : ''
             ]);
             $tpl->parse('SHARED_MOUNT_POINT_DOMAIN', '.shared_mount_point_domain');
         }
@@ -306,9 +322,9 @@ function addDomainAlias()
 
         try {
             try {
-                $uri = iMSCP_Uri_Redirect::fromString($forwardUrl);
-            } catch (Zend_Uri_Exception $e) {
-                throw new iMSCP_Exception(tr('Forward URL %s is not valid.', $forwardUrl));
+                $uri = UriRedirect::fromString($forwardUrl);
+            } catch (UriException $e) {
+                throw new Exception(tr('Forward URL %s is not valid.', $forwardUrl));
             }
 
             // Normalize URI host
@@ -321,7 +337,7 @@ function addDomainAlias()
                     && in_array($uri->getPort(), ['', 80, 443])
                 )
             ) {
-                throw new iMSCP_Exception(
+                throw new Exception(
                     tr('Forward URL %s is not valid.', $forwardUrl) . ' ' .
                     tr(
                         'Domain alias %s cannot be forwarded on itself.',
@@ -333,7 +349,7 @@ function addDomainAlias()
             if ($forwardType == 'proxy') {
                 $port = $uri->getPort();
                 if ($port && $port < 1025) {
-                    throw new iMSCP_Exception(tohtml(
+                    throw new Exception(tohtml(
                         tr('Unallowed port in forward URL. Only ports above 1024 are allowed.')
                     ));
                 }
@@ -347,18 +363,18 @@ function addDomainAlias()
     }
 
     $wildcardAlias = isset($_POST['wildcard_alias'])
-        && in_array($_POST['wildcard_alias'], ['yes', 'no'], true)
-            ? $_POST['wildcard_alias'] : 'no';
+    && in_array($_POST['wildcard_alias'], ['yes', 'no'], true)
+        ? $_POST['wildcard_alias'] : 'no';
 
     # See http://youtrack.i-mscp.net/issue/IP-1486
     $isSuUser = isset($_SESSION['logged_from_type']);
-    $db = iMSCP_Database::getInstance();
+    $db = DatabaseMySQL::getInstance();
 
     try {
         $db->beginTransaction();
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(
-            iMSCP_Events::onBeforeAddDomainAlias,
+        EventAggregator::getInstance()->dispatch(
+            Events::onBeforeAddDomainAlias,
             [
                 'domainId'        => $mainDmnProps['domain_id'],
                 'domainAliasName' => $domainAliasNameAscii,
@@ -392,7 +408,7 @@ function addDomainAlias()
         $id = $db->insertId();
 
         // Create the phpini entry for that domain alias
-        $phpini = iMSCP_PHPini::getInstance();
+        $phpini = PhpEditor::getInstance();
         // Load reseller PHP permissions
         $phpini->loadResellerPermissions($_SESSION['user_created_by']);
         // Load client PHP permissions
@@ -402,12 +418,12 @@ function addDomainAlias()
         $phpini->saveDomainIni($_SESSION['user_id'], $id, 'als');
 
         if ($isSuUser) {
-            $cfg = iMSCP_Registry::get('config');
+            $cfg = Registry::get('config');
 
             if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
                 createDefaultMailAccounts(
                     $mainDmnProps['domain_id'],
-                    iMSCP_Authentication::getInstance()->getIdentity()->email,
+                    AuthService::getInstance()->getIdentity()->email,
                     $domainAliasNameAscii,
                     MT_ALIAS_FORWARD,
                     $id
@@ -415,8 +431,8 @@ function addDomainAlias()
             }
         }
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(
-            iMSCP_Events::onAfterAddDomainAlias,
+        EventAggregator::getInstance()->dispatch(
+            Events::onAfterAddDomainAlias,
             [
                 'domainId'        => $mainDmnProps['domain_id'],
                 'domainAliasName' => $domainAliasNameAscii,
@@ -461,7 +477,7 @@ function addDomainAlias()
                 'success'
             );
         }
-    } catch (iMSCP_Exception $e) {
+    } catch (Exception $e) {
         $db->rollBack();
         write_log(
             sprintf(
@@ -484,9 +500,7 @@ function addDomainAlias()
 require_once 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptStart
-);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 customerHasFeature('domain_aliases') or showBadRequestErrorPage();
 
 $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
@@ -508,7 +522,7 @@ if (!empty($_POST) && addDomainAlias()) {
     redirectTo('domains_manage.php');
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'                       => 'shared/layouts/ui.tpl',
     'page'                         => 'client/alias_add.tpl',
@@ -548,9 +562,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]
-);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

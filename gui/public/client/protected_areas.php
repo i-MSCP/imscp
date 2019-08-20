@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,14 +19,22 @@
  */
 
 /**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
+ */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\EventDescription;
+use iMSCP\Event\Events;
+use iMSCP\TemplateEngine;
+
+/**
  * Generate page
  *
  * @param iMSCP_pTemplate $tpl
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generatePage($tpl)
 {
@@ -59,17 +67,13 @@ function generatePage($tpl)
     }
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require_once 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 customerHasFeature('protected_areas') or showBadRequestErrorPage();
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'          => 'shared/layouts/ui.tpl',
     'page'            => 'client/protected_areas.tpl',
@@ -90,19 +94,22 @@ $tpl->assign([
     'TR_MANAGE_USERS_AND_GROUPS' => tr('Manage users and groups')
 ]);
 
-iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
-    /* @var $e iMSCP_Events_Event */
-    $translations = $e->getParam('translations');
-    $translations['core']['dataTable'] = getDataTablesPluginTranslations();
-    $translations['core']['deletion_confirm_msg'] = tr('Are you sure you want to delete the `%%s` protected area?');
-});
+iMSCP_Events_Aggregator::getInstance()->registerListener(
+    Events::onGetJsTranslations,
+    function (EventDescription $e) {
+
+        $tr = $e->getParam('translations');
+        $tr['core']['dataTable'] = getDataTablesPluginTranslations();
+        $tr['core']['deletion_confirm_msg'] = tr('Are you sure you want to delete the `%%s` protected area?');
+    }
+);
 
 generateNavigation($tpl);
 generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

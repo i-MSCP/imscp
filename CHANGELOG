@@ -54,6 +54,7 @@ DISTRIBUTIONS
     Dropped: Support for Ubuntu Trusty Thar (14.04)
 
 FRONTEND
+    Added: Autoloader for aliasing the legacy i-MSCP classes/interface
     Added: ACL assertions for the navigation
     Added: Apache2 wildcard alias feature
     Added: Filter for plugin archives
@@ -65,6 +66,7 @@ FRONTEND
     Added: Validator for plugin archives
     Enhancement: Log the frontEnd errors into the ./gui/data/log/frontend_errors.log file and rotate it when its size is bigger than 10 MiB
     Enhancement: Make it possible to add wildcard DNS record (custom DNS interface)
+    Fixed: Couldn't unregister exception writers
     Fixed: Hide E_STRICT, E_NOTICE, E_WARNING and E_DEPRECATED even for addons
     Fixed: Invalid parameter number: number of bound variables does not match number of tokens (client/mail_catchall_add.php)
     Fixed: Output buffer must be erased when an exception is throw while template rendering
@@ -73,6 +75,8 @@ FRONTEND
     Review: Install dependencies through the PHP dependency manager (composer)
     Review: Load comments (PHP OPcache)
     Review: Save comments (PHP OPcache)
+    Review: Set locale from environment (CLI)
+    Review: Switch from PSR-0 to PSR-4
 
 INSTALLER
     Added: 'gnupg' package to the list of pre-required packages (all distributions)
@@ -99,13 +103,13 @@ PLUGINS
     Enhancement: Run frontEnd applications through the Slim microframework (with backward compatibility in mind)
         See http://www.slimframework.com/ for further details about offered possibilities
     Fixed: Case where there are no longer migration files provided by a plugin isn't covered
+    Fixed: Plugins not loaded when application is run through CLI
     Updated: Plugin API to version 1.5.1
 
 SERVICES
     Enhancement: Make it possible to extend/override Dovecot configuration with additional configuration files
 
 VENDOR
-    Added: Hydrahon library (PHP dependency)
     Added: Slim library (PHP dependency)
     Review: idna-convert library is now installed through composer (PHP dependency)
     Review: phpseclib library is now installed through composer (PHP dependency)

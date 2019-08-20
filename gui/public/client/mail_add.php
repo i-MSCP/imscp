@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,24 +18,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP\Crypt as Crypt;
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_Exception_Database as DatabaseException;
-use iMSCP_pTemplate as TemplateEngine;
-
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Crypt;
+use iMSCP\Database\DatabaseException;
+use iMSCP\Database\DatabaseMySQL;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\EventDescription;
+use iMSCP\Event\Events;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 /**
  * Get domains list
  *
  * @return array Domains list
- * @throws Zend_Exception
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function getDomainsList()
 {
@@ -82,10 +84,6 @@ function getDomainsList()
  * Add mail account
  *
  * @return bool TRUE on success, FALSE otherwise
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function addMailAccount()
 {
@@ -133,7 +131,7 @@ function addMailAccount()
         showBadRequestErrorPage();
     }
 
-    if (iMSCP_Registry::get('config')['SERVER_HOSTNAME'] == $domainName && $mailTypeNormal) {
+    if (Registry::get('config')['SERVER_HOSTNAME'] == $domainName && $mailTypeNormal) {
         # SERVER_HOSTNAME is a canonical domain (local domain) which cannot be
         # listed in both `mydestination' and `virtual_mailbox_domains' Postfix
         # parameters. See http://www.postfix.org/VIRTUAL_README.html#canonical
@@ -259,9 +257,9 @@ function addMailAccount()
     }
 
     try {
-        $db = iMSCP_Database::getInstance();
+        $db = DatabaseMySQL::getInstance();
 
-        EventsManager::getInstance()->dispatch(Events::onBeforeAddMail, [
+        EventAggregator::getInstance()->dispatch(Events::onBeforeAddMail, [
             'mailUsername' => $username,
             'MailAddress'  => $mailAddr
         ]);
@@ -279,7 +277,7 @@ function addMailAccount()
                 $mailTypeNormal ? 'yes' : 'no', '0', NULL, $mailQuotaLimitBytes, $mailAddr
             ]
         );
-        EventsManager::getInstance()->dispatch(Events::onAfterAddMail, [
+        EventAggregator::getInstance()->dispatch(Events::onAfterAddMail, [
             'mailUsername' => $username,
             'mailAddress'  => $mailAddr,
             'mailId'       => $db->insertId()
@@ -301,10 +299,6 @@ function addMailAccount()
  * Generate page
  *
  * @param TemplateEngine $tpl
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generatePage($tpl)
 {
@@ -370,23 +364,18 @@ function generatePage($tpl)
         $tpl->parse('DOMAIN_NAME_ITEM', '.domain_name_item');
     }
 
-    EventsManager::getInstance()->registerListener(
-        'onGetJsTranslations',
-        function ($event) use ($mailTypeForwardOnly) {
-            /** @var $event iMSCP_Events_Description */
-            $event->getParam('translations')->core['mail_add_forward_only'] = $mailTypeForwardOnly;
+    EventAggregator::getInstance()->registerListener(
+        Events::onGetJsTranslations,
+        function (EventDescription $e) use ($mailTypeForwardOnly) {
+            $e->getParam('translations')->core['mail_add_forward_only'] = $mailTypeForwardOnly;
         }
     );
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 customerHasFeature('mail') or showBadRequestErrorPage();
 
 $dmnProps = get_domain_default_props($_SESSION['user_id']);
@@ -434,7 +423,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

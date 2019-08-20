@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,13 +18,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_pTemplate as TemplateEngine;
-
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\TemplateEngine;
 
 /**
  * Generate catch-all item
@@ -37,11 +40,8 @@ use iMSCP_pTemplate as TemplateEngine;
  * @param int $domainId
  * @param string $mailStatus
  * @param string $mailType
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
  */
-function generateCatchallItem($tpl, $domainName, $mailId, $mailAcc, $domainId, $mailStatus, $mailType)
+function generateCatchallItem(TemplateEngine $tpl, $domainName, $mailId, $mailAcc, $domainId, $mailStatus, $mailType)
 {
     if ($mailId > 0) {
         $mailAcc = implode(', ', array_map('decode_idna', explode(',', $mailAcc)));
@@ -86,13 +86,9 @@ function generateCatchallItem($tpl, $domainName, $mailId, $mailAcc, $domainId, $
  * Generate page
  *
  * @param TemplateEngine $tpl
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  * @çeturn void
  */
-function generatePage($tpl)
+function generatePage(TemplateEngine $tpl)
 {
     $dmnProps = get_domain_default_props($_SESSION['user_id']);
 
@@ -216,14 +212,10 @@ function generatePage($tpl)
     }
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require_once 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 customerHasFeature('mail') or showBadRequestErrorPage();
 
 $tpl = new TemplateEngine();
@@ -243,7 +235,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

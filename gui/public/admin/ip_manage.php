@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,16 +18,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP\Net as Net;
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventManager;
-use iMSCP_pTemplate as TemplateEngine;
-use iMSCP_Registry as Registry;
-use Zend_Session as Session;
-
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\EventDescription;
+use iMSCP\Event\Events;
+use iMSCP\Net;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 /**
  * Send Json response
@@ -68,10 +71,6 @@ function sendJsonResponse($statusCode = 200, array $data = [])
  *
  * @param TemplateEngine $tpl Template engine
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generatePage($tpl)
 {
@@ -95,10 +94,6 @@ function generatePage($tpl)
  *
  * @param TemplateEngine $tpl Template engine
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generateIpsList($tpl)
 {
@@ -113,7 +108,6 @@ function generateIpsList($tpl)
         }
     }
 
-    /** @var \iMSCP_Database_ResultSet $stmt */
     $stmt = execute_query('SELECT * FROM server_ips');
     if (!$stmt->rowCount()) {
         $tpl->assign('IP_ADDRESSES_BLOCK', '');
@@ -186,9 +180,6 @@ function generateIpsList($tpl)
  *
  * @param TemplateEngine $tpl Template engine
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
  */
 function generateDevicesList($tpl)
 {
@@ -220,8 +211,6 @@ function generateDevicesList($tpl)
  * @param string $ipConfigMode IP configuration mode
  * @param string $ipCard IP network card
  * @return bool TRUE if data are valid, FALSE otherwise
- * @throws Zend_Exception
- * @throws iMSCP_Exception
  */
 function checkIpData($ipAddr, $ipNetmask, $ipConfigMode, $ipCard)
 {
@@ -297,11 +286,11 @@ function editIpAddr()
             ? clean_input($_POST['ip_config_mode'][$ipId]) : $row['ip_config_mode'];
 
         if (!checkIpData($row['ip_number'], $ipNetmask, $ipConfigMode, $ipCard)) {
-            Session::namespaceUnset('pageMessages');
+            Zend_Session::namespaceUnset('pageMessages');
             sendJsonResponse(400, ['message' => tr('Bad request.')]);
         }
 
-        EventManager::getInstance()->dispatch(Events::onEditIpAddr, [
+        EventAggregator::getInstance()->dispatch(Events::onEditIpAddr, [
             'ip_id'          => $ipId,
             'ip_number'      => $row['ip_number'],
             'ip_netmask'     => $ipNetmask,
@@ -318,7 +307,7 @@ function editIpAddr()
         write_log(sprintf("Configuration for the %s IP address has been updated by %s", $row['ip_number'], $_SESSION['user_logged']), E_USER_NOTICE);
         set_page_message(tr('IP address successfully scheduled for modification.'), 'success');
         sendJsonResponse(200);
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         sendJsonResponse(500, ['message' => sprintf('An unexpected error occurred: %s', $e->getMessage())]);
     }
 }
@@ -327,10 +316,6 @@ function editIpAddr()
  * Add IP addr
  *
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function addIpAddr()
 {
@@ -360,7 +345,7 @@ function addIpAddr()
         }
     }
 
-    EventManager::getInstance()->dispatch(Events::onAddIpAddr, [
+    EventAggregator::getInstance()->dispatch(Events::onAddIpAddr, [
         'ip_number'      => $ipAddr,
         'ip_netmask'     => $ipNetmask,
         'ip_card'        => $ipCard,
@@ -378,14 +363,10 @@ function addIpAddr()
     redirectTo('ip_manage.php');
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require 'imscp-lib.php';
 
 check_login('admin');
-EventManager::getInstance()->dispatch(Events::onAdminScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptStart);
 
 if (!empty($_POST)) {
     if (is_xhr()) {
@@ -426,8 +407,7 @@ $tpl->assign([
     'TR_MANUAL'               => tr('Manual')
 ]);
 
-EventManager::getInstance()->registerListener('onGetJsTranslations', function ($e) {
-    /** @var $e \iMSCP_Events_Event */
+EventAggregator::getInstance()->registerListener('onGetJsTranslations', function (EventDescription $e) {
     $translation = $e->getParam('translations');
     $translation['core']['datatable'] = getDataTablesPluginTranslations(false);
     $translation['core']['err_fields_stack'] = Registry::isRegistered('errFieldsStack') ? Registry::get('errFieldsStack') : [];
@@ -440,7 +420,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

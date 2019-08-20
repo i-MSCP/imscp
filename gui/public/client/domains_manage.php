@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by i-MSCP Team
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,9 +18,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\EventDescription;
+use iMSCP\Event\Events;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 /**
  * Generates domain redirect and edit link
@@ -29,8 +38,6 @@
  * @param string $status Domain status
  * @param string $redirectUrl Target URL for redirect request
  * @return array
- * @throws Zend_Exception
- * @throws iMSCP_Exception
  */
 function generateDomainRedirectAndEditLink($id, $status, $redirectUrl)
 {
@@ -54,15 +61,11 @@ function generateDomainRedirectAndEditLink($id, $status, $redirectUrl)
  *
  * @param iMSCP_pTemplate $tpl Template engine
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generateDomainsList($tpl)
 {
     global $baseServerVhostUtf8;
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
 
     $stmt = exec_query(
         "
@@ -136,9 +139,6 @@ function generateDomainsList($tpl)
  * @param int $id Alias unique identifier
  * @param string $status Alias status
  * @return array
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generateDomainAliasAction($id, $status)
 {
@@ -167,8 +167,6 @@ function generateDomainAliasAction($id, $status)
  * @param string $status Alias status
  * @param string $redirectUrl Target URL for redirect request
  * @return array
- * @throws Zend_Exception
- * @throws iMSCP_Exception
  */
 function generateDomainAliasRedirectAndEditLink($id, $status, $redirectUrl)
 {
@@ -200,10 +198,6 @@ function generateDomainAliasRedirectAndEditLink($id, $status, $redirectUrl)
  *
  * @param iMSCP_pTemplate $tpl Template engine
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generateDomainAliasesList($tpl)
 {
@@ -213,7 +207,7 @@ function generateDomainAliasesList($tpl)
     }
 
     global $baseServerVhostUtf8;
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
 
     $domainId = get_user_domain_id($_SESSION['user_id']);
     $stmt = exec_query(
@@ -309,9 +303,6 @@ function generateDomainAliasesList($tpl)
  * @param string $subdomainType Subdomain type (dmn|als)
  * @param string $status Subdomain status
  * @return array
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generateSubdomainAction($id, $subdomainType, $status)
 {
@@ -347,8 +338,6 @@ function generateSubdomainAction($id, $subdomainType, $status)
  * @param string $status Subdomain status
  * @param string $redirectUrl Target URL for redirect request
  * @return array
- * @throws Zend_Exception
- * @throws iMSCP_Exception
  */
 function generateSubdomainRedirectAndEditLink($id, $subdomainType, $status, $redirectUrl)
 {
@@ -372,10 +361,6 @@ function generateSubdomainRedirectAndEditLink($id, $subdomainType, $status, $red
  *
  * @param iMSCP_pTemplate $tpl Template engine
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generateSubdomainsList($tpl)
 {
@@ -385,7 +370,7 @@ function generateSubdomainsList($tpl)
     }
 
     global $baseServerVhostUtf8;
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
     $domainId = get_user_domain_id($_SESSION['user_id']);
 
     $stmt = exec_query(
@@ -512,8 +497,6 @@ function generateSubdomainsList($tpl)
  * @param string $status Custom DNS record status
  * @param string $ownedBy Owner of the DNS record
  * @return array
- * @throws Zend_Exception
- * @throws iMSCP_Exception
  */
 function generateCustomDnsRecordAction($action, $id, $status, $ownedBy = 'custom_dns_feature')
 {
@@ -535,14 +518,10 @@ function generateCustomDnsRecordAction($action, $id, $status, $ownedBy = 'custom
 /**
  * Generates custom DNS records list
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
-function generateCustomDnsRecordsList($tpl)
+function generateCustomDnsRecordsList(TemplateEngine $tpl)
 {
     if (!customerHasFeature('custom_dns_records')) {
         $filterCond = "AND owned_by <> 'custom_dns_feature'";
@@ -628,16 +607,12 @@ function generateCustomDnsRecordsList($tpl)
     $tpl->assign('DNS_MESSAGE', '');
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require_once 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'                     => 'shared/layouts/ui.tpl',
     'page'                       => 'client/domains_manage.tpl',
@@ -692,19 +667,20 @@ $tpl->assign([
     'TR_DOMAIN_NAME'    => tr('Domain')
 ]);
 
-iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
-    /** @var $e \iMSCP_Events_Event */
-    $translations = $e->getParam('translations');
-    $translations['core']['als_delete_alert'] = tr('Are you sure you want to delete this domain alias?');
-    $translations['core']['sub_delete_alert'] = tr('Are you sure you want to delete this subdomain?');
-    $translations['core']['dns_delete_alert'] = tr('Are you sure you want to delete this DNS record?');
-    $translations['core']['dataTable'] = getDataTablesPluginTranslations(false);
-});
+iMSCP_Events_Aggregator::getInstance()->registerListener(
+    Events::onGetJsTranslations,
+    function (EventDescription $e) {
+        $tr = $e->getParam('translations');
+        $tr['core']['als_delete_alert'] = tr('Are you sure you want to delete this domain alias?');
+        $tr['core']['sub_delete_alert'] = tr('Are you sure you want to delete this subdomain?');
+        $tr['core']['dns_delete_alert'] = tr('Are you sure you want to delete this DNS record?');
+        $tr['core']['dataTable'] = getDataTablesPluginTranslations(false);
+    });
 
 global $baseServerVhostUtf8;
 
 if (iMSCP_Registry::get('config')->get('CLIENT_WEBSITES_ALT_URLS') == 'yes') {
-    $baseServerVhostUtf8 = decode_idna(iMSCP_Registry::get('config')->get('BASE_SERVER_VHOST'));
+    $baseServerVhostUtf8 = decode_idna(Registry::get('config')->get('BASE_SERVER_VHOST'));
 }
 
 generateNavigation($tpl);
@@ -715,7 +691,7 @@ generateCustomDnsRecordsList($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

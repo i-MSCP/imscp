@@ -20,20 +20,26 @@
 
 /**
  * @noinspection
- * PhpUnhandledExceptionInspection
  * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
  * PhpIncludeInspection
  */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\EventDescription;
+use iMSCP\Event\Events;
+use iMSCP\Services;
+use iMSCP\TemplateEngine;
 
 /**
  * Generate page
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @return void
  */
-function generatePage(iMSCP_pTemplate $tpl)
+function generatePage(TemplateEngine $tpl)
 {
-    $services = new iMSCP_Services(isset($_GET['refresh']));
+    $services = new Services(isset($_GET['refresh']));
 
     foreach ($services as $service) {
         $isRunning = $services->isRunning();
@@ -66,11 +72,9 @@ function generatePage(iMSCP_pTemplate $tpl)
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptStart
-);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptStart);
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'         => 'shared/layouts/ui.tpl',
     'page'           => 'admin/service_statuses.tpl',
@@ -87,12 +91,11 @@ $tpl->assign([
     'TR_FORCE_REFRESH' => tohtml(tr('Force refresh', 'htmlAttr'))
 ]);
 
-iMSCP_Events_Aggregator::getInstance()->registerListener(
-    iMSCP_Events::onGetJsTranslations,
-    function (iMSCP_Events_Event $e) {
-        $e->getParam('translations')->core['dataTable'] =
-            getDataTablesPluginTranslations(false);
-    }
+EventAggregator::getInstance()->registerListener(
+    Events::onGetJsTranslations, function (EventDescription $e) {
+    $e->getParam('translations')->core['dataTable'] =
+        getDataTablesPluginTranslations(false);
+}
 );
 
 generateNavigation($tpl);
@@ -100,8 +103,6 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]
-);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 unsetMessages();

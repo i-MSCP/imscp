@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,29 +18,30 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Config_Handler_File as ConfigFile;
-use iMSCP_Database as Database;
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_Exception as iMSCPException;
-use iMSCP_Registry as Registry;
-
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Config\FileConfig;
+use iMSCP\Database\DatabaseMySQL;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Exception\Exception;
+use iMSCP\Registry;
 
 /**
  * Schedule deletion of the given mail account
- *
- * @throws iMSCPException on error
  * @param int $mailId Mail account unique identifier
  * @param int $domainId Main domain unique identifier
- * @param ConfigFile $config
- * @param ConfigFile $mtaConfig
+ * @param FileConfig $config
+ * @param FileConfig $mtaConfig
  * @param int &$nbDeletedMails Counter for deleted mail accounts
  * @return void
  */
-function deleteMailAccount($mailId, $domainId, $config, $mtaConfig, &$nbDeletedMails)
+function deleteMailAccount($mailId, $domainId, FileConfig $config, FileConfig $mtaConfig, &$nbDeletedMails)
 {
     $stmt = exec_query('SELECT mail_acc, mail_addr, mail_type FROM mail_users WHERE mail_id = ? AND domain_id = ?', [
         $mailId, $domainId
@@ -54,7 +55,7 @@ function deleteMailAccount($mailId, $domainId, $config, $mtaConfig, &$nbDeletedM
 
     if ($config['PROTECT_DEFAULT_EMAIL_ADDRESSES']
         && (
-            (in_array($row['mail_type'], [MT_NORMAL_FORWARD, MT_ALIAS_FORWARD]) 
+            (in_array($row['mail_type'], [MT_NORMAL_FORWARD, MT_ALIAS_FORWARD])
                 && in_array($row['mail_acc'], ['abuse', 'hostmaster', 'postmaster', 'webmaster'])
             )
             || ($row['mail_acc'] == 'webmaster' && in_array($row['mail_type'], [MT_SUBDOM_FORWARD, MT_ALSSUB_FORWARD]))
@@ -63,7 +64,7 @@ function deleteMailAccount($mailId, $domainId, $config, $mtaConfig, &$nbDeletedM
         return;
     }
 
-    EventsManager::getInstance()->dispatch(Events::onBeforeDeleteMail, ['mailId' => $mailId]);
+    EventAggregator::getInstance()->dispatch(Events::onBeforeDeleteMail, ['mailId' => $mailId]);
     exec_query("UPDATE mail_users SET status = 'todelete' WHERE mail_id = ?", $mailId);
 
     if (strpos($row['mail_type'], '_mail') !== false) {
@@ -120,18 +121,14 @@ function deleteMailAccount($mailId, $domainId, $config, $mtaConfig, &$nbDeletedM
     }
 
     delete_autoreplies_log_entries();
-    EventsManager::getInstance()->dispatch(Events::onAfterDeleteMail, ['mailId' => $mailId]);
+    EventAggregator::getInstance()->dispatch(Events::onAfterDeleteMail, ['mailId' => $mailId]);
     $nbDeletedMails++;
 }
-
-/***********************************************************************************************************************
- * Main
- */
 
 require_once 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 
 if (!customerHasFeature('mail')
     || !isset($_REQUEST['id'])
@@ -148,12 +145,12 @@ if (empty($mailIds)) {
     redirectTo('mail_accounts.php');
 }
 
-$db = Database::getInstance();
+$db = DatabaseMySQL::getInstance();
 
 try {
     $db->beginTransaction();
     $config = Registry::get('config');
-    $mtaConfig = new ConfigFile(utils_normalizePath(Registry::get('config')['CONF_DIR'] . '/postfix/postfix.data'));
+    $mtaConfig = new FileConfig(utils_normalizePath(Registry::get('config')['CONF_DIR'] . '/postfix/postfix.data'));
 
     foreach ($mailIds as $mailId) {
         deleteMailAccount(intval($mailId), $domainId, $config, $mtaConfig, $nbDeletedMails);
@@ -176,7 +173,7 @@ try {
     } else {
         set_page_message(tr('No mail account has been deleted.'), 'warning');
     }
-} catch (iMSCPException $e) {
+} catch (Exception $e) {
     $db->rollBack();
     $errorMessage = $e->getMessage();
     $code = $e->getCode();

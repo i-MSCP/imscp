@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,27 +18,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP\Crypt as Crypt;
-use iMSCP_Database as Database;
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_Exception as iMSCPException;
-use iMSCP_PHPini as PhpIni;
-use iMSCP_pTemplate as TemplateEngine;
-use iMSCP_Registry as Registry;
-use Zend_Form as Form;
-
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Crypt;
+use iMSCP\Database\DatabaseMySQL;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\EventDescription;
+use iMSCP\Event\Events;
+use iMSCP\Exception\Exception;
+use iMSCP\PhpEditor;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 /**
  * Retrieve form data
  *
  * @return array Reference to array of data
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function getFormData()
 {
@@ -57,7 +57,7 @@ function getFormData()
         redirectTo('users.php');
     }
 
-    $phpini = PhpIni::getInstance();
+    $phpini = PhpEditor::getInstance();
 
     foreach (
         [
@@ -112,9 +112,6 @@ function getFormData()
  *
  * @param TemplateEngine $tpl Template engine instance
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
  */
 function generateIpListForm(TemplateEngine $tpl)
 {
@@ -125,8 +122,7 @@ function generateIpListForm(TemplateEngine $tpl)
         'TR_ASSIGN'     => tr('Assign')
     ]);
 
-    EventsManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
-        /** @var $e \iMSCP_Events_Event */
+    EventAggregator::getInstance()->registerListener(Events::onGetJsTranslations, function (EventDescription $e) {
         $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
     });
 
@@ -147,8 +143,6 @@ function generateIpListForm(TemplateEngine $tpl)
  *
  * @param TemplateEngine $tpl Template engine instance
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Exception
  */
 function generateLimitsForm(TemplateEngine $tpl)
 {
@@ -181,8 +175,6 @@ function generateLimitsForm(TemplateEngine $tpl)
  *
  * @param TemplateEngine $tpl Template engine instance
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Exception
  */
 function generateFeaturesForm(TemplateEngine $tpl)
 {
@@ -233,8 +225,7 @@ function generateFeaturesForm(TemplateEngine $tpl)
         'TR_SEC'                           => tr('Sec.')
     ]);
 
-    EventsManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
-        /** @var iMSCP_Events_Event $e */
+    EventAggregator::getInstance()->registerListener(Events::onGetJsTranslations, function (EventDescription $e) {
         $translations = $e->getParam('translations');
         $translations['core']['close'] = tr('Close');
         $translations['core']['fields_ok'] = tr('All fields are valid.');
@@ -263,15 +254,14 @@ function generateFeaturesForm(TemplateEngine $tpl)
 /**
  * Add reseller user
  *
- * @throws Exception
- * @param Form $form
+ * @param Zend_Form $form
  * @return void
  */
-function addResellerUser(Form $form)
+function addResellerUser(Zend_Form $form)
 {
     $error = false;
     $errFieldsStack = [];
-    $db = Database::getInstance();
+    $db = DatabaseMySQL::getInstance();
 
     try {
         // Check for login and personal data
@@ -361,7 +351,7 @@ function addResellerUser(Form $form)
         $db->beginTransaction();
 
         // Check for PHP settings
-        $phpini = PhpIni::getInstance();
+        $phpini = PhpEditor::getInstance();
         $phpini->setResellerPermission('phpiniSystem', $data['php_ini_system']);
 
         if ($phpini->resellerHasPermission('phpiniSystem')) {
@@ -378,7 +368,7 @@ function addResellerUser(Form $form)
         }
 
         if (empty($errFieldsStack) && !$error) {
-            EventsManager::getInstance()->dispatch(Events::onBeforeAddUser, [
+            EventAggregator::getInstance()->dispatch(Events::onBeforeAddUser, [
                 'userData' => $form->getValues()
             ]);
 
@@ -444,10 +434,10 @@ function addResellerUser(Form $form)
             // Creating Software repository for reseller if needed
             if ($data['software_allowed'] == 'yes' && !@mkdir($cfg['GUI_APS_DIR'] . '/' . $resellerId, 0750, true)) {
                 write_log('System was unable to create directory for reseller software repository', E_USER_ERROR);
-                throw new iMSCPException(sprintf('Could not create directory for software repository'));
+                throw new Exception(sprintf('Could not create directory for software repository'));
             }
 
-            EventsManager::getInstance()->dispatch(Events::onAfterAddUser, [
+            EventAggregator::getInstance()->dispatch(Events::onAfterAddUser, [
                 'userId'   => $resellerId,
                 'userData' => $form->getValues()
             ]);
@@ -477,10 +467,10 @@ function addResellerUser(Form $form)
  * Generate page
  *
  * @param TemplateEngine $tpl Template engine instance
- * @param Form $form
+ * @param Zend_Form $form
  * @return void
  */
-function generatePage(TemplateEngine $tpl, Form $form)
+function generatePage(TemplateEngine $tpl, Zend_Form $form)
 {
     /** @noinspection PhpUndefinedFieldInspection */
     $tpl->form = $form;
@@ -490,16 +480,12 @@ function generatePage(TemplateEngine $tpl, Form $form)
     generateFeaturesForm($tpl);
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require 'imscp-lib.php';
 
 check_login('admin');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptStart);
 
-$phpini = PhpIni::getInstance();
+$phpini = PhpEditor::getInstance();
 $phpini->loadResellerPermissions(); // Load reseller default PHP permissions
 
 $form = getUserLoginDataForm(true, true)->addElements(getUserPersonalDataForm()->getElements());
@@ -526,7 +512,7 @@ generatePage($tpl, $form);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

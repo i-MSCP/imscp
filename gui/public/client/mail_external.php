@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,9 +18,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\EventDescription;
+use iMSCP\Event\Events;
+use iMSCP\TemplateEngine;
 
 /**
  * Activate or deactivate external mail feature for the given domain
@@ -28,9 +36,6 @@
  * @param string $action Action to be done (activate|deactivate)
  * @param int $domainId Domain unique identifier
  * @param string $domainType Domain type
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function updateExternalMailFeature($action, $domainId, $domainType)
 {
@@ -81,9 +86,6 @@ function updateExternalMailFeature($action, $domainId, $domainType)
  * @param string $status Item status
  * @param string $type Domain type (normal for domain or alias for domain alias)
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
  */
 function generateItem($tpl, $externalMail, $domainId, $domainName, $status, $type)
 {
@@ -125,16 +127,12 @@ function generateItem($tpl, $externalMail, $domainId, $domainName, $status, $typ
  * Generate external mail server item list
  *
  * @access private
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @param int $domainId Domain id
  * @param string $domainName Domain name
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
-function generateItemList($tpl, $domainId, $domainName)
+function generateItemList(TemplateEngine $tpl, $domainId, $domainName)
 {
     $stmt = exec_query('SELECT domain_status, external_mail FROM domain WHERE domain_id = ?', $domainId);
     $data = $stmt->fetchRow();
@@ -162,18 +160,16 @@ function generateItemList($tpl, $domainId, $domainName)
  *
  * @param iMSCP_ptemplate $tpl
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generatePage($tpl)
 {
-    iMSCP_Events_Aggregator::getInstance()->registerListener(iMSCP_Events::onGetJsTranslations, function ($e) {
-        /** @var iMSCP_Events_Description $e */
-        $translations = $e->getParam('translations');
-        $translations['core']['datatable'] = getDataTablesPluginTranslations(false);
-    });
+    iMSCP_Events_Aggregator::getInstance()->registerListener(
+        iMSCP_Events::onGetJsTranslations,
+        function (EventDescription $e) {
+            $tr = $e->getParam('translations');
+            $tr['core']['datatable'] = getDataTablesPluginTranslations(false);
+        }
+    );
 
     $tpl->assign([
         'TR_PAGE_TITLE' => tr('Client / Mail / External Mail Feature'),
@@ -191,14 +187,10 @@ function generatePage($tpl)
     generateItemList($tpl, $domainId, $domainName);
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require_once 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 
 if (!customerHasFeature('external_mail')) {
     showBadRequestErrorPage();
@@ -225,7 +217,7 @@ if (isset($_GET['action'])
     redirectTo('mail_external.php');
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'          => 'shared/layouts/ui.tpl',
     'page'            => 'client/mail_external.tpl',
@@ -240,7 +232,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

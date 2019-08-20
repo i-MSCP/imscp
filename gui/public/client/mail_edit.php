@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,21 +18,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP\Crypt as Crypt;
-
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Config\FileConfig;
+use iMSCP\Crypt;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\EventDescription;
+use iMSCP\Event\Events;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 /**
  * Get mail account data
  *
  * @param int $mailId Mail account unique identifier
  * @return array mail account data
- * @throws Zend_Exception
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function client_getEmailAccountData($mailId)
 {
@@ -57,10 +62,6 @@ function client_getEmailAccountData($mailId)
  * Edit mail account
  *
  * @return bool TRUE on success, FALSE otherwise
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function client_editMailAccount()
 {
@@ -237,14 +238,14 @@ function client_editMailAccount()
         ]
     );
 
-    # Force synching of quota info on next load (or remove cached data in case of normal account changed to forward account)
-    $postfixConfig = new iMSCP_Config_Handler_File(
-        utils_normalizePath(iMSCP_Registry::get('config')['CONF_DIR'] . '/postfix/postfix.data')
+    # Force syncing of quota info on next load (or remove cached data in case of normal account changed to forward account)
+    $postfixConfig = new FileConfig(
+        utils_normalizePath(Registry::get('config')['CONF_DIR'] . '/postfix/postfix.data')
     );
     list($user, $domain) = explode('@', $mailAddr);
     unset($_SESSION['maildirsize'][utils_normalizePath($postfixConfig['MTA_VIRTUAL_MAIL_DIR'] . "/$domain/$user/maildirsize")]);
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditMail, [
+    EventAggregator::getInstance()->dispatch(Events::onAfterEditMail, [
         'mailId' => $mailData['mail_id']
     ]);
     send_request();
@@ -261,12 +262,9 @@ function client_editMailAccount()
 /**
  * Generate page
  *
- * @param iMSCP_pTemplate $tpl
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
+ * @param TemplateEngine $tpl
  */
-function client_generatePage($tpl)
+function client_generatePage(TemplateEngine $tpl)
 {
     $mailId = clean_input($_GET['id']);
     $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
@@ -347,23 +345,18 @@ function client_generatePage($tpl)
         'DOMAIN_NAME_SELECTED'   => ' selected'
     ]);
 
-    iMSCP_Events_Aggregator::getInstance()->registerListener(
-        'onGetJsTranslations',
-        function ($event) use ($mailTypeForwardOnly) {
-            /** @var $event iMSCP_Events_Description */
-            $event->getParam('translations')->core['mail_add_forward_only'] = $mailTypeForwardOnly;
+    EventAggregator::getInstance()->registerListener(
+        Events::onGetJsTranslations,
+        function (EventDescription $e) use ($mailTypeForwardOnly) {
+            $e->getParam('translations')->core['mail_add_forward_only'] = $mailTypeForwardOnly;
         }
     );
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 
 if (!customerHasFeature('mail') ||
     !isset($_GET['id'])
@@ -403,7 +396,7 @@ generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

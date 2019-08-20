@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,14 +18,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Database as Database;
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_pTemplate as TemplateEngine;
-
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Database\DatabaseMySQL;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\TemplateEngine;
 
 /**
  * Get catch-all domain
@@ -33,8 +36,6 @@ use iMSCP_pTemplate as TemplateEngine;
  * @param int $catchallDomainId Domain unique identifier
  * @param int $catchalType Catch-all type
  * @return string Catch-all domain name if owner is verified, FALSE otherwise
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception_Database
  */
 function getCatchallDomain($catchallDomainId, $catchalType)
 {
@@ -93,10 +94,6 @@ function getCatchallDomain($catchallDomainId, $catchalType)
  * @param string $catchallDomain Catch all domain name
  * @param string $catchallType Catch-all type
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function addCatchallAccount($catchallDomainId, $catchallDomain, $catchallType)
 {
@@ -173,7 +170,7 @@ function addCatchallAccount($catchallDomainId, $catchallDomain, $catchallType)
             exit;
     }
 
-    EventsManager::getInstance()->dispatch(Events::onBeforeAddMailCatchall, [
+    EventAggregator::getInstance()->dispatch(Events::onBeforeAddMailCatchall, [
         'mailCatchallDomain'    => $catchallDomain,
         'mailCatchallAddresses' => $catchallAddresses
     ]);
@@ -187,8 +184,8 @@ function addCatchallAccount($catchallDomainId, $catchallDomain, $catchallType)
         ",
         [implode(',', $catchallAddresses), $domainId, $catchallType, $subId, '@' . $catchallDomain]
     );
-    EventsManager::getInstance()->dispatch(Events::onAfterAddMailCatchall, [
-        'mailCatchallId'        => Database::getInstance()->insertId(),
+    EventAggregator::getInstance()->dispatch(Events::onAfterAddMailCatchall, [
+        'mailCatchallId'        => DatabaseMySQL::getInstance()->insertId(),
         'mailCatchallDomain'    => $catchallDomain,
         'mailCatchallAddresses' => $catchallAddresses
     ]);
@@ -205,11 +202,6 @@ function addCatchallAccount($catchallDomainId, $catchallDomain, $catchallType)
  * @param int $catchallDomainId Catch-all domain unique identifier
  * @param string $catchallType Catch-all type
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generatePage($tpl, $catchallDomainId, $catchallType)
 {
@@ -368,14 +360,10 @@ function generatePage($tpl, $catchallDomainId, $catchallType)
     }
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require_once 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 
 if (!customerHasFeature('mail')
     || !isset($_GET['id'])
@@ -421,7 +409,7 @@ generatePage($tpl, $matches['catchallDomainId'], $matches['catchallType']);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

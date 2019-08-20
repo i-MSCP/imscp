@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,14 +18,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Registry as Registry;
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_pTemplate as TemplateEngine;
-
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Database\DatabaseMySQL;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Exception\Exception;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 /**
  * Get domain name
@@ -33,8 +38,6 @@ use iMSCP_pTemplate as TemplateEngine;
  * @param int $domainId Domain entity unique identifier
  * @param string $domainType Domain entity type to update (dmn|als|sub|alssub)
  * @return string|false Domain name or FALSE if the domain name is not found or not owned by logged-in customer
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception_Database
  */
 function _client_getDomainName($domainId, $domainType)
 {
@@ -92,8 +95,6 @@ function _client_getDomainName($domainId, $domainType)
  * @param int $domainId Domain entity unique identifier
  * @param string $domainType Domain entity type to update (dmn|als|sub|alssub)
  * @return void
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception_Database
  */
 function _client_updateDomainStatus($domainId, $domainType)
 {
@@ -120,9 +121,6 @@ function _client_updateDomainStatus($domainId, $domainType)
  * @param array $data User data
  * @return bool|string Path to generate openssl temporary file, FALSE on failure
  * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function _client_generateOpenSSLConfFile($data)
 {
@@ -182,9 +180,6 @@ EOF;
  *
  * @param string $domainName Domain name
  * @return bool TRUE on success, FALSE otherwise
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function client_generateSelfSignedCert($domainName)
 {
@@ -252,9 +247,6 @@ function client_generateSelfSignedCert($domainName)
  * @param int $domainId domain unique identifier
  * @param string $domainType Domain type (dmn|als|sub|alssub)
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function client_addSslCert($domainId, $domainType)
 {
@@ -373,7 +365,7 @@ function client_addSslCert($domainId, $domainType)
         $caBundleStr = $caBundle;
     }
 
-    $db = iMSCP_Database::getInstance();
+    $db = DatabaseMySQL::getInstance();
 
     try {
         $db->beginTransaction();
@@ -424,7 +416,7 @@ function client_addSslCert($domainId, $domainType)
         }
 
         redirectTo("cert_view.php?domain_id=$domainId&domain_type=$domainType");
-    } catch (iMSCP_Exception $e) {
+    } catch (Exception $e) {
         $db->rollBack();
         write_log('Unable to add/update SSL certificate in database', E_USER_ERROR);
         set_page_message(tr('An unexpected error occurred. Please contact your reseller.'), 'error');
@@ -437,9 +429,6 @@ function client_addSslCert($domainId, $domainType)
  * @param int $domainId domain unique identifier
  * @param string $domainType Domain type (dmn, als, sub, alssub)
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function client_deleteSslCert($domainId, $domainType)
 {
@@ -454,7 +443,7 @@ function client_deleteSslCert($domainId, $domainType)
     }
 
     $certId = intval($_POST['cert_id']);
-    $db = iMSCP_Database::getInstance();
+    $db = DatabaseMySQL::getInstance();
 
     try {
         $db->beginTransaction();
@@ -471,7 +460,7 @@ function client_deleteSslCert($domainId, $domainType)
         set_page_message(tr('SSL certificate successfully scheduled for deletion.'), 'success');
         write_log(sprintf('%s deleted SSL certificate for the %s domain.', $_SESSION['user_logged'], decode_idna($domainName)), E_USER_NOTICE);
         redirectTo('domains_manage.php');
-    } catch (iMSCP_Exception $e) {
+    } catch (Exception $e) {
         $db->rollBack();
         write_log(sprintf('Could not export SSL certificate: %s', $e->getMessage()), E_USER_ERROR);
         set_page_message(tr('Could not delete SSL certificate. An unexpected error occurred.'), 'error');
@@ -485,9 +474,6 @@ function client_deleteSslCert($domainId, $domainType)
  * @param int $domainId Domain entity unique identifier
  * @param string $domainType Domain entity type
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function client_generatePage(TemplateEngine $tpl, $domainId, $domainType)
 {
@@ -577,14 +563,10 @@ function client_generatePage(TemplateEngine $tpl, $domainId, $domainType)
     }
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require_once 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 
 $tpl = new TemplateEngine();
 $tpl->define_dynamic([
@@ -604,9 +586,7 @@ if (!isset($_GET['domain_id']) || !isset($_GET['domain_type']) ||
 $domainId = intval($_GET['domain_id']);
 $domainType = clean_input($_GET['domain_type']);
 
-if (customerHasFeature('ssl')
-    && !empty($_POST)
-) {
+if (customerHasFeature('ssl') && !empty($_POST)) {
     if (isset($_POST['add_update'])) {
         client_addSslCert($domainId, $domainType);
     } elseif (isset($_POST['delete'])) {
@@ -642,7 +622,7 @@ client_generatePage($tpl, $domainId, $domainType);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

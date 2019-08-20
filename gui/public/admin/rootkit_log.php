@@ -18,18 +18,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/** @noinspection PhpUnhandledExceptionInspection PhpDocMissingThrowsInspection */
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
+ */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptStart);
 
 systemHasAntiRootkits() or showBadRequestErrorPage();
 
-$config = iMSCP_Registry::get('config');
+$config = Registry::get('config');
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'           => 'shared/layouts/ui.tpl',
     'page'             => 'admin/rootkit_log.tpl',
@@ -52,13 +62,13 @@ foreach ($antiRootkitLogFiles as $antiRootkit => $logVar) {
 
 if (!empty($antiRootkitLogFiles)) {
     /** @var Zend_Cache_Core $cache */
-    $cache = iMSCP_Registry::get('iMSCP_Application')->getCache();
+    $cache = Registry::get('iMSCP_Application')->getCache();
 
     foreach ($antiRootkitLogFiles AS $antiRootkit => $logVar) {
         $logFile = $config[$logVar];
-        $cacheId = 'iMSCP_Rootkit_'. pathinfo($logFile, PATHINFO_FILENAME);
+        $cacheId = 'iMSCP_Rootkit_' . pathinfo($logFile, PATHINFO_FILENAME);
 
-        if(!($content = $cache->load($cacheId))) {
+        if (!($content = $cache->load($cacheId))) {
             if (@is_readable($logFile) && @filesize($logFile) > 0) {
                 $handle = fopen($logFile, 'r');
                 $log = fread($handle, filesize($logFile));
@@ -137,7 +147,7 @@ generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();
