@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,16 +18,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Database as Database;
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_PHPini as PhpIni;
-use iMSCP_pTemplate as TemplateEngine;
-use iMSCP_Registry as Registry;
-
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpUnhandledExceptionInspection
+ * PhpDocMissingThrowsInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Database\DatabaseMySQL;
+use iMSCP\Event\Event;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\PhpEditor;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
+
 
 /**
  * Get mail data
@@ -35,9 +40,6 @@ use iMSCP_Registry as Registry;
  * @param int $domainId Domain id
  * @param int $mailQuota Mail quota limit
  * @return array An array which contain in order sum of all mailbox quota, current quota limit, number of mailboxes)
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function getMailData($domainId, $mailQuota)
 {
@@ -69,8 +71,6 @@ function getMailData($domainId, $mailQuota)
  *
  * @param int $resellerId Reseller id
  * @return array Reseller properties
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception_Database
  */
 function reseller_getResellerProps($resellerId)
 {
@@ -93,10 +93,6 @@ function reseller_getResellerProps($resellerId)
  *
  * @param int $domainId Domain id
  * @return array Array containing domain properties
- * @throws Zend_Date_Exception
- * @throws Zend_Exception
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception_Database
  */
 function reseller_getDomainProps($domainId)
 {
@@ -127,9 +123,6 @@ function reseller_getDomainProps($domainId)
  * @param int $domainId Domain unique identifier
  * @param bool $forUpdate Tell whether or not data are fetched for update
  * @return array Reference to array of data
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function &getData($domainId, $forUpdate = false)
 {
@@ -213,7 +206,7 @@ function &getData($domainId, $forUpdate = false)
     $data['domain_expires_ok'] = true;
     $data['domain_never_expires'] = ($data['domain_expires'] == 0) ? 'on' : 'off';
 
-    $phpini = PhpIni::getInstance();
+    $phpini = PhpEditor::getInstance();
     $phpini->loadResellerPermissions($_SESSION['user_id']); // Load reseller PHP permissions
     $phpini->loadClientPermissions($data['admin_id']); // Load client PHP permissions
     $phpini->loadDomainIni($data['admin_id'], $data['domain_id'], 'dmn'); // Load domain PHP configuration options
@@ -293,9 +286,6 @@ function generatePage(TemplateEngine $tpl, &$data)
  * @param TemplateEngine $tpl
  * @param array $data Domain data
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generateLimitsForm(TemplateEngine $tpl, &$data)
 {
@@ -436,8 +426,6 @@ function generateLimitsForm(TemplateEngine $tpl, &$data)
  * @param TemplateEngine $tpl
  * @param array $data Domain data
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Exception
  */
 function generateFeaturesForm(TemplateEngine $tpl, &$data)
 {
@@ -448,7 +436,7 @@ function generateFeaturesForm(TemplateEngine $tpl, &$data)
         'PHP_NO'      => $data['domain_php'] != 'yes' ? ' checked' : ''
     ]);
 
-    $phpini = PhpIni::getInstance();
+    $phpini = PhpEditor::getInstance();
 
     // PHP editor - begin
     if (!$phpini->resellerHasPermission('phpiniSystem')) {
@@ -550,8 +538,7 @@ function generateFeaturesForm(TemplateEngine $tpl, &$data)
         ]);
     }
 
-    EventsManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
-        /** @var iMSCP_Events_Event $e */
+    EventAggregator::getInstance()->registerListener(Events::onGetJsTranslations, function (Event $e) {
         $translations = $e->getParam('translations');
         $translations['core']['close'] = tr('Close');
         $translations['core']['fields_ok'] = tr('All fields are valid.');
@@ -633,13 +620,10 @@ function generateFeaturesForm(TemplateEngine $tpl, &$data)
  *
  * @param int $domainId Domain unique identifier
  * @return bool
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function reseller_checkAndUpdateData($domainId)
 {
-    $db = Database::getInstance();
+    $db = DatabaseMySQL::getInstance();
     $errFieldsStack = [];
 
     try {
@@ -820,7 +804,7 @@ function reseller_checkAndUpdateData($domainId)
             ? $data['domain_php'] : $data['fallback_domain_php'];
 
         // PHP editor
-        $phpini = PhpIni::getInstance();
+        $phpini = PhpEditor::getInstance();
 
         // Needed to track changes
         $phpiniClientPerms = $phpini->getClientPermission();
@@ -933,7 +917,7 @@ function reseller_checkAndUpdateData($domainId)
 
             $db->beginTransaction();
 
-            EventsManager::getInstance()->dispatch(Events::onBeforeEditDomain, ['domainId' => $domainId]);
+            EventAggregator::getInstance()->dispatch(Events::onBeforeEditDomain, ['domainId' => $domainId]);
 
             if ($phpini->updateClientDomainIni($phpini->getDomainIni(), $data['admin_id'])) {
                 $needDaemonRequest = true;
@@ -1039,7 +1023,9 @@ function reseller_checkAndUpdateData($domainId)
             // Update reseller properties
             update_reseller_c_props($data['reseller_id']);
 
-            EventsManager::getInstance()->dispatch(Events::onAfterEditDomain, ['domainId' => $domainId]);
+            EventAggregator::getInstance()->dispatch(
+                Events::onAfterEditDomain, ['domainId' => $domainId]
+            );
 
             $db->commit();
 
@@ -1060,7 +1046,7 @@ function reseller_checkAndUpdateData($domainId)
 
         Registry::set('errFieldsStack', $errFieldsStack);
         return false;
-    } catch (iMSCP_Exception $e) {
+    } catch (Exception $e) {
         $db->rollBack();
         throw $e;
     }
@@ -1076,7 +1062,6 @@ function reseller_checkAndUpdateData($domainId)
  * @param int $resellerLimit Limit for reseller
  * @param int $translatedServiceName Translation of service name
  * @return bool TRUE if new limit is valid, FALSE otherwise
- * @throws Zend_Exception
  */
 function isValidServiceLimit(
     $newCustomerLimit, $customerConsumption, $customerLimit, $resellerConsumption, $resellerLimit,
@@ -1138,14 +1123,10 @@ function isValidServiceLimit(
     return true;
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require 'imscp-lib.php';
 
 check_login('reseller');
-EventsManager::getInstance()->dispatch(Events::onResellerScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onResellerScriptStart);
 
 $cfg = Registry::get('config');
 
@@ -1215,7 +1196,9 @@ generatePage($tpl, $data);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(
+    Events::onResellerScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();
 
 unsetMessages();

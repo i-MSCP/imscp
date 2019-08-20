@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,36 +18,35 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_pTemplate as TemplateEngine;
-
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\TemplateEngine;
 
 /**
  * Can add SQL user for the given SQL database?
  *
  * @param int $sqldId SQL database unique identifier
  * @return bool
- * @throws Zend_Exception
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function canAddSQLUserForDatabase($sqldId)
 {
     $domainProps = get_domain_default_props($_SESSION['user_id']);
 
-    if($domainProps['domain_sqlu_limit'] == 0) {
+    if ($domainProps['domain_sqlu_limit'] == 0) {
         return true;
     }
-    
+
     if (get_customer_sql_users_count($domainProps['domain_id']) >= $domainProps['domain_sqlu_limit']) {
         // Count all SQL users that are owned by the customer, excluding those
         // that are already assigned to $sqldId
-        return (bool) exec_query(
+        return (bool)exec_query(
             '
                 SELECT COUNT(sqlu_id)
                 FROM sql_user AS t1
@@ -71,10 +70,6 @@ function canAddSQLUserForDatabase($sqldId)
  * @param TemplateEngine $tpl Template engine
  * @param int $sqldId Database unique identifier
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generateDatabaseSqlUserList(TemplateEngine $tpl, $sqldId)
 {
@@ -103,7 +98,7 @@ function generateDatabaseSqlUserList(TemplateEngine $tpl, $sqldId)
             'DB_USER_JS'   => tojs($row['sqlu_name']),
             'SQLU_ID'      => tohtml($row['sqlu_id'], 'htmlAttr')
         ]);
-        
+
         $tpl->parse('SQL_USERS_LIST', '.sql_users_list');
     }
 }
@@ -113,10 +108,6 @@ function generateDatabaseSqlUserList(TemplateEngine $tpl, $sqldId)
  *
  * @param TemplateEngine $tpl Template engine
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generatePage(TemplateEngine $tpl)
 {
@@ -138,25 +129,21 @@ function generatePage(TemplateEngine $tpl)
             'DB_NAME_JS' => tojs($row['sqld_name'])
         ]);
 
-        if(!canAddSQLUserForDatabase($row['sqld_id'])) {
+        if (!canAddSQLUserForDatabase($row['sqld_id'])) {
             $tpl->assign('SQL_USER_ADD_LINK', '');
         } else {
             $tpl->parse('SQL_USER_ADD_LINK', 'sql_user_add_link');
         }
-        
+
         generateDatabaseSqlUserList($tpl, $row['sqld_id']);
         $tpl->parse('SQL_DATABASES_LIST', '.sql_databases_list');
     }
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require_once 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 customerHasFeature('sql') or showBadRequestErrorPage();
 
 $tpl = new TemplateEngine();
@@ -187,7 +174,9 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(
+    Events::onClientScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();
 
 unsetMessages();

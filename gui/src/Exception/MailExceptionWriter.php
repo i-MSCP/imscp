@@ -34,9 +34,8 @@ use iMSCP\Utility\OpcodeCache;
 use Throwable;
 
 /**
- * Class iMSCP_Exception_Writer_Mail
- *
- * This exception writer writes an exception messages to admin email.
+ * Class MailExceptionWriter
+ * @package iMSCP\Exception
  */
 class MailExceptionWriter extends AbstractExceptionWriter
 {

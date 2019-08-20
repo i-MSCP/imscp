@@ -22,6 +22,7 @@
  * @noinspection
  * PhpUnhandledExceptionInspection
  * PhpDocMissingThrowsInspection
+ * PhpUnused
  */
 
 declare(strict_types=1);
@@ -36,7 +37,8 @@ use PDOException;
 use PDOStatement;
 
 /**
- * Class iMSCP_Database
+ * Class DatabaseMySQL
+ * @package iMSCP\Database
  */
 class DatabaseMySQL
 {
@@ -125,7 +127,7 @@ class DatabaseMySQL
     /**
      * Establishes the connection to the database.
      *
-     * Create and returns an new iMSCP_Database object which represents the
+     * Create and returns an new DatabaseMySQL object which represents the
      * connection to the database. If a connection with the same identifier is
      * already referenced, the connection is automatically closed and then, the
      * object is recreated.
@@ -140,14 +142,14 @@ class DatabaseMySQL
      * @return DatabaseMySQL
      */
     public static function connect(
-        $user,
-        $pass,
-        $type,
-        $host,
-        $name,
-        $connection = 'default',
-        $options = NULL
-    )
+        string $user,
+        string $pass,
+        string $type,
+        string $host,
+        string $name,
+        ?string $connection = 'default',
+        ?array $options = NULL
+    ): DatabaseMySQL
     {
         if (is_array($connection)) {
             $options = $connection;
@@ -171,7 +173,9 @@ class DatabaseMySQL
      * @deprecated Will be removed in a later release; now return self instead
      *             of underlying PDO instance
      */
-    public static function getRawInstance($connection = 'default')
+    public static function getRawInstance(
+        ?string $connection = 'default'
+    ): DatabaseMysql
     {
         return self::getInstance($connection);
     }
@@ -185,7 +189,9 @@ class DatabaseMySQL
      * @param string $connection Connection key name
      * @return DatabaseMySQL
      */
-    public static function getInstance($connection = 'default')
+    public static function getInstance(
+        ?string $connection = 'default'
+    ): DatabaseMysql
     {
         if (!isset(self::$instances[$connection])) {
             throw new DatabaseException(sprintf(
@@ -202,7 +208,7 @@ class DatabaseMySQL
      * @param string $connection
      * @return PDO
      */
-    public static function getPDO($connection = 'default')
+    public static function getPDO(string $connection = 'default'): PDO
     {
         return self::getInstance($connection)->pdo;
     }
@@ -223,7 +229,7 @@ class DatabaseMySQL
      *         If prepared statements are emulated by PDO, FALSE is never
      *         returned.
      */
-    public function prepare($sql, $options = NULL)
+    public function prepare(string $sql, ?array $options = NULL)
     {
         $this->events()->dispatch(new DatabaseEvent(
             Events::onBeforeQueryPrepare, ['context' => $this, 'query' => $sql]
@@ -256,7 +262,9 @@ class DatabaseMySQL
      * @param EventAggregator $events
      * @return EventManagerInterface
      */
-    public function events(EventAggregator $events = NULL)
+    public function events(
+        EventAggregator $events = NULL
+    ): EventManagerInterface
     {
         if (NULL !== $events) {
             $this->events = $events;
@@ -276,7 +284,7 @@ class DatabaseMySQL
      * @return array Array that contains error information associated with the
      *               last database operation
      */
-    public function errorInfo()
+    public function errorInfo(): array
     {
         return $this->pdo->errorInfo();
     }
@@ -348,7 +356,7 @@ class DatabaseMySQL
      * @param string|null $like
      * @return array An array which hold list of database tables
      */
-    public function getTables($like = NULL)
+    public function getTables(string $like = NULL): array
     {
         if ($like) {
             $stmt = $this->pdo->prepare('SHOW TABLES LIKE ?');
@@ -365,7 +373,7 @@ class DatabaseMySQL
      *
      * @return string Last row identifier that was inserted in database
      */
-    public function insertId()
+    public function insertId(): string
     {
         return $this->pdo->lastInsertId();
     }
@@ -376,7 +384,7 @@ class DatabaseMySQL
      * @param string $identifier Identifier (table or column name)
      * @return string
      */
-    public function quoteIdentifier($identifier)
+    public function quoteIdentifier(string $identifier): string
     {
         return '`' . str_replace('`', '``', $identifier) . '`';
     }
@@ -390,7 +398,7 @@ class DatabaseMySQL
      * @return string A quoted string that is theoretically safe to pass into an
      *                SQL statement
      */
-    public function quote($string, $parameterType = NULL)
+    public function quote(string $string, ?int $parameterType = NULL): string
     {
         return $this->pdo->quote($string, $parameterType);
     }
@@ -405,7 +413,7 @@ class DatabaseMySQL
      * @param mixed $value Attribute value
      * @return boolean TRUE on success, FALSE on failure
      */
-    public function setAttribute($attribute, $value)
+    public function setAttribute(int $attribute, $value): bool
     {
         return $this->pdo->setAttribute($attribute, $value);
     }
@@ -413,10 +421,10 @@ class DatabaseMySQL
     /**
      * Retrieves a PDO database connection attribute.
      *
-     * @param $attribute
+     * @param int $attribute
      * @return mixed Attribute value or NULL on failure
      */
-    public function getAttribute($attribute)
+    public function getAttribute(int $attribute)
     {
         return $this->pdo->getAttribute($attribute);
     }
@@ -427,7 +435,7 @@ class DatabaseMySQL
      * @link http://php.net/manual/en/pdo.begintransaction.php
      * @return void
      */
-    public function beginTransaction()
+    public function beginTransaction(): void
     {
         if ($this->transactionCounter == 0) {
             $this->pdo->beginTransaction();
@@ -446,7 +454,7 @@ class DatabaseMySQL
      * @link http://php.net/manual/en/pdo.commit.php
      * @return void
      */
-    public function commit()
+    public function commit(): void
     {
         $this->transactionCounter--;
 
@@ -466,7 +474,7 @@ class DatabaseMySQL
      * @link http://php.net/manual/en/pdo.rollback.php
      * @return void
      */
-    public function rollBack()
+    public function rollBack(): void
     {
         $this->transactionCounter--;
 
@@ -491,7 +499,7 @@ class DatabaseMySQL
      *
      * @return bool TRUE if a transaction is currently active, FALSE otherwise
      */
-    public function inTransaction()
+    public function inTransaction(): bool
     {
         return $this->pdo->inTransaction();
     }
@@ -499,7 +507,7 @@ class DatabaseMySQL
     /**
      * Gets the last SQLSTATE error code
      *
-     * @return mixed  The last SQLSTATE error code
+     * @return mixed The last SQLSTATE error code
      */
     public function getLastErrorCode()
     {
@@ -515,7 +523,7 @@ class DatabaseMySQL
      * @return string Last error message set by the {@link execute()} or
      *                {@link prepare()} methods.
      */
-    public function getLastErrorMessage()
+    public function getLastErrorMessage(): string
     {
         return $this->lastErrorMessage;
     }
@@ -529,7 +537,7 @@ class DatabaseMySQL
      * @return string Error information associated with the last database
      *                operation
      */
-    public function errorMsg()
+    public function errorMsg(): string
     {
         return implode(' - ', $this->pdo->errorInfo());
     }
@@ -539,7 +547,7 @@ class DatabaseMySQL
      *
      * @return string Quote identifier symbol
      */
-    public function getQuoteIdentifierSymbol()
+    public function getQuoteIdentifierSymbol(): string
     {
         return $this->nameQuote;
     }

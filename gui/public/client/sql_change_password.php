@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,24 +18,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Config_Handler_File as ConfigFile;
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_pTemplate as TemplateEngine;
-use iMSCP_Registry as Registry;
-
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Config\FileConfig;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 /**
  * Update SQL user password
  *
  * @param int $sqluId SQL user unique identifier
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  * @çeturn void
  */
 function updateSqlUserPassword($sqluId)
@@ -77,9 +76,9 @@ function updateSqlUserPassword($sqluId)
     }
 
     $config = Registry::get('config');
-    $mysqlConfig = new ConfigFile($config['CONF_DIR'] . '/mysql/mysql.data');
+    $mysqlConfig = new FileConfig($config['CONF_DIR'] . '/mysql/mysql.data');
 
-    EventsManager::getInstance()->dispatch(Events::onBeforeEditSqlUser, [
+    EventAggregator::getInstance()->dispatch(Events::onBeforeEditSqlUser, [
         'sqlUserId'       => $sqluId,
         'sqlUserPassword' => $password
     ]);
@@ -102,7 +101,7 @@ function updateSqlUserPassword($sqluId)
         sprintf('%s updated %s@%s SQL user password.', $_SESSION['user_logged'], $row['sqlu_name'], $row['sqlu_host']),
         E_USER_NOTICE
     );
-    EventsManager::getInstance()->dispatch(Events::onAfterEditSqlUser, [
+    EventAggregator::getInstance()->dispatch(Events::onAfterEditSqlUser, [
         'sqlUserId'       => $sqluId,
         'sqlUserPassword' => $password
     ]);
@@ -115,10 +114,6 @@ function updateSqlUserPassword($sqluId)
  * @param TemplateEngine $tpl
  * @param int $sqluId SQL user unique identifier
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generatePage(TemplateEngine $tpl, $sqluId)
 {
@@ -138,10 +133,8 @@ function generatePage(TemplateEngine $tpl, $sqluId)
 /**
  * Checks if SQL user permissions
  *
- * @param  int $sqlUserId SQL user unique identifier
+ * @param int $sqlUserId SQL user unique identifier
  * @return bool TRUE if the logged-in user has permission on SQL user, FALSE otherwise
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception_Database
  */
 function checkSqlUserPerms($sqlUserId)
 {
@@ -158,14 +151,10 @@ function checkSqlUserPerms($sqlUserId)
     )->fetchRow(PDO::FETCH_COLUMN);
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require_once 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 customerHasFeature('sql') && isset($_REQUEST['sqlu_id']) or showBadRequestErrorPage();
 
 $sqluId = intval($_REQUEST['sqlu_id']);
@@ -199,7 +188,9 @@ generatePage($tpl, $sqluId);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(
+    Events::onClientScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();
 
 unsetMessages();

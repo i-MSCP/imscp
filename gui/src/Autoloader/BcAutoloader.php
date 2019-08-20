@@ -35,7 +35,7 @@ class BcAutoloader
         // library/iMSCP
         'iMSCP_Application'                        => 'iMSCP\\Application',
         'iMSCP_Authentication'                    => 'iMSCP\\Authentication\\AuthService',
-        'iMSCP_Config'                             => 'iMSCP\\Config\\Config',
+        //'iMSCP_Config'                             => 'iMSCP\\Config\\Config',
         'iMSCP_Database'                           => 'iMSCP\\Database\\DatabaseMySQL',
         'iMSCP_Events'                             => 'iMSCP\\Event\\Events',
         'iMSCP_Exception'                          => 'iMSCP\\Exception\\Exception',
@@ -45,7 +45,7 @@ class BcAutoloader
         'iMSCP_Services'                           => 'iMSCP\\Services',
         'iMSCP_SystemInfo'                         => 'iMSCP\\SystemInfo',
         'iMSCP_Update'                             => 'iMSCP\\Update\\AbstractUpdate',
-        'iMSCP_Validate'                           => 'iMSCP\\Validate\\Common',
+        'iMSCP_Validate'                           => 'iMSCP\\Validate\\CommonValidation',
         'iMSCP_pTemplate'                          => 'iMSCP\\TemplateEngine',
         // library/iMSCP/Authentication
         'iMSCP_Authentication_AuthEvent'           => 'iMSCP\\Authentication\\AuthEvent',

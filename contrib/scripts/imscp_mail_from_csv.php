@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2010-2017 by Laurent Declercq
+ * Copyright (C) 2010-2018 by Laurent Declercq
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,6 +18,16 @@
  */
 
 /**
+ * @noinspection
+ * PhpUnhandledExceptionInspection
+ * PhpDocMissingThrowsInspection
+ * PhpIncludeInspection
+ */
+
+use iMSCP\Database\DatabaseMySQL;
+use iMSCP\Exception\Exception;
+
+/**
  * Script that allows to import mail accounts into i-MSCP using a CSV file as source.
  * CSV file entries must be as follow:
  *
@@ -29,7 +39,6 @@
 /**
  * Get mail data
  *
- * @throws iMSCP_Exception in case data are not found
  * @param string $domainName Domain name
  * @return array Array which contains mail data
  */
@@ -105,7 +114,7 @@ function cli_getMailData($domainName)
         return $data[$domainName];
     }
 
-    throw new iMSCP_Exception('This script can only add mail accounts for domains which are already managed by i-MSCP.');
+    throw new Exception('This script can only add mail accounts for domains which are already managed by i-MSCP.');
 }
 
 include '/var/www/imscp/gui/library/imscp-lib.php';
@@ -130,7 +139,7 @@ if (($handle = fopen($csvFilePath, 'r')) === false) {
     exit(1);
 }
 
-$db = iMSCP_Database::getInstance();
+$db = DatabaseMySQL::getInstance();
 $stmt = $db->prepare(
     '
         INSERT INTO mail_users (
@@ -151,11 +160,11 @@ while (($csvEntry = fgetcsv($handle, 1024, $csvDelimiter)) !== false) {
 
     try {
         if (!chk_email($asciiMailAddr)) {
-            throw new iMSCP_Exception(sprintf('%s is not a valid email address.', $mailAddr));
+            throw new Exception(sprintf('%s is not a valid email address.', $mailAddr));
         }
 
         if (!checkPasswordSyntax($mailPassword)) {
-            throw new iMSCP_Exception(sprintf('Wrong password syntax or length for the %s mail account.', $mailAddr));
+            throw new Exception(sprintf('Wrong password syntax or length for the %s mail account.', $mailAddr));
         }
 
         list($mailUser, $mailDomain) = explode('@', $asciiMailAddr);
@@ -181,7 +190,7 @@ while (($csvEntry = fgetcsv($handle, 1024, $csvDelimiter)) !== false) {
                 fwrite(STDERR, sprintf("ERROR: Couldn't insert `%s in database: %s\n", $mailAddr, $e->getMessage()));
             }
         }
-    } catch (iMSCP_Exception $e) {
+    } catch (Exception $e) {
         fwrite(STDERR, sprintf("ERROR: `%s` has been skipped: %s\n", $mailAddr, $e->getMessage()));
     }
 }

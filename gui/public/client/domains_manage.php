@@ -59,10 +59,10 @@ function generateDomainRedirectAndEditLink($id, $status, $redirectUrl)
 /**
  * Generates domains list
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @return void
  */
-function generateDomainsList($tpl)
+function generateDomainsList(TemplateEngine $tpl)
 {
     global $baseServerVhostUtf8;
     $cfg = Registry::get('config');
@@ -196,10 +196,10 @@ function generateDomainAliasRedirectAndEditLink($id, $status, $redirectUrl)
 /**
  * Generates domain aliases list
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @return void
  */
-function generateDomainAliasesList($tpl)
+function generateDomainAliasesList(TemplateEngine $tpl)
 {
     if (!customerHasFeature('domain_aliases')) {
         $tpl->assign('DOMAIN_ALIASES_BLOCK', '');
@@ -359,10 +359,10 @@ function generateSubdomainRedirectAndEditLink($id, $subdomainType, $status, $red
 /**
  * Generates subdomains list
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @return void
  */
-function generateSubdomainsList($tpl)
+function generateSubdomainsList(TemplateEngine $tpl)
 {
     if (!customerHasFeature('subdomains')) {
         $tpl->assign('SUBDOMAINS_BLOCK', '');
@@ -667,7 +667,7 @@ $tpl->assign([
     'TR_DOMAIN_NAME'    => tr('Domain')
 ]);
 
-iMSCP_Events_Aggregator::getInstance()->registerListener(
+EventAggregator::getInstance()->registerListener(
     Events::onGetJsTranslations,
     function (EventDescription $e) {
         $tr = $e->getParam('translations');
@@ -679,7 +679,7 @@ iMSCP_Events_Aggregator::getInstance()->registerListener(
 
 global $baseServerVhostUtf8;
 
-if (iMSCP_Registry::get('config')->get('CLIENT_WEBSITES_ALT_URLS') == 'yes') {
+if (Registry::get('config')->get('CLIENT_WEBSITES_ALT_URLS') == 'yes') {
     $baseServerVhostUtf8 = decode_idna(Registry::get('config')->get('BASE_SERVER_VHOST'));
 }
 

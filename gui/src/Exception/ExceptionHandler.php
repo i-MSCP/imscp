@@ -18,11 +18,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpUnused
+ */
+
 declare(strict_types=1);
 
 namespace iMSCP\Exception;
 
-use iMSCP\Exception\ExceptionEvent;
 use iMSCP\Event\EventManager;
 use iMSCP\Event\EventManagerInterface;
 use Throwable;
@@ -40,8 +46,8 @@ class ExceptionHandler
      * @var array Exception writers class names
      */
     protected $writers = [
-        'iMSCP_Exception_Writer_Browser',
-        'iMSCP_Exception_Writer_Mail'
+        'iMSCP\\Exception\\BrowserExceptionWriter',
+        'iMSCP\\Exception\\MailExceptionWriter'
     ];
 
     /**

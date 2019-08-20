@@ -22,6 +22,7 @@
  * @noinspection
  * PhpDocMissingThrowsInspection
  * PhpUnhandledExceptionInspection
+ * PhpUnused
  */
 
 declare(strict_types=1);
@@ -37,7 +38,7 @@ class Events
     /**
      * Event triggered after i-MSCP application has been fully bootstrapped
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - context : iMSCP\Application instance
      *
      * @const string
@@ -54,8 +55,8 @@ class Events
     /**
      * Event triggered at end of login script
      *
-     * iMSCP_Events_Event object parameter:
-     *  - templateEngine : An iMSCP_pTemplate object
+     * iMSCP\Event\Event object parameter:
+     *  - templateEngine : An iMSCP\TemplateEngine object
      *
      * @const string
      */
@@ -71,8 +72,8 @@ class Events
     /**
      * Event triggered at end of the lostpassword action script
      *
-     * iMSCP_Events_Event object parameter:
-     *  - templateEngine : iMSCP_pTemplate instance
+     * iMSCP\Event\Event object parameter:
+     *  - templateEngine : iMSCP\TemplateEngine instance
      *
      * @const string
      */
@@ -88,8 +89,8 @@ class Events
     /**
      * Event triggered at end of shared scripts
      *
-     * iMSCP_Events_Event object parameter:
-     *  - templateEngine : iMSCP_pTemplate instance
+     * iMSCP\Event\Event object parameter:
+     *  - templateEngine : iMSCP\TemplateEngine instance
      *
      * @const string
      */
@@ -105,8 +106,8 @@ class Events
     /**
      * Event triggered at end of admin scripts
      *
-     * iMSCP_Events_Event object parameter:
-     *  - templateEngine : iMSCP_pTemplate instance
+     * iMSCP\Event\Event object parameter:
+     *  - templateEngine : iMSCP\TemplateEngine instance
      *
      * @const string
      */
@@ -122,8 +123,8 @@ class Events
     /**
      * Event triggered at end of reseller scripts
      *
-     * iMSCP_Events_Event object parameter:
-     *  - templateEngine : iMSCP_pTemplate instance
+     * iMSCP\Event\Event object parameter:
+     *  - templateEngine : iMSCP\TemplateEngine instance
      *
      * @const string
      */
@@ -139,8 +140,8 @@ class Events
     /**
      * Event triggered end of client scripts
      *
-     * iMSCP_Events_Event object parameter:
-     *  - templateEngine: An iMSCP_pTemplate instance
+     * iMSCP\Event\Event object parameter:
+     *  - templateEngine: An iMSCP\TemplateEngine instance
      *
      * @const string
      */
@@ -149,8 +150,8 @@ class Events
     /**
      * Event triggered before of exception browser write process
      *
-     * iMSCP_Events_Event object parameter:
-     *  - context : iMSCP_Exception_Writer_Browser object
+     * iMSCP\Event\Event object parameter:
+     *  - context : iMSCP\Exception\BrowserExceptionWriter object
      *
      * @deprecated This event is deprecated and no longer triggered
      * @const string
@@ -160,9 +161,9 @@ class Events
     /**
      * Event triggered at end of exception browser write process
      *
-     * iMSCP_Events_Event object parameters:
-     *  - context        : iMSCP_Exception_Writer_Browser object
-     *  - templateEngine : iMSCP_pTemplate instance
+     * iMSCP\Event\Event object parameters:
+     *  - context        : iMSCP\Exception\BrowserExceptionWriter object
+     *  - templateEngine : iMSCP\TemplateEngine instance
      *
      * @deprecated This event is deprecated and no longer triggered
      * @const string
@@ -172,8 +173,8 @@ class Events
     /**
      * Event triggered before the authentication process
      *
-     * iMSCP_Events_Event object parameter:
-     *  - context : iMSCP_Authentication instance
+     * iMSCP\Event\Event object parameter:
+     *  - context : iMSCP\Authentication\AuthService instance
      *
      * @const string
      */
@@ -182,8 +183,8 @@ class Events
     /**
      * Event triggered on authentication process
      *
-     * iMSCP_Events_Event object parameters:
-     *  - context  : iMSCP_Authentication instance
+     * iMSCP\Event\Event object parameters:
+     *  - context  : iMSCP\Authentication\AuthService instance
      *  - username : Username
      *  - password : Password
      *
@@ -194,9 +195,9 @@ class Events
     /**
      * Event triggered after the authentication process
      *
-     * iMSCP_Events_Event object parameters:
-     *  - context    : iMSCP_Authentication instance
-     *  - authResult : iMSCP_Authentication_Result object
+     * iMSCP\Event\Event object parameters:
+     *  - context    : iMSCP\Authentication\AuthService instance
+     *  - authResult : iMSCP\Authentication\AuthResult object
      *
      * @const string
      */
@@ -205,8 +206,8 @@ class Events
     /**
      * Event triggered before an user identity is set
      *
-     * iMSCP_Events_Event object parameters:
-     *  - context  : iMSCP_Authentication instance
+     * iMSCP\Event\Event object parameters:
+     *  - context  : iMSCP\Authentication\AuthService instance
      *  - identity : stdClass object containing user identity data
      *
      * @const string
@@ -216,8 +217,8 @@ class Events
     /**
      * Event triggered after an user identity is set
      *
-     * iMSCP_Events_Event object parameter:
-     *  - context : iMSCP_Authentication instance
+     * iMSCP\Event\Event object parameter:
+     *  - context : iMSCP\Authentication\AuthService instance
      *
      * @const string
      */
@@ -226,8 +227,8 @@ class Events
     /**
      * Event triggered before an user identity is unset
      *
-     * iMSCP_Events_Event object parameter:
-     *  - context : iMSCP_Authentication instance
+     * iMSCP\Event\Event object parameter:
+     *  - context : iMSCP\Authentication\AuthService instance
      *
      * @const string
      */
@@ -236,8 +237,8 @@ class Events
     /**
      * Event triggered after an user identity is unset
      *
-     * iMSCP_Events_Event object parameter:
-     *  - context : iMSCP_Authentication instance
+     * iMSCP\Event\Event object parameter:
+     *  - context : iMSCP\Authentication\AuthService instance
      *
      * @const string
      */
@@ -260,7 +261,7 @@ class Events
     /**
      * Event triggered before user addition (admin, reseller)
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - userData : User login and personal data
      *
      * @const string
@@ -270,7 +271,7 @@ class Events
     /**
      * Event triggered after user addition (admin, reseller)
      *
-     * iMSCP_Events_Event objectparameters:
+     * iMSCP\Event\Event objectparameters:
      *  - userId   : User unique identifier
      *  - userData : User login and personal data
      *
@@ -281,7 +282,7 @@ class Events
     /**
      * Event triggered before user edition
      *
-     * iMSCP_Events_Event objectparameters:
+     * iMSCP\Event\Event objectparameters:
      *  - userId   : User unique identifier
      *  - userData : User login and personal data. Depending on context, some
      *               data can be unavailable
@@ -293,7 +294,7 @@ class Events
     /**
      * Event triggered after user edition
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - userId   : User unique identifier
      *  - userData : User login and personal data Depending on context, some
      *               data can be unavailable
@@ -305,7 +306,7 @@ class Events
     /**
      * Event triggered before user deletion
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - userId : User unique identifier
      *
      * @const string
@@ -315,7 +316,7 @@ class Events
     /**
      * Event triggered after user deletion
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - userId : User unique identifier
      *
      * @const string
@@ -326,7 +327,7 @@ class Events
      * Event triggered when a reseller account is moved from one administrator
      * to another administrator
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - resellerId          : Reseller unique identifier
      *  - fromAdministratorId : Administrator unique identifier
      *  - toAdministratorId   : Administrator unique identifier
@@ -339,7 +340,7 @@ class Events
      * Event triggered when a customer account is moved from one reseller to
      * another reseller
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - customerId     : Customer unique identifier
      *  - fromResellerId : Reseller unique identifier
      *  - toResellerId   : Reseller unique identifier
@@ -351,7 +352,7 @@ class Events
     /**
      * Event triggered before customer account deletion
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - customerId : Customer unique identifier
      *
      * @const string
@@ -361,7 +362,7 @@ class Events
     /**
      * Event triggered after customer account deletion
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - customerId : Customer unique identifier
      *
      * @const string
@@ -371,7 +372,7 @@ class Events
     /**
      * Event triggered before FTP user addition
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - ftpUserId    : FTP user unique identifier
      *  - ftpPassword  : FTP user password
      *  - ftpUserUid   : FTP user uid
@@ -386,7 +387,7 @@ class Events
     /**
      * Event triggered after FTP user addition
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - ftpUserId    : FTP user unique identifier
      *  - ftpPassword  : FTP user password
      *  - ftpUserUid   : FTP user uid
@@ -401,7 +402,7 @@ class Events
     /**
      * Event triggered before FTP user edition
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - ftpUserId   : FTP user unique identifier
      *  - ftpPassword : FTP user password
      *  - ftpUserHome : FTP user home
@@ -413,7 +414,7 @@ class Events
     /**
      * Event triggered after FTP user edition
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - ftpUserId   : FTP user unique identifier
      *  - ftpPassword : FTP user password
      *  - ftpUserHome : FTP user home
@@ -425,7 +426,7 @@ class Events
     /**
      * Event triggered before FTP user deletion
      *
-     * iMSCP_Events_Event objectparameter:
+     * iMSCP\Event\Event objectparameter:
      *  - ftpUserId : FTP user unique identifier
      *
      * @const string
@@ -435,7 +436,7 @@ class Events
     /**
      * Event triggered after FTP user deletion
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - ftpUserId : FTP user unique identifier
      *
      * @const string
@@ -445,7 +446,7 @@ class Events
     /**
      * Event triggered triggered before SQL user addition
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      * - SqlUsername     : SQL username
      * - SqlUserHost     : SQL user host
      * - SqlUserPassword : SQL user password for new SQL user or empty string
@@ -459,7 +460,7 @@ class Events
     /**
      * Event triggered after SQL user addition
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      * - SqlUserId       : SQL user unique identifier
      * - SqlUsername     : SQL username
      * - SqlUserHost     : SQL user host
@@ -474,7 +475,7 @@ class Events
     /**
      * Event triggered before SQL user edition
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - sqlUserId       : SQL user unique identifier
      *  - sqlUserPassword : SQL user password
      *
@@ -485,7 +486,7 @@ class Events
     /**
      * Event triggered after SQL user edition
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - sqlUserId : SQL user unique identifier
      *
      * @const string
@@ -495,7 +496,7 @@ class Events
     /**
      * Event triggered before SQL user deletion
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - sqlUserId   : SQL user unique identifier
      *  - sqlUsername : SQL username
      *  - sqlUserHost : SQL user host
@@ -507,7 +508,7 @@ class Events
     /**
      * Event triggered after SQL user deletion
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - sqlUserId : SQL user unique identifier
      *  - sqlUsername : SQL username
      *  - sqlUserHost : SQL user host
@@ -519,7 +520,7 @@ class Events
     /**
      * Event triggered before SQL database addition
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - dbName : Database name
      *
      * @const string
@@ -529,7 +530,7 @@ class Events
     /**
      * Event triggered after SQl database addition
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      * - dbId:  : Database unique identifier
      * - dbName : Database name
      *
@@ -540,7 +541,7 @@ class Events
     /**
      * Event triggered before SQL database deletion
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - sqlDbId : SQL database unique identifier
      *
      * @const string
@@ -550,7 +551,7 @@ class Events
     /**
      * Event triggered after SQL database deletion
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - sqlDbId : SQL database unique identifier
      *
      * @const string
@@ -560,7 +561,7 @@ class Events
     /**
      * Event triggered before custom DNS resource record addition
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - domainId : Customer main domain unique identifier
      *  - aliasId  : Domain alias unique identifier, 0 if no domain alias
      *  - name     : DNS resource record name field, including TTL
@@ -575,7 +576,7 @@ class Events
     /**
      * Event triggered after custom DNS resource record addition
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - id       : DNS resource record unique identifier
      *  - domainId : Customer main domain unique identifier
      *  - aliasId  : Domain alias unique identifier, 0 if no domain alias
@@ -591,7 +592,7 @@ class Events
     /**
      * Event triggered before custom DNS resource record edition
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - id       : DNS resource record unique identifier
      *  - domainId : Customer main domain unique identifier
      *  - aliasId  : Domain alias unique identifier, 0 if no domain alias
@@ -607,7 +608,7 @@ class Events
     /**
      * Event triggered after custom DNS resource record edition
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - id       : DNS resource record unique identifier
      *  - domainId : Customer main domain unique identifier
      *  - aliasId  : Domain alias unique identifier, 0 if no domain alias
@@ -623,7 +624,7 @@ class Events
     /**
      * Event triggered before custom DNS resource record deletion
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - id : DNS resource record unique identifier
      *
      * @const string
@@ -633,7 +634,7 @@ class Events
     /**
      * Event triggered after custom DNS resource record deletion
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - id : DNS resource record unique identifier
      *
      * @const string
@@ -643,8 +644,8 @@ class Events
     /**
      * Event triggered before injection of plugin service providers
      *
-     * iMSCP_Events_Event object parameter:
-     *  - pluginManager : iMSCP_Plugin_Manager instance
+     * iMSCP\Event\Event object parameter:
+     *  - pluginManager : iMSCP\Plugin\PluginManager instance
      *
      * @const string
      */
@@ -653,8 +654,8 @@ class Events
     /**
      * Event triggered before injection of plugin routes
      *
-     * iMSCP_Events_Event object parameter:
-     *  - pluginManager : iMSCP_Plugin_Manager instance
+     * iMSCP\Event\Event object parameter:
+     *  - pluginManager : iMSCP\Plugin\PluginManager instance
      *
      * @const string
      */
@@ -663,8 +664,8 @@ class Events
     /**
      * Event triggered before plugin list update
      *
-     * iMSCP_Events_Event object parameter:
-     *  - pluginManager : iMSCP_Plugin_Manager instance
+     * iMSCP\Event\Event object parameter:
+     *  - pluginManager : iMSCP\Plugin\PluginManager instance
      *
      * @const string
      */
@@ -673,8 +674,8 @@ class Events
     /**
      * Event triggered after plugin list update
      *
-     * iMSCP_Events_Event object parameter:
-     *  - pluginManager : iMSCP_Plugin_Manager instance
+     * iMSCP\Event\Event object parameter:
+     *  - pluginManager : iMSCP\Plugin\PluginManager instance
      *
      * @const string
      */
@@ -683,8 +684,8 @@ class Events
     /**
      * Event triggered before plugin data synchronization
      *
-     * iMSCP_Events_Event object parameter:
-     *  - pluginManager : iMSCP_Plugin_Manager instance
+     * iMSCP\Event\Event object parameter:
+     *  - pluginManager : iMSCP\Plugin\PluginManager instance
      *
      * @const string
      */
@@ -693,8 +694,8 @@ class Events
     /**
      * Event triggered after plugin data synchronization
      *
-     * iMSCP_Events_Event object parameter:
-     *  - pluginManager : iMSCP_Plugin_Manager instance
+     * iMSCP\Event\Event object parameter:
+     *  - pluginManager : iMSCP\Plugin\PluginManager instance
      *
      * @const string
      */
@@ -703,8 +704,8 @@ class Events
     /**
      * Event triggered before plugin installation
      *
-     * iMSCP_Events_Event object parameters:
-     *  - pluginManager : iMSCP_Plugin_Manager instance
+     * iMSCP\Event\Event object parameters:
+     *  - pluginManager : iMSCP\Plugin\PluginManager instance
      *  - pluginName    : Plugin name
      *
      * @const string
@@ -714,8 +715,8 @@ class Events
     /**
      * Event triggered after plugin installation
      *
-     * iMSCP_Events_Event object parameters:
-     *  - pluginManager : iMSCP_Plugin_Manager instance
+     * iMSCP\Event\Event object parameters:
+     *  - pluginManager : iMSCP\Plugin\PluginManager instance
      *  - pluginName    : Plugin name
      *
      * @const string
@@ -725,8 +726,8 @@ class Events
     /**
      * Event triggered before plugin activation
      *
-     * iMSCP_Events_Event object parameters:
-     *  - pluginManager : iMSCP_Plugin_Manager instance
+     * iMSCP\Event\Event object parameters:
+     *  - pluginManager : iMSCP\Plugin\PluginManager instance
      *  - pluginName    : Plugin name
      *
      * @const string
@@ -736,8 +737,8 @@ class Events
     /**
      * Event triggered after plugin activation
      *
-     * iMSCP_Events_Event object parameters:
-     *  - pluginManager : iMSCP_Plugin_Manager instance
+     * iMSCP\Event\Event object parameters:
+     *  - pluginManager : iMSCP\Plugin\PluginManager instance
      *  - pluginName    : Plugin name
      *
      * @const string
@@ -747,8 +748,8 @@ class Events
     /**
      * Event triggered before plugin deactivation
      *
-     * iMSCP_Events_Event object parameter:
-     *  - pluginManager : iMSCP_Plugin_Manager instance
+     * iMSCP\Event\Event object parameter:
+     *  - pluginManager : iMSCP\Plugin\PluginManager instance
      *  - pluginName    : Plugin name
      *
      * @const string
@@ -758,8 +759,8 @@ class Events
     /**
      * Event triggered after plugin deactivation
      *
-     * iMSCP_Events_Event object parameters:
-     *  - pluginManager : iMSCP_Plugin_Manager instance
+     * iMSCP\Event\Event object parameters:
+     *  - pluginManager : iMSCP\Plugin\PluginManager instance
      *  - pluginName    : Plugin name
      *
      * @const string
@@ -769,8 +770,8 @@ class Events
     /**
      * Event triggered before plugin update
      *
-     * iMSCP_Events_Event object parameters:
-     *  - pluginManager     : iMSCP_Plugin_Manager instance
+     * iMSCP\Event\Event object parameters:
+     *  - pluginManager     : iMSCP\Plugin\PluginManager instance
      *  - pluginName        : Plugin name
      *  - pluginFromVersion : Version from which plugin is being updated
      *  - PluginToVersion   : Version to which plugin is being updated
@@ -782,8 +783,8 @@ class Events
     /**
      * Event triggered after plugin update
      *
-     * iMSCP_Events_Event object parameters:
-     *  - pluginManager     : iMSCP_Plugin_Manager instance
+     * iMSCP\Event\Event object parameters:
+     *  - pluginManager     : iMSCP\Plugin\PluginManager instance
      *  - pluginName        : Plugin name
      *  - PluginFromVersion : Version to which plugin has been updated
      *  - PluginToVersion   : Version from which plugin has been updated
@@ -795,8 +796,8 @@ class Events
     /**
      * Event triggered before plugin uninstallation
      *
-     * iMSCP_Events_Event object parameters:
-     *  - pluginManager : iMSCP_Plugin_Manager instance
+     * iMSCP\Event\Event object parameters:
+     *  - pluginManager : iMSCP\Plugin\PluginManager instance
      *  - pluginName    : Plugin name
      *
      * @const string
@@ -806,8 +807,8 @@ class Events
     /**
      * Event triggered after plugin uninstallation
      *
-     * iMSCP_Events_Event object parameters:
-     *  - pluginManager : iMSCP_Plugin_Manager instance
+     * iMSCP\Event\Event object parameters:
+     *  - pluginManager : iMSCP\Plugin\PluginManager instance
      *  - pluginName    : Plugin name
      *
      * @const string
@@ -817,8 +818,8 @@ class Events
     /**
      * Event triggered before plugin deletion
      *
-     * iMSCP_Events_Event object parameters:
-     *  - pluginManager : iMSCP_Plugin_Manager instance
+     * iMSCP\Event\Event object parameters:
+     *  - pluginManager : iMSCP\Plugin\PluginManager instance
      *  - pluginName    : Plugin name
      *
      * @const string
@@ -828,8 +829,8 @@ class Events
     /**
      * Event triggered after plugin deletion
      *
-     * iMSCP_Events_Event object parameters:
-     *  - pluginManager : iMSCP_Plugin_Manager instance
+     * iMSCP\Event\Event object parameters:
+     *  - pluginManager : iMSCP\Plugin\PluginManager instance
      *  - pluginName    : Plugin name
      *
      * @const string
@@ -839,8 +840,8 @@ class Events
     /**
      * Event triggered before plugin protection
      *
-     * iMSCP_Events_Event object parameters:
-     *  - pluginManager : iMSCP_Plugin_Manager instance
+     * iMSCP\Event\Event object parameters:
+     *  - pluginManager : iMSCP\Plugin\PluginManager instance
      *  - pluginName    : Plugin name
      *
      * @const string
@@ -850,8 +851,8 @@ class Events
     /**
      * Event triggered after plugin protection
      *
-     * iMSCP_Events_Event object parameters:
-     *  - pluginManager : iMSCP_Plugin_Manager instance
+     * iMSCP\Event\Event object parameters:
+     *  - pluginManager : iMSCP\Plugin\PluginManager instance
      *  - pluginName    : Plugin name
      *
      * @const string
@@ -861,7 +862,7 @@ class Events
     /**
      * Event triggered before plugin locking.
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - pluginName : Plugin name
      *
      * @const string
@@ -871,7 +872,7 @@ class Events
     /**
      * Event triggered ater plugin locking
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - pluginName : Plugin name
      *
      * @const string
@@ -881,7 +882,7 @@ class Events
     /**
      * Event triggered before plugin unlocking
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - pluginName : Plugin name
      *
      * @const string
@@ -891,7 +892,7 @@ class Events
     /**
      * Event triggered after plugin unlocking
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - pluginName : Plugin name
      *
      * @const string
@@ -901,7 +902,7 @@ class Events
     /**
      * Event triggered before domain (customer account) addition
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - createdBy     : Reseller unique identifier
      *  - customerId    : Customer unique identifier
      *  - customerEmail : Customer email address
@@ -920,7 +921,7 @@ class Events
     /**
      * Event triggered after domain (customer account) addition
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - createdBy     : Reseller unique identifier
      *  - customerId    : Customer unique identifier
      *  - customerEmail : Customer email address
@@ -941,7 +942,7 @@ class Events
     /**
      * Event triggered before domain edition
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - domainId     : Domain unique identifier
      *  - domainName   : Domain name
      *  - mountPoint   : Domainmount point
@@ -958,7 +959,7 @@ class Events
     /**
      * Event triggered after domain edition
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - domainId     : Domain unique identifier
      *  - domainName   : Domain name
      *  - mountPoint   : Domainmount point
@@ -975,7 +976,7 @@ class Events
     /**
      * Event triggered after subdomain addition
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - subdomainName  : Subdomain name
      *  - subdomainType  : Subdomain type, either 'als' or 'dmn' depending on
      *                     parent domain type
@@ -996,7 +997,7 @@ class Events
     /**
      * Event triggered after subdomain addition
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - subdomainId    : Subdomain unique identifier
      *  - subdomainName  : Subdomain name
      *  - subdomainType  : Subdomain type, either 'als' or 'dmn' depending on
@@ -1018,7 +1019,7 @@ class Events
     /**
      * Event triggered before subdomain edition
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - subdomainId   : Subdomain unique identifier
      *  - subdomainName : Subdomain name
      *  - subdomainType : Subdomain type, either 'als' or 'dmn' depending on
@@ -1038,7 +1039,7 @@ class Events
     /**
      * Event triggered after subdomain edition
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - subdomainId   : Subdomain unique identifier
      *  - subdomainName : Subdomain name
      *  - subdomainType : Subdomain type, either 'als' or 'dmn' depending on
@@ -1058,7 +1059,7 @@ class Events
     /**
      * Event triggered before subdomain deletion
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - subdomainId   : Subdomain unique identifier
      *  - subdomainName : Subdomain name
      *  - subdomainType : Subdomain type, either 'sub' or 'alssub' depending on
@@ -1073,7 +1074,7 @@ class Events
     /**
      * Event triggered after subdomain deletion
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - subdomainId   : Subdomain unique identifier
      *  - subdomainName : Subdomain name
      *  - subdomainType : Subdomain type, either 'sub' or 'alssub' depending on
@@ -1088,7 +1089,7 @@ class Events
     /**
      * Event triggered before domain alias addition
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - domainId: Customer main domain unique identifier
      *  - domainAliasName: Domain alias name
      *  - mountPoint: Domain alias mount point
@@ -1106,7 +1107,7 @@ class Events
     /**
      * Event triggered after domain alias addition
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - domainId: Customer main domain unique identifier
      *  - domainAliasId: Domain alias unique identifier
      *  - domainAliasName: Domain alias name
@@ -1125,7 +1126,7 @@ class Events
     /**
      * Event triggered before domain alias edition
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - domainAliasId  : Domain alias unique identifier
      *  - domainAliasName: Domain alias name
      *  - mountPoint     : Domain alias mount point
@@ -1143,7 +1144,7 @@ class Events
     /**
      * Event triggered after domain alias edition
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - domainAliasId   : Domain alias unique identifier
      *  - domainAliasName : Domain alias name
      *  - mountPoint      : Domain alias mount point
@@ -1161,7 +1162,7 @@ class Events
     /**
      * Event triggered before domain alias deletion
      *
-     * The listeners receive an iMSCP_Events_Event object with the following
+     * The listeners receive an iMSCP\Event\Event object with the following
      * parameter:
      *
      * - domainAliasId : Domain alias unique identifier
@@ -1173,7 +1174,7 @@ class Events
     /**
      * Event triggered before domain alias deletion
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - domainAliasId : Domain alias unique identifier
      *
      * @const string
@@ -1183,7 +1184,7 @@ class Events
     /**
      * Event triggered before mail account addition.
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - mailUsername : Mail account local part
      *  - mailAddress  : Mail account address
      *
@@ -1194,7 +1195,7 @@ class Events
     /**
      * Event triggered after mail account addition
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - mailId       : Mail account unique identifier
      *  - mailUsername : Mail account local part
      *  - mailAddress  : Mail account address
@@ -1206,7 +1207,7 @@ class Events
     /**
      * Event triggered before mail account edition
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - mailId : mailId: Mail account unique identifier
      *
      * @const string
@@ -1216,7 +1217,7 @@ class Events
     /**
      * Event triggered after mail account edition
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - mailId : mailId: Mail account unique identifier
      *
      * @const string
@@ -1226,7 +1227,7 @@ class Events
     /**
      * Event triggered before mail account deletion
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - mailId : mailId: Mail account unique identifier
      *
      * @const string
@@ -1236,7 +1237,7 @@ class Events
     /**
      * Event triggered after mail account deletion
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - mailId : Mail account unique identifier
      *
      * @const string
@@ -1246,7 +1247,7 @@ class Events
     /**
      * Event triggered before catch-all account addition
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - mailCatchallDomain    : Catch-all account domain
      *  - mailCatchallAddresses : Catch-all account addresses
      *
@@ -1257,7 +1258,7 @@ class Events
     /**
      * Event triggered after catch-all account addition
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - mailCatchallId        : Catch-all account unique identifier
      *  - mailCatchallDomain    : Catch-all account domain
      *  - mailCatchallAddresses : Catch-all account addresses
@@ -1269,7 +1270,7 @@ class Events
     /**
      * Event triggered before catch-all acount deletion
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - mailCatchallId : Catch-all account unique identifier
      *
      * @const string
@@ -1279,7 +1280,7 @@ class Events
     /**
      * Event triggered after catch-all acount deletion
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - mailCatchallId : Catch-all account unique identifier
      *
      * @const string
@@ -1289,8 +1290,8 @@ class Events
     /**
      * Event triggered before preparation of SQL statement
      *
-     * iMSCP_Database_Events_Database object parameters:
-     *  - context : iMSCP_Database object
+     * iMSCP\Database\DatabaseEvent object parameters:
+     *  - context : iMSCP\Database\DatabaseMysql object
      *  - query   : SQL statement being prepared
      *
      * @const string
@@ -1300,8 +1301,8 @@ class Events
     /**
      * Event triggered after preparation of a SQL statement
      *
-     * iMSCP_Database_Events_Statement object parameters:
-     *  - context   : iMSCP_Database object
+     * iMSCP\Database\DatabaseStatementEvent object parameters:
+     *  - context   : iMSCP\Database\DatabaseMysql object
      *  - statement : PDOStatement object
      *
      * @const string
@@ -1313,12 +1314,12 @@ class Events
      *
      * Depending on context:
      *
-     * iMSCP_Database_Events_Statement object parameters:
-     *   - context  : iMSCP_Database object
+     * iMSCP\Database\DatabaseStatementEvent object parameters:
+     *   - context  : iMSCP\Database\DatabaseMysql object
      *   - statement: PDOStatement object
      * or
-     * iMSCP_Database_Events_Database object parameters:
-     *   - context : iMSCP_Database object
+     * iMSCP\Database\DatabaseEvent object parameters:
+     *   - context : iMSCP\Database\DatabaseMysql object
      *   - query   : SQL statement being prepared and executed (PDO::query())
      *
      * @const string
@@ -1328,8 +1329,8 @@ class Events
     /**
      * Event triggered after execution of a SQL prepared statement
      *
-     * iMSCP_Database_Events_Statement object parameters:
-     *  - context   : An iMSCP_Database object
+     * iMSCP\Database\DatabaseStatementEvent object parameters:
+     *  - context   : An iMSCP\Database\DatabaseMysql object
      *  - statement : PDOStatement object
      *
      * @const string
@@ -1339,8 +1340,8 @@ class Events
     /**
      * Event triggered before loading of first parent template
      *
-     * iMSCP_Events_Event object parameters:
-     *  - context     : iMSCP_pTemplate instance
+     * iMSCP\Event\Event object parameters:
+     *  - context     : iMSCP\TemplateEngine instance
      *  - templatePath: Template path
      *
      * @const string
@@ -1350,8 +1351,8 @@ class Events
     /**
      * Event triggered after loading of first parent template
      *
-     * iMSCP_Events_Event object parameters:
-     *  - context         : An iMSCP_pTemplate instance
+     * iMSCP\Event\Event object parameters:
+     *  - context         : An iMSCP\TemplateEngine instance
      *  - templateContent : Template content
      *
      * @const string
@@ -1361,8 +1362,8 @@ class Events
     /**
      * Event triggered before template loading
      *
-     * iMSCP_Events_Event object parameters:
-     *  - context      : iMSCP_pTemplate instance
+     * iMSCP\Event\Event object parameters:
+     *  - context      : iMSCP\TemplateEngine instance
      *  - templatePath : Template path
      *
      * @const string
@@ -1372,8 +1373,8 @@ class Events
     /**
      * Event triggered after template loading
      *
-     * iMSCP_Events_Event object parameters:
-     *  - context         : iMSCP_pTemplate instance
+     * iMSCP\Event\Event object parameters:
+     *  - context         : iMSCP\TemplateEngine instance
      *  - templateContent : Template content
      *
      * @const string
@@ -1383,10 +1384,10 @@ class Events
     /**
      * Event triggered on template parsing
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - pname          : Parent template name
      *  - tname          : template name
-     *  - templateEngine : iMSCP_pTemplate instance
+     *  - templateEngine : iMSCP\TemplateEngine instance
      *
      * @const string
      */
@@ -1395,8 +1396,8 @@ class Events
     /**
      * Event triggered before navigation generation
      *
-     * iMSCP_Events_Event object parameter:
-     *  - templateEngine: iMSCP_pTemplate instance
+     * iMSCP\Event\Event object parameter:
+     *  - templateEngine: iMSCP\TemplateEngine instance
      *
      * @const string
      */
@@ -1405,8 +1406,8 @@ class Events
     /**
      * Event triggered after navigation generation
      *
-     * iMSCP_Events_Event object parameter:
-     *  - templateEngine: iMSCP_pTemplate instance
+     * iMSCP\Event\Event object parameter:
+     *  - templateEngine: iMSCP\TemplateEngine instance
      *
      * @const string
      *
@@ -1416,7 +1417,7 @@ class Events
     /**
      * Event triggered before domain (customer account) activation/deactivation
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - customerId : Customer unique identifier
      *  - action     : The action taking place, either 'activate' or
      *                 'deactivate'
@@ -1428,7 +1429,7 @@ class Events
     /**
      * Event triggered after domain (customer account) activation/deactivation
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - customerId : Customer unique identifier
      *  - action     : The action taking place, either 'activate' or
      *                 'deactivate'
@@ -1440,7 +1441,7 @@ class Events
     /**
      * Event triggered before an admin or reseller send a circular
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - sender_name  : Sender name
      *  - sender_email : Sender email
      *  - rcpt_to      : Recipient type, either 'all_users',
@@ -1457,7 +1458,7 @@ class Events
     /**
      * Event triggered after an admin or reseller has sent a circular
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - sender_name  : Sender name
      *  - sender_email : Sender email
      *  - rcpt_to      : Recipient type, either 'all_users',
@@ -1474,7 +1475,7 @@ class Events
     /**
      * Event triggered by the i18n_getJsTranslations() function
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - translations : An ArrayObject that allows third-party components to
      *                   add their own JS translations
      *
@@ -1486,7 +1487,7 @@ class Events
     /**
      * Event triggered by the send_mail() function
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - mail_data : An ArrayObject that allows third-party components to
      *                override mail data which are:
      *               - mail_id      : Mail unique identifier
@@ -1511,7 +1512,7 @@ class Events
     /**
      * Event triggered on IP address addition
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - ip_number      : IP address
      *  - ip_netmask     : IP netmask
      *  - ip_card        : Network interface to which IP address is attached
@@ -1524,7 +1525,7 @@ class Events
     /**
      * Event triggered on IP address edition
      *
-     * iMSCP_Events_Event object parameters:
+     * iMSCP\Event\Event object parameters:
      *  - ip_id          : IP address unique identifier
      *  - ip_number      : IP address
      *  - ip_netmask     : IP netmask
@@ -1538,7 +1539,7 @@ class Events
     /**
      * Event triggered on IP address deletion
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      *  - ip_id : IP address unique identifier
      *
      * @const string
@@ -1548,7 +1549,7 @@ class Events
     /**
      * Event triggered on page messages generation
      *
-     * iMSCP_Events_Event object parameter:
+     * iMSCP\Event\Event object parameter:
      * - flashMessenger : Zend_Controller_Action_Helper_FlashMessenger instance
      *
      * @const string

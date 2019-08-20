@@ -40,5 +40,5 @@ abstract class AbstractExceptionWriter
      * @param ExceptionEvent $event
      * @return void
      */
-    abstract public function onUncaughtException(ExceptionEvent $event);
+    abstract public function onUncaughtException(ExceptionEvent $event): void;
 }

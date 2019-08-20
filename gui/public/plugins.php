@@ -18,21 +18,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/** @noinspection PhpUnhandledExceptionInspection */
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
+ */
 
 use iMSCP\Application;
+use iMSCP\Event\Events;
 use iMSCP\Plugin\PluginRoutesInjector;
+use iMSCP\Registry;
 
 require_once __DIR__ . '/../library/imscp-lib.php';
 
 (function () {
     /** @var Application $app */
-    $app = iMSCP_Registry::get('iMSCP_Application');
+    $app = Registry::get('iMSCP_Application');
     $slim = $app->getSlimApplication();
     $pm = $app->getPluginManager();
     $app->getEventsManager()->dispatch(
-        iMSCP_Events::onBeforeInjectPluginRoutes,
-        ['pluginManager' => $pm]
+        Events::onBeforeInjectPluginRoutes, ['pluginManager' => $pm]
     );
     (new PluginRoutesInjector())($slim, $pm);
     $slim->run();

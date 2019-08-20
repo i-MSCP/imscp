@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by i-MSCP Team
+ * Copyright (C) 2010-2019 by i-MSCP Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,11 +18,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Include core library
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
+ */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+
 require_once 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 customerHasFeature('aps') or showBadRequestErrorPage();
 
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {

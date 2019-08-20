@@ -16,8 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * @noinspection PhpUnhandledExceptionInspection PhpDocMissingThrowsInspection
+ */
+
+/** @noinspection
+ * PhpUnusedParameterInspection
+ * PhpUnhandledExceptionInspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnused
  */
 
 declare(strict_types=1);
@@ -25,8 +30,8 @@ declare(strict_types=1);
 namespace iMSCP\Plugin\Validate;
 
 use Archive_Tar;
-use iMSCP\Plugin\Manager;
-use iMSCP_Registry;
+use iMSCP\Plugin\PluginManager;
+use iMSCP\Registry;
 use ParseError;
 use Zend_Config;
 use Zend_Exception;
@@ -132,18 +137,18 @@ class PluginArchive extends Zend_Validate_Abstract
     /**
      * Set the plugin manager.
      *
-     * @param Manager|NULL $pm
+     * @param PluginManager|NULL $pm
      * @return PluginArchive
      */
     public function setPluginManager(
-        Manager $pm = NULL
+        PluginManager $pm = NULL
     ): PluginArchive
     {
         if ($pm === NULL) {
-            $pm = new Manager(
-                iMSCP_Registry::get('iMSCP_Application')->getContainer(),
-                iMSCP_Registry::get('iMSCP_Application')->getEventManager(),
-                );
+            $pm = new PluginManager(
+                Registry::get('iMSCP_Application')->getContainer(),
+                Registry::get('iMSCP_Application')->getEventManager(),
+            );
         }
 
         $this->_options['plugin_manager'] = $pm;
@@ -394,9 +399,9 @@ class PluginArchive extends Zend_Validate_Abstract
     /**
      * Returns the set plugin_manager.
      *
-     * @return Manager
+     * @return PluginManager
      */
-    public function getPluginManager(): Manager
+    public function getPluginManager(): PluginManager
     {
         return $this->_options['plugin_manager'];
     }

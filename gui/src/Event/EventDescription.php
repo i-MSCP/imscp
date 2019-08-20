@@ -85,7 +85,7 @@ interface EventDescription
     public function setParam($name, $value);
 
     /**
-     * Indicate whether or not the parent iMSCP_Events_Manager_Interface should
+     * Indicate whether or not the parent iMSCP\\Event\\EventManagerInterface should
      * stop propagating events.
      *
      * @param bool $flag

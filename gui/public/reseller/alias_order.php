@@ -1,38 +1,40 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2017 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/***********************************************************************************************************************
- * Main
+/**
+ * @noinspection
+ * PhpUnhandledExceptionInspection
+ * PhpDocMissingThrowsInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Database\DatabaseMySQL;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Exception\Exception;
+use iMSCP\Registry;
 
 require 'imscp-lib.php';
 
 check_login('reseller');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onResellerScriptStart);
 resellerHasFeature('domain_aliases') or showBadRequestErrorPage();
 
 if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['del_id'])) {
@@ -52,7 +54,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['del_i
         showBadRequestErrorPage();
     }
 
-    $db = iMSCP_Database::getInstance();
+    $db = DatabaseMySQL::getInstance();
 
     try {
         $db->beginTransaction();
@@ -61,7 +63,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['del_i
         $db->commit();
         write_log(sprintf('An alias order has been deleted by %s.', $_SESSION['user_logged']), E_USER_NOTICE);
         set_page_message('Alias order successfully deleted.', 'success');
-    } catch (iMSCP_Exception $e) {
+    } catch (Exception $e) {
         $db->rollBack();
         write_log(sprintf('System was unable to remove alias order: %s', $e->getMessage()), E_USER_ERROR);
         set_page_message('Could not remove alias order. An unexpected error occurred.');
@@ -92,25 +94,25 @@ if (!$stmt->rowCount()) {
 }
 
 $row = $stmt->fetchRow();
-$db = iMSCP_Database::getInstance();
+$db = DatabaseMySQL::getInstance();
 
 try {
     $db->beginTransaction();
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddDomainAlias, [
+    EventAggregator::getInstance()->dispatch(Events::onBeforeAddDomainAlias, [
         'domainId'        => $row['domain_id'],
         'domainAliasName' => $row['alias_name']
     ]);
 
     exec_query('UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?', ['toadd', $id]);
 
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
 
     if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
         createDefaultMailAccounts($row['domain_id'], $row['email'], $row['alias_name'], MT_ALIAS_FORWARD, $id);
     }
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddDomainAlias, [
+    EventAggregator::getInstance()->dispatch(Events::onAfterAddDomainAlias, [
         'domainId'        => $row['domain_id'],
         'domainAliasName' => $row['alias_name'],
         'domainAliasId'   => $id
@@ -120,7 +122,7 @@ try {
     send_request();
     write_log(sprintf('An alias order has been processed by %s.', $_SESSION['user_logged']), E_USER_NOTICE);
     set_page_message(tr('Order successfully processed.'), 'success');
-} catch (iMSCP_Exception $e) {
+} catch (Exception $e) {
     $db->rollBack();
     write_log(sprintf('System was unable to process alias order: %s', $e->getMessage()), E_USER_ERROR);
     set_page_message('Could not process alias order. An unexpected error occurred.', 'error');

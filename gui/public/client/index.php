@@ -123,12 +123,12 @@ function client_generateTrafficUsageBar(TemplateEngine $tpl, $usage, $maxUsage)
 /**
  * Generates disk usage bar
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine  $tpl Template engine
  * @param int $usage Usage in bytes
  * @param int $maxUsage Max usage in bytes
  * @return void
  */
-function client_generateDiskUsageBar($tpl, $usage, $maxUsage)
+function client_generateDiskUsageBar(TemplateEngine $tpl, $usage, $maxUsage)
 {
 
     $diskUsagePercent = getPercentUsage($usage, $maxUsage);
@@ -151,11 +151,11 @@ function client_generateDiskUsageBar($tpl, $usage, $maxUsage)
 /**
  * Generates feature status
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @return void
  * @todo hide features that are not available for reseller
  */
-function client_generateFeatureStatus($tpl)
+function client_generateFeatureStatus(TemplateEngine $tpl)
 {
     $trYes = '<span style="color: green;">' . tr('Enabled') . '</span>';
     $trNo = '<span style="color: red;">' . tr('Disabled') . '</span>';;
@@ -268,12 +268,12 @@ function _client_getDomainRemainingTime($domainExpireDate)
 /**
  * Generates domain expires information
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @return void
  */
-function client_generateDomainExpiresInformation($tpl)
+function client_generateDomainExpiresInformation(TemplateEngine $tpl)
 {
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
     $domainProperties = get_domain_default_props($_SESSION['user_id']);
 
     if ($domainProperties['domain_expires'] != 0) {

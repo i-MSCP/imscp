@@ -20,15 +20,19 @@
 
 /**
  * @noinspection
- * PhpUnhandledExceptionInspection
  * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
  * PhpIncludeInspection
  */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\TemplateEngine;
 
 /**
  * Generate List of Domains assigned to IPs
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @return void
  */
 function generatePage($tpl)
@@ -101,15 +105,13 @@ function generatePage($tpl)
 require 'imscp-lib.php';
 
 check_login('reseller');
-iMSCP_Events_Aggregator::getInstance()->dispatch(
-    iMSCP_Events::onResellerScriptStart
-);
+EventAggregator::getInstance()->dispatch(Events::onResellerScriptStart);
 
 if (!resellerHasCustomers()) {
     showBadRequestErrorPage();
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'reseller/ip_usage.tpl',
@@ -133,8 +135,8 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(
-    iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]
+EventAggregator::getInstance()->dispatch(
+    Events::onResellerScriptEnd, ['templateEngine' => $tpl]
 );
 $tpl->prnt();
 

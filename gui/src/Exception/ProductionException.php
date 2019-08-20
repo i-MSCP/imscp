@@ -31,7 +31,8 @@ namespace iMSCP\Exception;
 use Throwable;
 
 /**
- * Class iMSCP_Exception_Production
+ * Class ProductionException
+ * @package iMSCP\Exception
  */
 class ProductionException extends Exception
 {

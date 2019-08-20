@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,23 +18,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_Exception as iMSCPException;
-use iMSCP_pTemplate as TemplateEngine;
-use iMSCP_Registry as Registry;
-
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Database\DatabaseMySQL;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Exception\Exception;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 /**
  * Add SQL database
  *
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function addSqlDb()
 {
@@ -76,18 +77,18 @@ function addSqlDb()
     }
 
     try {
-        EventsManager::getInstance()->dispatch(Events::onBeforeAddSqlDb, ['dbName' => $dbName]);
+        EventAggregator::getInstance()->dispatch(Events::onBeforeAddSqlDb, ['dbName' => $dbName]);
         execute_query(sprintf('CREATE DATABASE IF NOT EXISTS %s', quoteIdentifier($dbName)));
         exec_query('INSERT INTO sql_database (domain_id, sqld_name) VALUES (?, ?)', [$mainDmnId, $dbName]);
-        EventsManager::getInstance()->dispatch(Events::onAfterAddSqlDb, [
-            'dbId'   => iMSCP_Database::getInstance()->insertId(),
+        EventAggregator::getInstance()->dispatch(Events::onAfterAddSqlDb, [
+            'dbId'   => DatabaseMySQL::getInstance()->insertId(),
             'dbName' => $dbName
         ]);
         set_page_message(tr('SQL database successfully created.'), 'success');
         write_log(
             sprintf('A new database (%s) has been created by %s', $dbName, $_SESSION['user_logged']), E_USER_NOTICE
         );
-    } catch (iMSCPException $e) {
+    } catch (Exception $e) {
         write_log(sprintf("Couldn't create the %s database: %s", $dbName, $e->getMessage()));
         set_page_message(tr("Couldn't create the %s database.", $dbName), 'error');
     }
@@ -100,9 +101,6 @@ function addSqlDb()
  *
  * @param TemplateEngine $tpl
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
  */
 function generatePage(TemplateEngine $tpl)
 {
@@ -139,14 +137,10 @@ function generatePage(TemplateEngine $tpl)
     ]);
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require_once 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 customerHasFeature('sql') && !customerSqlDbLimitIsReached() or showBadRequestErrorPage();
 
 if (!empty($_POST)) {
@@ -180,7 +174,9 @@ generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(
+    Events::onClientScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();
 
 unsetMessages();

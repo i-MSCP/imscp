@@ -46,7 +46,7 @@ class EventManager implements EventManagerInterface
     protected $events = [];
 
     /**
-     * Return iMSCP_Events_Aggregator instance.
+     * Return EventAggregator instance.
      *
      * @return EventAggregator
      * @deprecated 1.1.6 (will be removed in later version

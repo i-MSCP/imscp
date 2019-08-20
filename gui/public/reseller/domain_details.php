@@ -25,23 +25,27 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\TemplateEngine;
 
 /**
  * Generate mail quota limit msg
  *
  * @param int $customerId Customer unique identifier
  * @return array
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function reseller_gen_mail_quota_limit_mgs($customerId)
 {
     $domainProps = get_domain_default_props($customerId, $_SESSION['user_id']);
-    $mailQuota =exec_query(
+    $mailQuota = exec_query(
         'SELECT IFNULL(SUM(quota), 0) FROM mail_users WHERE domain_id = ?', $domainProps['domain_id']
     )->fetchRow(PDO::FETCH_COLUMN);
 
@@ -51,15 +55,11 @@ function reseller_gen_mail_quota_limit_mgs($customerId)
 /**
  * Generates page
  *
- * @param iMSCP_pTemplate $tpl Template instance engine
+ * @param TemplateEngine $tpl Template instance engine
  * @param int $domainId Domain unique identifier
  * @return void
- * @throws Zend_Date_Exception
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
-function reseller_generatePage($tpl, $domainId)
+function reseller_generatePage(TemplateEngine $tpl, $domainId)
 {
     $stmt = exec_query(
         '
@@ -152,20 +152,16 @@ function reseller_generatePage($tpl, $domainId)
     ]);
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require 'imscp-lib.php';
 
 check_login('reseller');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onResellerScriptStart);
 
 if (!isset($_GET['domain_id'])) {
     redirectTo('users.php');
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'        => 'shared/layouts/ui.tpl',
     'page'          => 'reseller/domain_details.tpl',
@@ -206,7 +202,9 @@ reseller_generatePage($tpl, $_GET['domain_id']);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(
+    Events::onResellerScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();
 
 unsetMessages();

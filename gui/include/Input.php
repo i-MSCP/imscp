@@ -28,7 +28,7 @@ use iMSCP\Config\FileConfig;
 use iMSCP\Exception\Exception;
 use iMSCP\Registry;
 use Zend\Escaper\Escaper;
-use iMSCP\Validate\Common as CommonValidation;
+use iMSCP\Validate\CommonValidation as CommonValidation;
 
 global $ESCAPER;
 $ESCAPER = new Escaper('UTF-8');

@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by i-MSCP Team
+ * Copyright (C) 2010-2019 by i-MSCP Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,10 +18,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
+ * PhpUndefinedFieldInspection
+ */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Registry;
+
 require 'imscp-lib.php';
 
 check_login('reseller');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onResellerScriptStart);
 
 if (!resellerHasFeature('aps') || !isset($_GET['id'])) {
     showBadRequestErrorPage();
@@ -43,7 +55,7 @@ if (!$stmt->rowCount()) {
 }
 
 if ($stmt->fields['software_depot'] == 'no') {
-    $del_path = iMSCP_Registry::get('config')['GUI_APS_DIR'] . '/' . $_SESSION['user_id'] . '/'
+    $del_path = Registry::get('config')['GUI_APS_DIR'] . '/' . $_SESSION['user_id'] . '/'
         . $rs->fields['software_archive'] . '-' . $rs->fields['software_id'] . '.tar.gz';
     @unlink($del_path);
 }

@@ -32,7 +32,7 @@ use Zend_Uri_Http;
 class UriRedirect extends Zend_Uri_Http
 {
     /**
-     * Creates a iMSCP_Uri_Redirect from the given string
+     * Creates a UriRedirect from the given string
      *
      * @param string $uri String to create URI from, must start with prefix
      *                     http://, https:// or 'ftp://

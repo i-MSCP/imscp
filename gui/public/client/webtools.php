@@ -18,14 +18,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/** @noinspection PhpUnhandledExceptionInspection PhpDocMissingThrowsInspection */
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
+ */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\TemplateEngine;
 
 /**
  * Hide disabled features
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  */
-function client_hideDisabledFeatures($tpl)
+function client_hideDisabledFeatures(TemplateEngine $tpl)
 {
     if (!customerHasFeature('backup')) {
         $tpl->assign('BACKUP_FEATURE', '');
@@ -39,9 +48,9 @@ function client_hideDisabledFeatures($tpl)
 require_once 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'         => 'shared/layouts/ui.tpl',
     'page'           => 'client/webtools.tpl',
@@ -68,6 +77,8 @@ client_hideDisabledFeatures($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(
+    Events::onClientScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();
 unsetMessages();

@@ -125,7 +125,7 @@ class PluginManager
     protected $container;
 
     /**
-     * iMSCP_Plugin_Manager constructor.
+     * PluginManager constructor.
      *
      * @param $container ContainerInterface
      * @param $events EventAggregator

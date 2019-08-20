@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,24 +18,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP\Crypt as Crypt;
-use iMSCP_Database as Database;
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_pTemplate as TemplateEngine;
-use Zend_Form as Form;
-
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Crypt as Crypt;
+use iMSCP\Database\DatabaseMySQL;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Exception\Exception;
+use iMSCP\TemplateEngine;
+use Zend_Form as Form;
 
 /**
  * Update user data
  *
- * @throws Exception
  * @param Form $form
  * @param int $userId User unique identifier
  * @return void
+ * @throws Exception
  */
 function updateUserData(Form $form, $userId)
 {
@@ -56,12 +60,12 @@ function updateUserData(Form $form, $userId)
     }
 
     $passwordUpdated = $form->getValue('admin_pass') !== '';
-    $db = Database::getInstance();
+    $db = DatabaseMySQL::getInstance();
 
     try {
         $db->beginTransaction();
 
-        EventsManager::getInstance()->dispatch(Events::onBeforeEditUser, [
+        EventAggregator::getInstance()->dispatch(Events::onBeforeEditUser, [
             'userId'   => $userId,
             'userData' => $form->getValues()
         ]);
@@ -87,7 +91,7 @@ function updateUserData(Form $form, $userId)
         // Force user to login again (needed due to possible password or email change)
         exec_query('DELETE FROM login WHERE user_name = ?', $data['admin_name']);
 
-        EventsManager::getInstance()->dispatch(Events::onAfterEditUser, [
+        EventAggregator::getInstance()->dispatch(Events::onAfterEditUser, [
             'userId'   => $userId,
             'userData' => $form->getValues()
         ]);
@@ -126,12 +130,7 @@ function updateUserData(Form $form, $userId)
  * @param TemplateEngine $tpl
  * @param Form $form
  * @param int $userId User unique identifier
- *
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generatePage(TemplateEngine $tpl, Form $form, $userId)
 {
@@ -163,14 +162,10 @@ function generatePage(TemplateEngine $tpl, Form $form, $userId)
     $form->setDefaults($data);
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require 'imscp-lib.php';
 
 check_login('reseller');
-EventsManager::getInstance()->dispatch(Events::onResellerScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onResellerScriptStart);
 
 if (!isset($_GET['edit_id'])) {
     showBadRequestErrorPage();
@@ -188,7 +183,7 @@ if (!empty($_POST)) {
     updateUserData($form, $userId);
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'shared/partials/user_edit.phtml',
@@ -201,7 +196,9 @@ generatePage($tpl, $form, $userId);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(
+    Events::onResellerScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();
 
 unsetMessages();

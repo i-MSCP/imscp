@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by i-MSCP Team
+ * Copyright (C) 2010-2019 by i-MSCP Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,20 +18,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/***********************************************************************************************************************
- *  Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\TemplateEngine;
 
 /**
  * Generate page and return software unique identifier
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return int software unique identifier
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
-function client_generatePage($tpl)
+function client_generatePage(TemplateEngine $tpl)
 {
     if (!isset($_GET['id'])) {
         showBadRequestErrorPage();
@@ -46,17 +50,13 @@ function client_generatePage($tpl)
     return $softwareId;
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require_once 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 customerHasFeature('aps') or showBadRequestErrorPage();
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'                  => 'shared/layouts/ui.tpl',
     'page'                    => 'client/software_view.tpl',
@@ -88,7 +88,9 @@ generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(
+    Events::onClientScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();
 
 unsetMessages();

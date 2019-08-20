@@ -66,11 +66,11 @@ function editErrorPage($eid)
 /**
  * Generate page
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @param int $eid Error page unique identifier
  * @return void
  */
-function generatePage($tpl, $eid)
+function generatePage(TemplateEngine $tpl, $eid)
 {
     $vfs = new VirtualFileSystem($_SESSION['user_logged'], '/errors');
     $errorPageContent = $vfs->get($eid . '.html');

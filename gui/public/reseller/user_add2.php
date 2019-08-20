@@ -18,7 +18,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/** @noinspection PhpUnhandledExceptionInspection PhpDocMissingThrowsInspection */
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
+ */
+
+use iMSCP\Event\Event;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\PhpEditor;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 /**
  * Get first step data
@@ -48,16 +60,16 @@ function getFirstStepData()
 /**
  * Generate page
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @return void
  */
-function generatePage($tpl)
+function generatePage(TemplateEngine $tpl)
 {
     global $hpName, $php, $cgi, $sub, $als, $mail, $mailQuota, $ftp, $sqld,
            $sqlu, $traffic, $diskspace, $backup, $dns, $aps, $extMail,
            $webFolderProtection;
 
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
 
     $tpl->assign([
         'VL_TEMPLATE_NAME_VAL' => tohtml($hpName, 'htmlAttr'),
@@ -135,7 +147,7 @@ function generatePage($tpl)
             ? '' : ' checked'
     ]);
 
-    $phpini = iMSCP_PHPini::getInstance();
+    $phpini = PhpEditor::getInstance();
 
     if (!$phpini->resellerHasPermission('phpiniSystem')) {
         $tpl->assign('PHP_EDITOR_BLOCK', '');
@@ -156,17 +168,17 @@ function generatePage($tpl)
         'TR_SEC'                 => tohtml(tr('Sec.'))
     ]);
 
-    iMSCP_Events_Aggregator::getInstance()->registerListener(
-        iMSCP_Events::onGetJsTranslations,
-        function (iMSCP_Events_Event $e) {
+    EventAggregator::getInstance()->registerListener(
+        Events::onGetJsTranslations,
+        function (Event $e) {
             $translations = $e->getParam('translations');
             $translations['core']['close'] = tr('Close');
             $translations['core']['fields_ok'] = tr('All fields are valid.');
             $translations['core']['out_of_range_value_error'] = tr('Value for the PHP %%s directive must be in range %%d to %%d.');
             $translations['core']['lower_value_expected_error'] = tr('%%s cannot be greater than %%s.');
-            $translations['core']['error_field_stack'] = iMSCP_Registry::isRegistered('errFieldsStack')
-                ? iMSCP_Registry::get('errFieldsStack') : [];
-    });
+            $translations['core']['error_field_stack'] = Registry::isRegistered('errFieldsStack')
+                ? Registry::get('errFieldsStack') : [];
+        });
 
     $permissionsBlock = false;
 
@@ -355,7 +367,7 @@ function getHostingPlanData()
     $mailQuota = ($mailQuota != '0') ? $mailQuota / 1048576 : '0';
     $hpName = $data['name'];
 
-    $phpini = iMSCP_PHPini::getInstance();
+    $phpini = PhpEditor::getInstance();
     $phpini->setClientPermission('phpiniSystem', $phpEditor);
     $phpini->setClientPermission('phpiniAllowUrlFopen', $phpiniAllowUrlFopen);
     $phpini->setClientPermission('phpiniDisplayErrors', $phpiniDisplayErrors);
@@ -404,7 +416,7 @@ function checkInputData()
     $php = isset($_POST['php']) ? clean_input($_POST['php']) : $php;
     $cgi = isset($_POST['cgi']) ? clean_input($_POST['cgi']) : $cgi;
     $dns = isset($_POST['dns']) ? clean_input($_POST['dns']) : $dns;
-    $backup = isset($_POST['backup']) && is_array($_POST['backup']) 
+    $backup = isset($_POST['backup']) && is_array($_POST['backup'])
         ? $_POST['backup'] : $backup;
     $aps = isset($_POST['software_allowed'])
         ? clean_input($_POST['software_allowed']) : $aps;
@@ -529,7 +541,7 @@ function checkInputData()
     }
 
     // PHP Editor feature
-    $phpini = iMSCP_PHPini::getInstance();
+    $phpini = PhpEditor::getInstance();
 
     if (isset($_POST['php_ini_system']) && $php != '_no_'
         && $phpini->resellerHasPermission('phpiniSystem')
@@ -603,7 +615,7 @@ function checkInputData()
     }
 
     if (!empty($errFieldsStack)) {
-        iMSCP_Registry::set('errFieldsStack', $errFieldsStack);
+        Registry::set('errFieldsStack', $errFieldsStack);
         return false;
     }
 
@@ -613,9 +625,7 @@ function checkInputData()
 require 'imscp-lib.php';
 
 check_login('reseller');
-iMSCP_Events_Aggregator::getInstance()->dispatch(
-    iMSCP_Events::onResellerScriptStart
-);
+EventAggregator::getInstance()->dispatch(Events::onResellerScriptStart);
 
 // Initialize global variables
 global $dmnName, $hpId;
@@ -635,7 +645,7 @@ if (!getFirstStepData()) {
     redirectTo('user_add1.php');
 }
 
-$phpini = iMSCP_PHPini::getInstance();
+$phpini = PhpEditor::getInstance();
 // Load reseller PHP permissions
 $phpini->loadResellerPermissions($_SESSION['user_id']);
 // Load client default PHP permissions
@@ -675,7 +685,7 @@ if (isset($_POST['uaction'])
     getHostingPlanData();
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'                             => 'shared/layouts/ui.tpl',
     'page'                               => 'reseller/user_add2.tpl',
@@ -704,7 +714,7 @@ $tpl->assign([
     'TR_MAX_SUBDOMAIN'              => tohtml(tr('Subdomains limit')) . '<br/><i>(-1 ' . tohtml(tr('disabled')) . ', 0 ∞)</i>',
     'TR_MAX_DOMAIN_ALIAS'           => tohtml(tr('Domain aliases limit')) . '<br/><i>(-1 ' . tohtml(tr('disabled')) . ', 0 ∞)</i>',
     'TR_MAX_MAIL_COUNT'             => tohtml(tr('Mail accounts limit')) . '<br/><i>(-1 ' . tohtml(tr('disabled')) . ', 0 ∞)</i>',
-    'TR_MAIL_QUOTA'                 => tohtml(tr('Mail quota [MiB]')). '<br/><i>(0 ∞)</i>',
+    'TR_MAIL_QUOTA'                 => tohtml(tr('Mail quota [MiB]')) . '<br/><i>(0 ∞)</i>',
     'TR_MAX_FTP'                    => tohtml(tr('FTP accounts limit')) . '<br/><i>(-1 ' . tohtml(tr('disabled')) . ', 0 ∞)</i>',
     'TR_MAX_SQL_DB'                 => tohtml(tr('SQL databases limit')) . '<br/><i>(-1 ' . tohtml(tr('disabled')) . ', 0 ∞)</i>',
     'TR_MAX_SQL_USERS'              => tohtml(tr('SQL users limit')) . '<br/><i>(-1 ' . tohtml(tr('disabled')) . ', 0 ∞)</i>',
@@ -733,5 +743,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(
+    Events::onResellerScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();

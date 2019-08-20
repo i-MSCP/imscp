@@ -73,7 +73,7 @@ class AuthService
      *
      * @return AuthService Provides a fluent interface, returns self
      */
-    public static function getInstance()
+    public static function getInstance(): AuthService
     {
         if (NULL === self::$instance) {
             self::$instance = new self;
@@ -90,7 +90,7 @@ class AuthService
      * @trigger onAfterAuthentication
      * @return AuthResult
      */
-    public function authenticate()
+    public function authenticate(): AuthResult
     {
         $em = $this->getEventManager();
         $response = $em->dispatch(
@@ -139,12 +139,14 @@ class AuthService
     }
 
     /**
-     * Return an iMSCP_Events_Manager instance
+     * Return an EventManagerInterface instance
      *
      * @param EventManagerInterface $events
      * @return EventManagerInterface
      */
-    public function getEventManager(EventManagerInterface $events = NULL)
+    public function getEventManager(
+        EventManagerInterface $events = NULL
+    ): EventManagerInterface
     {
         if (NULL !== $events) {
             $this->eventManager = $events;
@@ -165,7 +167,7 @@ class AuthService
      * @trigger onAfterUnsetIdentity
      * @return void
      */
-    public function unsetIdentity()
+    public function unsetIdentity(): void
     {
         $this->getEventManager()->dispatch(
             Events::onBeforeUnsetIdentity, ['context' => $this]
@@ -197,7 +199,7 @@ class AuthService
      * @param stdClass $identity Identity data
      * @return void
      */
-    public function setIdentity($identity)
+    public function setIdentity($identity): void
     {
         $response = $this->getEventManager()->dispatch(
             Events::onBeforeSetIdentity,
@@ -245,7 +247,7 @@ class AuthService
      *
      * @return boolean
      */
-    public function hasIdentity()
+    public function hasIdentity(): bool
     {
         if (!isset($_SESSION['user_id'])) {
             return false;
@@ -268,7 +270,7 @@ class AuthService
      *
      * @return stdClass
      */
-    public function getIdentity()
+    public function getIdentity(): stdClass
     {
         if (!isset($_SESSION['user_identity'])) {
             // Make sure that all identity data are removed

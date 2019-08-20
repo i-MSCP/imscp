@@ -59,10 +59,10 @@ function client_getHtaccessUsername($htuserId, $domainId)
 /**
  * Generates page
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
  */
-function client_generatePage($tpl)
+function client_generatePage(TemplateEngine $tpl)
 {
     $domainId = get_user_domain_id($_SESSION['user_id']);
 

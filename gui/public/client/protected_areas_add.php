@@ -26,6 +26,7 @@
  */
 
 use iMSCP\Database\DatabaseException;
+use iMSCP\Database\DatabaseMySQL;
 use iMSCP\Event\EventAggregator;
 use iMSCP\Event\EventDescription;
 use iMSCP\Event\Events;
@@ -146,7 +147,7 @@ function handleProtectedArea()
         $userIdList = 0;
     }
 
-    $db = iMSCP_Database::getInstance();
+    $db = DatabaseMySQL::getInstance();
 
     try {
         $db->beginTransaction();
@@ -195,7 +196,7 @@ function handleProtectedArea()
 /**
  * Generates page
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
  */
 function generatePage($tpl)

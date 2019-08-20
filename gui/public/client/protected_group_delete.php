@@ -74,7 +74,7 @@ try {
         'todelete', $htgroupId, $domainId
     ]);
 
-    iMSCP_Database::getInstance()->commit();
+    DatabaseMySQL::getInstance()->commit();
 
     set_page_message(tr('Htaccess group successfully scheduled for deletion.'), 'success');
     send_request();

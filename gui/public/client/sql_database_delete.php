@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,24 +18,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-
-/***********************************************************************************************************************
- * Main
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
 
 require_once 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 customerHasFeature('sql') && isset($_GET['sqld_id']) or showBadRequestErrorPage();
 
 $sqldId = intval($_GET['sqld_id']);
 
 if (!delete_sql_database(get_user_domain_id($_SESSION['user_id']), $sqldId)) {
     write_log(
-        sprintf('Could not delete SQL database with ID %s. An unexpected error occurred.', $sqldId), E_USER_NOTICE
+        sprintf('Could not delete SQL database with ID %s. An unexpected error occurred.', $sqldId),
+        E_USER_NOTICE
     );
     set_page_message(tr('Could not delete SQL database. An unexpected error occurred.'), 'error');
     redirectTo('sql_manage.php');

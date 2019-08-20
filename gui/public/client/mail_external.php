@@ -79,7 +79,7 @@ function updateExternalMailFeature($action, $domainId, $domainType)
  * Generate an external mail server item
  *
  * @access private
- * @param iMSCP_pTemplate $tpl Template instance
+ * @param TemplateEngine $tpl Template instance
  * @param string $externalMail Status of external mail for the domain
  * @param int $domainId Domain id
  * @param string $domainName Domain name
@@ -87,7 +87,7 @@ function updateExternalMailFeature($action, $domainId, $domainType)
  * @param string $type Domain type (normal for domain or alias for domain alias)
  * @return void
  */
-function generateItem($tpl, $externalMail, $domainId, $domainName, $status, $type)
+function generateItem(TemplateEngine $tpl, $externalMail, $domainId, $domainName, $status, $type)
 {
     if ($status == 'ok') {
         if ($externalMail == 'off') {
@@ -158,13 +158,13 @@ function generateItemList(TemplateEngine $tpl, $domainId, $domainName)
 /**
  * Generates page
  *
- * @param iMSCP_ptemplate $tpl
+ * @param TemplateEngine $tpl
  * @return void
  */
-function generatePage($tpl)
+function generatePage(TemplateEngine $tpl)
 {
-    iMSCP_Events_Aggregator::getInstance()->registerListener(
-        iMSCP_Events::onGetJsTranslations,
+    EventAggregator::getInstance()->registerListener(
+        Events::onGetJsTranslations,
         function (EventDescription $e) {
             $tr = $e->getParam('translations');
             $tr['core']['datatable'] = getDataTablesPluginTranslations(false);
@@ -232,7 +232,9 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventAggregator::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(
+    Events::onClientScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();
 
 unsetMessages();

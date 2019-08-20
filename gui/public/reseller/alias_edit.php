@@ -18,7 +18,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/** @noinspection PhpUnhandledExceptionInspection PhpDocMissingThrowsInspection */
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
+ */
+
+use iMSCP\Event\Event;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Exception\Exception;
+use iMSCP\TemplateEngine;
+use iMSCP\Uri\UriException;
+use iMSCP\Uri\UriRedirect;
 
 /**
  * Get domain alias data
@@ -63,7 +76,7 @@ function _reseller_getAliasData($domainAliasId)
 /**
  * Generate page
  *
- * @param $tpl iMSCP_pTemplate
+ * @param $tpl TemplateEngine
  * @return void
  */
 function reseller_generatePage($tpl)
@@ -90,7 +103,7 @@ function reseller_generatePage($tpl)
 
         if ($domainAliasData['url_forward'] != 'no') {
             $urlForwarding = true;
-            $uri = iMSCP_Uri_Redirect::fromString(
+            $uri = UriRedirect::fromString(
                 $domainAliasData['url_forward']
             );
             $uri->setHost(decode_idna($uri->getHost()));
@@ -116,19 +129,19 @@ function reseller_generatePage($tpl)
         $forwardUrl = isset($_POST['forward_url'])
             ? $_POST['forward_url'] : '';
         $forwardType = isset($_POST['forward_type'])
-            && in_array($_POST['forward_type'],
-                ['301', '302', '303', '307', 'proxy'],
-                true
-            )
-                ? $_POST['forward_type'] : '302';
+        && in_array($_POST['forward_type'],
+            ['301', '302', '303', '307', 'proxy'],
+            true
+        )
+            ? $_POST['forward_type'] : '302';
 
         if ($forwardType == 'proxy' && isset($_POST['forward_host'])) {
             $forwardHost = 'On';
         }
 
         $wildcardAlias = isset($_POST['wildcard_alias'])
-            && in_array($_POST['wildcard_alias'], ['yes', 'no'], true)
-                ? $_POST['wildcard_alias'] : 'no';
+        && in_array($_POST['wildcard_alias'], ['yes', 'no'], true)
+            ? $_POST['wildcard_alias'] : 'no';
     }
 
     $tpl->assign([
@@ -147,7 +160,7 @@ function reseller_generatePage($tpl)
         'FORWARD_TYPE_PROXY' => $forwardType == '307' ? ' checked' : '',
         'FORWARD_HOST'       => $forwardHost == 'On' ? ' checked' : '',
         'WILDCARD_ALIAS_YES' => $wildcardAlias == 'yes' ? ' checked' : '',
-        'WILDCARD_ALIAS_NO' => $wildcardAlias == 'no' ? ' checked' : ''
+        'WILDCARD_ALIAS_NO'  => $wildcardAlias == 'no' ? ' checked' : ''
     ]);
 
     // Cover the case where URL forwarding feature is activated and that the
@@ -220,9 +233,9 @@ function reseller_editDomainAlias()
 
         try {
             try {
-                $uri = iMSCP_Uri_Redirect::fromString($forwardUrl);
-            } catch (Zend_Uri_Exception $e) {
-                throw new iMSCP_Exception(
+                $uri = UriRedirect::fromString($forwardUrl);
+            } catch (UriException $e) {
+                throw new Exception(
                     tr('Forward URL %s is not valid.', $forwardUrl)
                 );
             }
@@ -235,7 +248,7 @@ function reseller_editDomainAlias()
             if ($uri->getHost() == $domainAliasData['alias_name']
                 && ($uri->getPath() == '/' && in_array($uri->getPort(), ['', 80, 443]))
             ) {
-                throw new iMSCP_Exception(
+                throw new Exception(
                     tr('Forward URL %s is not valid.', $forwardUrl) . ' ' .
                     tr(
                         'Domain alias %s cannot be forwarded on itself.',
@@ -247,7 +260,7 @@ function reseller_editDomainAlias()
             if ($forwardType == 'proxy') {
                 $port = $uri->getPort();
                 if ($port && $port < 1025) {
-                    throw new iMSCP_Exception(
+                    throw new Exception(
                         tr('Unallowed port in forward URL. Only ports above 1024 are allowed.')
                     );
                 }
@@ -286,11 +299,11 @@ function reseller_editDomainAlias()
     }
 
     $wildcardAlias = isset($_POST['wildcard_alias'])
-        && in_array($_POST['wildcard_alias'], ['yes', 'no'], true)
-            ? $_POST['wildcard_alias'] : 'no';
-    
-    iMSCP_Events_Aggregator::getInstance()->dispatch(
-        iMSCP_Events::onBeforeEditDomainAlias,
+    && in_array($_POST['wildcard_alias'], ['yes', 'no'], true)
+        ? $_POST['wildcard_alias'] : 'no';
+
+    EventAggregator::getInstance()->dispatch(
+        Events::onBeforeEditDomainAlias,
         [
             'domainAliasId' => $domainAliasId,
             'mountPoint'    => $domainAliasData['alias_mount'],
@@ -315,8 +328,8 @@ function reseller_editDomainAlias()
         ]
     );
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(
-        iMSCP_Events::onAfterEditDomainAlias,
+    EventAggregator::getInstance()->dispatch(
+        Events::onAfterEditDomainAlias,
         [
             'domainAliasId' => $domainAliasId,
             'mountPoint'    => $domainAliasData['alias_mount'],
@@ -324,7 +337,7 @@ function reseller_editDomainAlias()
             'forwardUrl'    => $forwardUrl,
             'forwardType'   => $forwardType,
             'forwardHost'   => $forwardHost,
-            'wildcardAlias'  => $wildcardAlias
+            'wildcardAlias' => $wildcardAlias
         ]
     );
 
@@ -343,9 +356,7 @@ function reseller_editDomainAlias()
 require_once 'imscp-lib.php';
 
 check_login('reseller');
-iMSCP_Events_Aggregator::getInstance()->dispatch(
-    iMSCP_Events::onResellerScriptStart
-);
+EventAggregator::getInstance()->dispatch(Events::onResellerScriptStart);
 resellerHasFeature('domain_aliases')
 && resellerHasCustomers() or showBadRequestErrorPage();
 
@@ -357,7 +368,7 @@ if (!empty($_POST) && reseller_editDomainAlias()) {
     redirectTo('alias.php');
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'             => 'shared/layouts/ui.tpl',
     'page'               => 'reseller/alias_edit.tpl',
@@ -392,9 +403,9 @@ $tpl->assign([
     'TR_CANCEL'                 => tohtml(tr('Cancel'))
 ]);
 
-iMSCP_Events_Aggregator::getInstance()->registerListener(
-    iMSCP_Events::onGetJsTranslations,
-    function (iMSCP_Events_Event $e) {
+EventAggregator::getInstance()->registerListener(
+    Events::onGetJsTranslations,
+    function (Event $e) {
         $translations = $e->getParam('translations');
         $translations['core']['close'] = tr('Close');
         $translations['core']['ftp_directories'] = tr('Select your own document root');
@@ -406,8 +417,8 @@ reseller_generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(
-    iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]
+EventAggregator::getInstance()->dispatch(
+    Events::onResellerScriptEnd, ['templateEngine' => $tpl]
 );
 $tpl->prnt();
 

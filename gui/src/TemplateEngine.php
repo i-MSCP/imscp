@@ -22,6 +22,7 @@
  * PhpUnusedParameterInspection
  * PhpUnhandledExceptionInspection
  * PhpDocMissingThrowsInspection
+ * PhpUnused
  */
 
 declare(strict_types=1);
@@ -30,6 +31,7 @@ namespace iMSCP;
 
 use iMSCP\Event\EventAggregator;
 use iMSCP\Event\Events;
+use iMSCP\Exception\Exception;
 use Throwable;
 
 /**
@@ -176,7 +178,7 @@ class TemplateEngine
     {
         if (!is_dir($rootDir)) {
             throw new Exception(
-                'iMSCP_pTemplate::setRootDir expects a valid directory.'
+                'TemplateEngine::setRootDir expects a valid directory.'
             );
         }
 
@@ -545,7 +547,7 @@ class TemplateEngine
                         $varName = substr($data, $curlB + 1, $curlE - $curlB - 1);
 
                         // The whole work goes here :)
-                        if (preg_match('/[A-Z0-9][A-Z0-9\_]*/', $varName)) {
+                        if (preg_match('/[A-Z0-9][A-Z0-9_]*/', $varName)) {
                             if (isset($this->namespace[$varName])) {
                                 $data = substr_replace(
                                     $data,

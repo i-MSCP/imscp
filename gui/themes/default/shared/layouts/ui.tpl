@@ -1,5 +1,15 @@
 <?php
-/** @var iMSCP_pTemplate $this */
+/** @noinspection
+ * PhpUnusedParameterInspection
+ * PhpUnhandledExceptionInspection
+ * PhpDocMissingThrowsInspection
+ * PhpUndefinedFieldInspection
+ */
+
+use iMSCP\TemplateEngine;
+use iMSCP\Registry;
+
+/** @var TemplateEngine $this */
 /** @var Zend_Navigation $container */
 $container = $this->navigation->getContainer();
 
@@ -11,6 +21,7 @@ foreach($container as $page) {
 }
 
 $page = $this->navigation->findActive($container, 0)['page'];
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -85,7 +96,7 @@ $page = $this->navigation->findActive($container, 0)['page'];
     </div>
 </div>
 <div class="footer">
-    <?php $config = iMSCP_Registry::get('config'); ?>
+    <?php $config = Registry::get('config'); ?>
     i-MSCP <?= tohtml($config['Version'] ?: tr('Unknown'))?><br>
     Build: <?= tohtml($config['Build'] ?: tr('Unknown')) ?><br>
     Codename: <?= tohtml($config['CodeName'] ?: tr('Unknown'))?>

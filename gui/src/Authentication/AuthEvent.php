@@ -42,7 +42,9 @@ class AuthEvent extends Event
      */
     protected $name = Events::onAuthentication;
 
-    /** @var  AuthService */
+    /**
+     * @var AuthService
+     */
     protected $authentication;
 
     /**
@@ -50,7 +52,10 @@ class AuthEvent extends Event
      */
     protected $authenticationResult = NULL;
 
-    public function getAuthenticationService()
+    /**
+     * @return AuthService
+     */
+    public function getAuthenticationService(): AuthService
     {
         return $this->authentication;
     }
@@ -60,7 +65,7 @@ class AuthEvent extends Event
      *
      * @return bool
      */
-    public function hasAuthenticationResult()
+    public function hasAuthenticationResult(): bool
     {
         return $this->authenticationResult !== NULL;
     }
@@ -70,7 +75,7 @@ class AuthEvent extends Event
      *
      * @return AuthResult
      */
-    public function getAuthenticationResult()
+    public function getAuthenticationResult(): AuthResult
     {
         return $this->authenticationResult;
     }
@@ -79,8 +84,9 @@ class AuthEvent extends Event
      * Set authentication result
      *
      * @param AuthResult $authResult
+     * @return void
      */
-    public function setAuthenticationResult(AuthResult $authResult)
+    public function setAuthenticationResult(AuthResult $authResult): void
     {
         $this->authenticationResult = $authResult;
     }

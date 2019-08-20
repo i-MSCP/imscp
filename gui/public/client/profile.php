@@ -28,14 +28,15 @@
 use iMSCP\Event\EventAggregator;
 use iMSCP\Event\Events;
 use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 /**
  * Generates page
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
  */
-function generatePage($tpl)
+function generatePage(TemplateEngine $tpl)
 {
     $cfg = Registry::get('config');
     $stmt = exec_query('SELECT domain_created FROM admin WHERE admin_id = ?', $_SESSION['user_id']);
@@ -57,7 +58,7 @@ require 'imscp-lib.php';
 check_login('user');
 EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'shared/partials/profile.tpl',

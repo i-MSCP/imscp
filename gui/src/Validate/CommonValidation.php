@@ -35,13 +35,13 @@ use Zend_Validate_Exception;
 use Zend_Validate_Hostname;
 
 /**
- * Class Common
+ * Class CommonValidation
  * @package iMSCP\Validate
  */
-class Common
+class CommonValidation
 {
     /**
-     * @var Common
+     * @var CommonValidation
      */
     protected static $_instance = NULL;
 
@@ -63,7 +63,7 @@ class Common
     protected $_lastValidator = NULL;
 
     /**
-     * Last iMSCP_Validate validation error messages.
+     * Last CommonValidation validation error messages.
      *
      * @var array
      */
@@ -81,7 +81,7 @@ class Common
      * Implements singleton design pattern.
      *
      * @static
-     * @return Common
+     * @return CommonValidation
      */
     static public function getInstance()
     {

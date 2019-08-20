@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,17 +18,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Config_Handler_File as ConfigFile;
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_pTemplate as TemplateEngine;
-use iMSCP_Registry as Registry;
-use iMSCP_Validate as Validator;
-use Zend_Validate_Hostname as ValidateHostname;
-
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Config\FileConfig;
+use iMSCP\Database\DatabaseMySQL;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
+use iMSCP\Validate\CommonValidation;
+use Zend_Validate_Hostname as ValidateHostname;
 
 /**
  * Check SQL permissions
@@ -36,10 +40,6 @@ use Zend_Validate_Hostname as ValidateHostname;
  * @param TemplateEngine $tpl
  * @param int $sqldId Database unique identifier
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function checkSqlUserPermissions(TemplateEngine $tpl, $sqldId)
 {
@@ -72,11 +72,6 @@ function checkSqlUserPermissions(TemplateEngine $tpl, $sqldId)
  * @param TemplateEngine $tpl
  * @param int $sqldId Database unique identifier
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generateSqlUserList(TemplateEngine $tpl, $sqldId)
 {
@@ -124,8 +119,6 @@ function generateSqlUserList(TemplateEngine $tpl, $sqldId)
  * @param string $sqlUser SQL user name
  * @param string $sqlUserHost SQL user host
  * @return bool TRUE if the given sql user already exists, FALSE otherwise
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception_Database
  */
 function isSqlUser($sqlUser, $sqlUserHost)
 {
@@ -137,9 +130,9 @@ function isSqlUser($sqlUser, $sqlUserHost)
 /**
  * Add SQL user for the given database
  *
- * @throws Exception
  * @param int $sqldId Database unique identifier
  * @return void
+ * @throws Exception
  */
 function addSqlUser($sqldId)
 {
@@ -181,12 +174,12 @@ function addSqlUser($sqldId)
         if (strpos($host, '%') === FALSE
             && strpos($host, '_') === FALSE
             && $host !== 'localhost'
-            && !Validator::getInstance()->hostname(
+            && !CommonValidation::getInstance()->hostname(
                 $host, ['allow' => ValidateHostname::ALLOW_DNS | ValidateHostname::ALLOW_IP]
             )
         ) {
             set_page_message(
-                tr('Invalid SQL user host: %s', Validator::getInstance()->getLastValidationMessages()), 'error'
+                tr('Invalid SQL user host: %s', CommonValidation::getInstance()->getLastValidationMessages()), 'error'
             );
             return;
         }
@@ -268,9 +261,9 @@ function addSqlUser($sqldId)
     }
 
     $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-    $mysqlConfig = new ConfigFile(Registry::get('config')['CONF_DIR'] . '/mysql/mysql.data');
+    $mysqlConfig = new FileConfig(Registry::get('config')['CONF_DIR'] . '/mysql/mysql.data');
 
-    EventsManager::getInstance()->dispatch(Events::onBeforeAddSqlUser, [
+    EventAggregator::getInstance()->dispatch(Events::onBeforeAddSqlUser, [
         'SqlUsername'     => $user,
         'SqlUserHost'     => $host,
         'SqlUserPassword' => isset($password) ? $password : ''
@@ -304,8 +297,8 @@ function addSqlUser($sqldId)
         $sqldId, $user, $host
     ]);
 
-    EventsManager::getInstance()->dispatch(Events::onAfterAddSqlUser, [
-        'SqlUserId'       => iMSCP_Database::getInstance()->insertId(),
+    EventAggregator::getInstance()->dispatch(Events::onAfterAddSqlUser, [
+        'SqlUserId'       => DatabaseMySQL::getInstance()->insertId(),
         'SqlUsername'     => $user,
         'SqlUserHost'     => $host,
         'SqlUserPassword' => isset($password) ? $password : '',
@@ -323,8 +316,6 @@ function addSqlUser($sqldId)
  * @param int $sqldId
  * @return void
  * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
  */
 function generatePage(TemplateEngine $tpl, $sqldId)
 {
@@ -381,14 +372,10 @@ function generatePage(TemplateEngine $tpl, $sqldId)
     $tpl->assign('SQLD_ID', $sqldId);
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require_once 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 customerHasFeature('sql') && isset($_REQUEST['sqld_id']) or showBadRequestErrorPage();
 
 $sqldId = intval($_REQUEST['sqld_id']);
@@ -434,7 +421,7 @@ generatePage($tpl, $sqldId);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

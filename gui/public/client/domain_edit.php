@@ -96,7 +96,7 @@ function client_generatePage(TemplateEngine $tpl)
 
         if ($domainData['url_forward'] != 'no') {
             $urlForwarding = true;
-            $uri = iMSCP_Uri_Redirect::fromString($domainData['url_forward']);
+            $uri = UriRedirect::fromString($domainData['url_forward']);
             $uri->setHost(decode_idna($uri->getHost()));
             $forwardUrlScheme = $uri->getScheme() . '://';
             $forwardUrl = substr($uri->getUri(), strlen($forwardUrlScheme));
@@ -238,7 +238,7 @@ function client_editDomain()
                     && in_array($uri->getPort(), ['', 80, 443])
                 )
             ) {
-                throw new iMSCP_Exception(
+                throw new Exception(
                     tr('Forward URL %s is not valid.', $forwardUrl) . ' ' .
                     tr(
                         'Domain %s cannot be forwarded on itself.',
@@ -250,7 +250,7 @@ function client_editDomain()
             if ($forwardType == 'proxy') {
                 $port = $uri->getPort();
                 if ($port && $port < 1025) {
-                    throw new iMSCP_Exception(
+                    throw new Exception(
                         tr('Unallowed port in forward URL. Only ports above 1024 are allowed.')
                     );
                 }
@@ -346,9 +346,7 @@ function client_editDomain()
 require_once 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptStart
-);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 
 if (!empty($_POST) && client_editDomain()) {
     set_page_message(tohtml(tr('Domain successfully scheduled for update.')), 'success');
@@ -403,7 +401,9 @@ client_generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventAggregator::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(
+    Events::onClientScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();
 
 unsetMessages();

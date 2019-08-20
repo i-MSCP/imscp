@@ -25,7 +25,8 @@ namespace iMSCP\Filter;
 use Zend_Filter_Interface as FilterInterface;
 
 /**
- * Class iMSCP_Filter_Noop
+ * Class NoopFilter
+ * @package iMSCP\Filter
  */
 class NoopFilter implements FilterInterface
 {

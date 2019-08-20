@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,16 +18,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Event\Event;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\PhpEditor;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 /**
  * Load hosting plan
  *
  * @return bool TRUE on success, FALSE on failure
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function loadHostingPlan()
 {
@@ -54,7 +62,7 @@ function loadHostingPlan()
     $backup = explode('|', $backup);
     $mailQuota = $mailQuota / 1048576;
 
-    $phpini = iMSCP_PHPini::getInstance();
+    $phpini = PhpEditor::getInstance();
     $phpini->loadResellerPermissions($_SESSION['user_id']); // Load reseller permissions
     $phpini->loadClientPermissions(); // Load client default PHP permissions
     $phpini->loadDomainIni(); // Load domain default PHP configuration options
@@ -76,14 +84,12 @@ function loadHostingPlan()
 /**
  * Generate PHP editor block
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Exception
  */
-function generatePhpBlock($tpl)
+function generatePhpBlock(TemplateEngine $tpl)
 {
-    $phpini = iMSCP_PHPini::getInstance();
+    $phpini = PhpEditor::getInstance();
 
     if (!$phpini->resellerHasPermission('phpiniSystem')) {
         $tpl->assign('PHP_EDITOR_BLOCK', '');
@@ -101,8 +107,7 @@ function generatePhpBlock($tpl)
         'TR_SEC'                 => tr('Sec.')
     ]);
 
-    iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
-        /** @var iMSCP_Events_Event $e */
+    EventAggregator::getInstance()->registerListener('onGetJsTranslations', function (Event $e) {
         $translations = $e->getParam('translations');
         $translations['core']['close'] = tr('Close');
         $translations['core']['fields_ok'] = tr('All fields are valid.');
@@ -134,7 +139,7 @@ function generatePhpBlock($tpl)
         $permissionsBlock = true;
     }
 
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
 
     if ($cfg['HTTPD_SERVER'] == 'apache_itk') {
         $tpl->assign([
@@ -198,12 +203,10 @@ function generatePhpBlock($tpl)
 /**
  * Generate page
  *
- * @param $tpl iMSCP_pTemplate
+ * @param $tpl TemplateEngine
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Exception
  */
-function generatePage($tpl)
+function generatePage(TemplateEngine $tpl)
 {
     global $id, $name, $description, $sub, $als, $mail, $mailQuota, $ftp, $sqld, $sqlu, $traffic, $diskSpace, $php, $cgi,
            $backup, $dns, $aps, $extMail, $webFolderProtection, $status;
@@ -242,11 +245,10 @@ function generatePage($tpl)
         'STATUS_NO'               => !$status ? ' checked' : ''
     ]);
 
-    iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
-        /** @var iMSCP_Events_Event $e */
+    EventAggregator::getInstance()->registerListener('onGetJsTranslations', function (Event $e) {
         $translations = $e->getParam('translations');
-        $translations['core']['error_field_stack'] = iMSCP_Registry::isRegistered('errFieldsStack')
-            ? iMSCP_Registry::get('errFieldsStack') : [];
+        $translations['core']['error_field_stack'] = Registry::isRegistered('errFieldsStack')
+            ? Registry::get('errFieldsStack') : [];
     });
 
     if (!resellerHasFeature('subdomains')) {
@@ -308,9 +310,6 @@ function generatePage($tpl)
  * Check input data
  *
  * @return bool TRUE if data are valid, FALSE otherwise
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function checkInputData()
 {
@@ -436,7 +435,7 @@ function checkInputData()
         $mailQuota = $diskSpace;
     }
 
-    $phpini = iMSCP_PHPini::getInstance();
+    $phpini = PhpEditor::getInstance();
 
     if (isset($_POST['php_ini_system']) && $php != '_no_' && $phpini->resellerHasPermission('phpiniSystem')) {
         $phpini->setClientPermission('phpiniSystem', clean_input($_POST['php_ini_system']));
@@ -487,7 +486,7 @@ function checkInputData()
     }
 
     if (!empty($errFieldsStack)) {
-        iMSCP_Registry::set('errFieldsStack', $errFieldsStack);
+        Registry::set('errFieldsStack', $errFieldsStack);
         return false;
     }
 
@@ -498,16 +497,13 @@ function checkInputData()
  * Update hosting plan
  *
  * @return bool TRUE on success, FALSE otherwise
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function updateHostingPlan()
 {
     global $id, $name, $description, $sub, $als, $mail, $mailQuota, $ftp, $sqld, $sqlu, $traffic, $diskSpace, $php,
            $cgi, $dns, $backup, $aps, $extMail, $webFolderProtection, $status;
 
-    $phpini = iMSCP_PHPini::getInstance();
+    $phpini = PhpEditor::getInstance();
     $props = "$php;$cgi;$sub;$als;$mail;$ftp;$sqld;$sqlu;$traffic;$diskSpace;" . implode('|', $backup) . ";$dns;$aps";
     $props .= ';' . $phpini->getClientPermission('phpiniSystem');
     $props .= ';' . $phpini->getClientPermission('phpiniAllowUrlFopen');
@@ -532,14 +528,10 @@ function updateHostingPlan()
     return true;
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require 'imscp-lib.php';
 
 check_login('reseller');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onResellerScriptStart);
 
 if (!isset($_GET['id'])) {
     showBadRequestErrorPage();
@@ -556,7 +548,7 @@ if (!empty($_POST) && checkInputData() && updateHostingPlan()) {
     redirectTo('hosting_plan.php');
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'                             => 'shared/layouts/ui.tpl',
     'page'                               => 'reseller/hosting_plan_edit.tpl',
@@ -619,7 +611,9 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(
+    Events::onResellerScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();
 
 unsetMessages();

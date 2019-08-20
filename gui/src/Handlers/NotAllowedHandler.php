@@ -29,7 +29,7 @@ declare(strict_types=1);
 
 namespace iMSCP\Handlers;
 
-use iMSCP_Registry;
+use iMSCP\Registry;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Handlers\AbstractHandler;
@@ -137,7 +137,7 @@ class NotAllowedHandler extends AbstractHandler
         ob_start();
 
         include(
-            iMSCP_Registry::get('config')['GUI_ROOT_DIR']
+            Registry::get('config')['GUI_ROOT_DIR']
             . '/public/errordocs/404.html'
         );
 

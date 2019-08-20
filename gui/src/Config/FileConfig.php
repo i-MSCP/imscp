@@ -18,7 +18,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/** @noinspection PhpDocMissingThrowsInspection PhpUnhandledExceptionInspection */
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpMissingParentConstructorInspection 
+ */
 
 declare(strict_types=1);
 
@@ -121,8 +126,6 @@ class FileConfig extends ArrayConfig
      *
      * Default file path is set to {/usr/local}/etc/imscp/imscp.conf depending
      * of distribution.
-     *
-     * @noinspection PhpMissingParentConstructorInspection
      *
      * @param string $pathFile Configuration file path
      * @throws Exception

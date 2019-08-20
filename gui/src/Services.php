@@ -60,7 +60,7 @@ class Services implements iterator, countable
     private $refresh;
 
     /**
-     * iMSCP_Services constructor.
+     * Services constructor.
      *
      * @param bool $refresh Whether or not data need to be refreshed
      * @return void

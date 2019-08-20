@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,13 +18,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_Registry as Registry;
-
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 /**
  * Generates support questions notice for reseller
@@ -32,9 +36,6 @@ use iMSCP_Registry as Registry;
  * Notice reseller about any new support questions and answers.
  *
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception_Database
  */
 function generateSupportQuestionsMessage()
 {
@@ -55,9 +56,6 @@ function generateSupportQuestionsMessage()
  * Generates message for new domain aliases orders.
  *
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception_Database
  */
 function generateOrdersAliasesMessage()
 {
@@ -84,14 +82,12 @@ function generateOrdersAliasesMessage()
 /**
  * Generates traffic usage bar
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @param int $trafficUsageBytes Current traffic usage
  * @param int $trafficLimitBytes Traffic max usage
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Exception
  */
-function generateTrafficUsageBar($tpl, $trafficUsageBytes, $trafficLimitBytes)
+function generateTrafficUsageBar(TemplateEngine $tpl, $trafficUsageBytes, $trafficLimitBytes)
 {
     $trafficUsagePercent = getPercentUsage($trafficUsageBytes, $trafficLimitBytes);
     $trafficUsageData = ($trafficLimitBytes > 0)
@@ -107,14 +103,12 @@ function generateTrafficUsageBar($tpl, $trafficUsageBytes, $trafficLimitBytes)
 /**
  * Generates disk usage bar
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @param int $diskspaceUsageBytes Disk usage
  * @param int $diskspaceLimitBytes Max disk usage
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Exception
  */
-function generateDiskUsageBar($tpl, $diskspaceUsageBytes, $diskspaceLimitBytes)
+function generateDiskUsageBar(TemplateEngine $tpl, $diskspaceUsageBytes, $diskspaceLimitBytes)
 {
     $diskspaceUsagePercent = getPercentUsage($diskspaceUsageBytes, $diskspaceLimitBytes);
     $diskUsageData = ($diskspaceLimitBytes > 0)
@@ -130,16 +124,12 @@ function generateDiskUsageBar($tpl, $diskspaceUsageBytes, $diskspaceLimitBytes)
 /**
  * Generates page
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @param int $resellerId Reseller unique identifier
  * @param string $resellerName Reseller name
  * @return void
- * @throws Zend_Date_Exception
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
-function generatePage($tpl, $resellerId, $resellerName)
+function generatePage(TemplateEngine $tpl, $resellerId, $resellerName)
 {
     generateSupportQuestionsMessage();
     generateOrdersAliasesMessage();
@@ -244,16 +234,12 @@ function generatePage($tpl, $resellerId, $resellerName)
     ]);
 }
 
-/***********************************************************************************************************************
- * Main script
- */
-
 require 'imscp-lib.php';
 
 check_login('reseller', Registry::get('config')['PREVENT_EXTERNAL_LOGIN_RESELLER']);
-EventsManager::getInstance()->dispatch(Events::onResellerScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onResellerScriptStart);
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'                  => 'shared/layouts/ui.tpl',
     'page'                    => 'reseller/index.tpl',
@@ -268,7 +254,7 @@ generatePage($tpl, $_SESSION['user_id'], $_SESSION['user_logged']);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

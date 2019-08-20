@@ -22,6 +22,7 @@
  * PhpUnusedParameterInspection
  * PhpUnhandledExceptionInspection
  * PhpDocMissingThrowsInspection
+ * PhpUnused
  */
 
 declare(strict_types=1);
@@ -29,8 +30,7 @@ declare(strict_types=1);
 namespace iMSCP;
 
 use iMSCP\Config\FileConfig;
-use iMSCP\Database\DatabaseException;
-use iMSCP_Registry;
+use iMSCP\Exception\Exception;
 use PDO;
 
 /**
@@ -413,51 +413,47 @@ class PhpEditor
         $stmt = exec_query("SELECT admin_id FROM admin $condition", $params);
 
         while ($row = $stmt->fetchRow()) {
-            try {
-                // Update client PHP permissions
-                if (!$this->resellerHasPermission('phpiniSystem')) {
-                    // Load client default PHP permissions
-                    $this->loadClientPermissions();
-                } else {
-                    // Load client PHP permissions
-                    $this->loadClientPermissions($row['admin_id']);
+            // Update client PHP permissions
+            if (!$this->resellerHasPermission('phpiniSystem')) {
+                // Load client default PHP permissions
+                $this->loadClientPermissions();
+            } else {
+                // Load client PHP permissions
+                $this->loadClientPermissions($row['admin_id']);
 
-                    // Update client permissions according reseller permissions
-                    if (!$this->resellerHasPermission('phpiniAllowUrlFopen')) {
-                        $this->cp['phpiniAllowUrlFopen'] = 'no';
-                    }
-
-                    if (!$this->resellerHasPermission('phpiniDisplayErrors')) {
-                        $this->cp['phpiniDisplayErrors'] = 'no';
-                    }
-
-                    if (!$this->resellerHasPermission(
-                        'phpiniDisableFunctions')
-                    ) {
-                        $this->cp['phpiniDisableFunctions'] = 'no';
-                    }
-
-                    if (!$this->resellerHasPermission('phpiniMailFunction')) {
-                        $this->cp['phpiniMailFunction'] = 'no';
-                    }
+                // Update client permissions according reseller permissions
+                if (!$this->resellerHasPermission('phpiniAllowUrlFopen')) {
+                    $this->cp['phpiniAllowUrlFopen'] = 'no';
                 }
 
-                if ($needChange = $this->saveClientPermissions($row['admin_id'])) {
-                    $needBackendRequest = true;
+                if (!$this->resellerHasPermission('phpiniDisplayErrors')) {
+                    $this->cp['phpiniDisplayErrors'] = 'no';
                 }
 
-                // Sync client PHP INI values with reseller values
-                // We are passing NULL for the domain INI values because we
-                // don't want set new domain INI values. We only want lower them
-                // when needed (client domain INI values cannot be greater than
-                // reseller values)
-                if ($this->updateClientDomainIni(
-                    NULL, $row['admin_id'], $needChange
-                )) {
-                    $needBackendRequest = true;
+                if (!$this->resellerHasPermission(
+                    'phpiniDisableFunctions')
+                ) {
+                    $this->cp['phpiniDisableFunctions'] = 'no';
                 }
-            } catch (DatabaseException $e) {
-                throw $e;
+
+                if (!$this->resellerHasPermission('phpiniMailFunction')) {
+                    $this->cp['phpiniMailFunction'] = 'no';
+                }
+            }
+
+            if ($needChange = $this->saveClientPermissions($row['admin_id'])) {
+                $needBackendRequest = true;
+            }
+
+            // Sync client PHP INI values with reseller values
+            // We are passing NULL for the domain INI values because we
+            // don't want set new domain INI values. We only want lower them
+            // when needed (client domain INI values cannot be greater than
+            // reseller values)
+            if ($this->updateClientDomainIni(
+                NULL, $row['admin_id'], $needChange
+            )) {
+                $needBackendRequest = true;
             }
         }
 
@@ -631,96 +627,93 @@ class PhpEditor
             [$clientId]
         );
         while ($row = $stmt->fetchRow()) {
-            try {
-                if (!$this->clientHasPermission('phpiniSystem')) {
-                    // Load domain default PHP configuration options
-                    $this->loadDomainIni();
-                } else {
-                    // Load domain PHP configuration options
-                    $this->loadDomainIni(
-                        $clientId, $row['domain_id'], $row['domain_type']
-                    );
+            if (!$this->clientHasPermission('phpiniSystem')) {
+                // Load domain default PHP configuration options
+                $this->loadDomainIni();
+            } else {
+                // Load domain PHP configuration options
+                $this->loadDomainIni(
+                    $clientId, $row['domain_id'], $row['domain_type']
+                );
 
-                    if (!$this->clientHasPermission('phpiniAllowUrlFopen')) {
-                        $this->ini['phpiniAllowUrlFopen'] = 'off';
-                    }
+                if (!$this->clientHasPermission('phpiniAllowUrlFopen')) {
+                    $this->ini['phpiniAllowUrlFopen'] = 'off';
+                }
 
-                    if (!$this->clientHasPermission('phpiniDisplayErrors')) {
-                        $this->ini['phpiniDisplayErrors'] = 'off';
-                    }
+                if (!$this->clientHasPermission('phpiniDisplayErrors')) {
+                    $this->ini['phpiniDisplayErrors'] = 'off';
+                }
 
-                    if (!$this->clientHasPermission('phpiniDisableFunctions')) {
-                        if ($this->getClientPermission(
-                                'phpiniDisableFunctions') == 'no'
-                        ) {
-                            $this->ini['phpiniDisableFunctions'] = 'exec,' .
-                                'passthru,phpinfo,popen,proc_open,show_source,'
-                                . 'shell,shell_exec,symlink,system';
-                        } else {
-                            if (in_array('exec', explode(
-                                ',', $this->ini['phpiniDisableFunctions']))
-                            ) {
-                                $this->ini['phpiniDisableFunctions'] = 'exec,'
-                                    . 'passthru,phpinfo,popen,proc_open,'
-                                    . 'show_source,shell,shell_exec,symlink,'
-                                    . 'system';
-                            } else {
-                                $this->ini['phpiniDisableFunctions'] =
-                                    'passthru,phpinfo,popen,proc_open,'
-                                    . 'show_source,shell,shell_exec,symlink,'
-                                    . 'system';
-                            }
-                        }
-                    }
-
-                    if (!$this->clientHasPermission('phpiniMailFunction')) {
-                        $disabledFunctions = explode(
-                            ',', $this->getDomainIni('phpiniDisableFunctions')
-                        );
-
-                        if (!in_array('mail', $disabledFunctions)) {
-                            $this->ini['phpiniDisableFunctions'] .= ',mail';
-                        }
-                    }
-
-                    foreach (
-                        [
-                            'phpiniMemoryLimit', 'phpiniPostMaxSize',
-                            'phpiniUploadMaxFileSize', 'phpiniMaxExecutionTime',
-                            'phpiniMaxInputTime'
-                        ] as $option
+                if (!$this->clientHasPermission('phpiniDisableFunctions')) {
+                    if ($this->getClientPermission(
+                            'phpiniDisableFunctions') == 'no'
                     ) {
-                        if (NULL !== $domainIni) {
-                            // Set new INI value
-                            $this->setDomainIni($option, $domainIni[$option]);
-                        }
-
-
-                        // We ensure that client domain INI value is not greater
-                        //than reseller value
-                        $optionValue = $this->getResellerPermission($option);
-                        if ($this->getDomainIni($option) > $optionValue) {
-                            $this->setDomainIni($option, $optionValue);
+                        $this->ini['phpiniDisableFunctions'] = 'exec,' .
+                            'passthru,phpinfo,popen,proc_open,show_source,'
+                            . 'shell,shell_exec,symlink,system';
+                    } else {
+                        if (in_array('exec', explode(
+                            ',', $this->ini['phpiniDisableFunctions']))
+                        ) {
+                            $this->ini['phpiniDisableFunctions'] = 'exec,'
+                                . 'passthru,phpinfo,popen,proc_open,'
+                                . 'show_source,shell,shell_exec,symlink,'
+                                . 'system';
+                        } else {
+                            $this->ini['phpiniDisableFunctions'] =
+                                'passthru,phpinfo,popen,proc_open,'
+                                . 'show_source,shell,shell_exec,symlink,'
+                                . 'system';
                         }
                     }
                 }
 
-                if ($needChange
-                    || $this->saveDomainIni(
-                        $clientId, $row['domain_id'], $row['domain_type']
-                    )
-                ) {
-                    $this->updateDomainStatuses(
-                        $this->getIniLevel(),
-                        $clientId,
-                        $row['domain_id'],
-                        $row['domain_type']
+                if (!$this->clientHasPermission('phpiniMailFunction')) {
+                    $disabledFunctions = explode(
+                        ',', $this->getDomainIni('phpiniDisableFunctions')
                     );
-                    $needBackendRequest = true;
+
+                    if (!in_array('mail', $disabledFunctions)) {
+                        $this->ini['phpiniDisableFunctions'] .= ',mail';
+                    }
                 }
-            } catch (DatabaseException $e) {
-                throw $e;
+
+                foreach (
+                    [
+                        'phpiniMemoryLimit', 'phpiniPostMaxSize',
+                        'phpiniUploadMaxFileSize', 'phpiniMaxExecutionTime',
+                        'phpiniMaxInputTime'
+                    ] as $option
+                ) {
+                    if (NULL !== $domainIni) {
+                        // Set new INI value
+                        $this->setDomainIni($option, $domainIni[$option]);
+                    }
+
+
+                    // We ensure that client domain INI value is not greater
+                    //than reseller value
+                    $optionValue = $this->getResellerPermission($option);
+                    if ($this->getDomainIni($option) > $optionValue) {
+                        $this->setDomainIni($option, $optionValue);
+                    }
+                }
             }
+
+            if ($needChange
+                || $this->saveDomainIni(
+                    $clientId, $row['domain_id'], $row['domain_type']
+                )
+            ) {
+                $this->updateDomainStatuses(
+                    $this->getIniLevel(),
+                    $clientId,
+                    $row['domain_id'],
+                    $row['domain_type']
+                );
+                $needBackendRequest = true;
+            }
+
         }
 
         return $needBackendRequest;
@@ -1211,7 +1204,7 @@ class PhpEditor
     {
         if (NULL === $this->iniLevel) {
             $phpConfig = new FileConfig(utils_normalizePath(
-                iMSCP_Registry::get('config')->CONF_DIR . '/php/php.data'
+                Registry::get('config')->CONF_DIR . '/php/php.data'
             ));
             $this->iniLevel = $phpConfig['PHP_CONFIG_LEVEL'];
         }

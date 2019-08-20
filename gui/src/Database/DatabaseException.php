@@ -32,7 +32,8 @@ use iMSCP\Exception\Exception;
 use Throwable;
 
 /**
- * Class iMSCP_Exception_Database
+ * Class DatabaseException
+ * @package iMSCP\Database
  */
 class DatabaseException extends Exception
 {

@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by i-MSCP Team
+ * Copyright (C) 2010-2019 by i-MSCP Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,19 +18,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/***********************************************************************************************************************
- * Main
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Database\DatabaseMySQL;
+use iMSCP\Event\Event;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 require 'imscp-lib.php';
 
 check_login('reseller');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onResellerScriptStart);
 resellerHasFeature('aps') or showBadRequestErrorPage();
 
-$cfg = iMSCP_Registry::get('config');
+$cfg = Registry::get('config');
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'                   => 'shared/layouts/ui.tpl',
     'page'                     => 'reseller/software_upload.tpl',
@@ -80,8 +90,7 @@ if (ask_reseller_is_allowed_web_depot($_SESSION['user_id']) == "yes") {
             'TR_WEBDEPOTSOFTWARE_ACT_NUM' => $packages_cnt
         ]);
 
-        iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
-            /** @var $e \iMSCP_Events_Event */
+        EventAggregator::getInstance()->registerListener('onGetJsTranslations', function (Event $e) {
             $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
         });
 
@@ -150,8 +159,8 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
                 $filename, 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', 'toadd'
             ]
         );
-        /** @var $db iMSCP_Database */
-        $db = iMSCP_Registry::get('db');
+        /** @var $db DatabaseMySQL */
+        $db = Registry::get('db');
         $sw_id = $db->insertId();
 
         if ($file == 0) {
@@ -294,7 +303,9 @@ generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(
+    Events::onResellerScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();
 
 unsetMessages();

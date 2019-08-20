@@ -223,9 +223,7 @@ function addOrUpdateServices($mode = 'add')
                         . '_'
                         . preg_replace('/[^a-zA-Z0-9_]/', '_', $dbServiceName);
                     /** @var Zend_Cache_Core $cache */
-                    $cache = Registry::get(
-                        'iMSCP_Application'
-                    )->getCache();
+                    $cache = Registry::get('iMSCP_Application')->getCache();
                     $cache->remove($identifier);
                 }
             }

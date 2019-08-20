@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by i-MSCP Team
+ * Copyright (C) 2010-2019 by i-MSCP Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,22 +18,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/***********************************************************************************************************************
- *  Script functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Event\Event;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\TemplateEngine;
 
 /**
  * client_generatePageLists.
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
-function client_generatePageLists($tpl)
+function client_generatePageLists(TemplateEngine $tpl)
 {
     $domainProperties = get_domain_default_props($_SESSION['user_id']);
     $stmt = exec_query('SELECT created_by FROM admin WHERE admin_id = ?', $_SESSION['user_id']);
@@ -41,17 +44,13 @@ function client_generatePageLists($tpl)
     $tpl->assign('TOTAL_SOFTWARE_AVAILABLE', $software_poss);
 }
 
-/***********************************************************************************************************************
- * Main script
- */
-
 require_once 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 customerHasFeature('aps') or showBadRequestErrorPage();
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'                  => 'shared/layouts/ui.tpl',
     'page'                    => 'client/software.tpl',
@@ -80,8 +79,7 @@ $tpl->assign([
     'TR_SOFTWARE_AVAILABLE' => tr('Available software')
 ]);
 
-iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
-    /** @var $e \iMSCP_Events_Event */
+EventAggregator::getInstance()->registerListener('onGetJsTranslations', function (Event $e) {
     $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
 });
 
@@ -90,7 +88,9 @@ client_generatePageLists($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(
+    Events::onClientScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();
 
 unsetMessages();

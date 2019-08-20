@@ -23,14 +23,6 @@ declare(strict_types=1);
 namespace iMSCP\I18n;
 
 /**
- * Class iMSCP_I18n_Parser_Gettext
- *
- * Gettext Machine Object (MO) file parser.
- *
- * @see http://www.gnu.org/software/gettext/manual/gettext.html#MO-Files
- */
-
-/**
  * Class GettextParser
  * @package iMSCP\I18n
  */

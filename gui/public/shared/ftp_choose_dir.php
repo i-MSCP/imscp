@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,15 +18,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP\VirtualFileSystem as VirtualFileSystem;
-
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\TemplateEngine;
+use iMSCP\VirtualFileSystem;
 
 /**
  * Is the given directory hidden inside the mountpoints?
- * 
+ *
  * @param string $directory Directory path
  * @return bool
  */
@@ -44,7 +50,7 @@ function isHiddenDir($directory)
 
 /**
  * Is the given directory unselectable inside the mountpoints?
- * 
+ *
  * @param string $directory Directory path
  * @return bool
  */
@@ -63,14 +69,10 @@ function isUnselectable($directory)
 /**
  * Generates directory list
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
-function generateDirectoryList($tpl)
+function generateDirectoryList(TemplateEngine $tpl)
 {
     global $vftpUser, $vftpRootDir;
 
@@ -140,16 +142,12 @@ function generateDirectoryList($tpl)
     }
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require_once 'imscp-lib.php';
 
 check_login('all');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onSharedScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onSharedScriptStart);
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'partial'      => 'shared/partials/ftp_choose_dir.tpl',
     'page_message' => 'partial',
@@ -193,5 +191,7 @@ if (!isset($_SESSION['ftp_chooser_user']) || !isset($_SESSION['ftp_chooser_domai
 generatePageMessage($tpl);
 
 $tpl->parse('PARTIAL', 'partial');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onSharedScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(
+    Events::onSharedScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();

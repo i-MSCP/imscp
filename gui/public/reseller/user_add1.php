@@ -18,7 +18,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/** @noinspection PhpUnhandledExceptionInspection PhpDocMissingThrowsInspection */
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
+ */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Exception\Exception;
+use iMSCP\TemplateEngine;
+use iMSCP\Uri\UriException;
+use iMSCP\Uri\UriRedirect;
 
 /**
  * Check input data
@@ -83,9 +95,9 @@ function reseller_checkData()
 
         try {
             try {
-                $uri = iMSCP_Uri_Redirect::fromString($forwardUrl);
-            } catch (Zend_Uri_Exception $e) {
-                throw new iMSCP_Exception(
+                $uri = UriRedirect::fromString($forwardUrl);
+            } catch (UriException $e) {
+                throw new Exception(
                     tr('Forward URL %s is not valid.', $forwardUrl)
                 );
             }
@@ -98,7 +110,7 @@ function reseller_checkData()
             if ($uri->getHost() == $asciiDmnName
                 && ($uri->getPath() == '/' && in_array($uri->getPort(), ['', 80, 443]))
             ) {
-                throw new iMSCP_Exception(
+                throw new Exception(
                     tr('Forward URL %s is not valid.', $forwardUrl) . ' ' .
                     tr('Domain %s cannot be forwarded on itself.', $dmnName)
                 );
@@ -107,7 +119,7 @@ function reseller_checkData()
             if ($forwardType == 'proxy') {
                 $port = $uri->getPort();
                 if ($port && $port < 1025) {
-                    throw new iMSCP_Exception(
+                    throw new Exception(
                         tr('Unallowed port in forward URL. Only ports above 1024 are allowed.')
                     );
                 }
@@ -121,8 +133,8 @@ function reseller_checkData()
     }
 
     $wildcardAlias = isset($_POST['wildcard_alias'])
-        && in_array($_POST['wildcard_alias'], ['yes', 'no'], true)
-            ? $_POST['wildcard_alias'] : 'no';
+    && in_array($_POST['wildcard_alias'], ['yes', 'no'], true)
+        ? $_POST['wildcard_alias'] : 'no';
 
     if ((!isset($_POST['datepicker'])
             || $_POST['datepicker'] === '')
@@ -181,10 +193,10 @@ function reseller_checkData()
 /**
  * Show first page of add user with data
  *
- * @param  iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @return void
  */
-function reseller_generatePage($tpl)
+function reseller_generatePage(TemplateEngine $tpl)
 {
     $forwardType = (
         isset($_POST['forward_type'])
@@ -195,24 +207,24 @@ function reseller_generatePage($tpl)
     $forwardHost = $forwardType == 'proxy' && isset($_POST['forward_host'])
         ? 'On' : 'Off';
     $wildcardAlias = isset($_POST['wildcard_alias'])
-        && in_array($_POST['wildcard_alias'], ['yes', 'no'], true)
-            ? $_POST['wildcard_alias'] : 'no';
+    && in_array($_POST['wildcard_alias'], ['yes', 'no'], true)
+        ? $_POST['wildcard_alias'] : 'no';
 
     $tpl->assign([
         'DOMAIN_NAME_VALUE'    => isset($_POST['dmn_name'])
             ? tohtml($_POST['dmn_name']) : '',
         'FORWARD_URL_YES'      => isset($_POST['url_forwarding'])
-            && $_POST['url_forwarding'] == 'yes'
-                ? ' checked' : '',
+        && $_POST['url_forwarding'] == 'yes'
+            ? ' checked' : '',
         'FORWARD_URL_NO'       => isset($_POST['url_forwarding'])
-            && $_POST['url_forwarding'] == 'yes'
-                ? '' : ' checked',
+        && $_POST['url_forwarding'] == 'yes'
+            ? '' : ' checked',
         'HTTP_YES'             => isset($_POST['forward_url_scheme'])
-            && $_POST['forward_url_scheme'] == 'http://'
-                ? ' selected' : '',
+        && $_POST['forward_url_scheme'] == 'http://'
+            ? ' selected' : '',
         'HTTPS_YES'            => isset($_POST['forward_url_scheme'])
-            && $_POST['forward_url_scheme'] == 'https://'
-                ? ' selected' : '',
+        && $_POST['forward_url_scheme'] == 'https://'
+            ? ' selected' : '',
         'FORWARD_URL'          => isset($_POST['forward_url'])
             ? tohtml($_POST['forward_url']) : '',
         'FORWARD_TYPE_301'     => $forwardType == '301' ? ' checked' : '',
@@ -230,11 +242,11 @@ function reseller_generatePage($tpl)
         'NEVER_EXPIRE_CHECKED' => isset($_POST['datepicker'])
             ? '' : ' checked',
         'CHTPL1_VAL'           => isset($_POST['chtpl'])
-            && $_POST['chtpl'] == '_yes_'
-                ? ' checked' : '',
+        && $_POST['chtpl'] == '_yes_'
+            ? ' checked' : '',
         'CHTPL2_VAL'           => isset($_POST['chtpl'])
-            && $_POST['chtpl'] == '_yes_'
-                ? '' : ' checked'
+        && $_POST['chtpl'] == '_yes_'
+            ? '' : ' checked'
     ]);
 
     $stmt = exec_query(
@@ -267,15 +279,13 @@ function reseller_generatePage($tpl)
 require 'imscp-lib.php';
 
 check_login('reseller');
-iMSCP_Events_Aggregator::getInstance()->dispatch(
-    iMSCP_Events::onResellerScriptStart
-);
+EventAggregator::getInstance()->dispatch(Events::onResellerScriptStart);
 
 if (!empty($_POST)) {
     reseller_checkData();
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'                       => 'shared/layouts/ui.tpl',
     'page'                         => 'reseller/user_add1.tpl',
@@ -316,5 +326,7 @@ reseller_generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(
+    Events::onResellerScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();

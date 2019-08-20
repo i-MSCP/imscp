@@ -18,7 +18,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/** @noinspection PhpUnhandledExceptionInspection PhpDocMissingThrowsInspection */
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
+ */
+
+use iMSCP\Database\DatabaseMySQL;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Exception\Exception;
+use iMSCP\PhpEditor;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 /**
  * Get data from previous step
@@ -92,7 +105,7 @@ function addCustomer(Zend_Form $form)
         [$_SESSION['user_id']]
     );
     if (!$stmt->rowCount()) {
-        throw new iMSCP_Exception(sprintf(
+        throw new Exception(sprintf(
             'Could not find IPs for reseller with ID %s', $_SESSION['user_id']
         ));
     }
@@ -103,7 +116,7 @@ function addCustomer(Zend_Form $form)
         showBadRequestErrorPage();
     }
 
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
 
     if (isset($_SESSION['ch_hpprops'])) {
         $props = $_SESSION['ch_hpprops'];
@@ -133,7 +146,7 @@ function addCustomer(Zend_Form $form)
     $aps = str_replace('_', '', $aps);
     $extMailServer = str_replace('_', '', $extMailServer);
     $webFolderProtection = str_replace('_', '', $webFolderProtection);
-    $db = iMSCP_Database::getInstance();
+    $db = DatabaseMySQL::getInstance();
 
     try {
         $db->beginTransaction();
@@ -164,8 +177,8 @@ function addCustomer(Zend_Form $form)
 
         $adminId = $db->insertId();
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(
-            iMSCP_Events::onBeforeAddDomain,
+        EventAggregator::getInstance()->dispatch(
+            Events::onBeforeAddDomain,
             [
                 'createdBy'     => $_SESSION['user_id'],
                 'customerId'    => $adminId,
@@ -212,7 +225,7 @@ function addCustomer(Zend_Form $form)
 
         $dmnId = $db->insertId();
 
-        $phpini = iMSCP_PHPini::getInstance();
+        $phpini = PhpEditor::getInstance();
         // Load reseller PHP permissions
         $phpini->loadResellerPermissions($_SESSION['user_id']);
         // Load client default PHP permissions
@@ -254,8 +267,8 @@ function addCustomer(Zend_Form $form)
         );
         update_reseller_c_props($_SESSION['user_id']);
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(
-            iMSCP_Events::onAfterAddDomain,
+        EventAggregator::getInstance()->dispatch(
+            Events::onAfterAddDomain,
             [
                 'createdBy'     => $_SESSION['user_id'],
                 'customerId'    => $adminId,
@@ -295,11 +308,11 @@ function addCustomer(Zend_Form $form)
 /**
  * Generates page
  *
- * @param  iMSCP_pTemplate $tpl Template engine
+ * @param  TemplateEngine $tpl Template engine
  * @param Zend_Form $form
  * @return void
  */
-function generatePage(iMSCP_pTemplate $tpl, Zend_Form $form)
+function generatePage(TemplateEngine $tpl, Zend_Form $form)
 {
     global $hpId, $dmnName, $domainIp;
 
@@ -314,9 +327,7 @@ function generatePage(iMSCP_pTemplate $tpl, Zend_Form $form)
 require 'imscp-lib.php';
 
 check_login('reseller');
-iMSCP_Events_Aggregator::getInstance()->dispatch(
-    iMSCP_Events::onResellerScriptStart
-);
+EventAggregator::getInstance()->dispatch(Events::onResellerScriptStart);
 
 if (!getPreviousStepData()) {
     set_page_message(
@@ -340,7 +351,7 @@ if (isset($_POST['uaction'])
     unset($_SESSION['step_two_data']);
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'reseller/user_add3.phtml',
@@ -354,7 +365,7 @@ generatePage($tpl, $form);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(
-    iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]
+EventAggregator::getInstance()->dispatch(
+    Events::onResellerScriptEnd, ['templateEngine' => $tpl]
 );
 $tpl->prnt();

@@ -28,7 +28,9 @@
 use iMSCP\Config\FileConfig;
 use iMSCP\Event\EventAggregator;
 use iMSCP\Event\Events;
+use iMSCP\Exception\Exception;
 use iMSCP\PhpEditor;
+use iMSCP\Registry;
 use iMSCP\TemplateEngine;
 
 /**
@@ -54,7 +56,7 @@ function isDomainStatusOk($domainId, $domainType)
             $query = 'SELECT subdomain_alias_status AS status FROM subdomain_alias WHERE subdomain_alias_id = ?';
             break;
         default:
-            throw new iMSCP_Exception('Unknown domain type');
+            throw new Exception('Unknown domain type');
     }
 
     $stmt = exec_query($query, $domainId);
@@ -120,7 +122,7 @@ function getDomainData($configLevel)
 /**
  * Update PHP configuration options
  *
- * @param iMSCP_PHPini $phpini PHP editor instance
+ * @param PhpEditor $phpini PHP editor instance
  * @param string $configLevel PHP configuration level
  * @çeturn void
  */
@@ -353,16 +355,16 @@ function generatePage(TemplateEngine $tpl, PhpEditor $phpini, FileConfig $config
 require_once 'imscp-lib.php';
 
 check_login('user');
-EventAggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 customerHasFeature('php_editor') or showBadRequestErrorPage();
 
 $phpini = PhpEditor::getInstance();
 $phpini->loadResellerPermissions($_SESSION['user_created_by']); // Load reseller PHP permissions
 $phpini->loadClientPermissions($_SESSION['user_id']); // Load client PHP permissions
 
-$config = iMSCP_Registry::get('config');
+$config = Registry::get('config');
 $confDir = $config['CONF_DIR'];
-$srvConfig = new iMSCP_Config_Handler_File("$confDir/php/php.data");
+$srvConfig = new FileConfig("$confDir/php/php.data");
 $configLevel = $srvConfig['PHP_CONFIG_LEVEL'];
 
 if (!empty($_POST)) {
@@ -398,7 +400,9 @@ generatePage($tpl, $phpini, $config, $configLevel);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventAggregator::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(
+    Events::onClientScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();
 
 unsetMessages();

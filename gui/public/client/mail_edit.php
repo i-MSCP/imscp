@@ -30,6 +30,7 @@ use iMSCP\Crypt;
 use iMSCP\Event\EventAggregator;
 use iMSCP\Event\EventDescription;
 use iMSCP\Event\Events;
+use iMSCP\Exception\Exception;
 use iMSCP\Registry;
 use iMSCP\TemplateEngine;
 
@@ -82,7 +83,7 @@ function client_editMailAccount()
     $mailQuotaLimitBytes = NULL;
 
     if (!preg_match('/^(.*?)_(?:mail|forward)/', $mailData['mail_type'], $match)) {
-        throw new iMSCP_Exception('Could not determine mail type');
+        throw new Exception('Could not determine mail type');
     }
 
     $domainType = $match[1];
@@ -93,7 +94,7 @@ function client_editMailAccount()
         showBadRequestErrorPage();
     }
 
-    if (iMSCP_Registry::get('config')->{'SERVER_HOSTNAME'} == explode('@', $mailData['mail_addr'])[1]
+    if (Registry::get('config')->{'SERVER_HOSTNAME'} == explode('@', $mailData['mail_addr'])[1]
         && $mailTypeNormal
     ) {
         # SERVER_HOSTNAME is a canonical domain (local domain) which cannot be
@@ -223,7 +224,7 @@ function client_editMailAccount()
         }
     }
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditMail, [
+    EventAggregator::getInstance()->dispatch(Events::onBeforeEditMail, [
         'mailId' => $mailData['mail_id']
     ]);
     exec_query(
@@ -368,7 +369,7 @@ if (!empty($_POST) && client_editMailAccount()) {
     redirectTo('mail_accounts.php');
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'client/mail_edit.tpl',
@@ -396,7 +397,9 @@ generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventAggregator::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(
+    Events::onClientScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();
 
 unsetMessages();

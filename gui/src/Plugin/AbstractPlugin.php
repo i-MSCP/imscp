@@ -390,7 +390,7 @@ abstract class AbstractPlugin
      * This method is automatically called by the plugin manager when the
      * plugin is being installed.
      *
-     * On failure, this method *MUST* throw an iMSCP_Plugin_Exception
+     * On failure, this method *MUST* throw an iMSCP\Plugin\PluginException
      *
      * @param PluginManager $pm
      * @return void
@@ -405,7 +405,7 @@ abstract class AbstractPlugin
      * This method is automatically called by the plugin manager when the
      * plugin is being uninstalled.
      *
-     * On failure, this method *MUST* throw an iMSCP_Plugin_Exception
+     * On failure, this method *MUST* throw an iMSCP\Plugin\PluginException
      *
      * @param PluginManager $pm
      * @return void
@@ -420,7 +420,7 @@ abstract class AbstractPlugin
      * This method is automatically called by the plugin manager when the
      * plugin is being deleted.
      *
-     * On failure, this method *MUST* throw an iMSCP_Plugin_Exception
+     * On failure, this method *MUST* throw an iMSCP\Plugin\PluginException
      *
      * @param PluginManager $pm
      * @return void
@@ -435,7 +435,7 @@ abstract class AbstractPlugin
      * This method is automatically called by the plugin manager when
      * the plugin is being updated.
      *
-     * On failure, this method *MUST* throw an iMSCP_Plugin_Exception
+     * On failure, this method *MUST* throw an iMSCP\Plugin\PluginException
      *
      * @param PluginManager $pm
      * @param string $fromVersion Version from which plugin update is initiated
@@ -452,7 +452,7 @@ abstract class AbstractPlugin
      * This method is automatically called by the plugin manager when the
      * plugin is being enabled (activated).
      *
-     * On failure, this method *MUST* throw an iMSCP_Plugin_Exception
+     * On failure, this method *MUST* throw an iMSCP\Plugin\PluginException
      *
      * @param PluginManager $pm
      * @return void
@@ -467,7 +467,7 @@ abstract class AbstractPlugin
      * This method is automatically called by the plugin manager when the
      * plugin is being disabled (deactivated).
      *
-     * On failure, this method *MUST* throw an iMSCP_Plugin_Exception
+     * On failure, this method *MUST* throw an iMSCP\Plugin\PluginException
      *
      * @param PluginManager $pm
      * @return void
@@ -583,7 +583,7 @@ abstract class AbstractPlugin
      *
      * <code>
      * public function update (
-     *  iMSCP_Plugin_manager $pm, $fromVersion, $toVersion
+     *  iMSCP\Plugin\PluginManager $pm, $fromVersion, $toVersion
      * )
      * {
      *      try {
@@ -592,7 +592,7 @@ abstract class AbstractPlugin
      *              $this->migrateDb('down');
      *          }
      *      } catch(Exception $e) {
-     *          throw new iMSCP_Plugin_Exception(
+     *          throw new iMSCP\Plugin\PluginException(
      *              $e->getMessage(), $e->getCode(), $e
      *          );
      *      }

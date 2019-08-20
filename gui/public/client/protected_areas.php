@@ -33,10 +33,10 @@ use iMSCP\TemplateEngine;
 /**
  * Generate page
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @return void
  */
-function generatePage($tpl)
+function generatePage(TemplateEngine $tpl)
 {
     $stmt = exec_query('SELECT * FROM htaccess WHERE dmn_id = ?', get_user_domain_id($_SESSION['user_id']));
 
@@ -94,7 +94,7 @@ $tpl->assign([
     'TR_MANAGE_USERS_AND_GROUPS' => tr('Manage users and groups')
 ]);
 
-iMSCP_Events_Aggregator::getInstance()->registerListener(
+EventAggregator::getInstance()->registerListener(
     Events::onGetJsTranslations,
     function (EventDescription $e) {
 
@@ -109,7 +109,9 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventAggregator::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(
+    Events::onClientScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();
 
 unsetMessages();

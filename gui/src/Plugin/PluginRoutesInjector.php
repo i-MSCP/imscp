@@ -64,7 +64,7 @@ class PluginRoutesInjector
     {
         foreach ($pm->pluginGetLoaded() as $plugin) {
             // For backward compatibility only (duck-typing).
-            // the iMSCP_Plugin_Action::route() method is deprecated since
+            // the AbstractPlugin::route() method is deprecated since
             // the plugin API version 1.5.1
             if (method_exists($plugin, 'route')) {
                 /** @var RequestInterface $request */

@@ -26,21 +26,23 @@
  */
 
 use iMSCP\Crypt;
+use iMSCP\Database\DatabaseMysql;
 use iMSCP\Event\EventAggregator;
 use iMSCP\Event\EventDescription;
 use iMSCP\Event\Events;
 use iMSCP\Exception\Exception;
 use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 use iMSCP\VirtualFileSystem;
 
 /**
  * Generate domain type list
  *
  * @param int $mainDmnId Customer main domain id
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @return void
  */
-function generateDomainTypeList($mainDmnId, $tpl)
+function generateDomainTypeList($mainDmnId, TemplateEngine $tpl)
 {
     $stmt = exec_query(
         '
@@ -211,7 +213,7 @@ function addAccount()
     );
     $row1 = $stmt->fetchRow();
 
-    $db = iMSCP_Database::getInstance();
+    $db = DatabaseMysql::getInstance();
 
     try {
         $db->beginTransaction();
@@ -292,10 +294,10 @@ function addAccount()
 /**
  * Generate page
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @return void
  */
-function generatePage($tpl)
+function generatePage(TemplateEngine $tpl)
 {
     $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 
@@ -359,7 +361,7 @@ if (!empty($_POST)) {
     }
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'client/ftp_add.tpl',
@@ -393,7 +395,9 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventAggregator::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(
+    Events::onClientScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();
 
 unsetMessages();

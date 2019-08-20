@@ -22,6 +22,7 @@
  * @noinspection
  * PhpDocMissingThrowsInspection
  * PhpUnhandledExceptionInspection
+ * PhpUnused
  */
 
 declare(strict_types=1);

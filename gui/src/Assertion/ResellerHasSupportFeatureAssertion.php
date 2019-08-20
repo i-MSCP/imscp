@@ -18,13 +18,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/** @noinspection PhpUnhandledExceptionInspection */
+/** @noinspection
+ * PhpUnusedParameterInspection
+ * PhpUnhandledExceptionInspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnused
+ */
 
 declare(strict_types=1);
 
 namespace iMSCP\Assertion;
 
-use iMSCP_Registry;
+use iMSCP\Registry;
 use Zend_Acl;
 use Zend_Acl_Assert_Interface;
 use Zend_Acl_Resource_Interface;
@@ -46,7 +51,7 @@ class ResellerHasSupportFeatureAssertion implements Zend_Acl_Assert_Interface
         $privilege = NULL
     ): bool
     {
-        return iMSCP_Registry::get('config')['IMSCP_SUPPORT_SYSTEM']
+        return Registry::get('config')['IMSCP_SUPPORT_SYSTEM']
             && resellerHasFeature('support');
     }
 }

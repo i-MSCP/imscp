@@ -18,9 +18,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 /**
  * Send email
@@ -31,10 +39,6 @@
  * @param string $body Body
  * @param array $rcptToData Recipient data
  * @return bool TRUE on success, FALSE on failure
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function reseller_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToData)
 {
@@ -70,10 +74,6 @@ function reseller_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToD
  * @param string $subject Subject
  * @param string $body Body
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function reseller_sendToCustomers($senderName, $senderEmail, $subject, $body)
 {
@@ -103,7 +103,6 @@ function reseller_sendToCustomers($senderName, $senderEmail, $subject, $body)
  * @param string $subject Subject
  * @param string $body Body
  * @return bool TRUE if circular is valid, FALSE otherwise
- * @throws Zend_Exception
  */
 function reseller_isValidCircular($senderName, $senderEmail, $subject, $body)
 {
@@ -135,10 +134,6 @@ function reseller_isValidCircular($senderName, $senderEmail, $subject, $body)
  * Send circular
  *
  * @return bool TRUE on success, FALSE otherwise
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function reseller_sendCircular()
 {
@@ -157,7 +152,7 @@ function reseller_sendCircular()
         return false;
     }
 
-    $responses = iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeSendCircular, [
+    $responses = EventAggregator::getInstance()->dispatch(Events::onBeforeSendCircular, [
         'sender_name'  => $senderName,
         'sender_email' => $senderEmail,
         'rcpt_to'      => 'customers',
@@ -172,7 +167,7 @@ function reseller_sendCircular()
     set_time_limit(0);
     ignore_user_abort(true);
     reseller_sendToCustomers($senderName, $senderEmail, $subject, $body);
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterSendCircular, [
+    EventAggregator::getInstance()->dispatch(Events::onAfterSendCircular, [
         'sender_name'  => $senderName,
         'sender_email' => $senderEmail,
         'rcpt_to'      => 'customers',
@@ -187,13 +182,10 @@ function reseller_sendCircular()
 /**
  * Generate page data
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
-function reseller_generatePageData($tpl)
+function reseller_generatePageData(TemplateEngine $tpl)
 {
     $senderName = isset($_POST['sender_name']) ? $_POST['sender_name'] : '';
     $senderEmail = isset($_POST['sender_email']) ? $_POST['sender_email'] : '';
@@ -217,7 +209,7 @@ function reseller_generatePageData($tpl)
         if ($row['email'] != '') {
             $senderEmail = $row['email'];
         } else {
-            $config = iMSCP_Registry::get('config');
+            $config = Registry::get('config');
             if (isset($config['DEFAULT_ADMIN_ADDRESS']) && $config['DEFAULT_ADMIN_ADDRESS'] != '') {
                 $senderEmail = $config['DEFAULT_ADMIN_ADDRESS'];
             } else {
@@ -234,14 +226,10 @@ function reseller_generatePageData($tpl)
     ]);
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require 'imscp-lib.php';
 
 check_login('reseller');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onResellerScriptStart);
 
 if (!resellerHasCustomers()) {
     showBadRequestErrorPage();
@@ -251,7 +239,7 @@ if (!empty($_POST) && reseller_sendCircular()) {
     redirectTo('users.php');
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'reseller/circular.tpl',
@@ -274,7 +262,9 @@ reseller_generatePageData($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(
+    Events::onResellerScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();
 
 unsetMessages();

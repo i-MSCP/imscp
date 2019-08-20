@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by i-MSCP Team <team@i-mscp.net>
+ * Copyright (C) 2010-2019 by i-MSCP Team <team@i-mscp.net>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,19 +18,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Authentication as Auth;
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_pTemplate as TemplateEngine;
-use iMSCP_Registry as Registry;
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
+ */
+
+use iMSCP\Authentication\AuthService;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 
 require 'imscp-lib.php';
 
-EventsManager::getInstance()->dispatch(Events::onLoginScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onLoginScriptStart);
 
 if (isset($_REQUEST['action'])) {
-    init_login(EventsManager::getInstance());
-    $auth = Auth::getInstance();
+    init_login(EventAggregator::getInstance());
+    $auth = AuthService::getInstance();
 
     switch ($_REQUEST['action']) {
         case 'login':
@@ -131,5 +138,7 @@ if ($cfg['MAINTENANCEMODE'] && !isset($_GET['admin'])) {
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onLoginScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(
+    Events::onLoginScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();

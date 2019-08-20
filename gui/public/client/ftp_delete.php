@@ -25,6 +25,7 @@
  * PhpIncludeInspection
  */
 
+use iMSCP\Database\DatabaseMySQL;
 use iMSCP\Event\EventAggregator;
 use iMSCP\Event\Events;
 use iMSCP\Exception\Exception;
@@ -55,7 +56,7 @@ if (!$stmt->rowCount()) {
 $row = $stmt->fetchRow();
 $groupname = $row['groupname'];
 
-$db = iMSCP_Database::getInstance();
+$db = DatabaseMySQL::getInstance();
 
 try {
     $db->beginTransaction();

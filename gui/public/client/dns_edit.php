@@ -23,6 +23,7 @@
  * PhpDocMissingThrowsInspection
  * PhpUnhandledExceptionInspection
  * PhpIncludeInspection
+ * PhpUnused
  */
 
 use iMSCP\Database\DatabaseMySQL;
@@ -893,11 +894,11 @@ function client_saveDnsRecord($dnsRecordId)
 /**
  * Generate page
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @param int $dnsRecordId DNS record unique identifier (0 for new record)
  * @return void
  */
-function generatePage($tpl, $dnsRecordId)
+function generatePage(TemplateEngine $tpl, $dnsRecordId)
 {
     $mainDomainId = get_user_domain_id($_SESSION['user_id']);
 

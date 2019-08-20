@@ -145,10 +145,11 @@ iMSCP::EventManager->getInstance()->register(
     {
         my $fileContent = <<'EOF';
 <?php
+use iMSCP\Registry;
 require '../../library/imscp-lib.php';
-$config = iMSCP_Registry::get('config');
-if(iMSCP_Registry::isRegistered('bufferFilter')) {
-    $filter = iMSCP_Registry::get('bufferFilter');
+$config = Registry::get('config');
+if(Registry::isRegistered('bufferFilter')) {
+    $filter = Registry::get('bufferFilter');
     $filter->compressionInformation = false;
 }
 $masterDnsServerIp = $config['BASE_SERVER_PUBLIC_IP'];

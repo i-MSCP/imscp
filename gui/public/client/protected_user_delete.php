@@ -104,7 +104,7 @@ try {
     send_request();
     write_log(sprintf('%s deletes user ID (protected areas): %s', $_SESSION['user_logged'], $htuserName), E_USER_NOTICE);
 } catch (DatabaseException $e) {
-    iMSCP_Database::getInstance()->rollBack();
+    DatabaseMySQL::getInstance()->rollBack();
     set_page_message(tr('An unexpected error occurred. Please contact your reseller.'), 'error');
     write_log(sprintf('Could not delete htaccess user: %s', $e->getMessage()));
 }

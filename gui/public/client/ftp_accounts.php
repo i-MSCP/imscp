@@ -25,16 +25,18 @@
  * PhpIncludeInspection
  */
 
+use iMSCP\Event\Event;
 use iMSCP\Event\EventAggregator;
 use iMSCP\Event\Events;
+use iMSCP\TemplateEngine;
 
 /**
  * Generate page
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @return void
  */
-function generatePage($tpl)
+function generatePage(TemplateEngine $tpl)
 {
     $stmt = exec_query('SELECT userid, status FROM ftp_users WHERE admin_id = ?', $_SESSION['user_id']);
 
@@ -67,7 +69,7 @@ check_login('user');
 EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 customerHasFeature('ftp') or showBadRequestErrorPage();
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'client/ftp_accounts.tpl',
@@ -89,7 +91,7 @@ $tpl->assign([
 
 EventAggregator::getInstance()->registerListener(
     Events::onGetJsTranslations,
-    function ($e) {
+    function (Event $e) {
         $tr = $e->getParam('translations');
         $tr['core']['dataTable'] = getDataTablesPluginTranslations();
         $tr['core']['deletion_confirm_msg'] = tr('Are you sure you want to delete the `%%s` FTP user?');

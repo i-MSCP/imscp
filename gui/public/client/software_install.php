@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by i-MSCP Team
+ * Copyright (C) 2010-2019 by i-MSCP Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,22 +18,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP\VirtualFileSystem as VirtualFileSystem;
-
-/***********************************************************************************************************************
- *  Script functions
+/**
+ * @noinspection
+ * PhpUnhandledExceptionInspection
+ * PhpDocMissingThrowsInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Authentication\AuthService;
+use iMSCP\Event\Event;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Exception\Exception;
+use iMSCP\TemplateEngine;
+use iMSCP\VirtualFileSystem;
 
 /**
  * Set FTP root dir
  *
- * @param null|iMSCP_pTemplate $tpl
+ * @param null|TemplateEngine $tpl
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
-function setFtpRootDir($tpl = NULL)
+function setFtpRootDir(TemplateEngine $tpl = NULL)
 {
     $domainProps = get_domain_default_props($_SESSION['user_id']);
 
@@ -75,7 +81,7 @@ function setFtpRootDir($tpl = NULL)
 
             header('Status: 200 OK');
             $data['document_root'] = utils_normalizePath($documentRoot);
-        } catch (iMSCP_Exception $e) {
+        } catch (Exception $e) {
             header('Status: 400 Bad Request');
             $data['message'] = tr('Bad request.') . ' ' . $e->getMessage();
         }
@@ -88,20 +94,17 @@ function setFtpRootDir($tpl = NULL)
 /**
  * Generate Page
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @param int $softwareId Software unique identifier
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
-function client_generatePage($tpl, $softwareId)
+function client_generatePage(TemplateEngine $tpl, $softwareId)
 {
     $domainProperties = get_domain_default_props($_SESSION['user_id']);
     $stmt = exec_query('SELECT created_by FROM admin WHERE admin_id = ?', $_SESSION['user_id']);
 
     if (!$stmt->rowCount()) {
-        throw new iMSCP_Exception('An unexpected error occurred. Please contact your reseller.');
+        throw new Exception('An unexpected error occurred. Please contact your reseller.');
     }
 
     $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
@@ -110,14 +113,10 @@ function client_generatePage($tpl, $softwareId)
     );
 }
 
-/***********************************************************************************************************************
- * Main program
- */
-
 require_once 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 customerHasFeature('aps') or showBadRequestErrorPage();
 
 if (!isset($_GET['id']) || !is_number($_GET['id'])) {
@@ -126,7 +125,7 @@ if (!isset($_GET['id']) || !is_number($_GET['id'])) {
 
 $softwareId = intval($_GET['id']);
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'            => 'shared/layouts/ui.tpl',
     'page'              => 'client/software_install.tpl',
@@ -356,7 +355,7 @@ if (!empty($_POST)) {
     setFtpRootDir($tpl);
     $otherDir = $appPassword = $appDatabase = $appDatabase = $appSqlUser = '';
     $appLoginName = 'admin';
-    $appEmail = iMSCP_Authentication::getInstance()->getIdentity()->email;
+    $appEmail = AuthService::getInstance()->getIdentity()->email;
 }
 
 $tpl->assign([
@@ -387,19 +386,23 @@ $tpl->assign([
     'VAL_DATABASE_USER'           => tohtml($appSqlUser)
 ]);
 
-iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
-    /** @var $e iMSCP_Events_Event */
-    $translations = $e->getParam('translations');
-    $translations['core']['close'] = tr('Close');
-    $translations['core']['ftp_directories'] = tr('Ftp directories');
-});
+EventAggregator::getInstance()->registerListener(
+    'onGetJsTranslations',
+    function (Event $e) {
+        $translations = $e->getParam('translations');
+        $translations['core']['close'] = tr('Close');
+        $translations['core']['ftp_directories'] = tr('Ftp directories');
+    }
+);
 
 client_generatePage($tpl, $softwareId);
 generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(
+    Events::onClientScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();
 
 unsetMessages();

@@ -19,9 +19,7 @@
  */
 
 /**
- * @noinspection
- * PhpDocMissingThrowsInspection
- * PhpUnhandledExceptionInspection
+ * @noinspection PhpDocMissingThrowsInspection PhpUnhandledExceptionInspection
  */
 
 declare(strict_types=1);
@@ -69,7 +67,6 @@ class ArrayConfig implements ArrayAccess
      *
      * @param string $key Configuration parameter key name
      * @return mixed Configuration parameter value
-     * @throws Exception
      */
     public function __get($key)
     {
@@ -82,7 +79,6 @@ class ArrayConfig implements ArrayAccess
      *
      * @param string $key Configuration parameter key name
      * @return mixed Configuration parameter value
-     * @throws Exception
      */
     public function get($key)
     {
@@ -98,7 +94,6 @@ class ArrayConfig implements ArrayAccess
      *
      * @param string $key Configuration parameter key name
      * @return boolean TRUE if configuration parameter exists, FALSE otherwise
-     * @todo Remove this method
      */
     public function exists($key)
     {
@@ -124,7 +119,7 @@ class ArrayConfig implements ArrayAccess
      *
      * This method is not recursive.
      *
-     * @param ArrayConfig $config iMSCP_Config_Handler object
+     * @param ArrayConfig $config
      * @return void
      */
     public function merge(ArrayConfig $config)

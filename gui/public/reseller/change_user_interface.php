@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by i-MSCP Team
+ * Copyright (C) 2010-2019 by i-MSCP Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,10 +18,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
+ */
+
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+
 require 'imscp-lib.php';
 
 check_login('reseller');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onResellerScriptStart);
 
 // Switch back to admin
 if (isset($_SESSION['logged_from'])
@@ -45,7 +55,7 @@ if (isset($_SESSION['user_id']) && isset($_GET['to_id'])) {
         $stmt = exec_query(
             'SELECT COUNT(admin_id) FROM admin WHERE admin_id = ? AND created_by = ?', [$toUserId, $fromUserId]
         );
-        
+
         if ($stmt->fetchRow(PDO::FETCH_COLUMN) == 0) {
             showBadRequestErrorPage();
         }

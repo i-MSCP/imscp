@@ -18,7 +18,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/** @noinspection PhpUnhandledExceptionInspection PhpDocMissingThrowsInspection */
+/**
+ * @noinspection
+ * PhpUnhandledExceptionInspection
+ * PhpDocMissingThrowsInspection
+ * PhpIncludeInspection
+ */
+
+use iMSCP\Authentication\AuthService;
+use iMSCP\Database\DatabaseMySQL;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\Exception\Exception;
+use iMSCP\PhpEditor;
+use iMSCP\Registry;
+use iMSCP\TemplateEngine;
+use iMSCP\Uri\UriException;
+use iMSCP\Uri\UriRedirect;
 
 /**
  * Get domains list
@@ -86,35 +102,35 @@ function getDomainsList()
 /**
  * Generate page
  *
- * @param $tpl iMSCP_pTemplate
+ * @param $tpl TemplateEngine
  * @return void
  */
 function generatePage($tpl)
 {
     $forwardType = isset($_POST['forward_type'])
-        && in_array($_POST['forward_type'], ['301', '302', '303', '307', 'proxy'], true)
-            ? $_POST['forward_type'] : '302';
+    && in_array($_POST['forward_type'], ['301', '302', '303', '307', 'proxy'], true)
+        ? $_POST['forward_type'] : '302';
     $forwardHost = $forwardType == 'proxy' && isset($_POST['forward_host'])
         ? 'On' : 'Off';
     $wildcardAlias = isset($_POST['wildcard_alias'])
-        && in_array($_POST['wildcard_alias'], ['yes', 'no'], true)
-            ? $_POST['wildcard_alias'] : 'no';
+    && in_array($_POST['wildcard_alias'], ['yes', 'no'], true)
+        ? $_POST['wildcard_alias'] : 'no';
 
     $tpl->assign([
         'SUBDOMAIN_NAME'     => isset($_POST['subdomain_name'])
             ? tohtml($_POST['subdomain_name'], 'htmlAttr') : '',
         'FORWARD_URL_YES'    => isset($_POST['url_forwarding'])
-            && $_POST['url_forwarding'] == 'yes'
-                ? ' checked' : '',
+        && $_POST['url_forwarding'] == 'yes'
+            ? ' checked' : '',
         'FORWARD_URL_NO'     => isset($_POST['url_forwarding'])
-            && $_POST['url_forwarding'] == 'yes'
-                ? '' : ' checked',
+        && $_POST['url_forwarding'] == 'yes'
+            ? '' : ' checked',
         'HTTP_YES'           => isset($_POST['forward_url_scheme'])
-            && $_POST['forward_url_scheme'] == 'http://'
-                ? ' selected' : '',
+        && $_POST['forward_url_scheme'] == 'http://'
+            ? ' selected' : '',
         'HTTPS_YES'          => isset($_POST['forward_url_scheme'])
-            && $_POST['forward_url_scheme'] == 'https://'
-                ? ' selected' : '',
+        && $_POST['forward_url_scheme'] == 'https://'
+            ? ' selected' : '',
         'FORWARD_URL'        => isset($_POST['forward_url'])
             ? tohtml($_POST['forward_url']) : '',
         'FORWARD_TYPE_301'   => $forwardType == '301' ? ' checked' : '',
@@ -137,8 +153,8 @@ function generatePage($tpl)
             'DOMAIN_NAME'          => tohtml($domain['name'], 'htmlAttr'),
             'DOMAIN_NAME_UNICODE'  => tohtml(decode_idna($domain['name'])),
             'DOMAIN_NAME_SELECTED' => isset($_POST['domain_name'])
-                && $_POST['domain_name'] == $domain['name']
-                    ? ' selected' : '',
+            && $_POST['domain_name'] == $domain['name']
+                ? ' selected' : '',
         ]);
 
         if ($domain['type'] == 'dmn' || $domain['type'] == 'als') {
@@ -149,7 +165,7 @@ function generatePage($tpl)
             $tpl->assign(
                 'SHARED_MOUNT_POINT_DOMAIN_SELECTED',
                 isset($_POST['shared_mount_point_domain'])
-                    && $_POST['shared_mount_point_domain'] == $domain['name']
+                && $_POST['shared_mount_point_domain'] == $domain['name']
                     ? ' selected' : ''
             );
             $tpl->parse('SHARED_MOUNT_POINT_DOMAIN', '.shared_mount_point_domain');
@@ -162,11 +178,11 @@ function generatePage($tpl)
     } else {
         $tpl->assign([
             'SHARED_MOUNT_POINT_YES' => isset($_POST['shared_mount_point'])
-                && $_POST['shared_mount_point'] == 'yes'
-                    ? ' checked' : '',
+            && $_POST['shared_mount_point'] == 'yes'
+                ? ' checked' : '',
             'SHARED_MOUNT_POINT_NO'  => isset($_POST['shared_mount_point'])
-                && $_POST['shared_mount_point'] == 'yes'
-                    ? '' : ' checked'
+            && $_POST['shared_mount_point'] == 'yes'
+                ? '' : ' checked'
         ]);
     }
 }
@@ -324,9 +340,9 @@ function addSubdomain()
 
         try {
             try {
-                $uri = iMSCP_Uri_Redirect::fromString($forwardUrl);
-            } catch (Zend_Uri_Exception $e) {
-                throw new iMSCP_Exception(
+                $uri = UriRedirect::fromString($forwardUrl);
+            } catch (UriException $e) {
+                throw new Exception(
                     tr('Forward URL %s is not valid.', $forwardUrl)
                 );
             }
@@ -341,7 +357,7 @@ function addSubdomain()
                     && in_array($uri->getPort(), ['', 80, 443])
                 )
             ) {
-                throw new iMSCP_Exception(
+                throw new Exception(
                     tr('Forward URL %s is not valid.', $forwardUrl) . ' ' .
                     tr('Subdomain %s cannot be forwarded on itself.', $subdomainName)
                 );
@@ -350,7 +366,7 @@ function addSubdomain()
             if ($forwardType == 'proxy') {
                 $port = $uri->getPort();
                 if ($port && $port < 1025) {
-                    throw new iMSCP_Exception(
+                    throw new Exception(
                         tr('Unallowed port in forward URL. Only ports above 1024 are allowed.')
                     );
                 }
@@ -364,16 +380,16 @@ function addSubdomain()
     }
 
     $wildcardAlias = isset($_POST['wildcard_alias'])
-        && in_array($_POST['wildcard_alias'], ['yes', 'no'], true)
-            ? $_POST['wildcard_alias'] : 'no';
+    && in_array($_POST['wildcard_alias'], ['yes', 'no'], true)
+        ? $_POST['wildcard_alias'] : 'no';
 
-    $db = iMSCP_Database::getInstance();
+    $db = DatabaseMySQL::getInstance();
 
     try {
         $db->beginTransaction();
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(
-            iMSCP_Events::onBeforeAddSubdomain,
+        EventAggregator::getInstance()->dispatch(
+            Events::onBeforeAddSubdomain,
             [
                 'subdomainName'  => $subdomainName,
                 'subdomainType'  => $domainType,
@@ -420,7 +436,7 @@ function addSubdomain()
         $subdomainId = $db->insertId();
 
         // Create the phpini entry for that subdomain
-        $phpini = iMSCP_PHPini::getInstance();
+        $phpini = PhpEditor::getInstance();
         // Load reseller PHP permissions
         $phpini->loadResellerPermissions($_SESSION['user_created_by']);
         // Load client PHP permissions
@@ -435,20 +451,20 @@ function addSubdomain()
             $domainType == 'dmn' ? 'sub' : 'subals'
         );
 
-        $cfg = iMSCP_Registry::get('config');
+        $cfg = Registry::get('config');
 
         if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
             createDefaultMailAccounts(
                 $mainDmnProps['domain_id'],
-                iMSCP_Authentication::getInstance()->getIdentity()->email,
+                AuthService::getInstance()->getIdentity()->email,
                 $subdomainNameAscii,
                 $domainType == 'dmn' ? MT_SUBDOM_FORWARD : MT_ALSSUB_FORWARD,
                 $subdomainId
             );
         }
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(
-            iMSCP_Events::onAfterAddSubdomain,
+        EventAggregator::getInstance()->dispatch(
+            Events::onAfterAddSubdomain,
             [
                 'subdomainName'  => $subdomainName,
                 'subdomainType'  => $domainType,
@@ -473,7 +489,7 @@ function addSubdomain()
             E_USER_NOTICE
         );
         return true;
-    } catch (iMSCP_Exception $e) {
+    } catch (Exception $e) {
         $db->rollBack();
         write_log(
             sprintf('System was unable to create the %s subdomain: %s',
@@ -493,9 +509,7 @@ function addSubdomain()
 require_once 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptStart
-);
+EventAggregator::getInstance()->dispatch(Events::onClientScriptStart);
 customerHasFeature('subdomains') or showBadRequestErrorPage();
 
 $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
@@ -519,7 +533,7 @@ if (!empty($_POST) && addSubdomain()) {
     redirectTo('domains_manage.php');
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'                       => 'shared/layouts/ui.tpl',
     'page'                         => 'client/subdomain_add.tpl',
@@ -560,7 +574,9 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(
+    Events::onClientScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();
 
 unsetMessages();

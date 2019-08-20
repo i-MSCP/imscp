@@ -22,6 +22,8 @@
  * @noinspection
  * PhpDocMissingThrowsInspection
  * PhpUnhandledExceptionInspection
+ * PhpMissingParentConstructorInspection
+ * PhpUnused
  */
 
 declare(strict_types=1);
@@ -129,7 +131,7 @@ class DbConfig extends ArrayConfig implements Iterator, Serializable
     protected $_valuesColumn = 'value';
 
     /**
-     * @var bool Internal flag indicating whether or not cached dbconfig object
+     * @var bool Internal flag indicating whether or not cached DbConfig object
      *           must be flushed
      */
     protected $flushCache = false;
@@ -153,7 +155,6 @@ class DbConfig extends ArrayConfig implements Iterator, Serializable
      *
      * For a single parameter, only a Database instance is accepted.
      *
-     * @noinspection PhpMissingParentConstructorInspection
      * @param DatabaseMySQL|array $params A Database instance or an array of
      *                                    parameters that contains at least a
      *                                    Database instance
@@ -648,9 +649,9 @@ class DbConfig extends ArrayConfig implements Iterator, Serializable
     public function __destruct()
     {
         if ($this->flushCache) {
-            Registry::get(
-                'iMSCP_Application')->getCache()->remove('iMSCP_DbConfig'
-            );
+            Registry::get('iMSCP_Application')
+                ->getCache()
+                ->remove('iMSCP_DbConfig');
         }
     }
 }

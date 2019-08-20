@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,21 +18,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ * PhpIncludeInspection
  */
+
+use iMSCP\Event\Event;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\TemplateEngine;
 
 /**
  * Generate page
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
-function generatePage($tpl)
+function generatePage(TemplateEngine $tpl)
 {
     $stmt = exec_query(
         'SELECT id, name, status FROM hosting_plans WHERE reseller_id = ? ORDER BY id', $_SESSION['user_id']
@@ -53,8 +57,7 @@ function generatePage($tpl)
         'TR_DELETE' => tr('Delete')
     ]);
 
-    iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
-        /** @var iMSCP_Events_Event $e */
+    EventAggregator::getInstance()->registerListener('onGetJsTranslations', function (Event $e) {
         $translations = $e->getParam('translations');
         $translations['core']['hp_delete_confirmation'] = tr('Are you sure you want to delete this hosting plan?');
     });
@@ -69,16 +72,12 @@ function generatePage($tpl)
     }
 }
 
-/***********************************************************************************************************************
- * Main
- */
-
 require 'imscp-lib.php';
 
 check_login('reseller');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+EventAggregator::getInstance()->dispatch(Events::onResellerScriptStart);
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'        => 'shared/layouts/ui.tpl',
     'page'          => 'reseller/hosting_plan.tpl',
@@ -94,7 +93,9 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
+EventAggregator::getInstance()->dispatch(
+    Events::onResellerScriptEnd, ['templateEngine' => $tpl]
+);
 $tpl->prnt();
 
 unsetMessages();

@@ -30,6 +30,7 @@ use iMSCP\Event\EventAggregator;
 use iMSCP\Event\EventDescription;
 use iMSCP\Event\Events;
 use iMSCP\Registry;
+use iMSCP\TemplateEngine;
 use iMSCP\VirtualFileSystem;
 
 /**
@@ -118,11 +119,11 @@ function updateFtpAccount($userid)
 /**
  * Generate page
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @param string $ftpUserId Ftp userid
  * @return void
  */
-function generatePage($tpl, $ftpUserId)
+function generatePage(TemplateEngine $tpl, $ftpUserId)
 {
     $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 
@@ -133,7 +134,7 @@ function generatePage($tpl, $ftpUserId)
     $_SESSION['ftp_chooser_hidden_dirs'] = [];
     $_SESSION['ftp_chooser_unselectable_dirs'] = [];
 
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
     $stmt = exec_query('SELECT homedir FROM ftp_users WHERE userid = ?', $ftpUserId);
     $row = $stmt->fetchRow();
 
@@ -178,7 +179,7 @@ if (!empty($_POST)) {
     }
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'client/ftp_edit.tpl',

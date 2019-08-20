@@ -118,9 +118,9 @@ class AuthResult
     /**
      * Returns whether the result represents a successful authentication attempt
      *
-     * @return boolean
+     * @return bool
      */
-    public function isValid()
+    public function isValid(): bool
     {
         return ($this->_code > 0) ? true : false;
     }
@@ -130,7 +130,7 @@ class AuthResult
      *
      * @return int
      */
-    public function getCode()
+    public function getCode(): int
     {
         return $this->_code;
     }
@@ -149,8 +149,9 @@ class AuthResult
      * Set error messages
      *
      * @param array|string $messages Message(s)
+     * @return void
      */
-    public function setMessage($messages)
+    public function setMessage($messages): void
     {
         $this->_messages = (array)$messages;
     }
@@ -163,7 +164,7 @@ class AuthResult
      *
      * @return array
      */
-    public function getMessages()
+    public function getMessages(): array
     {
         return $this->_messages;
     }

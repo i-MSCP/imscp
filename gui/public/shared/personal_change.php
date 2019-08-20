@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,26 +18,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Authentication as Authentication;
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_pTemplate as TemplateEngine;
-use Zend_Form as Form;
-
-/***********************************************************************************************************************
- * Functions
+/**
+ * @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
  */
+
+use iMSCP\Authentication\AuthService;
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
+use iMSCP\TemplateEngine;
+use Zend_Form as Form;
 
 /**
  * Update personal data
  *
  * @param Form $form
  * @return void
- * @throws Zend_Exception
- * @throws Zend_Form_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function updatePersonalData(Form $form)
 {
@@ -51,7 +48,7 @@ function updatePersonalData(Form $form)
 
     $idnaEmail = $form->getValue('email');
 
-    EventsManager::getInstance()->dispatch(Events::onBeforeEditUser, [
+    EventAggregator::getInstance()->dispatch(Events::onBeforeEditUser, [
         'userId'   => $_SESSION['user_id'],
         'userData' => $form->getValues()
     ]);
@@ -71,10 +68,10 @@ function updatePersonalData(Form $form)
     );
 
     # We need also update user email in session
-    Authentication::getInstance()->getIdentity()->email = $idnaEmail;
+    AuthService::getInstance()->getIdentity()->email = $idnaEmail;
     $_SESSION['user_email'] = $idnaEmail; // Only for backward compatibility
 
-    EventsManager::getInstance()->dispatch(Events::onAfterEditUser, [
+    EventAggregator::getInstance()->dispatch(Events::onAfterEditUser, [
         'userId'   => $_SESSION['user_id'],
         'userData' => $form->getValues()
     ]);
@@ -89,10 +86,6 @@ function updatePersonalData(Form $form)
  * @param TemplateEngine $tpl
  * @param Form $form
  * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generatePage(TemplateEngine $tpl, Form $form)
 {
@@ -119,10 +112,6 @@ function generatePage(TemplateEngine $tpl, Form $form)
 
     $form->setDefaults($data);
 }
-
-/***********************************************************************************************************************
- * Main
- */
 
 $form = getUserPersonalDataForm();
 

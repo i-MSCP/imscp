@@ -52,7 +52,7 @@ class PluginArchive implements Zend_Filter_Interface
     ];
 
     /**
-     * iMSCP_Plugin_Validate_File_Plugin constructor.
+     * PluginArchive constructor.
      *
      * @param array $options
      * @return void
