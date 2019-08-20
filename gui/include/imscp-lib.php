@@ -34,10 +34,8 @@ defined('APPLICATION_ENV') || define(
     (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production')
 );
 
-chdir(dirname(__DIR__));
-
 (function () {
-    $autoloader = include './vendor/autoload.php';
+    $autoloader = include __DIR__ .'/../vendor/autoload.php';
     $app = new iMSCP\Application($autoloader, APPLICATION_ENV);
     $app->bootstrap(CONFIG_FILE_PATH);
 })();
