@@ -511,7 +511,7 @@ sub _setupPrimaryIP
                 ) ON DUPLICATE KEY UPDATE
                     ip_netmask = ?, ip_card = ?
             ",
-            undef, $ipAddr, $ipNetmask, $nic, $ipNetmask, $nic,
+            undef, $ipAddr, $ipNetmask, $nic, $ipNetmask, $nic
         );
 
         $db->useDatabase( $oldDbName ) if $oldDbName;
