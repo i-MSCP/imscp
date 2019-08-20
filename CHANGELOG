@@ -54,7 +54,7 @@ DISTRIBUTIONS
     Dropped: Support for Ubuntu Trusty Thar (14.04)
 
 FRONTEND
-    Added: Autoloader for aliasing the legacy i-MSCP classes/interface
+    Added: Autoloader for aliasing the legacy i-MSCP classes/interfaces
     Added: ACL assertions for the navigation
     Added: Apache2 wildcard alias feature
     Added: Filter for plugin archives

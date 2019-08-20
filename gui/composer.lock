@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5e592a473baec5ce9f0601fae3d31bf3",
+    "content-hash": "78a9199c2f77e782900094d2fa6b655e",
     "packages": [
         {
             "name": "algo26-matthias/idna-convert",
@@ -41,8 +41,8 @@
             "authors": [
                 {
                     "name": "Matthias Sommerfeld",
-                    "email": "matthias.sommerfeld@algo26.de",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "matthias.sommerfeld@algo26.de"
                 }
             ],
             "description": "A library for encoding and decoding internationalized domain names",
@@ -53,53 +53,6 @@
                 "php"
             ],
             "time": "2019-03-04T17:07:46+00:00"
-        },
-        {
-            "name": "clancats/hydrahon",
-            "version": "v1.1.11",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ClanCats/Hydrahon.git",
-                "reference": "3485e53b3928ec0eea325b641d2833a748ac82ed"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ClanCats/Hydrahon/zipball/3485e53b3928ec0eea325b641d2833a748ac82ed",
-                "reference": "3485e53b3928ec0eea325b641d2833a748ac82ed",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "ClanCats\\Hydrahon\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Mario Döring",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Fast and simple Query Builder without extra bacon, written in PHP.",
-            "homepage": "https://github.com/ClanCats/Hydrahon",
-            "keywords": [
-                "builder",
-                "database",
-                "mysql",
-                "query",
-                "sqlite"
-            ],
-            "time": "2019-02-04T09:45:01+00:00"
         },
         {
             "name": "container-interop/container-interop",
@@ -317,9 +270,9 @@
             "authors": [
                 {
                     "name": "Mike Pultz",
+                    "role": "Developer",
                     "email": "mike@mikepultz.com",
-                    "homepage": "https://mikepultz.com/",
-                    "role": "Developer"
+                    "homepage": "https://mikepultz.com/"
                 }
             ],
             "description": "Native PHP5 DNS Resolver and Updater Library",
@@ -333,16 +286,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "2.0.20",
+            "version": "2.0.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "d6819a55b05e123db1e881d8b230d57f912126be"
+                "reference": "9f1287e68b3f283339a9f98f67515dd619e5bf9d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/d6819a55b05e123db1e881d8b230d57f912126be",
-                "reference": "d6819a55b05e123db1e881d8b230d57f912126be",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/9f1287e68b3f283339a9f98f67515dd619e5bf9d",
+                "reference": "9f1287e68b3f283339a9f98f67515dd619e5bf9d",
                 "shasum": ""
             },
             "require": {
@@ -376,28 +329,28 @@
             "authors": [
                 {
                     "name": "Jim Wigginton",
-                    "email": "terrafrost@php.net",
-                    "role": "Lead Developer"
+                    "role": "Lead Developer",
+                    "email": "terrafrost@php.net"
                 },
                 {
                     "name": "Patrick Monnerat",
-                    "email": "pm@datasphere.ch",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "pm@datasphere.ch"
                 },
                 {
                     "name": "Andreas Fischer",
-                    "email": "bantu@phpbb.com",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "bantu@phpbb.com"
                 },
                 {
                     "name": "Hans-Jürgen Petrich",
-                    "email": "petrich@tronic-media.com",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "petrich@tronic-media.com"
                 },
                 {
                     "name": "Graham Campbell",
-                    "email": "graham@alt-three.com",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "graham@alt-three.com"
                 }
             ],
             "description": "PHP Secure Communications Library - Pure-PHP implementations of RSA, AES, SSH2, SFTP, X.509 etc.",
@@ -421,7 +374,7 @@
                 "x.509",
                 "x509"
             ],
-            "time": "2019-06-23T16:33:11+00:00"
+            "time": "2019-07-12T12:53:49+00:00"
         },
         {
             "name": "pimple/pimple",
@@ -717,7 +670,9 @@
                 "patches_applied": {
                     "Patch for PHP deprecations (Zend Framework 1)": "patches/001_php_deprecations.patch",
                     "Patch for Zend_Form component (docblock fix)": "patches/002_zend_form_docblock_fix.patch",
-                    "Patch for Zend_Navigation component (isActive() implementation for URI page)": "patches/003_zend_navigation_patch"
+                    "Patch for Zend_Navigation component (isActive() implementation for URI page)": "patches/003_zend_navigation_patch",
+                    "Patch for Zend_Validate_File_Upload validator (count() fix)": "patches/004_zend_validate_file_upload.patch",
+                    "Patch for Zend_Validate_File_Count validator (count() fix)": "patches/005_zend_validate_file_count.patch"
                 }
             },
             "autoload": {

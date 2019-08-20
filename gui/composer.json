@@ -73,7 +73,6 @@
     "ext-zip": "*",
     "ext-zlib": "*",
     "algo26-matthias/idna-convert": "~2.1.0",
-    "clancats/hydrahon": "~1.1.11",
     "cweagans/composer-patches": "~1.6.6",
     "imscp/composer-installers": "^1.0",
     "pear/net_dns2": "~1.4.4",
@@ -83,26 +82,25 @@
     "zendframework/zendframework1": "1.12.20"
   },
   "autoload": {
-    "psr-0": {
-      "iMSCP": "library/iMSCP/"
-    },
     "psr-4": {
-      "iMSCP\\": "library/"
+      "iMSCP\\Plugin\\": "plugins/",
+      "iMSCP\\": "src/"
     },
     "files": [
-      "library/Functions/Admin.php",
-      "library/Functions/Client.php",
-      "library/Functions/Counting.php",
-      "library/Functions/Email.php",
-      "library/Functions/Input.php",
-      "library/Functions/Intl.php",
-      "library/Functions/Layout.php",
-      "library/Functions/Login.php",
-      "library/Functions/Reseller.php",
-      "library/Functions/Shared.php",
-      "library/Functions/SoftwareInstaller.php",
-      "library/Functions/Statistics.php",
-      "library/Functions/View.php"
+      "include/BcAutoload.php",
+      "include/Admin.php",
+      "include/Client.php",
+      "include/Counting.php",
+      "include/Email.php",
+      "include/Input.php",
+      "include/Intl.php",
+      "include/Layout.php",
+      "include/Login.php",
+      "include/Reseller.php",
+      "include/Shared.php",
+      "include/SoftwareInstaller.php",
+      "include/Statistics.php",
+      "include/View.php"
     ]
   },
   "extra": {
