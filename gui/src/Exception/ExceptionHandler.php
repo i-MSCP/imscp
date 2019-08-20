@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace iMSCP\Exception;
 
-use iMSCP\Event\EventException;
+use iMSCP\Exception\ExceptionEvent;
 use iMSCP\Event\EventManager;
 use iMSCP\Event\EventManagerInterface;
 use Throwable;
@@ -116,7 +116,8 @@ class ExceptionHandler
                 $this->em->registerListener('onUncaughtException', new $writer);
             }
 
-            $this->em->dispatch(new EventException($exception));
+            
+            $this->em->dispatch(new ExceptionEvent($exception));
             exit;
         } catch (Throwable $e) {
             die(sprintf(
