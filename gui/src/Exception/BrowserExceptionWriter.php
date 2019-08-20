@@ -29,7 +29,6 @@ declare(strict_types=1);
 namespace iMSCP\Exception;
 
 use iMSCP\Database\DatabaseException;
-use iMSCP\ProductionException;
 use iMSCP\Registry;
 use iMSCP\TemplateEngine;
 
