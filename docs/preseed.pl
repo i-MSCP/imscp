@@ -8,7 +8,7 @@ use warnings;
 # See the documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2019.05.30
+# Last update: 2019.08.20
 
 %::questions = (
     ###
@@ -20,10 +20,11 @@ use warnings;
     #
     # If you make use of a Cloud computing service such as Scaleway or Amazon
     # EC2, you should set the value to '0.0.0.0' which means that i-MSCP will
-    # configures the services to listen on all  interfaces rather than a
+    # configures the services to listen on all interfaces rather than a 
     # specific interface.
     #
-    # Possible values: A configured IPv4 or IPv6 address
+    # Possible values: A configured IPv4/IPv6 address, or 0.0.0.0 to make the
+    #                  services listen on all interfaces.
     BASE_SERVER_IP                      => '',
 
     # Master administrator (control panel) password
@@ -33,13 +34,13 @@ use warnings;
 
     # Master administrator email address
     #
-    # Be aware that mails sent to local root user will be forwarded to that
-    # email.
+    # Be aware that mails sent to local root user will be forwarded to this
+    # email address.
     #
     # This email address is very important as this is the one to which i-MSCP
-    # will send all system notifications such as warning, error and so on...
-    # If you make use of The i-MSCP LetsEncrypt plugin, this email will be also
-    # used for the account registration. 
+    # will send all system notifications such as errors. Furthermore, If you
+    # make use of The i-MSCP LetsEncrypt plugin, this email will be also  used
+    # for the account registration. 
     #
     # Possible value: A valid email address.
     DEFAULT_ADMIN_ADDRESS               => '',
@@ -50,14 +51,14 @@ use warnings;
     # authentication plugin is enabled for the SQL root user, you can leave
     # these parameters blank.
     #
-    # The installer only make use of that SQL user while installation.
+    # The installer only make use of that SQL user account while installation.
     SQL_ROOT_USER                       => '',
     SQL_ROOT_PASSWORD                   => '',
 
     ###
-    ### Parameter with default values
+    ### Parameters with default values
     ### All parameters below can be left 'AS THIS' if the default values fit
-    ### for your needs.
+    ## your needs.
     ###
 
     #
