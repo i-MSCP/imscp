@@ -61,7 +61,7 @@ use parent 'Common::Object';
  message (since v1.4.4).
 
  Param hashref \%data Plugin data
- Return int 0 on success, other on failure
+ Return int 0 on success, other or die on failure
 
 =cut
 
@@ -105,7 +105,7 @@ sub process
     );
 
     eval {
-        my %plugin_next_state_map = (
+        my %pluginNextStateMap = (
             enabled     => 'enabled',
             toinstall   => 'enabled',
             toenable    => 'enabled',
@@ -121,7 +121,7 @@ sub process
             undef,
             ( $rs
                 ? getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error'
-                : $plugin_next_state_map{$self->{'pluginData'}->{'plugin_status'}}
+                : $pluginNextStateMap{$self->{'pluginData'}->{'plugin_status'}}
             ),
             $data->{'id'}
         );
@@ -131,7 +131,11 @@ sub process
         return 1;
     }
 
-    0;
+    # The tasks processor doesn't care about return value.
+    # We need throw an exception instead.
+    $self->{'throwException'}
+        ? die( 'error', getMessageByType( 'error', amount => 1, remove => TRUE ) || 'Unknown error' )
+        : 0;
 }
 
 =back
@@ -157,6 +161,7 @@ sub _init
     $self->{'pluginAction'} = undef;
     $self->{'pluginData'} = {};
     $self->{'pluginInstance'} = undef;
+    $self->{'throwException'} = FALSE;
     $self;
 }
 
@@ -439,9 +444,10 @@ sub _run
  Execute the given plugin action
 
  Param string $action Action to execute on the plugin
- Param string OPTIONAL $fromVersion Version from which the plugin is being updated
- Param string OPTIONAL $toVersion Version to which the plugin is being updated
- Return int 0 on success, other on failure
+ Param string $fromVersion Version from which the plugin is being updated
+ Param string $toVersion Version to which the plugin is being updated
+ Return int 0, die when a plugin raise an error in the context of the run()
+        action, and when the plugin FORCE_RETVAL attribut value is a TRUE value.
 
 =cut
 
@@ -494,11 +500,19 @@ sub _executePluginAction
         return 1;
     }
 
-    # Return value from the run() action is ignored by default because it's the
-    # responsibility of the plugin to set the  error status for their items.
-    # However a plugin can force return value by setting the FORCE_RETVAL
-    # attribute to a TRUE
-    ( $action ne 'run' || $self->{'pluginInstance'}->{'FORCE_RETVAL'} ) ? $rs : 0
+    # Return value of the run() method is ignored by default, because it is
+    # normally the plugin responsibility to handle state of their entities.
+    # However, there are particular cases where the full processing must be
+    # aborted, mostly when processing of other entities could depend on the
+    # state of the plugin entities. In such a case, a plugin can set the value
+    # of its FORCE_RETVAL attribute to a TRUE value, in which case the error
+    # will bubble up to the tasks processor.
+    if ( $action eq 'run' && $self->{'pluginInstance'}->{'FORCE_RETVAL'} ) {
+        $self->{'throwException'} = TRUE if $rs;
+        return $rs;
+    }
+
+    $rs;
 }
 
 =back
