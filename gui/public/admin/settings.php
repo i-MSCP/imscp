@@ -25,6 +25,7 @@
  * PhpIncludeInspection
  */
 
+use iMSCP\Application;
 use iMSCP\Config\DbConfig;
 use iMSCP\Event\EventAggregator;
 use iMSCP\Event\Events;
@@ -110,8 +111,9 @@ if (!empty($_POST)) {
     } elseif ($domainRowsPerPage < 1) {
         $domainRowsPerPage = 1;
     } else {
-        /** @var DbConfig $dbCfg */
-        $dbCfg = Registry::get('dbConfig');
+        /** @var Application $app */
+        $app = Registry::get('iMSCP_Application');
+        $dbCfg = $app->getDbConfig();
 
         $dbCfg['CHECK_FOR_UPDATES'] = $checkForUpdate;
         $dbCfg['LOSTPASSWORD'] = $lostPasswd;

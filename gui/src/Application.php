@@ -34,9 +34,9 @@ use iMSCP\Database\DatabaseMySQL;
 use iMSCP\Event\EventAggregator;
 use iMSCP\Event\EventDescription;
 use iMSCP\Event\Events;
+use iMSCP\Exception\Exception;
 use iMSCP\Exception\ExceptionHandler;
 use iMSCP\Plugin\PluginManager;
-use iMSCP\Exception\Exception;
 use PDOException;
 use Slim\App as SlimApplication;
 use Slim\Container;
@@ -167,12 +167,16 @@ class Application
      */
     public function getSlimApplication()
     {
-        $container = $this->getContainer();
-        $container['autoloader'] = $this->getComposerAutoloader();
+        if (NULL === $this->slimApplication) {
+            $container = $this->getContainer();
+            $container['autoloader'] = $this->getComposerAutoloader();
 
-        (new ServiceProvider())->register($this->container);
+            (new ServiceProvider())->register($this->container);
 
-        return new SlimApplication($container);
+            $this->slimApplication = new SlimApplication($container);
+        }
+
+        return $this->slimApplication;
     }
 
     /**
@@ -268,9 +272,7 @@ class Application
     {
         // Don't show notices and deprecation warnings if we are in
         // production, unless we are in debug mode
-        if ($this->getEnvironment() == 'production'
-            && !$this->config['DEBUG']
-        ) {
+        if ($this->getEnvironment() == 'production') {
             error_reporting(
                 E_ALL & ~E_NOTICE & ~E_USER_NOTICE & ~E_DEPRECATED
                 & ~E_USER_DEPRECATED
@@ -748,7 +750,8 @@ class Application
     {
         $cache = $this->getCache();
 
-        if (!($this->dbConfig = $cache->load('iMSCP_DbConfig'))) {;
+        if (!($this->dbConfig = $cache->load('iMSCP_DbConfig'))) {
+            ;
             $this->dbConfig = new DbConfig($this->getDatabase());
             $config = $this->getConfig();
             $config->merge($this->dbConfig);
@@ -846,7 +849,7 @@ class Application
         if (PHP_SAPI == 'cli') {
             try {
                 $locale = new Zend_Locale(Zend_Locale::ENVIRONMENT);
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 $locale = new Zend_Locale('en_GB');
             }
         } else {
