@@ -29,10 +29,11 @@ use iMSCP\Application;
 use iMSCP\Event\Events;
 use iMSCP\Plugin\PluginRoutesInjector;
 use iMSCP\Registry;
+use Slim\App as SlimApplication;
 
 require_once __DIR__ . '/../library/imscp-lib.php';
 
-(function () {
+(function (): SlimApplication {
     /** @var Application $app */
     $app = Registry::get('iMSCP_Application');
     $slim = $app->getSlimApplication();
@@ -41,5 +42,5 @@ require_once __DIR__ . '/../library/imscp-lib.php';
         Events::onBeforeInjectPluginRoutes, ['pluginManager' => $pm]
     );
     (new PluginRoutesInjector())($slim, $pm);
-    $slim->run();
-})();
+    return $slim;
+})()->run();

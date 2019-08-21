@@ -35,7 +35,6 @@ class BcAutoloader
         // library/iMSCP
         'iMSCP_Application'                        => 'iMSCP\\Application',
         'iMSCP_Authentication'                    => 'iMSCP\\Authentication\\AuthService',
-        //'iMSCP_Config'                             => 'iMSCP\\Config\\Config',
         'iMSCP_Database'                           => 'iMSCP\\Database\\DatabaseMySQL',
         'iMSCP_Events'                             => 'iMSCP\\Event\\Events',
         'iMSCP_Exception'                          => 'iMSCP\\Exception\\Exception',
@@ -81,8 +80,6 @@ class BcAutoloader
         'iMSCP_Exception_Production'               => 'iMSCP\\Exception\\ProductionException',
         // library/iMSCP/Filter
         'iMSCP_Filter_Compress_Gzip'               => 'iMSCP\\Filter\\GzipFilter',
-        'iMSCP_Filter_AlnumAndHyphen'              => 'iMSCP\\Filter\\AlnumAndHyphenFilter',
-        'iMSCP_Filter_Noop'                        => 'iMSCP\\Filter\\NoopFilter',
         // library/iMSCP/I18n
         'iMSCP_I18n_Parser_Exception'              => 'iMSCP\\I18n\\ParserException',
         'iMSCP_I18n_Parser_Gettext'                => 'iMSCP\\I18n\\GettextParser',
@@ -102,7 +99,6 @@ class BcAutoloader
         // library/iMSCP/Utility
         'iMSCP_Utility_OpcodeCache'                => 'iMSCP\\Utility\\OpcodeCache',
         // library/iMSCP/Validate
-        'iMSCP_Validate_AlnumAndHyphen'            => 'iMSCP\\Validate\\AlnumAndHyphen',
         'iMSCP_Validate_Uri'                       => 'iMSCP\\Validate\\Uri'
     ];
 

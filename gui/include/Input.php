@@ -551,12 +551,12 @@ function getUserLoginDataForm(
 function getUserPersonalDataForm()
 {
     $form = new Zend_Form([
-        'elementPrefixPath' => [
-            'validate' => [
-                'prefix' => 'iMSCP_Validate',
-                'path'   => 'iMSCP/Validate/'
-            ]
-        ],
+        //'elementPrefixPath' => [
+        //    'validate' => [
+        //        'prefix' => 'iMSCP_Validate',
+        //        'path'   => 'iMSCP/Validate/'
+        //    ]
+        //],
         'elements'          => [
             'fname'   => [
                 'text', [
