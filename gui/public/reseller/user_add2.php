@@ -582,7 +582,8 @@ function checkInputData()
             if (isset($_POST['memory_limit'])) {
                 // Must be set before phpiniPostMaxSize
                 $phpini->setDomainIni(
-                    'phpiniMemoryLimit', clean_input($_POST['memory_limit']));
+                    'phpiniMemoryLimit', clean_input($_POST['memory_limit'])
+                );
             }
 
             if (isset($_POST['post_max_size'])) {
@@ -593,8 +594,8 @@ function checkInputData()
             }
 
             if (isset($_POST['upload_max_filesize'])) {
-                $phpini->setDomainIni('
-                phpiniUploadMaxFileSize',
+                $phpini->setDomainIni(
+                    'phpiniUploadMaxFileSize',
                     clean_input($_POST['upload_max_filesize'])
                 );
             }
