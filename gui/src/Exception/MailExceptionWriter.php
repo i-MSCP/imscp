@@ -52,7 +52,7 @@ class MailExceptionWriter extends AbstractExceptionWriter
      * @param ExceptionEvent $event
      * @return void
      */
-    public function onUncaughtException(ExceptionEvent $event)
+    public function onUncaughtException(ExceptionEvent $event): void
     {
         $data = $this->prepareMailData($event->getException());
 

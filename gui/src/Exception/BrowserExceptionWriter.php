@@ -67,7 +67,7 @@ class BrowserExceptionWriter extends AbstractExceptionWriter
      * @param ExceptionEvent $event
      * @return void
      */
-    public function onUncaughtException(ExceptionEvent $event)
+    public function onUncaughtException(ExceptionEvent $event): void
     {
         $exception = $event->getException();
 
@@ -86,7 +86,7 @@ class BrowserExceptionWriter extends AbstractExceptionWriter
             );
 
             $this->message .= preg_replace(
-                '#([\t\n]+|<br \/>)#', ' ', $exception->getMessage()
+                '#([\t\n]+|<br />)#', ' ', $exception->getMessage()
             );
 
             if ($exception instanceof DatabaseException) {
