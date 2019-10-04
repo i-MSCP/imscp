@@ -113,6 +113,7 @@
             <package>php5.6-mcrypt</package>
             <package>php5.6-mysql</package>
             <package>php5.6-opcache</package>
+            <package>php5.6-phar</package>
             <package>php5.6-pspell</package>
             <package>php5.6-xml</package>
             <package>php5.6-zip</package>
@@ -150,6 +151,7 @@
             <package>php7.0-mcrypt</package>
             <package>php7.0-mysql</package>
             <package>php7.0-opcache</package>
+            <package>php7.0-phar</package>
             <package>php7.0-pspell</package>
             <package>php7.0-xml</package>
             <package>php7.0-zip</package>
@@ -187,6 +189,7 @@
             <package>php7.1-mcrypt</package>
             <package>php7.1-mysql</package>
             <package>php7.1-opcache</package>
+            <package>php7.1-phar</package>
             <package>php7.1-pspell</package>
             <package>php7.1-xml</package>
             <package>php7.1-zip</package>
@@ -223,6 +226,7 @@
             <package>php7.2-mbstring</package>
             <package>php7.2-mysql</package>
             <package>php7.2-opcache</package>
+            <package>php7.2-phar</package>
             <package>php7.2-pspell</package>
             <package>php7.2-xml</package>
             <package>php7.2-zip</package>
@@ -254,16 +258,7 @@
             </package>
             <package>php7.3-cgi</package>
             <package>php7.3-fpm</package>
-            <package
-                    post_install_tasks="
-                        /usr/bin/update-alternatives
-                        --set phar /usr/bin/phar7.3;
-                        /usr/bin/update-alternatives
-                        --set phar.phar /usr/bin/phar.phar7.3
-                    "
-            >
-                php7.3-common
-            </package>
+            <package>php7.3-common</package>
             <package>php7.3-bcmath</package>
             <package>php7.3-bz2</package>
             <package>php7.3-curl</package>
@@ -275,11 +270,59 @@
             <package>php7.3-mbstring</package>
             <package>php7.3-mysql</package>
             <package>php7.3-opcache</package>
+            <package
+                    post_install_tasks="
+                        /usr/bin/update-alternatives
+                        --set phar /usr/bin/phar7.3;
+                        /usr/bin/update-alternatives
+                        --set phar.phar /usr/bin/phar.phar7.3
+                    "
+            >
+                php7.3-phar
+            </package>
             <package>php7.3-pspell</package>
             <package>php7.3-xml</package>
             <package>php7.3-zip</package>
             <package>libapache2-mod-php7.3</package>
         </php7.3>
+        <php7.4
+                always_installed="1"
+                class="Servers::php"
+                description="PHP 7.4"
+        >
+            <package
+                    post_install_tasks="
+                        /usr/sbin/phpenmod -v 7.4 -s ALL ctype fileinfo ftp
+                        gettext iconv pdo phar posix sockets bcmath bz2 curl gd
+                        gmp imap intl json mbstring mysqlnd mysqli pdo_mysql
+                        opcache pspell dom xml xmlreader xmlwriter zip apcu
+                        apcu_bc
+                    "
+            >
+                php7.4
+            </package>
+            <package>php7.4-cli
+            </package>
+            <package>php7.4-cgi</package>
+            <package>php7.4-fpm</package>
+            <package>php7.4-common</package>
+            <package>php7.4-bcmath</package>
+            <package>php7.4-bz2</package>
+            <package>php7.4-curl</package>
+            <package>php7.4-gd</package>
+            <package>php7.4-gmp</package>
+            <package>php7.4-imap</package>
+            <package>php7.4-intl</package>
+            <package>php7.4-json</package>
+            <package>php7.4-mbstring</package>
+            <package>php7.4-mysql</package>
+            <package>php7.4-opcache</package>
+            <package>php7.4-phar</package>
+            <package>php7.4-pspell</package>
+            <package>php7.4-xml</package>
+            <package>php7.4-zip</package>
+            <package>libapache2-mod-php7.4</package>
+        </php7.4>
         <package>php-apcu</package>
         <package>php-apcu-bc</package>
         <package>php-pear</package>

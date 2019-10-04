@@ -50,7 +50,7 @@ DISTRIBUTIONS
     Added: bcmath and bz2 PHP extensions (all distributions, all PHP versions)
     Added: Support for Debian Buster (10.x) - Experimental
     Added: Support for Devuan ASCII (2.x)
-    Added: Support for PHP 7.2, 7.3
+    Added: Support for PHP 7.2, 7.3, 7.4
     Dropped: Support for Ubuntu Trusty Thar (14.04)
 
 FRONTEND
