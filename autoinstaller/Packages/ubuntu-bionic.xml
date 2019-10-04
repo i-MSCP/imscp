@@ -254,8 +254,7 @@
             </package>
             <package
                     post_install_tasks="
-                        /usr/bin//usr/bin/update-alternatives
-                        --set php /usr/bin/php7.3
+                        /usr/bin/update-alternatives --set php /usr/bin/php7.3
                     "
             >
                 php7.3-cli
