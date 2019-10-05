@@ -316,17 +316,29 @@ sub _setupSqlUser
             { Columns => [ 1, 2 ] }
         ) };
 
-        ( $config{'COURIER_AUTHDAEMON_SQL_USER'} = decryptRijndaelCBC(
-            $::imscpDBKey,
-            $::imscpDBiv,
-            $config{'COURIER_AUTHDAEMON_SQL_USER'} // ''
-        ) || 'dovecot_' . randomStr( 8, ALPHA64 ) );
+        if ( length $config{'COURIER_AUTHDAEMON_SQL_USER'} ) {
+            $config{'COURIER_AUTHDAEMON_SQL_USER'} = decryptRijndaelCBC(
+                $::imscpDBKey,
+                $::imscpDBiv,
+                $config{'COURIER_AUTHDAEMON_SQL_USER'}
+            );
+        } else {
+            $config{'COURIER_AUTHDAEMON_SQL_USER'} = 'courier_' . randomStr(
+                8, ALPHA64
+            );
+        }
 
-        ( $config{'COURIER_AUTHDAEMON_SQL_USER_PASSWD'} = decryptRijndaelCBC(
-            $::imscpDBKey,
-            $::imscpDBiv,
-            $config{'COURIER_AUTHDAEMON_SQL_USER_PASSWD'} // ''
-        ) || randomStr( 16, ALPHA64 ) );
+        if ( length $config{'COURIER_AUTHDAEMON_SQL_USER_PASSWD'} ) {
+            $config{'COURIER_AUTHDAEMON_SQL_USER_PASSWD'} = decryptRijndaelCBC(
+                $::imscpDBKey,
+                $::imscpDBiv,
+                $config{'COURIER_AUTHDAEMON_SQL_USER_PASSWD'}
+            );
+        } else {
+            $config{'COURIER_AUTHDAEMON_SQL_USER_PASSWD'} = randomStr(
+                16, ALPHA64
+            );
+        }
 
         (
             $self->{'_courier_authdaemon_sql_user'},

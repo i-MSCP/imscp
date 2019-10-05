@@ -26,7 +26,7 @@ package Servers::po::dovecot::installer;
 use strict;
 use warnings;
 use File::Basename 'fileparse';
-use iMSCP::Crypt qw/ decryptRijndaelCBC encryptRijndaelCBC randomStr /;
+use iMSCP::Crypt qw/ ALPHA64 decryptRijndaelCBC encryptRijndaelCBC randomStr /;
 use iMSCP::Boolean;
 use iMSCP::Database;
 use iMSCP::Debug qw/ debug error /;
@@ -419,21 +419,26 @@ sub _setupSqlUser
             { Columns => [ 1, 2 ] }
         ) };
 
-        ( $config{'DOVECOT_SQL_USER'} = decryptRijndaelCBC(
-            $::imscpDBKey,
-            $::imscpDBiv,
-            $config{'DOVECOT_SQL_USER'} // ''
-        ) || 'dovecot_' . randomStr( 8, iMSCP::Crypt::ALPHA64 ) );
+        if ( length $config{'DOVECOT_SQL_USER'} ) {
+            $config{'DOVECOT_SQL_USER'} = decryptRijndaelCBC(
+                $::imscpDBKey, $::imscpDBiv, $config{'DOVECOT_SQL_USER'}
+            );
+        } else {
+            $config{'DOVECOT_SQL_USER'} = 'dovecot_' . randomStr(
+                8, ALPHA64
+            );
+        }
 
-        ( $config{'DOVECOT_SQL_USER_PASSWD'} = decryptRijndaelCBC(
-            $::imscpDBKey,
-            $::imscpDBiv,
-            $config{'DOVECOT_SQL_USER_PASSWD'} // ''
-        ) || randomStr( 16, iMSCP::Crypt::ALPHA64 ) );
+        if ( length $config{'DOVECOT_SQL_USER_PASSWD'} ) {
+            $config{'DOVECOT_SQL_USER_PASSWD'} = decryptRijndaelCBC(
+                $::imscpDBKey, $::imscpDBiv, $config{'DOVECOT_SQL_USER_PASSWD'}
+            );
+        } else {
+            $config{'DOVECOT_SQL_USER_PASSWD'} = randomStr( 16, ALPHA64 );
+        }
 
         (
-            $self->{'_dovecot_sql_user'},
-            $self->{'_dovecot_sql_user_passwd'}
+            $self->{'_dovecot_sql_user'}, $self->{'_dovecot_sql_user_passwd'}
         ) = (
             $config{'DOVECOT_SQL_USER'}, $config{'DOVECOT_SQL_USER_PASSWD'}
         );

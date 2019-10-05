@@ -313,21 +313,24 @@ sub _setupDatabase
             { Columns => [ 1, 2 ] }
         ) };
 
-        ( $config{'PROFTPD_SQL_USER'} = decryptRijndaelCBC(
-            $::imscpDBKey,
-            $::imscpDBiv,
-            $config{'PROFTPD_SQL_USER'} // ''
-        ) && $config{'PROFTPD_SQL_USER'} || 'proftpd_' . randomStr( 8, ALPHA64 ) );
+        if ( length $config{'PROFTPD_SQL_USER'} ) {
+            $config{'PROFTPD_SQL_USER'} = decryptRijndaelCBC(
+                $::imscpDBKey, $::imscpDBiv, $config{'PROFTPD_SQL_USER'}
+            );
+        } else {
+            $config{'PROFTPD_SQL_USER'} = 'proftpd_' . randomStr( 8, ALPHA64 );
+        }
 
-        ( $config{'PROFTPD_SQL_USER_PASSWD'} = decryptRijndaelCBC(
-            $::imscpDBKey,
-            $::imscpDBiv,
-            $config{'PROFTPD_SQL_USER_PASSWD'} // ''
-        ) || randomStr( 16, ALPHA64 ) );
+        if ( length $config{'PROFTPD_SQL_USER_PASSWD'} ) {
+            $config{'PROFTPD_SQL_USER_PASSWD'} = decryptRijndaelCBC(
+                $::imscpDBKey, $::imscpDBiv, $config{'PROFTPD_SQL_USER_PASSWD'}
+            );
+        } else {
+            $config{'PROFTPD_SQL_USER_PASSWD'} = randomStr( 16, ALPHA64 );
+        }
 
         (
-            $self->{'_proftpd_sql_user'},
-            $self->{'_proftpd_sql_user_passwd'}
+            $self->{'_proftpd_sql_user'}, $self->{'_proftpd_sql_user_passwd'}
         ) = (
             $config{'PROFTPD_SQL_USER'}, $config{'PROFTPD_SQL_USER_PASSWD'}
         );

@@ -117,7 +117,7 @@ sub _uninstall
         ) };
 
         if ( defined $vsftpdSqlUser ) {
-            vsftpdSqlUser = decryptRijndaelCBC(
+            $vsftpdSqlUser = decryptRijndaelCBC(
                 $::imscpDBKey, $::imscpDBiv, $vsftpdSqlUser
             );
 

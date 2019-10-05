@@ -27,7 +27,7 @@ use strict;
 use warnings;
 use File::Basename 'dirname';
 use iMSCP::Boolean;
-use iMSCP::Crypt qw/ decryptRijndaelCBC encryptRijndaelCBC randomStr /;
+use iMSCP::Crypt qw/ ALPHA64 decryptRijndaelCBC encryptRijndaelCBC randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dir;
@@ -561,17 +561,27 @@ sub _setupVlogger
             { Columns => [ 1, 2 ] }
         ) };
 
-        ( $config{'APACHE_VLOGGER_SQL_USER'} = decryptRijndaelCBC(
-            $::imscpDBKey,
-            $::imscpDBiv,
-            $config{'APACHE_VLOGGER_SQL_USER'} // ''
-        ) || 'vlogger_' . randomStr( 8, iMSCP::Crypt::ALPHA64 ) );
+        if ( length $config{'APACHE_VLOGGER_SQL_USER'} ) {
+            $config{'APACHE_VLOGGER_SQL_USER'} = decryptRijndaelCBC(
+                $::imscpDBKey, $::imscpDBiv, $config{'APACHE_VLOGGER_SQL_USER'}
+            );
+        } else {
+            $config{'APACHE_VLOGGER_SQL_USER'} = 'vlogger_' . randomStr(
+                8, ALPHA64
+            );
+        }
 
-        ( $config{'APACHE_VLOGGER_SQL_USER_PASSWD'} = decryptRijndaelCBC(
-            $::imscpDBKey,
-            $::imscpDBiv,
-            $config{'APACHE_VLOGGER_SQL_USER_PASSWD'} // ''
-        ) || randomStr( 16, iMSCP::Crypt::ALPHA64 ) );
+        if ( length $config{'APACHE_VLOGGER_SQL_USER_PASSWD'} ) {
+            $config{'APACHE_VLOGGER_SQL_USER_PASSWD'} = decryptRijndaelCBC(
+                $::imscpDBKey,
+                $::imscpDBiv,
+                $config{'APACHE_VLOGGER_SQL_USER_PASSWD'}
+            );
+        } else {
+            $config{'APACHE_VLOGGER_SQL_USER_PASSWD'} = randomStr(
+                16, ALPHA64
+            );
+        }
 
         $dbh->do(
             '

@@ -276,22 +276,23 @@ sub _setupDatabase
             { Columns => [ 1, 2 ] }
         ) };
 
-        ( $config{'VSFTPD_SQL_USER'} = decryptRijndaelCBC(
-            $::imscpDBKey,
-            $::imscpDBiv,
-            $config{'VSFTPD_SQL_USER'} // ''
-        ) || 'vsftpd_' . randomStr( 9, ALPHA64 ) );
+        if ( length $config{'VSFTPD_SQL_USER'} ) {
+            $config{'VSFTPD_SQL_USER'} = decryptRijndaelCBC(
+                $::imscpDBKey, $::imscpDBiv, $config{'VSFTPD_SQL_USER'}
+            );
+        } else {
+            $config{'PROFTPD_SQL_USER'} = 'vsftpd_' . randomStr( 9, ALPHA64 );
+        }
 
-        ( $config{'VSFTPD_SQL_USER_PASSWD'} = decryptRijndaelCBC(
-            $::imscpDBKey,
-            $::imscpDBiv,
-            $config{'VSFTPD_SQL_USER_PASSWD'} // ''
-        ) || randomStr( 16, ALPHA64 ) );
+        if ( length $config{'VSFTPD_SQL_USER_PASSWD'} ) {
+            $config{'VSFTPD_SQL_USER_PASSWD'} = decryptRijndaelCBC(
+                $::imscpDBKey, $::imscpDBiv, $config{'VSFTPD_SQL_USER_PASSWD'}
+            );
+        } else {
+            $config{'VSFTPD_SQL_USER_PASSWD'} = randomStr( 16, ALPHA64 );
+        }
 
-        (
-            $self->{'_vsftpd_sql_user'},
-            $self->{'_vsftpd_sql_user_passwd'}
-        ) = (
+        ( $self->{'_vsftpd_sql_user'}, $self->{'_vsftpd_sql_user_passwd'} ) = (
             $config{'VSFTPD_SQL_USER'}, $config{'VSFTPD_SQL_USER_PASSWD'}
         );
 
