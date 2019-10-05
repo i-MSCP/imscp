@@ -978,7 +978,8 @@ sub _getPackagesDialog
             $::questions{'KEEP_LOCAL_SQL_SERVER'} //=
                 $::imscpConfig{'KEEP_LOCAL_SQL_SERVER'};
 
-            unless ( length $::questions{'KEEP_LOCAL_SQL_SERVER'}
+            if( $sAlt ne 'remote_server'
+                || !length $::questions{'KEEP_LOCAL_SQL_SERVER'}
                 || !iMSCP::Getopt->preseed
             ) {
                 $::questions{'KEEP_LOCAL_SQL_SERVER'} = 'yes';
@@ -1038,8 +1039,8 @@ EOF
 
             if ( $section eq 'sql' ) {
                 push @dialogStack, sub {
-                    if ( $::questions{'SQL_SERVER'} ne 'remote_server' ||
-                        !iMSCP::ProgramFinder::find( 'mysqld' )
+                    if ( $::questions{'SQL_SERVER'} ne 'remote_server'
+                        || !iMSCP::ProgramFinder::find( 'mysqld' )
                     ) {
                         $::questions{'KEEP_LOCAL_SQL_SERVER'} = 'yes';
                         return 20;
