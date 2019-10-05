@@ -22,6 +22,10 @@ declare(strict_types=1);
 
 namespace iMSCP\Autoloader;
 
+use ArrayObject;
+use Composer\Autoload\ClassLoader;
+use RuntimeException;
+
 /**
  * Class BcAutoloader - Alias legacy i-MSCP classes/interfaces to the news
  * @package iMSCP\Autoloader
@@ -34,7 +38,7 @@ class BcAutoloader
     private static $map = [
         // library/iMSCP
         'iMSCP_Application'                        => 'iMSCP\\Application',
-        'iMSCP_Authentication'                    => 'iMSCP\\Authentication\\AuthService',
+        'iMSCP_Authentication'                     => 'iMSCP\\Authentication\\AuthService',
         'iMSCP_Database'                           => 'iMSCP\\Database\\DatabaseMySQL',
         'iMSCP_Events'                             => 'iMSCP\\Event\\Events',
         'iMSCP_Exception'                          => 'iMSCP\\Exception\\Exception',
@@ -103,30 +107,89 @@ class BcAutoloader
     ];
 
     /**
-     * Register an autoloader for legacy iMSCP classes/interfaces.
+     * Attach autoloaders for managing legacy i-MSCP core artifacts.
      *
-     * This autoloader is prepended to the stack of already registered
-     * autoloaders. If the class/interface to be loaded is a legacy one, it will
-     * be aliased to the new one which in turn will be loaded by the composer
-     * autoloader.
+     * We attach two autoloaders:
+     *
+     * - The first autoloader is prepended to the stack of autoloaders to handle
+     *   new classes and add aliases for legacy classes. PHP expects any
+     *   interfaces implemented, classes extended, or traits used when declaring
+     *   class_alias() to exist and/or be autoloadable already at the time of
+     *   declaration. If not, it will raise a fatal error. This autoloader helps
+     *   mitigate errors in such situation.
+     *
+     * - The second autoloader is appended to the stack of autoloaders to create
+     *   aliases for legacy classes.
      *
      * @return void
      */
     public static function register(): void
     {
+        $loaded = new ArrayObject(array());
+
+        spl_autoload_register(self::createPrependAutoloader(
+            self::getClassLoader(),
+            $loaded
+        ), true, true);
+
         spl_autoload_register(
-            self::createAutoloader(), true, true
+            self::createAppendAutoloader($loaded), true, true
         );
     }
 
     /**
-     * Create autoloader.
+     * Get composer autoloader.
      *
+     * @return ClassLoader
+     * @throws RuntimeException
+     */
+    private static function getClassLoader()
+    {
+        if (file_exists(__DIR__ . '/../../vendor/autoload.php')) {
+            return include __DIR__ . '/../../vendor/autoload.php';
+        }
+
+        throw new RuntimeException('Cannot detect composer autoload.');
+    }
+
+    /**
+     * Create autoloader to handles new classes and add aliases for legacy
+     * classes.
+     *
+     * @param ClassLoader $classLoader
+     * @param ArrayObject $loaded
      * @return callable
      */
-    private static function createAutoloader(): callable
+    private static function createPrependAutoloader(
+        ClassLoader $classLoader, ArrayObject $loaded
+    ): callable
     {
-        return function ($class) {
+        return function ($class) use ($classLoader, $loaded) {
+            if (isset($loaded[$class])) {
+                return;
+            }
+
+            if (FALSE === ($legacy = array_search($class, static::$map))) {
+                return;
+            }
+
+            if ($classLoader->loadClass($class)) {
+                class_alias($class, $legacy);
+            }
+        };
+    }
+
+    /**
+     * Create autoloader to create aliases for legacy classes.
+     *
+     * @param ArrayObject $loaded
+     * @return callable
+     */
+    private static function createAppendAutoloader(ArrayObject $loaded): callable
+    {
+        return function ($class) use ($loaded) {
+            $loaded[self::$map[$class]] = true;
+
             if (!isset(self::$map[$class])) {
                 return;
             }
