@@ -30,6 +30,7 @@ use File::Spec;
 use iMSCP::Boolean;
 use iMSCP::Config;
 use iMSCP::Crypt qw/ ALNUM apr1MD5 randomStr /;
+use iMSCP::Cwd '$CWD';
 use iMSCP::Database;
 use iMSCP::Debug qw/ error debug getMessageByType /;
 use iMSCP::Dialog::InputValidation qw/
@@ -193,6 +194,7 @@ sub install
     $rs ||= $self->_buildPhpConfig();
     $rs ||= $self->_buildHttpdConfig();
     $rs ||= $self->_addDnsZone();
+    $rs ||= $self->_createSymlinkForBcCompatibility();
     $rs ||= $self->_cleanup();
     $rs ||= $self->{'events'}->trigger( 'afterFrontEndInstall' );
 }
@@ -2143,6 +2145,61 @@ sub _addDnsZone
     } );
     $rs ||= $self->{'events'}->trigger( 'afterNamedAddMasterZone' );
 }
+
+=item _createSymlinkForBcCompatibility 
+
+ Create the ./gui/library/imscp-lib.php symlink to ./gui/include/imscp-lib.php
+ symlink for backward compatibility with plugins.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _createSymlinkForBcCompatibility
+{
+    eval {
+        my $ug = $::imscpConfig{'SYSTEM_USER_PREFIX'}
+            . $::imscpConfig{'SYSTEM_USER_MIN_UID'};
+
+        iMSCP::Dir->new(
+            dirname => "$::imscpConfig{'GUI_ROOT_DIR'}/library"
+        )->make(
+            user  => $ug,
+            group => $ug,
+            mode  => 0750
+        );
+
+        local $CWD = "$::imscpConfig{'GUI_ROOT_DIR'}/library";
+        
+        if ( -l "./imscp-lib.php" ) {
+            unlink( "./imscp-lib.php" ) or die( sprintf(
+                "Couldn't unlink the %s symlink: $!", "$CWD/imscp-lib.php"
+            ));
+        }
+
+        symlink( '../include/imscp-lib.php', './imscp-lib.php' ) or die(
+            sprintf(
+                "Couldn't create the %s symlink to %s: $!",
+                "$CWD/imscp-lib.php",
+                "$::imscpConfig{'GUI_ROOT_DIR'}/include/imscp-lib.php"
+            )
+        );
+
+        iMSCP::File->new( filename => './imscp-lib.php' )->owner(
+            $ug, $ug
+        ) == 0 or die( getMessageByType( 'error', {
+            amount => 1, remove => TRUE
+        } ));
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    0;
+}
+
+=cut
 
 =item _deleteDnsZone( )
 
