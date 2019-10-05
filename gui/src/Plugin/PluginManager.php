@@ -333,15 +333,10 @@ class PluginManager
      * Get instance of the given plugin.
      *
      * @param string $plugin Plugin name
-     * @param bool $registerListeners Flag indicating whether or not plugin
-     *                                event listeners must be registered
      * @return AbstractPlugin
      */
-    public function pluginGet(
-        string $plugin, bool $registerListeners = false
-    ): AbstractPlugin
+    public function pluginGet(string $plugin): AbstractPlugin
     {
-
         try {
             if (!$this->pluginIsLoaded($plugin)) {
                 $class = "iMSCP\\Plugin\\$plugin\\$plugin";
@@ -379,15 +374,14 @@ class PluginManager
             ));
         }
 
-        // Register plugin services into application container
-        $this->plugins[$plugin]->getServiceProvider()->register(
-            $this->getContainer()
-        );
+        // FIXME: Why core service container should be aware of plugin services?
+        //if($pluginServiceProvider = $this->plugins[$plugin]->getServiceProvider()) {
+        //    // Register plugin services into application container
+        //    $pluginServiceProvider->register($this->getContainer());
+        //}
 
-        if ($registerListeners) {
-            // Register plugin event listeners
-            $this->plugins[$plugin]->register($this->getEventManager());
-        }
+        // Register plugin event listeners
+        $this->plugins[$plugin]->register($this->getEventManager());
 
         return $this->plugins[$plugin];
     }
@@ -1108,7 +1102,7 @@ class PluginManager
         }
 
         try {
-            $inst = $this->pluginGet($plugin, true);
+            $inst = $this->pluginGet($plugin);
 
             if (!$isSubAction) {
                 if ($this->pluginRequireUpdate($plugin)) {
@@ -1410,7 +1404,7 @@ class PluginManager
         }
 
         try {
-            $inst = $this->pluginGet($plugin, true);
+            $inst = $this->pluginGet($plugin);
             $this->pluginSetStatus($plugin, 'toinstall');
             $responses = $this->events->dispatch(
                 Events::onBeforeInstallPlugin,
@@ -1610,7 +1604,7 @@ class PluginManager
         }
 
         try {
-            $inst = $this->pluginGet($plugin, true);
+            $inst = $this->pluginGet($plugin);
             $this->pluginSetStatus($plugin, 'todelete');
             $responses = $this->events->dispatch(
                 Events::onBeforeDeletePlugin,

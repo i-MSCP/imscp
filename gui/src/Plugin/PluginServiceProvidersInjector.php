@@ -18,10 +18,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+/** @noinspection
+ * PhpDocMissingThrowsInspection
+ * PhpUnhandledExceptionInspection
+ */
+
 declare(strict_types=1);
 
 namespace iMSCP\Plugin;
 
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -34,14 +41,20 @@ class PluginServiceProvidersInjector
      * Register plugin service providers with the dependency container
      *
      * @param ContainerInterface $container
+     * @param EventAggregator $events
      * @param PluginManager $pm
      * @return void
      */
     public function __invoke(
         ContainerInterface $container,
+        EventAggregator $events,
         PluginManager $pm
     ): void
     {
+        $events->dispatch(Events::onBeforeInjectPluginServiceProviders, [
+            'pluginManager' => $pm
+        ]);
+
         foreach ($pm->pluginGetLoaded() as $plugin) {
             if ($serviceProvider = $plugin->getServiceProvider()) {
                 $serviceProvider->register($container);

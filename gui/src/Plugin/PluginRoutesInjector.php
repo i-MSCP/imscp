@@ -31,6 +31,8 @@ declare(strict_types=1);
 
 namespace iMSCP\Plugin;
 
+use iMSCP\Event\EventAggregator;
+use iMSCP\Event\Events;
 use InvalidArgumentException;
 use Psr\Http\Message\RequestInterface;
 use Slim\App;
@@ -57,11 +59,20 @@ class PluginRoutesInjector
      * Inject plugin routes into Slim application
      *
      * @param App $app
+     * @param EventAggregator $events
      * @param PluginManager $pm
      * @return void
      */
-    public function __invoke(App $app, PluginManager $pm): void
+    public function __invoke(
+        App $app,
+        EventAggregator $events,
+        PluginManager $pm
+    ): void
     {
+        $events->dispatch(Events::onBeforeInjectPluginRoutes, [
+            'pluginManager' => $pm
+        ]);
+
         foreach ($pm->pluginGetLoaded() as $plugin) {
             // For backward compatibility only (duck-typing).
             // the AbstractPlugin::route() method is deprecated since
