@@ -25,8 +25,8 @@
  * PhpIncludeInspection
  */
 
+use iMSCP\Event\Event;
 use iMSCP\Event\EventAggregator;
-use iMSCP\Event\EventDescription;
 use iMSCP\Event\Events;
 use iMSCP\TemplateEngine;
 
@@ -137,9 +137,12 @@ $tpl->assign([
     'TR_DETAILED_STATS_TOOLTIPS' => tohtml(tr('Show detailed statistics for this reseller'), 'htmlAttr')
 ]);
 
-EventAggregator::getInstance()->registerListener(Events::onGetJsTranslations, function (EventDescription $e) {
-    $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
-});
+EventAggregator::getInstance()->registerListener(
+    Events::onGetJsTranslations,
+    function (Event $e) {
+        $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
+    }
+);
 
 generateNavigation($tpl);
 generatePage($tpl);

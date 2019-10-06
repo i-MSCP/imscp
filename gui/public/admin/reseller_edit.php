@@ -27,8 +27,8 @@
 
 use iMSCP\Crypt;
 use iMSCP\Database\DatabaseMySQL;
+use iMSCP\Event\Event;
 use iMSCP\Event\EventAggregator;
-use iMSCP\Event\EventDescription;
 use iMSCP\Event\Events;
 use iMSCP\Exception\Exception;
 use iMSCP\PhpEditor;
@@ -209,9 +209,12 @@ function generateIpListForm(TemplateEngine $tpl)
         'TR_STATUS'     => tr('Usage status')
     ]);
 
-    EventAggregator::getInstance()->registerListener(Events::onGetJsTranslations, function (EventDescription $e) {
-        $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
-    });
+    EventAggregator::getInstance()->registerListener(
+        Events::onGetJsTranslations,
+        function (Event $e) {
+            $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
+        }
+    );
 
     foreach ($data['server_ips'] as $ipData) {
         $resellerHasIp = in_array($ipData['ip_id'], $data['reseller_ips']);
@@ -321,15 +324,18 @@ function generateFeaturesForm(TemplateEngine $tpl)
         'TR_SEC'                           => tr('Sec.')
     ]);
 
-    EventAggregator::getInstance()->registerListener(Events::onGetJsTranslations, function (EventDescription $e) {
-        $translations = $e->getParam('translations');
-        $translations['core']['close'] = tr('Close');
-        $translations['core']['fields_ok'] = tr('All fields are valid.');
-        $translations['core']['out_of_range_value_error'] = tr('Value for the PHP %%s directive must be in range %%d to %%d.');
-        $translations['core']['lower_value_expected_error'] = tr('%%s cannot be greater than %%s.');
-        $translations['core']['error_field_stack'] = Registry::isRegistered('errFieldsStack')
-            ? Registry::get('errFieldsStack') : [];
-    });
+    EventAggregator::getInstance()->registerListener(
+        Events::onGetJsTranslations,
+        function (Event $e) {
+            $translations = $e->getParam('translations');
+            $translations['core']['close'] = tr('Close');
+            $translations['core']['fields_ok'] = tr('All fields are valid.');
+            $translations['core']['out_of_range_value_error'] = tr('Value for the PHP %%s directive must be in range %%d to %%d.');
+            $translations['core']['lower_value_expected_error'] = tr('%%s cannot be greater than %%s.');
+            $translations['core']['error_field_stack'] = Registry::isRegistered('errFieldsStack')
+                ? Registry::get('errFieldsStack') : [];
+        }
+    );
 
     if (Registry::get('config')['HTTPD_PACKAGE'] != 'Servers::httpd::apache_itk') {
         $tpl->assign([

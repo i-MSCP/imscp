@@ -26,7 +26,7 @@
  */
 
 use iMSCP\Event\EventAggregator;
-use iMSCP\Event\EventDescription;
+use iMSCP\Event\Event;
 use iMSCP\Event\Events;
 use iMSCP\Exception\Exception;
 use iMSCP\TemplateEngine;
@@ -397,13 +397,14 @@ $tpl->assign([
 ]);
 
 EventAggregator::getInstance()->registerListener(
-    Events::onGetJsTranslations, function (EventDescription $e) {
-    $translations = $e->getParam('translations');
-    $translations['core']['close'] = tr('Close');
-    $translations['core']['ftp_directories'] = tr(
-        'Select your own document root'
-    );
-}
+    Events::onGetJsTranslations,
+    function (Event $e) {
+        $translations = $e->getParam('translations');
+        $translations['core']['close'] = tr('Close');
+        $translations['core']['ftp_directories'] = tr(
+            'Select your own document root'
+        );
+    }
 );
 
 generateNavigation($tpl);

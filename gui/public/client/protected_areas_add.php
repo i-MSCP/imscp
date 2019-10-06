@@ -28,7 +28,7 @@
 use iMSCP\Database\DatabaseException;
 use iMSCP\Database\DatabaseMySQL;
 use iMSCP\Event\EventAggregator;
-use iMSCP\Event\EventDescription;
+use iMSCP\Event\Event;
 use iMSCP\Event\Events;
 use iMSCP\TemplateEngine;
 use iMSCP\VirtualFileSystem;
@@ -340,7 +340,7 @@ $tpl->assign([
 
 EventAggregator::getInstance()->registerListener(
     Events::onGetJsTranslations,
-    function (EventDescription $e) {
+    function (Event $e) {
         $tr = $e->getParam('translations');
         $tr['core']['close'] = tr('Close');
         $tr['core']['ftp_directories'] = tr('Protected area path');

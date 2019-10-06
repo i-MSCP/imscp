@@ -538,15 +538,18 @@ function generateFeaturesForm(TemplateEngine $tpl, &$data)
         ]);
     }
 
-    EventAggregator::getInstance()->registerListener(Events::onGetJsTranslations, function (Event $e) {
-        $translations = $e->getParam('translations');
-        $translations['core']['close'] = tr('Close');
-        $translations['core']['fields_ok'] = tr('All fields are valid.');
-        $translations['core']['out_of_range_value_error'] = tr('Value for the PHP %%s directive must be in range %%d to %%d.');
-        $translations['core']['lower_value_expected_error'] = tr('%%s cannot be greater than %%s.');
-        $translations['core']['error_field_stack'] = Registry::isRegistered('errFieldsStack')
-            ? Registry::get('errFieldsStack') : [];
-    });
+    EventAggregator::getInstance()->registerListener(
+        Events::onGetJsTranslations,
+        function (Event $e) {
+            $translations = $e->getParam('translations');
+            $translations['core']['close'] = tr('Close');
+            $translations['core']['fields_ok'] = tr('All fields are valid.');
+            $translations['core']['out_of_range_value_error'] = tr('Value for the PHP %%s directive must be in range %%d to %%d.');
+            $translations['core']['lower_value_expected_error'] = tr('%%s cannot be greater than %%s.');
+            $translations['core']['error_field_stack'] = Registry::isRegistered('errFieldsStack')
+                ? Registry::get('errFieldsStack') : [];
+        }
+    );
 
     // PHP editor - end
 

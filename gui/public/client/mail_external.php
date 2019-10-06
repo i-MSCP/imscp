@@ -26,7 +26,7 @@
  */
 
 use iMSCP\Event\EventAggregator;
-use iMSCP\Event\EventDescription;
+use iMSCP\Event\Event;
 use iMSCP\Event\Events;
 use iMSCP\TemplateEngine;
 
@@ -165,7 +165,7 @@ function generatePage(TemplateEngine $tpl)
 {
     EventAggregator::getInstance()->registerListener(
         Events::onGetJsTranslations,
-        function (EventDescription $e) {
+        function (Event $e) {
             $tr = $e->getParam('translations');
             $tr['core']['datatable'] = getDataTablesPluginTranslations(false);
         }

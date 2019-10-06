@@ -29,7 +29,7 @@ use iMSCP\Crypt;
 use iMSCP\Database\DatabaseException;
 use iMSCP\Database\DatabaseMySQL;
 use iMSCP\Event\EventAggregator;
-use iMSCP\Event\EventDescription;
+use iMSCP\Event\Event;
 use iMSCP\Event\Events;
 use iMSCP\Registry;
 use iMSCP\TemplateEngine;
@@ -366,7 +366,7 @@ function generatePage($tpl)
 
     EventAggregator::getInstance()->registerListener(
         Events::onGetJsTranslations,
-        function (EventDescription $e) use ($mailTypeForwardOnly) {
+        function (Event $e) use ($mailTypeForwardOnly) {
             $e->getParam('translations')->core['mail_add_forward_only'] = $mailTypeForwardOnly;
         }
     );

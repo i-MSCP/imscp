@@ -25,8 +25,8 @@
  * PhpIncludeInspection
  */
 
+use iMSCP\Event\Event;
 use iMSCP\Event\EventAggregator;
-use iMSCP\Event\EventDescription;
 use iMSCP\Event\Events;
 use iMSCP\Services;
 use iMSCP\TemplateEngine;
@@ -92,10 +92,11 @@ $tpl->assign([
 ]);
 
 EventAggregator::getInstance()->registerListener(
-    Events::onGetJsTranslations, function (EventDescription $e) {
-    $e->getParam('translations')->core['dataTable'] =
-        getDataTablesPluginTranslations(false);
-}
+    Events::onGetJsTranslations,
+    function (Event $e) {
+        $e->getParam('translations')->core['dataTable'] =
+            getDataTablesPluginTranslations(false);
+    }
 );
 
 generateNavigation($tpl);

@@ -25,8 +25,8 @@
  * PhpIncludeInspection
  */
 
+use iMSCP\Event\Event;
 use iMSCP\Event\EventAggregator;
-use iMSCP\Event\EventDescription;
 use iMSCP\Event\Events;
 use iMSCP\Registry;
 use iMSCP\TemplateEngine;
@@ -669,13 +669,14 @@ $tpl->assign([
 
 EventAggregator::getInstance()->registerListener(
     Events::onGetJsTranslations,
-    function (EventDescription $e) {
+    function (Event $e) {
         $tr = $e->getParam('translations');
         $tr['core']['als_delete_alert'] = tr('Are you sure you want to delete this domain alias?');
         $tr['core']['sub_delete_alert'] = tr('Are you sure you want to delete this subdomain?');
         $tr['core']['dns_delete_alert'] = tr('Are you sure you want to delete this DNS record?');
         $tr['core']['dataTable'] = getDataTablesPluginTranslations(false);
-    });
+    }
+);
 
 global $baseServerVhostUtf8;
 

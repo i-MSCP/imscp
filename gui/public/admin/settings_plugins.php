@@ -25,8 +25,8 @@
  * PhpIncludeInspection
  */
 
+use iMSCP\Event\Event;
 use iMSCP\Event\EventAggregator;
-use iMSCP\Event\EventDescription;
 use iMSCP\Event\Events;
 use iMSCP\Plugin\PluginActionStoppedException;
 use iMSCP\Plugin\PluginException;
@@ -283,13 +283,14 @@ $tpl->assign([
     'TR_DEACTIVATE_TOOLTIP' => tohtml(tr('Deactivate this plugin'), 'htmlAttr'),
 ]);
 EventAggregator::getInstance()->registerListener(
-    Events::onGetJsTranslations, function (EventDescription $e) {
-    $tr = $e->getParam('translations');
-    $tr['core']['dataTable'] = getDataTablesPluginTranslations(false);
-    $tr['core']['force_retry'] = tohtml(tr('Retry'));
-    $tr['core']['close'] = tohtml(tr('Close'));
-    $tr['core']['error_details'] = tohtml(tr('Error details'));
-}
+    Events::onGetJsTranslations,
+    function (Event $e) {
+        $tr = $e->getParam('translations');
+        $tr['core']['dataTable'] = getDataTablesPluginTranslations(false);
+        $tr['core']['force_retry'] = tohtml(tr('Retry'));
+        $tr['core']['close'] = tohtml(tr('Close'));
+        $tr['core']['error_details'] = tohtml(tr('Error details'));
+    }
 );
 generateNavigation($tpl);
 generatePage($tpl, $pm);

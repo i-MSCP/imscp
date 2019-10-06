@@ -28,7 +28,7 @@
 use iMSCP\Config\FileConfig;
 use iMSCP\Crypt;
 use iMSCP\Event\EventAggregator;
-use iMSCP\Event\EventDescription;
+use iMSCP\Event\Event;
 use iMSCP\Event\Events;
 use iMSCP\Exception\Exception;
 use iMSCP\Registry;
@@ -348,7 +348,7 @@ function client_generatePage(TemplateEngine $tpl)
 
     EventAggregator::getInstance()->registerListener(
         Events::onGetJsTranslations,
-        function (EventDescription $e) use ($mailTypeForwardOnly) {
+        function (Event $e) use ($mailTypeForwardOnly) {
             $e->getParam('translations')->core['mail_add_forward_only'] = $mailTypeForwardOnly;
         }
     );

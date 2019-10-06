@@ -178,7 +178,8 @@ function generatePage(TemplateEngine $tpl)
             $translations['core']['lower_value_expected_error'] = tr('%%s cannot be greater than %%s.');
             $translations['core']['error_field_stack'] = Registry::isRegistered('errFieldsStack')
                 ? Registry::get('errFieldsStack') : [];
-        });
+        }
+    );
 
     $permissionsBlock = false;
 

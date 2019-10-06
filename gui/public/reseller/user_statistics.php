@@ -121,9 +121,12 @@ $tpl->assign([
     'TR_USER_TOOLTIP' => tohtml(tr('Show detailed statistics for this user'), 'htmlAttr')
 ]);
 
-EventAggregator::getInstance()->registerListener(Events::onGetJsTranslations, function (Event $e) {
-    $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
-});
+EventAggregator::getInstance()->registerListener(
+    Events::onGetJsTranslations,
+    function (Event $e) {
+        $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
+    }
+);
 
 generateNavigation($tpl);
 generatePage($tpl);

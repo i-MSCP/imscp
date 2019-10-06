@@ -26,8 +26,8 @@
  */
 
 use iMSCP\Config\ArrayConfig;
+use iMSCP\Event\Event;
 use iMSCP\Event\EventAggregator;
-use iMSCP\Event\EventDescription;
 use iMSCP\Event\Events;
 use iMSCP\Exception\Exception;
 use iMSCP\Registry;
@@ -396,10 +396,11 @@ $tpl->assign([
 ]);
 
 EventAggregator::getInstance()->registerListener(
-    Events::onGetJsTranslations, function (EventDescription $e) {
-    $e->getParam('translations')->core['dataTable']
-        = getDataTablesPluginTranslations(false);
-}
+    Events::onGetJsTranslations,
+    function (Event $e) {
+        $e->getParam('translations')->core['dataTable']
+            = getDataTablesPluginTranslations(false);
+    }
 );
 
 generateNavigation($tpl);

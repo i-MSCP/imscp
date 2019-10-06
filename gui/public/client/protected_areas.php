@@ -26,7 +26,7 @@
  */
 
 use iMSCP\Event\EventAggregator;
-use iMSCP\Event\EventDescription;
+use iMSCP\Event\Event;
 use iMSCP\Event\Events;
 use iMSCP\TemplateEngine;
 
@@ -96,8 +96,7 @@ $tpl->assign([
 
 EventAggregator::getInstance()->registerListener(
     Events::onGetJsTranslations,
-    function (EventDescription $e) {
-
+    function (Event $e) {
         $tr = $e->getParam('translations');
         $tr['core']['dataTable'] = getDataTablesPluginTranslations();
         $tr['core']['deletion_confirm_msg'] = tr('Are you sure you want to delete the `%%s` protected area?');
