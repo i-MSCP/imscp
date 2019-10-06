@@ -149,7 +149,7 @@ class BcAutoloader
             return include __DIR__ . '/../../vendor/autoload.php';
         }
 
-        throw new RuntimeException('Cannot detect composer autoload.');
+        throw new RuntimeException("Couldn't get composer autoloader.");
     }
 
     /**
@@ -169,7 +169,7 @@ class BcAutoloader
                 return;
             }
 
-            if (FALSE === ($legacy = array_search($class, static::$map))) {
+            if (false === ($legacy = array_search($class, static::$map))) {
                 return;
             }
 
@@ -185,7 +185,9 @@ class BcAutoloader
      * @param ArrayObject $loaded
      * @return callable
      */
-    private static function createAppendAutoloader(ArrayObject $loaded): callable
+    private static function createAppendAutoloader(
+        ArrayObject $loaded
+    ): callable
     {
         return function ($class) use ($loaded) {
             $loaded[self::$map[$class]] = true;
