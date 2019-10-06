@@ -363,9 +363,10 @@ class PluginArchive extends Zend_Validate_Abstract
         }
 
         if (isset($info['priority'])
-            && !(is_scalar($info['priority'])
-                && preg_match('/^\d+$/', $info['priority'])
+            && (!is_scalar($info['priority'])
+                || !preg_match('/^\d+$/', (string)$info['priority'])
             )
+            
         ) {
             return $this->_throw('priority', self::INVALID_PLUGIN_INFO_FIELD);
         }
@@ -411,7 +412,7 @@ class PluginArchive extends Zend_Validate_Abstract
      *
      * @param string $value
      * @param array $file
-     * @return bool TRUE if the Zip archive is valid, FALSE otherwise
+     * @return bool TRUE if the archive is valid, FALSE otherwise
      */
     protected function _isValidTarArchive($value, $file)
     {
@@ -421,15 +422,20 @@ class PluginArchive extends Zend_Validate_Abstract
             throw new Zend_Validate_Exception(tr('Missing PEAR Archive_Tar.'));
         }
 
-        $type = $file['type'] == 'application/x-gzip' ? 'zlib' : 'bz2';
+        $extName = $file['type'] == 'application/x-gzip'
+            ? 'zlib'
+            : (($file['type'] == 'application/x-bzip2') ? 'bz2' : 'xz');
 
-        if (!extension_loaded($type)) {
+        if (!extension_loaded($extName)) {
             throw new Zend_Validate_Exception(sprintf(
-                'Missing %s PHP extension.', $type
+                'Missing %s PHP extension.', $extName
             ));
         }
 
-        $arch = new Archive_Tar($value, $type);
+        $arch = new Archive_Tar(
+            $value,
+            $extName == 'zlib' ? 'gz' : (($extName == 'xz') ? 'lzma2' : 'bz2')
+        );
         $name = explode('.', $file['name'])[0];
 
         /** @var string $infoAsString */
@@ -444,7 +450,7 @@ class PluginArchive extends Zend_Validate_Abstract
         if (false !== $info && $this->_isValidPlugin($info)) {
             $entryPointFile = $info['name'] . '.php';
 
-            if (false === @$arch->extractInString("$name/$entryPointFile")) {
+            if (NULL === @$arch->extractInString("$name/$entryPointFile")) {
                 return $this->_throw(
                     $file['name'], self::NO_PLUGIN_ENTRY_POINT
                 );

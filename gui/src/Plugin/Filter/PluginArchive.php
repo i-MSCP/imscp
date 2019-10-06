@@ -177,10 +177,11 @@ class PluginArchive implements Zend_Filter_Interface
             $mimeType = $this->_detectMimeType($value);
 
             if (!in_array($mimeType, [
-                'application/zip', 'application/x-gzip', 'application/x-bzip2'
+                'application/zip', 'application/x-gzip', 'application/x-bzip2',
+                'application/x-xz'
             ])) {
                 throw new Zend_Filter_Exception(sprintf(
-                    'Unsupported plugin archive type. Only zip, tar.gz and tar.bz2 archive type are supported.'
+                    'Unsupported plugin archive type. Only tar.gz, tar.bz2, tar.xz and zip archive types are supported.'
                 ));
             }
 
@@ -354,12 +355,12 @@ class PluginArchive implements Zend_Filter_Interface
             );
         }
 
-        $type = $type == 'application/x-gzip' ? 'zlib' : 'bz2';
+        $extName = ($type == 'application/x-gzip')
+            ? 'zlib' : ($type == 'application/x-bzip2' ? 'bz2' : 'xz');
 
-        if (!extension_loaded($type)) {
+        if (!extension_loaded($extName)) {
             throw new Zend_Filter_Exception(sprintf(
-                'Missing %s PHP extension.',
-                $type == 'application/x-gzip' ? 'zlib' : 'bz2'
+                'Missing %s PHP extension.', $extName
             ));
         }
 
@@ -377,7 +378,10 @@ class PluginArchive implements Zend_Filter_Interface
 
         umask(027);
 
-        $arch = new Archive_Tar($value, $type);
+        $arch = new Archive_Tar(
+            $value,
+            $extName == 'zlib' ? 'gz' : (($extName == 'xz') ? 'lzma2' : 'bz2')
+        );
 
         if (false === $arch->extract($destination)) {
             throw new Zend_Filter_Exception(sprintf(
