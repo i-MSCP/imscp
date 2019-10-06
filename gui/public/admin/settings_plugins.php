@@ -286,7 +286,7 @@ EventAggregator::getInstance()->registerListener(
     Events::onGetJsTranslations, function (EventDescription $e) {
     $tr = $e->getParam('translations');
     $tr['core']['dataTable'] = getDataTablesPluginTranslations(false);
-    $tr['core']['retry'] = tohtml(tr('Retry'));
+    $tr['core']['force_retry'] = tohtml(tr('Retry'));
     $tr['core']['close'] = tohtml(tr('Close'));
     $tr['core']['error_details'] = tohtml(tr('Error details'));
 }
