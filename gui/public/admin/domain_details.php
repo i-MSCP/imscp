@@ -139,15 +139,13 @@ require 'imscp-lib.php';
 check_login('admin');
 EventAggregator::getInstance()->dispatch(Events::onAdminScriptStart);
 
-if (!isset($_GET['domain_id'])) {
-    redirectTo('users.php');
-}
+isset($_GET['domain_id']) or showBadRequestErrorPage();
 
 $tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'        => 'shared/layouts/ui.tpl',
     'page'          => 'admin/domain_details.tpl',
-    'page_messages' => 'layout',
+    'page_message' => 'layout',
 ]);
 $tpl->assign([
         'TR_PAGE_TITLE'        => tr('Admin / Users / Overview / Domain Details'),

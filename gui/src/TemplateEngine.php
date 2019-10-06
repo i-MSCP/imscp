@@ -297,9 +297,8 @@ class TemplateEngine
     {
         if (is_array($tName)) {
             foreach ($tName as $key => $value) {
-                $this->$tName[$key] = '_no_file_';
+                $this->dtplName[$key] = '_no_file_';
                 $this->dtplData[$key] = $value;
-                $this->dtplData[strtoupper($key)] = $value;
                 $this->dtplOptions[$key] = '';
             }
 
@@ -308,7 +307,6 @@ class TemplateEngine
 
         $this->dtplName[$tName] = '_no_file_';
         $this->dtplData[$tName] = $tValue;
-        $this->dtplData[strtoupper($tName)] = @$tValue;
         $this->dtplOptions[$tName] = '';
     }
 

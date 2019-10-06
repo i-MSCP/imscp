@@ -59,7 +59,7 @@ function reseller_gen_mail_quota_limit_mgs($customerId)
  * @param int $domainId Domain unique identifier
  * @return void
  */
-function reseller_generatePage(TemplateEngine $tpl, $domainId)
+function generatePage(TemplateEngine $tpl, $domainId)
 {
     $stmt = exec_query(
         '
@@ -157,16 +157,15 @@ require 'imscp-lib.php';
 check_login('reseller');
 EventAggregator::getInstance()->dispatch(Events::onResellerScriptStart);
 
-if (!isset($_GET['domain_id'])) {
-    redirectTo('users.php');
-}
+isset($_GET['domain_id']) or showBadRequestErrorPage();
 
 $tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'        => 'shared/layouts/ui.tpl',
     'page'          => 'reseller/domain_details.tpl',
-    'page_messages' => 'layout'
+    'page_message' => 'layout'
 ]);
+
 $tpl->assign([
     'TR_PAGE_TITLE'        => tr('Reseller / Customers / Overview / Domain Details'),
     'TR_DOMAIN_DETAILS'    => tr('Domain details'),
@@ -198,7 +197,7 @@ $tpl->assign([
 ]);
 
 generateNavigation($tpl);
-reseller_generatePage($tpl, $_GET['domain_id']);
+generatePage($tpl, $_GET['domain_id']);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
