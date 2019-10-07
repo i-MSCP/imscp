@@ -217,7 +217,7 @@
             <package>php7.2-cgi</package>
             <package>php7.2-fpm</package>
             <package>php7.2-common</package>
-            <package>php7.2-bz2</package>
+            <package>php7.2-bcmath</package>
             <package>php7.2-bz2</package>
             <package>php7.2-curl</package>
             <package>php7.2-gd</package>
