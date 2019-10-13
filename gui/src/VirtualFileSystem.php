@@ -240,13 +240,13 @@ class VirtualFileSystem
                 'port'                           => 21,
                 'username'                       => $this->ftpUser,
                 'password'                       => $this->ftpUserPassword,
-                'ssl'                            => '',
+                'ssl'                            =>
+                    Registry::get('config')['SERVICES_SSL_ENABLED'] == 'yes',
                 'timeout'                        => 30,
                 'root'                           => $this->vfsRootDir,
                 'passive'                        => true,
                 'transferMode'                   => FTP_BINARY,
                 'ignorePassiveAddress'           => true,
-                'recurseManually'                => '',
                 'utf8'                           => true,
                 'enableTimestampsOnUnixListings' => false
             ]));
@@ -269,7 +269,6 @@ class VirtualFileSystem
     private function disconnect(): void
     {
         if (NULL === $this->fs) {
-            // No connection, return early
             return;
         }
 
@@ -287,7 +286,6 @@ class VirtualFileSystem
     private function deleteFtpUser(): void
     {
         if (NULL === $this->ftpUser) {
-            // No FTP user, return early
             return;
         }
 
