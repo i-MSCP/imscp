@@ -107,11 +107,11 @@ FRONTEND
     Removed: Telnet service port
     Review: Install dependencies through the PHP dependency manager (composer)
     Review: Load comments (PHP OPcache)
+    Review: Make use of the league/flysystem filesystem abstraction for the VFS
+            (FTP) layer
     Review: Save comments (PHP OPcache)
     Review: Set locale from environment (CLI)
     Review: Switch from PSR-0 to PSR-4
-    Review: Make use of the league/flysystem filesystem abstraction for VFS
-            layer 
 
 INSTALLER
     Added: 'gnupg' package to the list of pre-required packages (all
