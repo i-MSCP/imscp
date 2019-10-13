@@ -75,6 +75,7 @@
     "algo26-matthias/idna-convert": "~2.1.0",
     "cweagans/composer-patches": "~1.6.6",
     "imscp/composer-installers": "^1.0",
+    "league/flysystem": "^1.0",
     "pear/net_dns2": "~1.4.4",
     "phpseclib/phpseclib": "~2.0.20",
     "slim/slim": "^3.12",
@@ -98,7 +99,6 @@
       "include/Login.php",
       "include/Reseller.php",
       "include/Shared.php",
-      "include/SoftwareInstaller.php",
       "include/Statistics.php",
       "include/View.php"
     ]

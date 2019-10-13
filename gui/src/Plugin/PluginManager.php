@@ -21,18 +21,7 @@
  * PhpUnhandledExceptionInspection
  * PhpDocMissingThrowsInspection
  * PhpIncludeInspection
- */
-
-# FIXME
-/*
-IMSCP Core:
-
-FIXME: When an exception is raised from an event listener that listen on the onBeforeInstallPlugin, plugin status shouldn't be set to 'toinstall'. The failure should be reported only.
-BTW: Maybe occurs with other event too...
-
-Currently, status is set before the before* event propagation and reset back if the even has been stopped
-Best would be to set the status once the even has been fully propagated
-
+ * PhpUnused
  */
 
 declare(strict_types=1);
@@ -40,7 +29,6 @@ declare(strict_types=1);
 namespace iMSCP\Plugin;
 
 use DirectoryIterator;
-use Error;
 use iMSCP\Event\EventAggregator;
 use iMSCP\Event\Events;
 use iMSCP\Json\LazyDecoder;
@@ -132,17 +120,13 @@ class PluginManager
      * @return void
      */
     public function __construct(
-        ContainerInterface $container,
-        EventAggregator $events
+        ContainerInterface $container, EventAggregator $events
     )
     {
         $this->container = $container;
-
         $this->events = $events;
         $this->events->addEvents(__CLASS__, $this->listenEvents);
-
         spl_autoload_register([$this, 'autoload']);
-
         $this->pluginLoadDataFromDatabase();
     }
 
@@ -199,9 +183,7 @@ class PluginManager
         $basename = substr($class, 13);
 
         @include_once $this->pluginGetRootDir()
-            . DIRECTORY_SEPARATOR
-            . $basename
-            . DIRECTORY_SEPARATOR
+            . DIRECTORY_SEPARATOR . $basename . DIRECTORY_SEPARATOR
             . "$basename.php";
     }
 
@@ -213,9 +195,7 @@ class PluginManager
     public function pluginGetRootDir(): string
     {
         if (NULL === $this->pluginsRootDir) {
-            $this->pluginsRootDir = utils_normalizePath(
-                Registry::get('config')['PLUGINS_DIR']
-            );
+            $this->pluginsRootDir = utils_normalizePath(Registry::get('config')['PLUGINS_DIR']);
         }
 
         return $this->pluginsRootDir;
@@ -232,15 +212,13 @@ class PluginManager
         $rootDir = utils_normalizePath((string)$rootDir);
 
         if (!@is_dir($rootDir) || !@is_writable($rootDir)) {
-            write_log(
-                sprintf(
-                    "Directory '%s' doesn't exist or is not writable", $rootDir
-                ),
-                E_USER_ERROR
-            );
-            throw new PluginException(
-                tr("Directory '%s' doesn't exist or is not writable", $rootDir)
-            );
+            write_log(sprintf(
+                "Directory '%s' doesn't exist or is not writable", $rootDir
+            ), E_USER_ERROR);
+
+            throw new PluginException(tr(
+                "Directory '%s' doesn't exist or is not writable", $rootDir
+            ));
         }
 
         $this->pluginsRootDir = $rootDir;
@@ -268,13 +246,11 @@ class PluginManager
         $persistentDataDir = utils_normalizePath((string)$persistentDataDir);
 
         if (!@is_dir($persistentDataDir) || !@is_writable($persistentDataDir)) {
-            write_log(
-                sprintf(
-                    "Directory '%s' doesn't exist or is not writable",
-                    $persistentDataDir
-                ),
-                E_USER_ERROR
-            );
+            write_log(sprintf(
+                "Directory '%s' doesn't exist or is not writable",
+                $persistentDataDir
+            ), E_USER_ERROR);
+
             throw new PluginException(tr(
                 "Directory '%s' doesn't exist or is not writable",
                 $persistentDataDir
@@ -285,25 +261,24 @@ class PluginManager
     }
 
     /**
-     * Returns list of known plugins.
+     * Returns list of plugins.
      *
-     * @param bool $enabledOnly Flag indicating if only enabled plugins must be
-     *                          returned
-     * @return array An array containing plugin names
+     * @param bool $enabledOnly Flag indicating if only the list of enabled
+     *                          plugins must be returned
+     * @return array List of plugin names
      */
     public function pluginGetList(bool $enabledOnly = true): array
     {
-        $plugins = array_keys($this->pluginData);
-
         if (!$enabledOnly) {
-            return $plugins;
+            return array_keys($this->pluginData);
         }
 
-        $pluginData =& $this->pluginData;
-
-        return array_filter($plugins, function ($plugin) use (&$pluginData) {
-            return $pluginData[$plugin]['status'] == 'enabled';
-        });
+        return array_filter(
+            array_keys($this->pluginData),
+            function ($pluginName) {
+                return $this->pluginData[$pluginName]['status'] == 'enabled';
+            }
+        );
     }
 
     /**
@@ -319,82 +294,81 @@ class PluginManager
     /**
      * Returns plugin info.
      *
-     * @param string $plugin Plugin name
+     * @param string $pluginName Plugin name
      * @return array
      * @deprecated Deprecated. Make use of the getInfo() method on plugin
      *                         instance instead.
      */
-    public function pluginGetInfo($plugin): array
+    public function pluginGetInfo($pluginName): array
     {
-        return $this->pluginGet($plugin)->getInfo();
+        return $this->pluginGet($pluginName)->getInfo();
     }
 
     /**
      * Get instance of the given plugin.
      *
-     * @param string $plugin Plugin name
+     * @param string $pluginName Plugin name
      * @return AbstractPlugin
      */
-    public function pluginGet(string $plugin): AbstractPlugin
+    public function pluginGet(string $pluginName): AbstractPlugin
     {
         try {
-            if (!$this->pluginIsLoaded($plugin)) {
-                $class = "iMSCP\\Plugin\\$plugin\\$plugin";
-                $this->plugins[$plugin] = new $class($this);
+            if ($this->pluginIsLoaded($pluginName)) {
+                return $this->plugins[$pluginName];
             }
-        } catch (Error $e) {
-            try {
-                $class = "iMSCP_Plugin_$plugin";
-                $this->plugins[$plugin] = new $class($this);
-            } catch (Error $e) {
-                write_log(
-                    sprintf(
-                        "Couldn't load the '%s' plugin - Plugin entry point (class) not found.",
-                        $plugin
-                    ),
-                    E_USER_ERROR
-                );
 
-                throw new PluginException(
-                    tr(
-                        "Couldn't load the '%s' plugin - Plugin entry point (class) class not found.",
-                        $plugin
-                    ),
-                    $e->getCode(),
-                    $e
-                );
+            $pluginClass = "iMSCP\\Plugin\\$pluginName\\$pluginName";
+
+            if (!class_exists($pluginClass, true)) {
+                $pluginClass = "iMSCP_Plugin_$pluginName";
+                if (!class_exists($pluginClass, true)) {
+                    throw new PluginException(tr(
+                        "Plugin entry point (plugin class) not found.",
+                        $pluginName
+                    ));
+                }
             }
-        }
 
-        if (!is_subclass_of($this->plugins[$plugin], AbstractPlugin::class)) {
-            throw new PluginException(tr(
-                "The '%s' plugin class MUST extend the '%s' plugin base class",
-                $plugin,
-                AbstractPlugin::class
+            if (!is_subclass_of($pluginClass, AbstractPlugin::class)) {
+                throw new PluginException(tr(
+                    "The %s plugin class must extend the %s plugin base class",
+                    $pluginName,
+                    AbstractPlugin::class
+                ));
+            }
+
+            $this->plugins[$pluginName] = new $pluginClass($this);
+
+            // FIXME: Why core service container should be aware of plugin services?
+            //if($pluginServiceProvider = $this->plugins[$plugin]->getServiceProvider()) {
+            //    // Register plugin services into application container
+            //    $pluginServiceProvider->register($this->getContainer());
+            //}
+
+            // Register plugin event listeners
+            $this->plugins[$pluginName]->register($this->getEventManager());
+        } catch (Throwable $e) {
+            write_log(sprintf(
+                "Couldn't load the %s plugin: %s", $e->getMessage(), $pluginName
+            ), E_USER_ERROR);
+
+            throw new PluginException(sprintf(
+                "Couldn't load the %s plugin: %s", $pluginName, $e->getMessage()
             ));
         }
 
-        // FIXME: Why core service container should be aware of plugin services?
-        //if($pluginServiceProvider = $this->plugins[$plugin]->getServiceProvider()) {
-        //    // Register plugin services into application container
-        //    $pluginServiceProvider->register($this->getContainer());
-        //}
-
-        // Register plugin event listeners
-        $this->plugins[$plugin]->register($this->getEventManager());
-
-        return $this->plugins[$plugin];
+        return $this->plugins[$pluginName];
     }
 
     /**
      * Is the given plugin loaded?
      *
-     * @param string $plugin Plugin name
+     * @param string $pluginName Plugin name
      * @return bool TRUE if the given plugin is loaded, FALSE otherwise
      */
-    public function pluginIsLoaded(string $plugin): bool
+    public function pluginIsLoaded(string $pluginName): bool
     {
-        return isset($this->plugins[$plugin]);
+        return isset($this->plugins[$pluginName]);
     }
 
     /**
@@ -427,24 +401,21 @@ class PluginManager
         /** @var Zend_File_Transfer_Adapter_Abstract $fileTransfer */
         $fileTransfer = new Zend_File_Transfer();
         $fileTransfer->setTranslator(Registry::get('translator'));
-        // We don't accept more than one plugin archive at time
+        // We don't accept more than one plugin archive at a time
         $fileTransfer->addValidator('Count', true, 1);
         // We want restrict size of accepted plugin archives
         $fileTransfer->addValidator('Size', true, utils_getMaxFileUpload());
         // Add plugin archive validator
-        $fileTransfer->addValidator(
-            new PluginArchiveValidator(['plugin_manager' => $this]),
-            true
-        );
+        $fileTransfer->addValidator(new PluginArchiveValidator($this), true);
         // Add plugin archive filter
-        $fileTransfer->addFilter(new PluginArchiveFilter([
-            'destination' => $this->pluginGetRootDir(),
-        ]));
+        $fileTransfer->addFilter(new PluginArchiveFilter(
+            $this->pluginGetRootDir()
+        ));
 
         if (!$fileTransfer->receive()) {
-            throw new PluginException(
-                implode("<br>", $fileTransfer->getMessages())
-            );
+            throw new PluginException(implode(
+                "<br>", $fileTransfer->getMessages()
+            ));
         }
 
         $info = include $fileTransfer->getFileName() . DIRECTORY_SEPARATOR
@@ -454,237 +425,260 @@ class PluginManager
     }
 
     /**
+     * Synchronize all plugins data, executing update/change actions when
+     * needed.
+     *
+     * @return void
+     */
+    public function pluginSyncData(): void
+    {
+        try {
+            $responses = $this->events->dispatch(
+                Events::onBeforeSyncPluginData, ['pluginManager' => $this]
+            );
+
+            if ($responses->isStopped()) {
+                return;
+            }
+
+            foreach (new DirectoryIterator($this->pluginGetRootDir()) as $dentry) {
+                if ($dentry->isDot() || !$dentry->isDir()) {
+                    continue;
+                }
+
+                $info = include $dentry->getPathname() . DIRECTORY_SEPARATOR
+                    . 'info.php';
+
+                $this->pluginUpdateData($info['name']);
+            }
+
+            $this->events->dispatch(
+                Events::onAfterSyncPluginData, ['pluginManager' => $this]
+            );
+        } catch (Throwable $e) {
+            throw new PluginException(sprintf(
+                "Couldn't synchronize plugin data: %s", $e->getMessage()
+            ), $e->getCode(), $e);
+        }
+    }
+
+    /**
      * Update data for the given plugin, executing update/change actions when
      * needed.
      *
-     * @param string $plugin
+     * @param string $pluginName Plugin name
      * @return void
      */
-    protected function pluginUpdateData(string $plugin)
+    protected function pluginUpdateData(string $pluginName)
     {
-        try {
-            $inst = $this->pluginGet($plugin);
-        } catch (PluginException $e) {
-            set_page_message($e->getMessage(), 'static_error');
-            return;
-        }
+        $plugin = $this->pluginGet($pluginName);
 
-        $infoNew = $inst->getInfoFromFile();
-
-        if ($this->pluginIsKnown($plugin)) {
-            $infoOld =& $inst->getInfo();
+        $pluginInfoNew = $plugin->getConfigFromFile();
+        $pluginConfigNew = $plugin->getConfigFromFile();
+        $pluginIsKnown = $this->pluginIsKnown($pluginName);
+        
+        if($pluginIsKnown) {
+            $pluginInfoOld = $plugin->getInfo();
+            $pluginConfigOld = $plugin->getConfig();
         } else {
-            $infoOld =& $infoNew;
+            $pluginInfoOld = $pluginInfoNew;
+            $pluginConfigOld = $pluginConfigNew;
         }
 
-        $infoNew['__nversion__'] = $infoNew['version'];
-        $infoNew['version'] = $infoOld['version'];
-        $infoNew['__nbuild__'] = isset($infoNew['build'])
-            ? $infoNew['build'] : '0000000000';
-        $infoNew['build'] = isset($infoOld['build'])
-            ? $infoOld['build'] : '0000000000';
+        $pluginInfoNew['__nversion__'] = $pluginInfoNew['version'];
+        $pluginInfoNew['version'] = $pluginInfoOld['version'];
+ 
+        $pluginInfoNew['__nbuild__'] = isset($pluginInfoNew['build']) ? $pluginInfoNew['build'] : '0000000000';
+        $pluginInfoNew['build'] = isset($pluginInfoOld['build']) ? $pluginInfoOld['build'] : '0000000000';
 
-        $fullVersionNew = $infoNew['__nversion__'] . '.'
-            . $infoNew['__nbuild__'];
-        $fullVersionOld = $infoNew['version'] . '.' . $infoNew['build'];
-
-        $validator = new PluginArchiveValidator(
-            ['plugin_manager' => $this]
-        );
-        if (!$validator->_isValidPlugin($infoNew)) {
-            throw new PluginException(
-                implode("<br>", $validator->getMessages())
-            );
+        $validator = new PluginArchiveValidator($this);
+        if (!$validator->_isValidPlugin($pluginInfoNew)) {
+            throw new PluginException(implode(
+                "<br>", $validator->getMessages()
+            ));
         }
+
+        $fullVersionNew = $pluginInfoNew['__nversion__'] . '.' . $pluginInfoNew['__nbuild__'];
+        $fullVersionOld = $pluginInfoNew['version'] . '.' . $pluginInfoNew['build'];
 
         if (version_compare($fullVersionNew, $fullVersionOld, '<')) {
-            set_page_message(
-                tr(
-                    "Downgrade of the '%s' plugin to version '%s' (build '%s') is forbidden.",
-                    $plugin,
-                    $infoNew['version'],
-                    $infoOld['build'],
-                    ),
-                //tr('Downgrade of the %s plugin is forbidden.', $plugin),
-                'static_error'
-            );
+            set_page_message(tr(
+                "Downgrade of the '%s' plugin to version '%s' (build '%s') is forbidden.",
+                $pluginName,
+                $pluginInfoNew['version'],
+                $pluginInfoNew['build'],
+            ), 'static_error');
             return;
         }
 
-        if (isset($infoOld['__migration__'])) {
-            $infoNew['__migration__'] = $infoOld['__migration__'];
+        if (isset($pluginInfoOld['__migration__'])) {
+            $pluginInfoNew['__migration__'] = $pluginInfoOld['__migration__'];
         }
 
-        $configNew = $inst->getConfigFromFile();
-
-        if ($this->pluginIsKnown($plugin)) {
-            $configOld =& $inst->getConfig();
+        /*$pluginConfigNew = $plugin->getConfigFromFile();
+        if ($this->pluginIsKnown($pluginName)) {
+            $pluginConfigOld =& $plugin->getConfig();
         } else {
-            $configOld =& $configNew;
+            $pluginConfigOld =& $pluginConfigNew;
         }
+        */
 
-        $r = new ReflectionMethod($inst, 'install');
-        $infoNew['__installable__'] =
-            AbstractPlugin::class !== $r->getDeclaringClass()->getName();
-        $r = new ReflectionMethod($inst, 'uninstall');
-        $infoNew['__uninstallable__'] =
-            AbstractPlugin::class !== $r->getDeclaringClass()->getName();
-        $action = 'none';
+        $reflectionMethod = new ReflectionMethod($plugin, 'install');
+        $pluginInfoNew['__installable__'] = AbstractPlugin::class !== $reflectionMethod->getDeclaringClass()->getName();
+        $reflectionMethod = new ReflectionMethod($plugin, 'uninstall');
+        $pluginInfoNew['__uninstallable__'] = AbstractPlugin::class !== $reflectionMethod->getDeclaringClass()->getName();
+        $pluginAction = 'none';
 
-        if ($this->pluginIsKnown($plugin)) {
-            $status = $this->pluginGetStatus($plugin);
-            $lockers = $this->pluginData[$plugin]['lockers'];
+        if ($pluginIsKnown) {
+            $pluginStatus = $this->pluginGetStatus($pluginName);
+            $pluginLockers = $this->pluginData[$pluginName]['pluginLockers'];
 
             // Plugin has changes, either info or config
-            if (!$this->pluginCompareData($infoNew, $infoOld)
-                || !$this->pluginCompareData($configNew, $configOld)
+            if (!$this->pluginCompareData($pluginInfoNew, $pluginInfoOld)
+                || !$this->pluginCompareData($pluginConfigNew, $pluginConfigOld)
             ) {
                 // Plugin is protected
-                if ($this->pluginIsProtected($plugin)) {
-                    set_page_message(
-                        tr(
-                            'The %s plugin changes were ignored as this one is protected.',
-                            $plugin
-                        ),
-                        'static_warning'
-                    );
+                if ($this->pluginIsProtected($pluginName)) {
+                    set_page_message(tr(
+                        'The %s plugin changes were ignored as this one is protected.',
+                        $pluginName
+                    ), 'static_warning');
                     return;
                 }
 
                 // No error but pending task
-                if (!$this->pluginHasError($plugin) &&
-                    !in_array($status, ['uninstalled', 'enabled', 'disabled'])
+                if (!$this->pluginHasError($pluginName)
+                    && !in_array($pluginStatus, [
+                        'uninstalled', 'enabled', 'disabled'
+                    ])
                 ) {
-                    set_page_message(
-                        tr(
-                            'Changes for the %s plugin were ignored as there is a pending task for this one. Please retry once the task is completed.',
-                            $plugin
-                        ),
-                        'static_warning'
-                    );
+                    set_page_message(tr(
+                        'Changes for the %s plugin were ignored as there is a pending task for this one. Please retry once the task is completed.',
+                        $pluginName
+                    ), 'static_warning');
                     return;
                 }
 
-                if ($status != 'enabled' || $this->pluginHasError($plugin)) {
-                    $action = 'store';
-                } elseif (version_compare($fullVersionNew, $fullVersionOld, '>')) {
-                    $action = 'toupdate';
+                if ($pluginStatus != 'enabled'
+                    || $this->pluginHasError($pluginName)
+                ) {
+                    $pluginAction = 'store';
+                } elseif (version_compare(
+                    $fullVersionNew, $fullVersionOld, '>')
+                ) {
+                    $pluginAction = 'toupdate';
                 } else {
-                    $action = 'tochange';
+                    $pluginAction = 'tochange';
                 }
             }
+
+            // We clone the plugin to make the that next call to the self::pluginGet()
+            // method will return plugin instance with newest info/parameters
+            $this->plugins[$pluginName] = clone $plugin;
         } else {
-            $status = $infoNew['__installable__'] ? 'uninstalled' : 'disabled';
-            $lockers = new LazyDecoder('{}');
-            $action = 'store';
+            $pluginStatus = $pluginInfoNew['__installable__']
+                ? 'uninstalled' : 'disabled';
+            $pluginLockers = new LazyDecoder('{}');
+            $pluginAction = 'store';
         }
 
-        if ($action == 'none') {
+        if ($pluginAction == 'none') {
             set_page_message(
-                tr("No changes were detected for the %s plugin.", $plugin),
+                tr("No changes were detected for the %s plugin.", $pluginName),
                 'success'
             );
             return;
         }
 
         $this->pluginStoreDataInDatabase([
-            'name'        => $plugin,
-            'info'        => json_encode($infoNew),
-            'config'      => json_encode($configNew),
+            'name'          => $pluginName,
+            'info'          => json_encode($pluginInfoNew),
+            'config'        => json_encode($pluginConfigNew),
             // On plugin change/update, make sure that config_prev also contains
             // new parameters
-            'config_prev' => json_encode($this->pluginIsKnown($plugin)
-                ? array_merge_recursive($configNew, $configOld) : $configNew),
-            'priority'    => $infoNew['priority'],
-            'status'      => $status,
-            'backend'     => file_exists($this->pluginGetRootDir()
-                . DIRECTORY_SEPARATOR . $plugin . DIRECTORY_SEPARATOR
-                . 'backend' . DIRECTORY_SEPARATOR . "$plugin.pm"
+            'config_prev'   => json_encode($pluginIsKnown
+                ? array_merge_recursive($pluginConfigNew, $pluginConfigOld)
+                : $pluginConfigNew),
+            'priority'      => $pluginInfoNew['priority'],
+            'pluginStatus'  => $pluginStatus,
+            'backend'       => file_exists($this->pluginGetRootDir()
+                . DIRECTORY_SEPARATOR . $pluginName . DIRECTORY_SEPARATOR
+                . 'backend' . DIRECTORY_SEPARATOR . "$pluginName.pm"
             ) ? 'yes' : 'no',
-            'lockers'     => json_encode($lockers->toArray(), JSON_FORCE_OBJECT)
+            'pluginLockers' => json_encode(
+                $pluginLockers->toArray(), JSON_FORCE_OBJECT
+            )
         ]);
 
-        try {
-            switch ($action) {
-                case 'toupdate':
-                    $this->pluginUpdate($plugin);
-                    break;
-                case 'tochange':
-                    $this->pluginChange($plugin);
-                    break;
-                default:
-                    set_page_message(
-                        tr(
-                            'New %s plugin data were successfully stored.',
-                            $plugin
-                        ),
-                        'success'
-                    );
-                    return;
-            }
-
-            if ($this->pluginHasBackend($plugin)) {
-                set_page_message(
-                    tr(
-                        "Action '%s' successfully scheduled for the %s plugin.",
-                        $action,
-                        $plugin
-                    ),
-                    'success'
-                );
+        switch ($pluginAction) {
+            case 'toupdate':
+                $this->pluginUpdate($pluginName);
+                break;
+            case 'tochange':
+                $this->pluginChange($pluginName);
+                break;
+            default:
+                set_page_message(tr(
+                    'New %s plugin data were successfully stored.',
+                    $pluginName
+                ), 'success');
                 return;
-            }
-
-            set_page_message(
-                tr(
-                    "Action '%s' successfully executed for the %s plugin.",
-                    $action,
-                    $plugin
-                ),
-                'success'
-            );
-        } catch (PluginException $e) {
-            set_page_message($e->getMessage(), 'static_error');
         }
+
+        if ($this->pluginHasBackend($pluginName)) {
+            set_page_message(tr(
+                "Action '%s' successfully scheduled for the %s plugin.",
+                $pluginAction,
+                $pluginName
+            ), 'success');
+            return;
+        }
+
+        set_page_message(tr(
+            "Action '%s' successfully executed for the %s plugin.",
+            $pluginAction,
+            $pluginName
+        ), 'success');
     }
 
     /**
      * Get status of the given plugin.
      *
-     * @param string $plugin Plugin name
+     * @param string $pluginName Plugin name
      * @return string Plugin status
      */
-    public function pluginGetStatus($plugin): string
+    public function pluginGetStatus($pluginName): string
     {
-        if (!$this->pluginIsKnown($plugin)) {
-            throw new PluginException(tr('Unknown plugin: %s', $plugin));
+        if (!$this->pluginIsKnown($pluginName)) {
+            throw new PluginException(tr('Unknown plugin: %s', $pluginName));
         }
 
-        return $this->pluginData[$plugin]['status'];
+        return $this->pluginData[$pluginName]['status'];
     }
 
     /**
      * is the given plugin protected?
      *
-     * @param string $plugin Plugin name
+     * @param string $pluginName Plugin name
      * @return bool
      */
-    public function pluginIsProtected(string $plugin): bool
+    public function pluginIsProtected(string $pluginName): bool
     {
-        if (!$this->pluginIsKnown($plugin)) {
-            throw new PluginException(tr('Unknown plugin: %s', $plugin));
+        if (!$this->pluginIsKnown($pluginName)) {
+            throw new PluginException(tr('Unknown plugin: %s', $pluginName));
         }
 
         if (NULL == $this->protectedPlugins) {
             $this->protectedPlugins = [];
-            $file = $this->pluginGetPersistentDataDir()
-                . DIRECTORY_SEPARATOR . 'protected_plugins.php';
+            $file = $this->pluginGetPersistentDataDir() . DIRECTORY_SEPARATOR
+                . 'protected_plugins.php';
+
             if (is_readable($file)) {
                 $this->protectedPlugins = include $file;
             }
         }
 
-        return in_array($plugin, $this->protectedPlugins);
+        return in_array($pluginName, $this->protectedPlugins);
     }
 
     /**
@@ -706,70 +700,111 @@ class PluginManager
     /**
      * Does the given plugin has error?
      *
-     * @param string $plugin Plugin name
+     * @param string $pluginName Plugin name
      * @return bool TRUE if the given plugin has error, FALSE otherwise
      */
-    public function pluginHasError(string $plugin): bool
+    public function pluginHasError(string $pluginName): bool
     {
-        return NULL !== $this->pluginGetError($plugin);
+        return NULL !== $this->pluginGetError($pluginName);
     }
 
     /**
      * Get plugin error.
      *
-     * @param null|string $plugin Plugin name
+     * @param null|string $pluginName Plugin name
      * @return string|null Plugin error string or NULL if no error
      */
-    public function pluginGetError(string $plugin): ?string
+    public function pluginGetError(string $pluginName): ?string
     {
-        if (!$this->pluginIsKnown($plugin)) {
-            throw new PluginException(tr('Unknown plugin: %s', $plugin));
+        if (!$this->pluginIsKnown($pluginName)) {
+            throw new PluginException(tr('Unknown plugin: %s', $pluginName));
         }
 
-        return $this->pluginData[$plugin]['error'];
+        return $this->pluginData[$pluginName]['error'];
+    }
+
+    /**
+     * Set error for the given plugin.
+     *
+     * @param string $pluginName Plugin name
+     * @param null|string $error Plugin error string or NULL if no error
+     * @return void
+     */
+    public function pluginSetError(string $pluginName, ?string $error): void
+    {
+        if ($error === $this->pluginGetError($pluginName)) {
+            return;
+        }
+
+        try {
+            exec_query(
+                'UPDATE `plugin` SET `plugin_error` = ? WHERE `plugin_name` = ?',
+                [$error, $pluginName]
+            );
+            $this->pluginData[$pluginName]['error'] = $error;
+        } catch (Throwable $e) {
+            throw new PluginException($e->getMessage(), $e->getCode(), $e);
+        }
     }
 
     /**
      * Is the given plugin known?
      *
-     * @param string $plugin Plugin name
+     * @param string $pluginName Plugin name
      * @return bool TRUE if the given plugin is known , FALSE otherwise
      */
-    public function pluginIsKnown(string $plugin): bool
+    public function pluginIsKnown(string $pluginName): bool
     {
-        return isset($this->pluginData[$plugin]);
+        return isset($this->pluginData[$pluginName]);
     }
 
     /**
      * Store plugin data in database.
      *
-     * @param array $data Plugin data
+     * @param array $pluginData Plugin data
      * @return void
      */
-    protected function pluginStoreDataInDatabase(array $data): void
+    protected function pluginStoreDataInDatabase(array $pluginData): void
     {
         try {
             exec_query(
                 '
                     INSERT INTO plugin (
-                        `plugin_name`, `plugin_info`, `plugin_config`,
-                        `plugin_config_prev`, `plugin_priority`,
-                        `plugin_status`, `plugin_backend`, `plugin_lockers`
+                        `plugin_name`,
+                        `plugin_info`,
+                        `plugin_config`,
+                        `plugin_config_prev`,
+                        `plugin_priority`,
+                        `plugin_status`,
+                        `plugin_backend`,
+                        `plugin_lockers`
                     ) VALUE ( ?, ?, ?, ?, ?, ?, ?, ? ) ON DUPLICATE KEY UPDATE
-                        `plugin_info` = ?, `plugin_config` = ?,
-                        `plugin_config_prev` = ?, `plugin_priority` = ?,
-                        `plugin_status` = ?, `plugin_backend` = ?,
+                        `plugin_info` = ?,
+                        `plugin_config` = ?,
+                        `plugin_config_prev` = ?,
+                        `plugin_priority` = ?,
+                        `plugin_status` = ?,
+                        `plugin_backend` = ?,
                         `plugin_lockers` = ?
                 ',
                 [
                     // Insert data
-                    $data['name'], $data['info'], $data['config'],
-                    $data['config_prev'], $data['priority'], $data['status'],
-                    $data['backend'], $data['lockers'],
+                    $pluginData['name'],
+                    $pluginData['info'],
+                    $pluginData['config'],
+                    $pluginData['config_prev'],
+                    $pluginData['priority'],
+                    $pluginData['status'],
+                    $pluginData['backend'],
+                    $pluginData['lockers'],
                     // Update data
-                    $data['info'], $data['config'], $data['config_prev'],
-                    $data['priority'], $data['status'], $data['backend'],
-                    $data['lockers']
+                    $pluginData['info'],
+                    $pluginData['config'],
+                    $pluginData['config_prev'],
+                    $pluginData['priority'],
+                    $pluginData['status'],
+                    $pluginData['backend'],
+                    $pluginData['lockers']
                 ]
             );
         } catch (Throwable $e) {
@@ -780,98 +815,102 @@ class PluginManager
     /**
      * Update the given plugin.
      *
-     * @param string $plugin Plugin name
+     * @param string $pluginName Plugin name
      * @return void
      */
-    public function pluginUpdate(string $plugin): void
+    public function pluginUpdate(string $pluginName): void
     {
-        $pluginStatus = $this->pluginGetStatus($plugin);
-
-        if (!in_array($pluginStatus, ['toupdate', 'enabled'])) {
-            throw new PluginException(tr(
-                "The '%s' action is forbidden for the %s plugin.",
-                'update',
-                $plugin
-            ));
-        }
-
         try {
-            $inst = $this->pluginGet($plugin);
-            $this->pluginSetStatus($plugin, 'toupdate');
-            $this->pluginDisable($plugin, true);
-            $pluginInfo = $inst->getInfo();
+            $pluginStatus = $this->pluginGetStatus($pluginName);
+
+            if (!in_array($pluginStatus, ['toupdate', 'enabled'])) {
+                throw new PluginException(tr(
+                    "The '%s' action is forbidden for the %s plugin.",
+                    'update',
+                    $pluginName
+                ));
+            }
+
+            $plugin = $this->pluginGet($pluginName);
+
+            $this->pluginSetStatus($pluginName, 'toupdate');
+            $this->pluginDisable($pluginName, true);
+
+            $pluginInfo = $plugin->getInfo();
             $fullVersionNew = $pluginInfo['__nversion__'] . '.'
                 . $pluginInfo['__nbuild__'];
             $fullVersionOld = $pluginInfo['version'] . '.'
                 . $pluginInfo['build'];
-            $responses = $this->events->dispatch(
-                Events::onBeforeUpdatePlugin,
-                [
-                    'pluginManager' => $this,
-                    'pluginName'    => $plugin,
-                    'fromVersion'   => $fullVersionOld,
-                    'toVersion'     => $fullVersionNew
-                ]
-            );
+
+            $responses = $this->events->dispatch(Events::onBeforeUpdatePlugin, [
+                'pluginManager' => $this,
+                'pluginName'    => $pluginName,
+                'fromVersion'   => $fullVersionOld,
+                'toVersion'     => $fullVersionNew
+            ]);
 
             if ($responses->isStopped()) {
-                $this->pluginSetStatus($plugin, $pluginStatus);
+                $this->pluginSetStatus($pluginName, $pluginStatus);
+
                 throw new PluginActionStoppedException(tr(
                     "The '%s' action has been stopped for the %s plugin.",
                     'update',
-                    $plugin
+                    $pluginName
                 ));
             }
 
-            $inst->update($this, $fullVersionOld, $fullVersionNew);
+            $plugin->update($this, $fullVersionOld, $fullVersionNew);
 
-            if (!$this->pluginHasBackend($plugin)) {
+            if (!$this->pluginHasBackend($pluginName)) {
                 $pluginInfo['version'] = $pluginInfo['__nversion__'];
                 $pluginInfo['build'] = $pluginInfo['__nbuild__'];
-                $this->pluginUpdateInfo($plugin, $pluginInfo);
+
+                $this->pluginUpdateInfo($pluginName, $pluginInfo);
             }
 
-            $this->events->dispatch(
-                Events::onAfterUpdatePlugin,
-                [
-                    'pluginManager' => $this,
-                    'pluginName'    => $plugin,
-                    'fromVersion'   => $fullVersionOld,
-                    'toVersion'     => $fullVersionNew
-                ]
-            );
-            $this->pluginEnable($plugin, true);
+            $this->events->dispatch(Events::onAfterUpdatePlugin, [
+                'pluginManager' => $this,
+                'pluginName'    => $pluginName,
+                'fromVersion'   => $fullVersionOld,
+                'toVersion'     => $fullVersionNew
+            ]);
 
-            if ($this->pluginHasBackend($plugin)) {
+            $this->pluginEnable($pluginName, true);
+
+            if ($this->pluginHasBackend($pluginName)) {
                 $this->backendRequest = true;
                 return;
             }
 
-            $this->pluginSetStatus($plugin, 'enabled');
-        } catch (PluginException $e) {
+            $this->pluginSetStatus($pluginName, 'enabled');
+        } catch (Throwable $e) {
             if (!($e instanceof PluginActionStoppedException)) {
-                $this->pluginSetError($plugin, $e->getMessage());
-                write_log(
-                    sprintf('Update of the %s plugin has failed.', $plugin),
-                    E_USER_ERROR
-                );
+                $this->pluginSetError($pluginName, $e->getMessage());
             }
 
-            throw $e;
+            write_log(sprintf(
+                'The %s plugin update has failed: %s',
+                $pluginName,
+                $e->getMessage()
+            ), E_USER_ERROR);
+
+            throw new PluginException(sprintf(
+                'The %s plugin update has failed.', $pluginName
+            ), $e->getCode(), $e);
         }
     }
 
     /**
      * Set status for the given plugin.
      *
-     * @param string $plugin Plugin name
+     * @param string $pluginName Plugin name
      * @param string $status New plugin status
      * @return void
      */
-    public function pluginSetStatus(string $plugin, string $status): void
+    public function pluginSetStatus(string $pluginName, string $status): void
     {
-        if ($status === $this->pluginGetStatus($plugin)
-            && NULL === $this->pluginGetError($plugin)
+        if ($status === $this->pluginGetStatus($pluginName)
+            && NULL === $this->pluginGetError($pluginName)
         ) {
             return;
         }
@@ -883,150 +922,120 @@ class PluginManager
                     SET `plugin_status` = ?, `plugin_error` = NULL
                     WHERE `plugin_name` = ?
                 ',
-                [$status, $plugin]
+                [$status, $pluginName]
             );
-            $this->pluginData[$plugin]['status'] = $status;
+            $this->pluginData[$pluginName]['status'] = $status;
+            $this->pluginData[$pluginName]['error'] = NULL;
         } catch (Throwable $e) {
-            throw new PluginException(
-                $e->getMessage(), $e->getCode(), $e
-            );
+            throw new PluginException($e->getMessage(), $e->getCode(), $e);
         }
     }
 
     /**
      * Disable the given plugin.
      *
-     * @param string $plugin Plugin name
+     * @param string $pluginName Plugin name
      * @param bool $isSubAction Flag indicating whether or not this action is
      *                          called in context of the install update or
      *                          change action
      * @return void
      */
     public function pluginDisable(
-        string $plugin, bool $isSubAction = false
+        string $pluginName, bool $isSubAction = false
     ): void
     {
-        $pluginStatus = $this->pluginGetStatus($plugin);
-
-        if (!$isSubAction
-            && !in_array($pluginStatus, ['todisable', 'enabled'])
-        ) {
-            throw new PluginException(tr(
-                "The '%s' action is forbidden for the %s plugin.",
-                'disable',
-                $plugin
-            ));
-        }
-
         try {
-            $inst = $this->pluginGet($plugin);
+            $pluginStatus = $this->pluginGetStatus($pluginName);
 
-            if (!$isSubAction) {
-                $this->pluginSetStatus($plugin, 'todisable');
-            }
-
-            $responses = $this->events->dispatch(
-                Events::onBeforeDisablePlugin,
-                [
-                    'pluginManager' => $this,
-                    'pluginName'    => $plugin
-                ]
-            );
-
-            if (!$isSubAction && $responses->isStopped()) {
-                $this->pluginSetStatus($plugin, $pluginStatus);
-                throw new PluginActionStoppedException(tr(
-                    "The '%s' action has been stopped for the %s plugin.",
+            if (!$isSubAction && !in_array($pluginStatus, ['todisable', 'enabled'])) {
+                throw new PluginException(tr(
+                    "The '%s' action is forbidden for the %s plugin.",
                     'disable',
-                    $plugin
+                    $pluginName
                 ));
             }
 
-            $inst->disable($this);
-            $this->events->dispatch(Events::onAfterDisablePlugin, [
+            $plugin = $this->pluginGet($pluginName);
+
+            if (!$isSubAction) {
+                $this->pluginSetStatus($pluginName, 'todisable');
+            }
+
+            $responses = $this->events->dispatch(Events::onBeforeDisablePlugin, [
                 'pluginManager' => $this,
-                'pluginName'    => $plugin
+                'pluginName'    => $pluginName
             ]);
 
-            if ($this->pluginHasBackend($plugin)) {
+            if (!$isSubAction && $responses->isStopped()) {
+                $this->pluginSetStatus($pluginName, $pluginStatus);
+
+                throw new PluginActionStoppedException(tr(
+                    "The '%s' action has been stopped for the %s plugin.",
+                    'disable',
+                    $pluginName
+                ));
+            }
+
+            $plugin->disable($this);
+
+            $this->events->dispatch(Events::onAfterDisablePlugin, [
+                'pluginManager' => $this,
+                'pluginName'    => $pluginName
+            ]);
+
+            if ($isSubAction) {
+                return;
+            }
+
+            if ($this->pluginHasBackend($pluginName)) {
                 $this->backendRequest = true;
                 return;
             }
 
-            if (!$isSubAction) {
-                $this->pluginSetStatus($plugin, 'disabled');
-            }
-        } catch (PluginException $e) {
+            $this->pluginSetStatus($pluginName, 'disabled');
+        } catch (Throwable $e) {
             if (!($e instanceof PluginActionStoppedException)) {
-                $this->pluginSetError($plugin, $e->getMessage());
-                write_log(
-                    sprintf(
-                        'Deactivation of the %s plugin has failed.', $plugin
-                    ),
-                    E_USER_ERROR
-                );
+                $this->pluginSetError($pluginName, $e->getMessage());
             }
 
-            throw $e;
+            write_log(sprintf(
+                'The %s plugin deactivation has failed: %s',
+                $pluginName,
+                $e->getMessage()
+            ), E_USER_ERROR);
+
+            throw new PluginException(sprintf(
+                'The %s plugin deactivation has failed.', $pluginName
+            ), $e->getCode(), $e);
         }
     }
 
     /**
      * Does the given plugin provides a backend side?
      *
-     * @param string $plugin Plugin name
+     * @param string $pluginName Plugin name
      * @return boolean TRUE if the given plugin provide backend part, FALSE
      *                 otherwise
      */
-    public function pluginHasBackend(string $plugin): bool
+    public function pluginHasBackend(string $pluginName): bool
     {
-        if (!$this->pluginIsKnown($plugin)) {
-            throw new PluginException(tr('Unknown plugin: %s', $plugin));
+        if (!$this->pluginIsKnown($pluginName)) {
+            throw new PluginException(tr('Unknown plugin: %s', $pluginName));
         }
 
-        return $this->pluginData[$plugin]['backend'] == 'yes';
-    }
-
-    /**
-     * Set error for the given plugin.
-     *
-     * @param string $plugin Plugin name
-     * @param null|string $error Plugin error string or NULL if no error
-     * @return void
-     */
-    public function pluginSetError(string $plugin, ?string $error): void
-    {
-        if ($error === $this->pluginGetError($plugin)) {
-            return;
-        }
-
-        try {
-            exec_query(
-                '
-                    UPDATE `plugin`
-                    SET `plugin_error` = ?
-                    WHERE `plugin_name` = ?
-                ',
-                [$error, $plugin]
-            );
-            $this->pluginData[$plugin]['error'] = $error;
-        } catch (Throwable $e) {
-            throw new PluginException(
-                $e->getMessage(), $e->getCode(), $e
-            );
-        }
+        return $this->pluginData[$pluginName]['backend'] == 'yes';
     }
 
     /**
      * Update plugin info.
      *
-     * @param string $plugin Plugin Name
+     * @param string $pluginName Plugin Name
      * @param array $infoNew New plugin info
      * @return void
      */
-    public function pluginUpdateInfo(string $plugin, array $infoNew): void
+    public function pluginUpdateInfo(string $pluginName, array $infoNew): void
     {
-        $oldInfo =& $this->pluginGet($plugin)->getInfo();
+        $oldInfo =& $this->pluginGet($pluginName)->getInfo();
 
         if ($this->pluginCompareData($infoNew, $oldInfo)) {
             return;
@@ -1035,40 +1044,40 @@ class PluginManager
         try {
             exec_query(
                 'UPDATE `plugin` SET `plugin_info` = ? WHERE `plugin_name` = ?',
-                [json_encode($infoNew), $plugin]
+                [json_encode($infoNew), $pluginName]
             );
             $oldInfo = $infoNew;
         } catch (Throwable $e) {
-            throw new PluginException(
-                $e->getMessage(), $e->getCode(), $e
-            );
+            throw new PluginException($e->getMessage(), $e->getCode(), $e);
         }
     }
 
     /**
      * Compare the given plugin data.
      *
-     * @param array $aData
-     * @param array $bData
+     * @param array $aPluginData
+     * @param array $bPluginData
      * @return bool TRUE if data are identical (order doesn't matter), FALSE
      *              otherwise
      */
-    protected function pluginCompareData(array &$aData, array &$bData): bool
+    protected function pluginCompareData(
+        array &$aPluginData, array &$bPluginData
+    ): bool
     {
-        if (count($aData) != count($bData)) {
+        if (count($aPluginData) != count($bPluginData)) {
             return false;
         }
 
-        foreach ($aData as $k => $v) {
-            if (!array_key_exists($k, $bData)) {
+        foreach ($aPluginData as $k => $v) {
+            if (!array_key_exists($k, $bPluginData)) {
                 return false;
             }
 
-            if (is_array($v) && is_array($bData[$k])) {
-                if (!$this->pluginCompareData($v, $bData[$k])) {
+            if (is_array($v) && is_array($bPluginData[$k])) {
+                if (!$this->pluginCompareData($v, $bPluginData[$k])) {
                     return false;
                 }
-            } elseif ($v !== $bData[$k]) {
+            } elseif ($v !== $bPluginData[$k]) {
                 return false;
             }
         }
@@ -1079,99 +1088,102 @@ class PluginManager
     /**
      * Enable the given plugin.
      *
-     * @param string $plugin Plugin name
+     * @param string $pluginName Plugin name
      * @param bool $isSubAction Flag indicating whether or not this action is
      *                          called in context of the install update or
      *                          change action
      * @return void
      */
     public function pluginEnable(
-        string $plugin, bool $isSubAction = false
+        string $pluginName, bool $isSubAction = false
     ): void
     {
-        $pluginStatus = $this->pluginGetStatus($plugin);
-
-        if (!$isSubAction
-            && !in_array($pluginStatus, ['toenable', 'disabled'])
-        ) {
-            throw new PluginException(tr(
-                "The '%s' action is forbidden for the %s plugin.",
-                'enable',
-                $plugin
-            ));
-        }
-
         try {
-            $inst = $this->pluginGet($plugin);
+            $pluginStatus = $this->pluginGetStatus($pluginName);
 
-            if (!$isSubAction) {
-                if ($this->pluginRequireUpdate($plugin)) {
-                    $this->pluginSetStatus($plugin, 'toupdate');
-                    $this->pluginUpdate($plugin);
-                    return;
-                }
-
-                if ($this->pluginRequireChange($plugin)) {
-                    $this->pluginSetStatus($plugin, 'tochange');
-                    $this->pluginChange($plugin);
-                    return;
-                }
-            }
-
-            if (!$isSubAction) {
-                $this->pluginSetStatus($plugin, 'toenable');
-            }
-
-            $responses = $this->events->dispatch(
-                Events::onBeforeEnablePlugin,
-                [
-                    'pluginManager' => $this,
-                    'pluginName'    => $plugin
-                ]
-            );
-
-            if (!$isSubAction && $responses->isStopped()) {
-                $this->pluginSetStatus($plugin, $pluginStatus);
-                throw new PluginActionStoppedException(tr(
-                    "The '%s' action has been stopped for the %s plugin.",
+            if (!$isSubAction && !in_array($pluginStatus, ['toenable', 'disabled'])) {
+                throw new PluginException(tr(
+                    "The '%s' action is forbidden for the %s plugin.",
                     'enable',
-                    $plugin
+                    $pluginName
                 ));
             }
 
-            $inst->enable($this);
-            $this->events->dispatch(Events::onAfterEnablePlugin, [
+            $plugin = $this->pluginGet($pluginName);
+
+            if (!$isSubAction) {
+                if ($this->pluginRequireUpdate($pluginName)) {
+                    $this->pluginSetStatus($pluginName, 'toupdate');
+                    $this->pluginUpdate($pluginName);
+                    return;
+                }
+
+                if ($this->pluginRequireChange($pluginName)) {
+                    $this->pluginSetStatus($pluginName, 'tochange');
+                    $this->pluginChange($pluginName);
+                    return;
+                }
+
+                $this->pluginSetStatus($pluginName, 'toenable');
+            }
+
+            $responses = $this->events->dispatch(Events::onBeforeEnablePlugin, [
                 'pluginManager' => $this,
-                'pluginName'    => $plugin
+                'pluginName'    => $pluginName
             ]);
 
-            if ($this->pluginHasBackend($plugin)) {
-                $this->backendRequest = true;
-            } elseif (!$isSubAction) {
-                $this->pluginSetStatus($plugin, 'enabled');
-            }
-        } catch (PluginException $e) {
-            if (!($e instanceof PluginActionStoppedException)) {
-                $this->pluginSetError($plugin, $e->getMessage());
-                write_log(
-                    sprintf('Activation of the %s plugin has failed.', $plugin),
-                    E_USER_ERROR
-                );
+            if (!$isSubAction && $responses->isStopped()) {
+                $this->pluginSetStatus($pluginName, $pluginStatus);
+
+                throw new PluginActionStoppedException(tr(
+                    "The '%s' action has been stopped for the %s plugin.",
+                    'enable',
+                    $pluginName
+                ));
             }
 
-            throw $e;
+            $plugin->enable($this);
+            $this->events->dispatch(Events::onAfterEnablePlugin, [
+                'pluginManager' => $this,
+                'pluginName'    => $pluginName
+            ]);
+
+            if ($isSubAction) {
+                return;
+            }
+
+            if ($this->pluginHasBackend($pluginName)) {
+                $this->backendRequest = true;
+                return;
+            }
+
+            $this->pluginSetStatus($pluginName, 'enabled');
+        } catch (Throwable $e) {
+            if (!($e instanceof PluginActionStoppedException)) {
+                $this->pluginSetError($pluginName, $e->getMessage());
+            }
+
+            write_log(sprintf(
+                'The %s plugin activation has failed: %s',
+                $pluginName,
+                $e->getMessage()
+            ), E_USER_ERROR);
+
+            throw new PluginException(sprintf(
+                'The %s plugin activation has failed.', $pluginName
+            ), $e->getCode(), $e);
         }
     }
 
     /**
      * Does the given plugin requires update.
      *
-     * @param string $plugin Plugin name
+     * @param string $pluginName Plugin name
      * @return bool TRUE if the given plugin requires change, FALSE otherwise
      */
-    protected function pluginRequireUpdate(string $plugin): bool
+    protected function pluginRequireUpdate(string $pluginName): bool
     {
-        $info = $this->pluginGet($plugin)->getInfo();
+        $info = $this->pluginGet($pluginName)->getInfo();
 
         return version_compare(
             $info['nversion'] . '.' . $info['nbuild'],
@@ -1183,12 +1195,12 @@ class PluginManager
     /**
      * Does the given plugin requires change.
      *
-     * @param string $plugin Plugin name
+     * @param string $pluginName Plugin name
      * @return bool TRUE if the given plugin requires change, FALSE otherwise
      */
-    protected function pluginRequireChange(string $plugin): bool
+    protected function pluginRequireChange(string $pluginName): bool
     {
-        $inst = $this->pluginGet($plugin);
+        $inst = $this->pluginGet($pluginName);
 
         return !$this->pluginCompareData(
             $inst->getConfig(), $inst->getConfigPrev()
@@ -1198,35 +1210,33 @@ class PluginManager
     /**
      * Change (reconfigure) the given plugin.
      *
-     * @param string $plugin Plugin name
+     * @param string $pluginName Plugin name
      * @param bool $isSubAction Flag indicating whether or not this action is
      *                          called in context of the update action
      * @return void
      */
     public function pluginChange(
-        string $plugin, bool $isSubAction = false
+        string $pluginName, bool $isSubAction = false
     ): void
     {
-        $pluginStatus = $this->pluginGetStatus($plugin);
-
-        if (!$isSubAction
-            && !in_array($pluginStatus, ['tochange', 'enabled'])
-        ) {
-            throw new PluginException(tr(
-                "The '%s' action is forbidden for the %s plugin.",
-                'change', $plugin
-            ));
-        }
-
         try {
-            $this->pluginSetStatus($plugin, 'tochange');
+            $pluginStatus = $this->pluginGetStatus($pluginName);
 
-            if (!$isSubAction) {
-                $this->pluginDisable($plugin, true);
-                $this->pluginEnable($plugin, true);
+            if (!$isSubAction && !in_array($pluginStatus, ['tochange', 'enabled'])) {
+                throw new PluginException(tr(
+                    "The '%s' action is forbidden for the %s plugin.",
+                    'change', $pluginName
+                ));
             }
 
-            if ($this->pluginHasBackend($plugin)) {
+            $this->pluginSetStatus($pluginName, 'tochange');
+
+            if (!$isSubAction) {
+                $this->pluginDisable($pluginName, true);
+                $this->pluginEnable($pluginName, true);
+            }
+
+            if ($this->pluginHasBackend($pluginName)) {
                 $this->backendRequest = true;
                 return;
             }
@@ -1238,70 +1248,68 @@ class PluginManager
                         SET `plugin_config_prev` = `plugin_config`
                         WHERE `plugin_name` = ?
                      ',
-                    $plugin
+                    $pluginName
                 );
-                $this->pluginSetStatus($plugin, 'enabled');
+                $this->pluginSetStatus($pluginName, 'enabled');
             } catch (Throwable $e) {
                 throw new PluginException($e->getMessage(), $e->getCode(), $e);
             }
-        } catch (PluginException $e) {
+        } catch (Throwable $e) {
             if (!($e instanceof PluginActionStoppedException)) {
-                $this->pluginSetError($plugin, $e->getMessage());
-                write_log(
-                    sprintf(
-                        'Reconfiguration of the %s plugin has failed.', $plugin
-                    ),
-                    E_USER_ERROR
-                );
+                $this->pluginSetError($pluginName, $e->getMessage());
             }
 
-            throw $e;
+            write_log(sprintf(
+                'The %s plugin reconfiguration has failed: %s',
+                $pluginName,
+                $e->getMessage()
+            ), E_USER_ERROR);
+
+            throw new PluginException(sprintf(
+                'The %s plugin reconfiguration has failed.', $pluginName
+            ), $e->getCode(), $e);
         }
     }
 
     /**
      * Lock the given plugin.
      *
-     * @param string $plugin Plugin name
-     * @param string $locker Locker name
+     * @param string $pluginName Plugin name
+     * @param string $lockerName Locker name
      * @return void
      */
-    public function pluginLock(string $plugin, string $locker): void
+    public function pluginLock(string $pluginName, string $lockerName): void
     {
-        if ($this->pluginIsLocked($plugin, $locker)) {
-            return;
-        }
-
         try {
-            $responses = $this->events->dispatch(
-                Events::onBeforeLockPlugin,
-                [
-                    'pluginName'   => $plugin,
-                    'pluginLocker' => $locker
-                ]
-            );
+            if ($this->pluginIsLocked($pluginName, $lockerName)) {
+                return;
+            }
+
+            $responses = $this->events->dispatch(Events::onBeforeLockPlugin, [
+                'pluginName'   => $pluginName,
+                'pluginLocker' => $lockerName
+            ]);
 
             if ($responses->isStopped()) {
                 return;
             }
 
-            $lockers = $this->pluginData[$plugin]['lockers'];
-            $lockers[$locker] = 1;
+            $lockers = $this->pluginData[$pluginName]['lockers'];
+            $lockers[$lockerName] = 1;
+
             exec_query(
                 '
                     UPDATE `plugin`
                     SET `plugin_lockers` = ?
                     WHERE `plugin_name` = ?
                 ',
-                [json_encode($lockers->toArray(), JSON_FORCE_OBJECT), $plugin]
+                [json_encode($lockers->toArray(), JSON_FORCE_OBJECT), $pluginName]
             );
-            $this->events->dispatch(
-                Events::onAfterLockPlugin,
-                [
-                    'pluginName'   => $plugin,
-                    'pluginLocker' => $locker
-                ]
-            );
+
+            $this->events->dispatch(Events::onAfterLockPlugin, [
+                'pluginName'   => $pluginName,
+                'pluginLocker' => $lockerName
+            ]);
         } catch (Throwable $e) {
             throw new PluginException($e->getMessage(), $e->getCode(), $e);
         }
@@ -1310,63 +1318,60 @@ class PluginManager
     /**
      * is the given plugin locked?
      *
-     * @param string $plugin Plugin name
-     * @param string|null $locker OPTIONAL Locker name (default any locker)
+     * @param string $pluginName Plugin name
+     * @param string|null $lockerName OPTIONAL Locker name (default any locker)
      * @return bool TRUE if the given plugin is locked, false otherwise
      */
-    public function pluginIsLocked(string $plugin, ? string $locker = NULL)
+    public function pluginIsLocked(
+        string $pluginName, ? string $lockerName = NULL
+    )
     {
-        if (!$this->pluginIsKnown($plugin)) {
-            throw new PluginException(tr('Unknown plugin: %s', $plugin));
+        if (!$this->pluginIsKnown($pluginName)) {
+            throw new PluginException(tr('Unknown plugin: %s', $pluginName));
         }
 
-        if (NULL === $locker) {
-            return count($this->pluginData[$plugin]['lockers']) > 0;
+        if (NULL === $lockerName) {
+            return count($this->pluginData[$pluginName]['lockers']) > 0;
         }
 
-        return isset($this->pluginData[$plugin]['lockers'][$locker]);
+        return isset($this->pluginData[$pluginName]['lockers'][$lockerName]);
     }
 
     /**
      * Unlock the given plugin.
      *
-     * @param string $plugin Plugin name
-     * @param string $locker Locker name
+     * @param string $pluginName Plugin name
+     * @param string $lockerName Locker name
      * @return void
      */
-    public function pluginUnlock(string $plugin, string $locker): void
+    public function pluginUnlock(string $pluginName, string $lockerName): void
     {
-        if (!$this->pluginIsLocked($plugin, $locker)) {
-            return;
-        }
-
         try {
-            $responses = $this->events->dispatch(
-                Events::onBeforeUnlockPlugin,
-                [
-                    'pluginName'   => $plugin,
-                    'pluginLocker' => $locker
-                ]
-            );
+            if (!$this->pluginIsLocked($pluginName, $lockerName)) {
+                return;
+            }
+
+            $responses = $this->events->dispatch(Events::onBeforeUnlockPlugin, [
+                'pluginName'   => $pluginName,
+                'pluginLocker' => $lockerName
+            ]);
 
             if ($responses->isStopped()) {
                 return;
             }
 
             /** @var LazyDecoder $lockers */
-            $lockers = $this->pluginData[$plugin]['lockers'];
-            unset($lockers[$locker]);
+            $lockers = $this->pluginData[$pluginName]['lockers'];
+            unset($lockers[$lockerName]);
+
             exec_query(
-                '
-                    UPDATE `plugin`
-                    SET `plugin_lockers` = ?
-                    WHERE `plugin_name` = ?
-                ',
-                [json_encode($lockers->toArray(), JSON_FORCE_OBJECT), $plugin]
+                'UPDATE `plugin` SET `plugin_lockers` = ? WHERE `plugin_name` = ?',
+                [json_encode($lockers->toArray(), JSON_FORCE_OBJECT), $pluginName]
             );
+
             $this->events->dispatch(Events::onAfterUnlockPlugin, [
-                'pluginName'   => $plugin,
-                'pluginLocker' => $locker
+                'pluginName'   => $pluginName,
+                'pluginLocker' => $lockerName
             ]);
         } catch (Throwable $e) {
             throw new PluginException($e->getMessage(), $e->getCode(), $e);
@@ -1376,267 +1381,277 @@ class PluginManager
     /**
      * Is the given plugin is installed?
      *
-     * @param string $plugin Plugin name
+     * @param string $pluginName Plugin name
      * @return bool TRUE if the given plugin is installed FALSE otherwise
      */
-    public function pluginIsInstalled(string $plugin): bool
+    public function pluginIsInstalled(string $pluginName): bool
     {
         return !in_array(
-            $this->pluginGetStatus($plugin), ['toinstall', 'uninstalled']
+            $this->pluginGetStatus($pluginName), ['toinstall', 'uninstalled']
         );
     }
 
     /**
      * Install the given plugin.
      *
-     * @param string $plugin Plugin name
+     * @param string $pluginName Plugin name
      * @return void
      */
-    public function pluginInstall(string $plugin): void
+    public function pluginInstall(string $pluginName): void
     {
-        $pluginStatus = $this->pluginGetStatus($plugin);
-
-        if (!in_array($pluginStatus, ['toinstall', 'uninstalled'])) {
-            throw new PluginException(tr(
-                "The '%s' action is forbidden for the %s plugin.", 'install',
-                $plugin
-            ));
-        }
-
         try {
-            $inst = $this->pluginGet($plugin);
-            $this->pluginSetStatus($plugin, 'toinstall');
-            $responses = $this->events->dispatch(
-                Events::onBeforeInstallPlugin,
-                [
-                    'pluginManager' => $this,
-                    'pluginName'    => $plugin
-                ]
-            );
+            $pluginStatus = $this->pluginGetStatus($pluginName);
 
-            if ($responses->isStopped()) {
-                $this->pluginSetStatus($plugin, $pluginStatus);
-                throw new PluginActionStoppedException(tr(
-                    "The '%s' action has been stopped for the %s plugin.",
-                    'install',
-                    $plugin
+            if (!in_array($pluginStatus, ['toinstall', 'uninstalled'])) {
+                throw new PluginException(tr(
+                    "The '%s' action is forbidden for the %s plugin.", 'install',
+                    $pluginName
                 ));
             }
 
-            $inst->install($this);
+            $plugin = $this->pluginGet($pluginName);
+            $this->pluginSetStatus($pluginName, 'toinstall');
+
+            try {
+                $responses = $this->events->dispatch(Events::onBeforeInstallPlugin, [
+                    'pluginManager' => $this,
+                    'pluginName'    => $pluginName
+                ]);
+
+                if ($responses->isStopped()) {
+                    throw new PluginActionStoppedException(tr(
+                        "The '%s' action has been stopped for the %s plugin.",
+                        'install',
+                        $pluginName
+                    ));
+                }
+            } catch (Throwable $e) {
+                $this->pluginSetStatus($pluginName, $pluginStatus);
+                throw $e;
+            }
+
+            $plugin->install($this);
+
             $this->events->dispatch(Events::onAfterInstallPlugin, [
                 'pluginManager' => $this,
-                'pluginName'    => $plugin
+                'pluginName'    => $pluginName
             ]);
-            $this->pluginEnable($plugin, true);
 
-            if ($this->pluginHasBackend($plugin)) {
+            $this->pluginEnable($pluginName, true);
+
+            if ($this->pluginHasBackend($pluginName)) {
                 $this->backendRequest = true;
                 return;
             }
 
-            $this->pluginSetStatus($plugin, 'enabled');
-        } catch (PluginException $e) {
+            $this->pluginSetStatus($pluginName, 'enabled');
+        } catch (Throwable $e) {
             if (!($e instanceof PluginActionStoppedException)) {
-                $this->pluginSetError($plugin, $e->getMessage());
-                write_log(
-                    sprintf(
-                        'Installation of the %s plugin has failed.', $plugin
-                    ),
-                    E_USER_ERROR
-                );
+                $this->pluginSetError($pluginName, $e->getMessage());
             }
 
-            throw $e;
+            write_log(sprintf(
+                'The %s plugin installation has failed: %s',
+                $pluginName,
+                $e->getMessage()
+            ), E_USER_ERROR);
+
+            throw new PluginException(sprintf(
+                'The %s plugin installation has failed.', $pluginName
+            ), $e->getCode(), $e);
         }
     }
 
     /**
      * Is the given plugin uninstalled?
      *
-     * @param string $plugin Plugin name
+     * @param string $pluginName Plugin name
      * @return bool TRUE if the given plugin is uninstalled FALSE otherwise
      */
-    public function pluginIsUninstalled(string $plugin): bool
+    public function pluginIsUninstalled(string $pluginName): bool
     {
-        return $this->pluginGetStatus($plugin) == 'uninstalled';
+        return $this->pluginGetStatus($pluginName) == 'uninstalled';
     }
 
     /**
      * Uninstall the given plugin.
      *
-     * @param string $plugin Plugin name
+     * @param string $pluginName Plugin name
      * @return void
      */
-    public function pluginUninstall(string $plugin): void
+    public function pluginUninstall(string $pluginName): void
     {
-        $pluginStatus = $this->pluginGetStatus($plugin);
+        $pluginStatus = $this->pluginGetStatus($pluginName);
 
         if (!in_array($pluginStatus, ['touninstall', 'disabled'])
-            || !$this->pluginIsUninstallable($plugin)
+            || !$this->pluginIsUninstallable($pluginName)
         ) {
             throw new PluginException(tr(
                 "The '%s' action is forbidden for the %s plugin.",
                 'uninstall',
-                $plugin
+                $pluginName
             ));
         }
 
         try {
-            $inst = $this->pluginGet($plugin);
-            $this->pluginSetStatus($plugin, 'touninstall');
-            $responses = $this->events->dispatch(
-                Events::onBeforeUninstallPlugin,
-                [
-                    'pluginManager' => $this,
-                    'pluginName'    => $plugin
-                ]
-            );
+            $plugin = $this->pluginGet($pluginName);
+            $this->pluginSetStatus($pluginName, 'touninstall');
+
+            $responses = $this->events->dispatch(Events::onBeforeUninstallPlugin, [
+                'pluginManager' => $this,
+                'pluginName'    => $pluginName
+            ]);
 
             if ($responses->isStopped()) {
-                $this->pluginSetStatus($plugin, $pluginStatus);
+                $this->pluginSetStatus($pluginName, $pluginStatus);
+
                 throw new PluginActionStoppedException(tr(
                     "The '%s' action has been stopped for the %s plugin.",
                     'uninstall',
-                    $plugin
+                    $pluginName
                 ));
             }
 
-            $inst->uninstall($this);
+            $plugin->uninstall($this);
+
             $this->events->dispatch(Events::onAfterUninstallPlugin, [
                 'pluginManager' => $this,
-                'pluginName'    => $plugin
+                'pluginName'    => $pluginName
             ]);
 
-            if ($this->pluginHasBackend($plugin)) {
+            if ($this->pluginHasBackend($pluginName)) {
                 $this->backendRequest = true;
                 return;
             }
 
             $this->pluginSetStatus(
-                $plugin,
-                $this->pluginIsInstallable($plugin) ? 'uninstalled' : 'disabled'
+                $pluginName,
+                $this->pluginIsInstallable($pluginName)
+                    ? 'uninstalled' : 'disabled'
             );
-        } catch (PluginException $e) {
+        } catch (Throwable $e) {
             if (!($e instanceof PluginActionStoppedException)) {
-                $this->pluginSetError($plugin, $e->getMessage());
-                write_log(
-                    sprintf(
-                        'Uninstallation of the %s plugin has failed.', $plugin
-                    ),
-                    E_USER_ERROR
-                );
+                $this->pluginSetError($pluginName, $e->getMessage());
             }
 
-            throw $e;
+            write_log(sprintf(
+                'The %s plugin uninstallation has failed: %s',
+                $pluginName,
+                $e->getMessage()
+            ), E_USER_ERROR);
+
+            throw new PluginException(sprintf(
+                'The %s plugin uninstallation has failed.', $pluginName
+            ), $e->getCode(), $e);
         }
     }
 
     /**
      * Is the given plugin uninstallable?
      *
-     * @param string $plugin Plugin name
+     * @param string $pluginName Plugin name
      * @return bool TRUE if the given plugin can be uninstalled, FALSE otherwise
      */
-    public function pluginIsUninstallable(string $plugin): bool
+    public function pluginIsUninstallable(string $pluginName): bool
     {
-        $inst = $this->pluginGet($plugin);
-        $info = $inst->getInfo();
+        $plugin = $this->pluginGet($pluginName);
+        $pluginInfo = $plugin->getInfo();
 
-        if (isset($info['__uninstallable__'])) {
-            return $info['__uninstallable__'];
+        if (isset($pluginInfo['__uninstallable__'])) {
+            return $pluginInfo['__uninstallable__'];
         }
 
-        $r = new ReflectionMethod($inst, 'uninstall');
+        $reflectionMethod = new ReflectionMethod($plugin, 'uninstall');
 
-        return AbstractPlugin::class !== $r->getDeclaringClass()->getName();
+        return AbstractPlugin::class !==
+            $reflectionMethod->getDeclaringClass()->getName();
     }
 
     /**
      * Is the given plugin installable?
      *
-     * @param string $plugin Plugin name
+     * @param string $pluginName Plugin name
      * @return bool TRUE if the given plugin is installable, FALSE otherwise
      */
-    public function pluginIsInstallable(string $plugin): bool
+    public function pluginIsInstallable(string $pluginName): bool
     {
-        $inst = $this->pluginGet($plugin);
-        $info = $inst->getInfo();
+        $plugin = $this->pluginGet($pluginName);
+        $pluginInfo = $plugin->getInfo();
 
-        if (isset($info['__installable__'])) {
-            return $info['__installable__'];
+        if (isset($pluginInfo['__installable__'])) {
+            return $pluginInfo['__installable__'];
         }
 
-        $r = new ReflectionMethod($inst, 'install');
+        $reflectionMethod = new ReflectionMethod($plugin, 'install');
 
-        return AbstractPlugin::class !== $r->getDeclaringClass()->getName();
+        return AbstractPlugin::class !==
+            $reflectionMethod->getDeclaringClass()->getName();
     }
 
     /**
      * Is the given plugin disabled?
      *
-     * @param string $plugin Plugin name
+     * @param string $pluginName Plugin name
      * @return bool TRUE if the given is disabled, FALSE otherwise
      */
-    public function pluginIsDisabled(string $plugin): bool
+    public function pluginIsDisabled(string $pluginName): bool
     {
-        return $this->pluginGetStatus($plugin) == 'disabled';
+        return $this->pluginGetStatus($pluginName) == 'disabled';
     }
 
     /**
      * Delete the given plugin.
      *
-     * @param string $plugin Plugin name
+     * @param string $pluginName Plugin name
      * @return void
      */
-    public function pluginDelete(string $plugin): void
+    public function pluginDelete(string $pluginName): void
     {
-        $pluginStatus = $this->pluginGetStatus($plugin);
+        $pluginStatus = $this->pluginGetStatus($pluginName);
 
         if (!in_array($pluginStatus, ['todelete', 'uninstalled', 'disabled'])
-            || $this->pluginIsLocked($plugin)
+            || $this->pluginIsLocked($pluginName)
         ) {
             throw new PluginException(tr(
                 "The '%s' action is forbidden for the %s plugin.",
                 'delete',
-                $plugin
+                $pluginName
             ));
         }
 
         try {
-            $inst = $this->pluginGet($plugin);
-            $this->pluginSetStatus($plugin, 'todelete');
-            $responses = $this->events->dispatch(
-                Events::onBeforeDeletePlugin,
-                [
-                    'pluginManager' => $this,
-                    'pluginName'    => $plugin
-                ]
-            );
+            $plugin = $this->pluginGet($pluginName);
+            $this->pluginSetStatus($pluginName, 'todelete');
+
+            $responses = $this->events->dispatch(Events::onBeforeDeletePlugin, [
+                'pluginManager' => $this,
+                'pluginName'    => $pluginName
+            ]);
 
             if ($responses->isStopped()) {
-                $this->pluginSetStatus($plugin, $pluginStatus);
+                $this->pluginSetStatus($pluginName, $pluginStatus);
+
                 throw new PluginActionStoppedException(tr(
                     "The '%s' action has been stopped for the %s plugin.",
                     'delete',
-                    $plugin
+                    $pluginName
                 ));
             }
 
-            $inst->delete($this);
+            $plugin->delete($this);
 
             if (!utils_removeDir(utils_normalizePath(
-                $this->pluginsRootDir . DIRECTORY_SEPARATOR . $plugin
+                $this->pluginsRootDir . DIRECTORY_SEPARATOR . $pluginName
             ))) {
                 throw new PluginException(tr(
                     "Couldn't delete the %s plugin. You should fix the file permissions and try again.",
-                    $plugin
+                    $pluginName
                 ));
             }
 
             try {
                 exec_query('DELETE FROM `plugin` WHERE `plugin_name` = ?', [
-                    $plugin
+                    $pluginName
                 ]);
             } catch (Throwable $e) {
                 throw new PluginException($e->getMessage(), $e->getCode(), $e);
@@ -1644,143 +1659,148 @@ class PluginManager
 
             $this->events->dispatch(Events::onAfterDeletePlugin, [
                 'pluginManager' => $this,
-                'pluginName'    => $plugin
+                'pluginName'    => $pluginName
             ]);
-        } catch (PluginException $e) {
+        } catch (Throwable $e) {
             if (!($e instanceof PluginActionStoppedException)) {
-                $this->pluginSetError($plugin, $e->getMessage());
-                write_log(
-                    sprintf('Deletion of the %s plugin has failed', $plugin),
-                    E_USER_ERROR
-                );
+                $this->pluginSetError($pluginName, $e->getMessage());
             }
 
-            throw $e;
+            write_log(sprintf(
+                'The %s plugin deletion has failed: %s',
+                $pluginName,
+                $e->getMessage()
+            ), E_USER_ERROR);
+
+            throw new PluginException(sprintf(
+                'The %s plugin deletion has failed.', $pluginName
+            ), $e->getCode(), $e);
         }
     }
 
     /**
      * Protect the given plugin.
      *
-     * @param string $plugin Name of the plugin to protect
+     * @param string $pluginName Name of the plugin to protect
      * @return void
      */
-    public function pluginProtect(string $plugin): void
+    public function pluginProtect(string $pluginName): void
     {
-        if (!$this->pluginIsEnabled($plugin)
-            || $this->pluginIsProtected($plugin)
+        if (!$this->pluginIsEnabled($pluginName)
+            || $this->pluginIsProtected($pluginName)
         ) {
             throw new PluginException(tr(
                 "The '%s' action is forbidden for the %s plugin.",
                 'protect',
-                $plugin
+                $pluginName
             ));
         }
 
         try {
-            $responses = $this->events->dispatch(
-                Events::onBeforeProtectPlugin,
-                [
-                    'pluginManager' => $this,
-                    'pluginName'    => $plugin
-                ]
-            );
+            $responses = $this->events->dispatch(Events::onBeforeProtectPlugin, [
+                'pluginManager' => $this,
+                'pluginName'    => $pluginName
+            ]);
 
             if ($responses->isStopped()) {
                 throw new PluginActionStoppedException(tr(
                     "The '%s' action has been stopped for the %s plugin.",
                     'protect',
-                    $plugin
+                    $pluginName
                 ));
             }
 
-            $this->protectedPlugins[] = $plugin;
+            $this->protectedPlugins[] = $pluginName;
 
             $file = utils_normalizePath(
-                $this->pluginGetPersistentDataDir()
-                . DIRECTORY_SEPARATOR
+                $this->pluginGetPersistentDataDir() . DIRECTORY_SEPARATOR
                 . 'protected_plugins.php'
             );
             $content = sprintf(
                 "<?php\n/**\n * Protected plugin list\n * Auto-generated on %s\n */\n\n",
                 date('Y-m-d H:i:s', time())
             );
-            $content .= "return " .
-                var_export($this->protectedPlugins, true) . ";\n";
+            $content .= 'return '
+                . var_export($this->protectedPlugins, true) . ";\n";
 
             if (@file_put_contents($file, $content, LOCK_EX) === false) {
                 write_log(sprintf("Couldn't write the %s file.", $file));
-                throw new PluginException(tr(
-                    "Couldn't write the %s file.", $file
-                ));
+                throw new PluginException(tr("Couldn't write the %s file.", $file));
             }
 
             OpcodeCache::clearAllActive($file);
 
             $this->events->dispatch(Events::onAfterProtectPlugin, [
                 'pluginManager' => $this,
-                'pluginName'    => $plugin
+                'pluginName'    => $pluginName
             ]);
-        } catch (PluginException $e) {
+        } catch (Throwable $e) {
             if (!($e instanceof PluginActionStoppedException)) {
-                write_log(
-                    sprintf('Protection of the %s plugin has failed', $plugin),
-                    E_USER_ERROR
-                );
+                $this->pluginSetError($pluginName, $e->getMessage());
             }
 
-            throw $e;
+            write_log(sprintf(
+                'The %s plugin protection has failed: %s',
+                $pluginName,
+                $e->getMessage()
+            ), E_USER_ERROR);
+
+            throw new PluginException(sprintf(
+                'The %s plugin protection has failed.', $pluginName
+            ), $e->getCode(), $e);
         }
     }
 
     /**
      * Is the given plugin enabled?
      *
-     * @param string $plugin Plugin name
+     * @param string $pluginName Plugin name
      * @return bool TRUE if the given plugin is enabled, FALSE otherwise
      */
-    public function pluginIsEnabled(string $plugin): bool
+    public function pluginIsEnabled(string $pluginName): bool
     {
-        return $this->pluginGetStatus($plugin) == 'enabled';
+        return $this->pluginGetStatus($pluginName) == 'enabled';
     }
 
     /**
      * Check plugin compatibility.
      *
-     * @param string $plugin Plugin name
-     * @param array $infoNew New plugin info
+     * @param string $pluginName Plugin name
+     * @param array $pluginInfoNew New plugin info
      * @return void
      */
-    public function pluginCheckCompat(string $plugin, array $infoNew): void
+    public function pluginCheckCompat(
+        string $pluginName, array $pluginInfoNew
+    ): void
     {
-        if (!isset($infoNew['require_api'])
+        if (!isset($pluginInfoNew['require_api'])
             || version_compare(
-                $this->pluginGetApiVersion(), $infoNew['require_api'], '<'
+                $this->pluginGetApiVersion(), $pluginInfoNew['require_api'], '<'
             )
         ) {
             throw new PluginException(tr(
                 'The %s plugin version %s (build %d) is not compatible with your i-MSCP version.',
-                $plugin,
-                $infoNew['version'],
-                $infoNew['build']
+                $pluginName,
+                $pluginInfoNew['version'],
+                $pluginInfoNew['build']
             ));
         }
 
-        if (!$this->pluginIsKnown($plugin)) {
+        if (!$this->pluginIsKnown($pluginName)) {
             return;
         }
 
-        $infoOld =& $this->pluginGet($plugin)->getInfo();
+        $infoOld =& $this->pluginGet($pluginName)->getInfo();
         if (version_compare(
             $infoOld['version'] . '.' . $infoOld['build'],
-            $infoNew['version'] . '.' . $infoNew['build'],
+            $pluginInfoNew['version'] . '.' . $pluginInfoNew['build'],
             '>'
         )) {
             throw new PluginException(tr(
                 "Downgrade of the '%s' plugin to version '%s' (build '%s') is forbidden.",
-                $plugin,
-                $infoNew['version'],
-                $infoNew['build']
+                $pluginName,
+                $pluginInfoNew['version'],
+                $pluginInfoNew['build']
             ));
         }
     }
@@ -1796,51 +1816,18 @@ class PluginManager
     }
 
     /**
-     * Synchronize all plugins data, executing update/change actions when
-     * needed.
-     *
-     * @return void
-     */
-    public function pluginSyncData(): void
-    {
-        $responses = $this->events->dispatch(
-            Events::onBeforeSyncPluginData, ['pluginManager' => $this]
-        );
-        if ($responses->isStopped()) {
-            return;
-        }
-
-        foreach (new DirectoryIterator($this->pluginGetRootDir()) as $dentry) {
-            if ($dentry->isDot() || !$dentry->isDir()) {
-                continue;
-            }
-
-            $info = include $dentry->getPathname()
-                . DIRECTORY_SEPARATOR
-                . 'info.php';
-
-            $this->pluginUpdateData($info['name']);
-        }
-
-        $this->events->dispatch(
-            Events::onAfterSyncPluginData, ['pluginManager' => $this]
-        );
-    }
-
-    /**
      * Guess action to execute for the given plugin according its current
      * status.
      *
-     * @param string $plugin Plugin name
+     * @param string $pluginName Plugin name
      * @return string Action to be executed for the given plugin
      */
-    public function pluginGuessAction(string $plugin): string
+    public function pluginGuessAction(string $pluginName): string
     {
-        $status = $this->pluginGetStatus($plugin);
+        $pluginStatus = $this->pluginGetStatus($pluginName);
 
-        switch ($status) {
+        switch ($pluginStatus) {
             case 'uninstalled':
-                return 'install';
             case 'toinstall':
                 return 'install';
             case 'touninstall':
@@ -1855,7 +1842,9 @@ class PluginManager
                 return 'change';
             default:
                 throw new PluginException(tr(
-                    "Unknown status '%s' for the %s plugin", $status, $plugin
+                    "Unknown pluginStatus '%s' for the %s plugin",
+                    $pluginStatus,
+                    $pluginName
                 ));
         }
     }
@@ -1863,12 +1852,12 @@ class PluginManager
     /**
      * Translate the given plugin status.
      *
-     * @param string $status
+     * @param string $pluginStatus Plugin status
      * @return string
      */
-    public function pluginTranslateStatus(string $status): string
+    public function pluginTranslateStatus(string $pluginStatus): string
     {
-        switch ($status) {
+        switch ($pluginStatus) {
             case 'uninstalled':
                 return tr('Uninstalled');
             case 'toinstall':

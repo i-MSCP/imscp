@@ -30,7 +30,6 @@ use iMSCP\Event\EventAggregator;
 use iMSCP\Event\Events;
 use iMSCP\TemplateEngine;
 
-
 /**
  * Update password
  *

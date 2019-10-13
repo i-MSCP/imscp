@@ -190,13 +190,19 @@ class BcAutoloader
     ): callable
     {
         return function ($class) use ($loaded) {
-            $loaded[self::$map[$class]] = true;
-
             if (!isset(self::$map[$class])) {
                 return;
             }
 
-            class_alias(self::$map[$class], $class);
+            $alias = self::$map[$class];
+            $loaded[$alias] = true;
+
+            if (class_exists($alias)
+                || interface_exists($alias)
+                || trait_exists($alias)
+            ) {
+                class_alias($alias, $class);
+            }
         };
     }
 }

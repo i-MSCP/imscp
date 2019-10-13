@@ -164,11 +164,11 @@ function client_generatePage(TemplateEngine $tpl)
     // Cover the case where URL forwarding feature is activated and that the
     // default /htdocs directory doesn't exists yet
     if ($domainAliasData['url_forward'] != 'no') {
-        $vfs = new iMSCP\VirtualFileSystem(
+        $vfs = new VirtualFileSystem(
             $_SESSION['user_logged'], $domainAliasData['alias_mount']
         );
 
-        if (!$vfs->exists('/htdocs')) {
+        if (!$vfs->exists('/htdocs', VirtualFileSystem::VFS_TYPE_DIR)) {
             $tpl->assign('DOCUMENT_ROOT_BLOC', '');
             return;
         }

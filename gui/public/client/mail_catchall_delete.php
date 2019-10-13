@@ -25,27 +25,8 @@
  * PhpIncludeInspection
  */
 
-use iMSCP\Registry;
 use iMSCP\Event\EventAggregator;
-use iMSCP\Config\DbConfig;
-use iMSCP\Config\FileConfig;
-use iMSCP\Config\ArrayConfig;
-use iMSCP\Services;
-use iMSCP\PhpEditor;
-use iMSCP\Database\DatabaseMySQL;
-use iMSCP\Exception\Exception;
-use iMSCP\Database\DatabaseException;
-use Zend_Form;
-use iMSCP\TemplateEngine;
 use iMSCP\Event\Events;
-use iMSCP\Event\EventDescription;
-use iMSCP\Uri\UriRedirect;
-use iMSCP\Uri\UriException;
-use iMSCP\Authentication\AuthService;
-use iMSCP\VirtualFileSystem;
-use Net_DNS2_Resolver;
-use Net_DNS2_Exception;
-use iMSCP\Crypt;
 
 require_once 'imscp-lib.php';
 

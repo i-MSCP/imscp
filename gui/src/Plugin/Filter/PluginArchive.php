@@ -54,10 +54,10 @@ class PluginArchive implements Zend_Filter_Interface
     /**
      * PluginArchive constructor.
      *
-     * @param array $options
+     * @param mixed $options
      * @return void
      */
-    public function __construct(array $options = [])
+    public function __construct($options)
     {
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();

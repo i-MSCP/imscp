@@ -157,7 +157,7 @@ function client_generatePage(TemplateEngine $tpl)
     // default /htdocs directory doesn't exists yet
     if ($domainData['url_forward'] != 'no') {
         $vfs = new VirtualFileSystem($_SESSION['user_logged']);
-        if (!$vfs->exists('/htdocs')) {
+        if (!$vfs->exists('/htdocs', VirtualFileSystem::VFS_TYPE_DIR)) {
             $tpl->assign('DOCUMENT_ROOT_BLOC', '');
             return;
         }
@@ -167,8 +167,8 @@ function client_generatePage(TemplateEngine $tpl)
     $_SESSION['ftp_chooser_domain_id'] = $domainId;
     $_SESSION['ftp_chooser_user'] = $_SESSION['user_logged'];
     $_SESSION['ftp_chooser_root_dir'] = '/htdocs';
-    $_SESSION['ftp_chooser_hidden_dirs'] = [];
-    $_SESSION['ftp_chooser_unselectable_dirs'] = [];
+    $_SESSION['ftp_chooser_hidden_dirs'] = ['.well-known'];
+    $_SESSION['ftp_chooser_unselectable_dirs'] = ['.well-known'];
 }
 
 /**

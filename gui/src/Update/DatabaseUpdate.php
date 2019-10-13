@@ -18,7 +18,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/** @noinspection PhpUnhandledExceptionInspection PhpDocMissingThrowsInspection */
+/** @noinspection
+ * PhpUnhandledExceptionInspection
+ * PhpDocMissingThrowsInspection 
+ * PhpUnused
+ */
 
 declare(strict_types=1);
 
@@ -74,7 +78,7 @@ class DatabaseUpdate extends AbstractUpdate
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 285;
+    protected $lastUpdate = 287;
 
     /**
      * Singleton - Make new unavailable
@@ -1005,8 +1009,8 @@ class DatabaseUpdate extends AbstractUpdate
             if ($needUpdate) {
                 $props = quoteValue(implode(';', $props));
                 $statements[] = "
-                        UPDATE hosting_plans SET props = $props WHERE id = $id
-                    ";
+                    UPDATE hosting_plans SET props = $props WHERE id = $id
+                ";
             }
         }
 
@@ -3252,5 +3256,51 @@ class DatabaseUpdate extends AbstractUpdate
         }
 
         return NULL;
+    }
+
+    /**
+     * Drop obsolete plugin.plugin_type column
+     *
+     * @return string|null
+     */
+    protected function r286()
+    {
+        return $this->dropColumn('plugin', 'plugin_type');
+    }
+    
+    /**
+     * Drop software installer
+     * 
+     * return array SQL statements to be executed
+     */
+    protected function r287()
+    {
+        $statements = [
+            $this->dropColumn('domain', 'domain_software_allowed'),
+            $this->dropColumn('reseller_props', 'software_allowed'),
+            $this->dropColumn('reseller_props', 'softwaredepot_allowed'),
+            $this->dropColumn('reseller_props', 'websoftwaredepot_allowed'),
+            $this->dropTable('web_software'),
+            $this->dropTable('web_software_inst'),
+            $this->dropTable('web_software_depot'),
+            $this->dropTable('web_software_options')
+        ];
+
+        $stmt = execute_query('SELECT id, props FROM hosting_plans');
+        while ($row = $stmt->fetchRow()) {
+            $row['props'] = explode(';', $row['props']);
+
+            if (sizeof($row['props']) < 26) {
+                continue;
+            }
+
+            unset($row['props'][12]);
+
+            $statements[] = 'UPDATE hosting_plans'
+                . ' SET props = ' . quoteValue(implode(';', $row['props']))
+                . ' WHERE id = ' . quoteValue($row['id'], PDO::PARAM_INT);
+        }
+
+        return $statements;
     }
 }

@@ -126,8 +126,7 @@ function getFormData($resellerId, $forUpdate = false)
     foreach (
         [
             'max_dmn_cnt', 'max_sub_cnt', 'max_als_cnt', 'max_mail_cnt', 'max_ftp_cnt', 'max_sql_db_cnt',
-            'max_sql_user_cnt', 'max_traff_amnt', 'max_disk_amnt', 'software_allowed', 'softwaredepot_allowed',
-            'websoftwaredepot_allowed', 'support_system'
+            'max_sql_user_cnt', 'max_traff_amnt', 'max_disk_amnt', 'support_system'
         ] as $key
     ) {
         if (isset($_POST[$key])) {
@@ -304,15 +303,6 @@ function generateFeaturesForm(TemplateEngine $tpl)
         'MAX_EXECUTION_TIME'               => tohtml($data['max_execution_time']),
         'TR_MAX_INPUT_TIME'                => tr('PHP %s configuration option', '<b>max_input_time</b>'),
         'MAX_INPUT_TIME'                   => tohtml($data['max_input_time']),
-        'TR_SOFTWARES_INSTALLER'           => tr('Software installer'),
-        'SOFTWARES_INSTALLER_YES'          => $data['software_allowed'] == 'yes' ? ' checked' : '',
-        'SOFTWARES_INSTALLER_NO'           => $data['software_allowed'] != 'yes' ? ' checked' : '',
-        'TR_SOFTWARES_REPOSITORY'          => tr('Software repository'),
-        'SOFTWARES_REPOSITORY_YES'         => $data['softwaredepot_allowed'] == 'yes' ? ' checked' : '',
-        'SOFTWARES_REPOSITORY_NO'          => $data['softwaredepot_allowed'] != 'yes' ? ' checked' : '',
-        'TR_WEB_SOFTWARES_REPOSITORY'      => tr('Web software repository'),
-        'WEB_SOFTWARES_REPOSITORY_YES'     => $data['websoftwaredepot_allowed'] == 'yes' ? ' checked' : '',
-        'WEB_SOFTWARES_REPOSITORY_NO'      => $data['websoftwaredepot_allowed'] != 'yes' ? ' checked' : '',
         'TR_SUPPORT_SYSTEM'                => tr('Support system'),
         'SUPPORT_SYSTEM_YES'               => $data['support_system'] == 'yes' ? ' checked' : '',
         'SUPPORT_SYSTEM_NO'                => $data['support_system'] != 'yes' ? ' checked' : '',
@@ -653,8 +643,7 @@ function updateResellerUser(Zend_Form $form)
                     SET
                         max_dmn_cnt = ?, max_sub_cnt = ?, max_als_cnt = ?, max_mail_cnt = ?, max_ftp_cnt = ?,
                         max_sql_db_cnt = ?, max_sql_user_cnt = ?, max_traff_amnt = ?, max_disk_amnt = ?,
-                        reseller_ips = ?, software_allowed = ?, softwaredepot_allowed = ?,
-                        websoftwaredepot_allowed = ?, support_system = ?, php_ini_system = ?,
+                        reseller_ips = ?, support_system = ?, php_ini_system = ?,
                         php_ini_al_disable_functions = ?, php_ini_al_mail_function = ?,
                         php_ini_al_allow_url_fopen = ?, php_ini_al_display_errors = ?, php_ini_max_post_max_size = ?,
                         php_ini_max_upload_max_filesize = ?, php_ini_max_max_execution_time = ?,
@@ -665,8 +654,7 @@ function updateResellerUser(Zend_Form $form)
                 [
                     $data['max_dmn_cnt'], $data['max_sub_cnt'], $data['max_als_cnt'], $data['max_mail_cnt'],
                     $data['max_ftp_cnt'], $data['max_sql_db_cnt'], $data['max_sql_user_cnt'], $data['max_traff_amnt'],
-                    $data['max_disk_amnt'], implode(';', $resellerIps) . ';', $data['software_allowed'],
-                    $data['softwaredepot_allowed'], $data['websoftwaredepot_allowed'], $data['support_system'],
+                    $data['max_disk_amnt'], implode(';', $resellerIps) . ';', $data['support_system'],
                     $phpini->getResellerPermission('phpiniSystem'),
                     $phpini->getResellerPermission('phpiniDisableFunctions'),
                     $phpini->getResellerPermission('phpiniMailFunction'),
@@ -686,38 +674,6 @@ function updateResellerUser(Zend_Form $form)
                 $needDaemonRequest = true;
             } else {
                 $needDaemonRequest = false;
-            }
-
-            // Updating software installer properties
-            if ($data['software_allowed'] == 'no') {
-                exec_query(
-                    '
-                        UPDATE domain
-                        JOIN admin ON(admin_id = domain_admin_id)
-                        SET domain_software_allowed = ?
-                        WHERE created_by = ?
-                    ',
-                    [$data['softwaredepot_allowed'], $resellerId]
-                );
-            }
-
-            if ($data['websoftwaredepot_allowed'] == 'no') {
-                $stmt = exec_query(
-                    'SELECT software_id FROM web_software WHERE software_depot = ? AND reseller_id = ?',
-                    ['yes', $resellerId]
-                );
-
-                if ($stmt->rowCount()) {
-                    while ($row = $stmt->fetchRow()) {
-                        exec_query('UPDATE web_software_inst SET software_res_del = ? WHERE software_id = ?', [
-                            '1', $row['software_id']
-                        ]);
-                    }
-
-                    exec_query('DELETE FROM web_software WHERE software_depot = ? AND reseller_id = ?', [
-                        'yes', $resellerId
-                    ]);
-                }
             }
 
             // Force user to login again (needed due to possible password or email change)

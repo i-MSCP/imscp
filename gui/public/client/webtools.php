@@ -39,10 +39,6 @@ function client_hideDisabledFeatures(TemplateEngine $tpl)
     if (!customerHasFeature('backup')) {
         $tpl->assign('BACKUP_FEATURE', '');
     }
-
-    if (!customerHasFeature('aps')) {
-        $tpl->assign('APS_FEATURE', '');
-    }
 }
 
 require_once 'imscp-lib.php';
@@ -56,7 +52,6 @@ $tpl->define_dynamic([
     'page'           => 'client/webtools.tpl',
     'page_message'   => 'layout',
     'backup_feature' => 'page',
-    'aps_feature'    => 'page',
 ]);
 $tpl->assign([
     'TR_PAGE_TITLE'             => tohtml(tr('Client / Webtools / Overview')),
@@ -68,8 +63,6 @@ $tpl->assign([
     'TR_ERROR_PAGES_TXT'        => tohtml(tr('Customize error pages for your domain.')),
     'TR_BACKUP_TOOLTIPS'        => tohtml(tr('Backup'), 'htmlAttr'),
     'TR_BACKUP_TXT'             => tohtml(tr('Backup and restore settings.')),
-    'TR_APP_INSTALLER_TOOLTIPS' => tohtml(tr('Application installer'), 'htmlAttr'),
-    'TR_APP_INSTALLER_TXT'      => tohtml(tr('Install various Web applications with a few clicks.'))
 ]);
 
 generateNavigation($tpl);

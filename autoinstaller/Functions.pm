@@ -629,15 +629,6 @@ sub _savePersistentData
         iMSCP::Dir->new( dirname => $dataDir )->remove();
     }
 
-    # Save software (older path ./gui/data/software) to new path
-    # (./gui/data/persistent/software)
-    iMSCP::Dir->new(
-        dirname => "$::imscpConfig{'GUI_ROOT_DIR'}/data/softwares"
-    )->rcopy(
-        "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/softwares",
-        { preserve => 'no' }
-    ) if -d "$::imscpConfig{'GUI_ROOT_DIR'}/data/softwares";
-
     # Save vendor data
     iMSCP::Dir->new(
         dirname => "$::imscpConfig{'GUI_ROOT_DIR'}/vendor"
@@ -725,7 +716,8 @@ sub _removeObsoleteFiles
         '/var/local/imscp/packages',
         "$::imscpConfig{'CONF_DIR'}/pma",
         "$::imscpConfig{'CONF_DIR'}/roundcube",
-        "$::imscpConfig{'CONF_DIR'}/rainloop"
+        "$::imscpConfig{'CONF_DIR'}/rainloop",
+        "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/softwares"
     ) {
         iMSCP::Dir->new( dirname => $dir )->remove();
     }

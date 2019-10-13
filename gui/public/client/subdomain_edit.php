@@ -331,13 +331,13 @@ function client_editSubdomain()
         );
 
         if ($documentRoot !== '') {
-            $vfs = new iMSCP\VirtualFileSystem(
+            $vfs = new VirtualFileSystem(
                 $_SESSION['user_logged'],
                 $subdomainData['subdomain_mount'] . '/htdocs'
             );
 
             if ($documentRoot !== '/'
-                && !$vfs->exists($documentRoot, iMSCP\VirtualFileSystem::VFS_TYPE_DIR)
+                && !$vfs->exists($documentRoot, VirtualFileSystem::VFS_TYPE_DIR)
             ) {
                 set_page_message(
                     tohtml(tr('The new document root must pre-exists inside the /htdocs directory.')),

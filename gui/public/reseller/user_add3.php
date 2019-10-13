@@ -132,7 +132,7 @@ function addCustomer(Zend_Form $form)
 
     list(
         $php, $cgi, $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk,
-        $backup, $dns, $aps, $phpEditor, $phpiniAllowUrlFopen,
+        $backup, $dns, $phpEditor, $phpiniAllowUrlFopen,
         $phpiniDisplayErrors, $phpiniDisableFunctions, $phpMailFunction,
         $phpiniPostMaxSize, $phpiniUploadMaxFileSize, $phpiniMaxExecutionTime,
         $phpiniMaxInputTime, $phpiniMemoryLimit, $extMailServer,
@@ -143,7 +143,6 @@ function addCustomer(Zend_Form $form)
     $cgi = str_replace('_', '', $cgi);
     $backup = str_replace('_', '', $backup);
     $dns = str_replace('_', '', $dns);
-    $aps = str_replace('_', '', $aps);
     $extMailServer = str_replace('_', '', $extMailServer);
     $webFolderProtection = str_replace('_', '', $webFolderProtection);
     $db = DatabaseMySQL::getInstance();
@@ -202,20 +201,20 @@ function addCustomer(Zend_Form $form)
                     domain_status, domain_alias_limit, domain_subd_limit,
                     domain_ip_id, domain_disk_limit, domain_disk_usage,
                     domain_php, domain_cgi, allowbackup, domain_dns,
-                    domain_software_allowed, phpini_perm_system,
-                    phpini_perm_allow_url_fopen, phpini_perm_display_errors,
-                    phpini_perm_disable_functions, phpini_perm_mail_function,
-                    domain_external_mail, web_folder_protection, mail_quota,
-                    url_forward, type_forward, host_forward, wildcard_alias
+                    phpini_perm_system, phpini_perm_allow_url_fopen,
+                    phpini_perm_display_errors, phpini_perm_disable_functions,
+                    phpini_perm_mail_function, domain_external_mail,
+                    web_folder_protection, mail_quota, url_forward, type_forward,
+                    host_forward, wildcard_alias
                 ) VALUES (
                     ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
                 )
             ',
             [
                 $dmnName, $adminId, time(), $dmnExpire, $mail, $ftp, $traff,
                 $sql_db, $sql_user, 'toadd', $als, $sub, $domainIp, $disk, 0,
-                $php, $cgi, $backup, $dns, $aps, $phpEditor,
+                $php, $cgi, $backup, $dns, $phpEditor,
                 $phpiniAllowUrlFopen, $phpiniDisplayErrors,
                 $phpiniDisableFunctions, $phpMailFunction, $extMailServer,
                 $webFolderProtection, $mailQuota, $dmnUrlForward,

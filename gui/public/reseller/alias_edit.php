@@ -32,6 +32,7 @@ use iMSCP\Exception\Exception;
 use iMSCP\TemplateEngine;
 use iMSCP\Uri\UriException;
 use iMSCP\Uri\UriRedirect;
+use iMSCP\VirtualFileSystem;
 
 /**
  * Get domain alias data
@@ -166,11 +167,11 @@ function reseller_generatePage($tpl)
     // Cover the case where URL forwarding feature is activated and that the
     // default /htdocs directory doesn't exists yet
     if ($domainAliasData['url_forward'] != 'no') {
-        $vfs = new iMSCP\VirtualFileSystem(
+        $vfs = new VirtualFileSystem(
             $_SESSION['user_logged'], $domainAliasData['alias_mount']
         );
 
-        if (!$vfs->exists('/htdocs')) {
+        if (!$vfs->exists('/htdocs', VirtualFileSystem::VFS_TYPE_DIR)) {
             $tpl->assign('DOCUMENT_ROOT_BLOC', '');
             return;
         }
@@ -277,15 +278,13 @@ function reseller_editDomainAlias()
             . clean_input($_POST['document_root']));
 
         if ($documentRoot !== '') {
-            $vfs = new iMSCP\VirtualFileSystem(
+            $vfs = new VirtualFileSystem(
                 $_SESSION['user_logged'],
                 $domainAliasData['alias_mount'] . '/htdocs'
             );
 
             if ($documentRoot !== '/'
-                && !$vfs->exists(
-                    $documentRoot, iMSCP\VirtualFileSystem::VFS_TYPE_DIR
-                )
+                && !$vfs->exists($documentRoot, VirtualFileSystem::VFS_TYPE_DIR)
             ) {
                 set_page_message(
                     tohtml(tr('The new document root must pre-exists inside the /htdocs directory.')),

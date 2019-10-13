@@ -1,147 +1,200 @@
 i-MSCP ChangeLog
 
-------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 Git 1.5.x
-------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 BACKEND
     Added: Apache2 wildcard alias feature
     Added: Array::Utils library (PerlVendor)
-    Added: iMSCP::Database::mariadb adapter (for use with new DBD::MariaDB driver for DBI, in place of DBD::mysql when available)
-    Added: Support for per-Milter and per-policy server timeout (Servers::mta::postfix::postconf() - Postfix >= 3.0.0)
+    Added: iMSCP::Database::mariadb adapter (for use with new DBI DBD::MariaDB
+           driver, in place of DBD::mysql when available)
+    Added: Support for per-milter and per-policy server timeout
+           (Servers::mta::postfix::postconf() - Postfix >= 3.0.0)
+    Dropped: Software installer
     Enhancement: Make it possible to dump autoload only (iMSCP::Composer)
-    Enhancement: Make it possible to override any default DNS resource record (Bind9 server implementation)
-    Fixed: Can't locate object method "remove" via package "iMSCP::File" (iMSCP::Service)
-    Fixed: Create default sieve script (filters), even if sieve is not available (Dovecot IMAP/POP server implementation)
-    Fixed: Create symlink for sieve filters on email account creation/update, even when those are not available (Dovecot IMAP/POP server implementation)
+    Enhancement: Make it possible to override default DNS resource record (Bind9
+                 server implementation)
+    Fixed: Can't locate object method "remove" via package "iMSCP::File"
+           (iMSCP::Service)
+    Fixed: Create default sieve script (filters), even if sieve is not available
+           (Dovecot IMAP/POP server implementation)
+    Fixed: Create symlink for sieve filters on email account creation/update,
+           even when those are not available (Dovecot IMAP/POP server
+           implementation)
     Fixed: Don't stop entities processing on failure (iMSCP::DbTasksProcessor)
-    Fixed: Error output is badly captured, leading to 'Unknown error' (named-compilezone / Bind9 server implementation)
-    Fixed: Missing check for SSL private key and SSL certificate matching (iMSCP::OpenSSL)
-    Fixed: Symlinks must be copied AS THIS instead of being followed (iMSCP::Dir, iMSCP::File)
-    Fixed: SysVinit script are always reported as enabled (Debian SysVinit init provider)
-    Fixed: The 'imscp_panel' service is always restarted even when it should not (FrontEnd dpkg(1) post invoke tasks)
-    Fixed: The 'is-enabled' support for SysVinit scripts isn't available in older systemd version (Debian Systemd init provider)
-    Review: Enable sieve filtering service by default (Move of SPAM to Junk folder - Dovecot IMAP/POP server implementation)
+    Fixed: Error output is badly captured, leading to 'Unknown error'
+           (named-compilezone / Bind9 server implementation)
+    Fixed: Missing check for SSL private key and SSL certificate matching
+           (iMSCP::OpenSSL library)
+    Fixed: Symlinks must be copied AS THIS instead of being followed
+           (iMSCP::Dir, iMSCP::File)
+    Fixed: SysVinit script are always reported as enabled (Debian SysVinit init
+           provider)
+    Fixed: The 'imscp_panel' service is always restarted even when it should not
+           (FrontEnd dpkg(1) post invoke tasks)
+    Fixed: The 'is-enabled' support for SysVinit scripts isn't available in
+           older systemd version (Debian Systemd init provider)
+    Review: Enable sieve filtering service by default (Move of SPAM to Junk
+            folder - Dovecot IMAP/POP server implementation)
     Review: Engine permissions (Bind9 server implementation)
     Review: Pass the full item data row to backend modules
-    Review: Set default execution mode to 'backend' instead of raising error - iMSCP::DbTasksProcessor
+    Review: Set default execution mode to 'backend' instead of raising error -
+            iMSCP::DbTasksProcessor
     Rewritten: Packages (addons)
 
 CONFIG
-    Enhancement: Make it possible to change process limits (and more) through the i-MSCP's dovecot configuration file
-    Removed: DATABASE_TYPE configuration parameter form master i-MSCP configuration file
+    Enhancement: Make it possible to change process limits (and more) through
+                 the i-MSCP's dovecot configuration file
+    Removed: DATABASE_TYPE configuration parameter form master i-MSCP
+             configuration file
 
 DATABASE
     Added: log.log_time index (r283)
     Added: login.ipaddr index (r284)
     Added: Several indexes (r282)
+    Dropped: Telnet service port (r285)
+    Dropped: plugin.plugin_type column (r286)
+    Dropped: Software installer (r287)
     Fixed: Unwanted default values (r275)
     Review: Switched from 'utf8' character set to 'utf8mb4' character set (r281)
-    Review: Switched from 'utf8_unicode_ci' collation to 'utf8mb4_unicode_ci' collation (r281)
+    Review: Switched from 'utf8_unicode_ci' collation to 'utf8mb4_unicode_ci'
+            collation (r281)
 
 DAEMON
     Enhancement: Make it possible to override default (9876) listen port
     Review: Always write pidfile
-    Review: Make use of a default backend script path (/var/www/imscp/engine/imscp-rqst-mngr) if none is provided
-    Review: Make use of a default pidfile path (/run/imscp_daemon.path) if none is provided
+    Review: Make use of a default backend script path
+            (/var/www/imscp/engine/imscp-rqst-mngr) if none is provided
+    Review: Make use of a default pidfile path (/run/imscp_daemon.path) if none
+            is provided
     Updated: Version to 1.4.0
 
 DISTRIBUTIONS
     Added: bcmath and bz2 PHP extensions (all distributions, all PHP versions)
-    Added: Support for Debian Buster (10.x) - Experimental
+    Added: Support for Debian Buster (10.x)
     Added: Support for Devuan ASCII (2.x)
     Added: Support for PHP 7.2, 7.3, 7.4
     Dropped: Support for Ubuntu Trusty Thar (14.04)
 
 FRONTEND
-    Added: Autoloader for aliasing the legacy i-MSCP classes/interfaces
+    Added: Autoloaders for managing legacy i-MSCP artifacts
     Added: ACL assertions for the navigation
     Added: Apache2 wildcard alias feature
     Added: Filter for plugin archives
-    Added: iMSCP Database::getPDO() static method (return underlying PDO instance bound to the given connection)
-    Added: Patches for zendframework/zendframework1 dependency (PHP deprecations, Zend_Navigation component enhancement, small fixes)
+    Added: iMSCP Database::getPDO() static method (return underlying PDO
+           instance bound to the given connection)
+    Added: Patches for zendframework/zendframework1 dependency (PHP
+           deprecations, Zend_Navigation component enhancement, small fixes)
     Added: Route injector service for i-MSCP plugins
     Added: Service provider injector for i-MSCP plugins
     Added: Service provider for overriding of default Slim error handlers
     Added: Validator for plugin archives
-    Enhancement: Log the frontEnd errors into the ./gui/data/log/frontend_errors.log file and rotate it when its size is bigger than 10 MiB
-    Enhancement: Make it possible to add wildcard DNS record (custom DNS interface)
+    Dropped: Software installer
+    Enhancement: Log the frontEnd errors into the
+                ./gui/data/log/frontend_errors.log file and rotate it when its
+                size is bigger than 10 MiB
+    Enhancement: Make it possible to add wildcard DNS record (custom DNS
+                 interface)
     Fixed: Couldn't unregister exception writers
     Fixed: Hide E_STRICT, E_NOTICE, E_WARNING and E_DEPRECATED even for addons
-    Fixed: Invalid parameter number: number of bound variables does not match number of tokens (client/mail_catchall_add.php)
-    Fixed: Output buffer must be erased when an exception is throw while template rendering
+    Fixed: Invalid parameter number: number of bound variables does not match
+           number of tokens (client/mail_catchall_add.php)
+    Fixed: Output buffer must be erased when an exception is throw while
+           template rendering
+    Fixed: We need make sure that we're really in a transaction before
+           rolling-back (MySQL database wrapper)
     Removed: Telnet service port
-    Removed: iMSCP_Plugin base class (replaced by iMSCP_Plugin_Action class)
     Review: Install dependencies through the PHP dependency manager (composer)
     Review: Load comments (PHP OPcache)
     Review: Save comments (PHP OPcache)
     Review: Set locale from environment (CLI)
     Review: Switch from PSR-0 to PSR-4
+    Review: Make use of the league/flysystem filesystem abstraction for VFS
+            layer 
 
 INSTALLER
-    Added: 'gnupg' package to the list of pre-required packages (all distributions)
+    Added: 'gnupg' package to the list of pre-required packages (all
+           distributions)
     Added: WHIPTAIL(1) support (dialog)
-    Changed: Abort installation/update process if the distribution is not up-to-date
+    Changed: Abort installation/update process if the distribution is not
+             up-to-date
     Changed: All PHP versions are now always installed
     Changed: Default selected PHP version for customers is now 7.3
     Changed: Required PHP version for the frontEnd is now 7.3
-    Enhancement: Make it possible to keep local SQL server installed when the SQL remote alternative is selected
-    Fixed: Don't stop FTP, HTTPD, IMAP/POP and SMTP services on update/reconfiguration
-    Fixed: jessie-updates repository (previously known as debian-volatile repository) no longer available (pbuilder conffile / Debian)
-    Fixed: The hostname for customer SQL users is not updated when its value is changed through the installer (SQL server)
+    Enhancement: Make it possible to keep local SQL server installed when the
+                 SQL remote alternative is selected
+    Fixed: Don't stop FTP, HTTPD, IMAP/POP and SMTP services on
+           update/reconfiguration
+    Fixed: jessie-updates repository (previously known as debian-volatile
+           repository) no longer available (pbuilder conffile / Debian)
+    Fixed: The hostname for customer SQL users is not updated when its value is
+           changed through the installer (SQL server)
     Fixed: Update from security repositories won't be pulled (APT pinning)
     Removed: --build-only command line option from the imscp-autoinstall script
-    Removed: --force-reinstall command line option from the imscp-autoinstall script
-    Removed: --listener command line option from both imscp-autoinstall and imscp-reconfigure scripts
-    Review: SQL users for various services such as proftpd, vsftpd, dovecot, courier-authdaemon are now randomly generated
+    Removed: --force-reinstall command line option from the imscp-autoinstall
+             script
+    Removed: --listener command line option from both imscp-autoinstall and
+             imscp-reconfigure scripts
+    Review: SQL users for various services such as proftpd, vsftpd, dovecot,
+            courier-authdaemon are now randomly generated
 
-LISTENER
+LISTENERS
     Removed: 10_named_override_default_rr.pl (now included in core)
-    Removed: 20_dovecot_connections.pl (can now be done through i-MSCP's Dovecot configuration file - persistent configuration)
+    Removed: 20_dovecot_connections.pl (can now be done through i-MSCP's Dovecot
+             configuration file - persistent configuration)
 
 PLUGINS
-    Enhancement: Run frontEnd applications through the Slim microframework (with backward compatibility in mind)
-        See http://www.slimframework.com/ for further details about offered possibilities
-    Fixed: Case where there are no longer migration files provided by a plugin isn't covered
+    Enhancement: Run frontEnd applications through the Slim microframework (with
+                 backward compatibility in mind)
+    Fixed: Case where there are no longer migration files provided by a plugin
+           isn't covered
     Fixed: Plugins not loaded when application is run through CLI
     Updated: Plugin API to version 1.5.1
 
 SERVICES
-    Enhancement: Make it possible to extend/override Dovecot configuration with additional configuration files
+    Enhancement: Make it possible to extend/override Dovecot configuration with
+                 additional configuration files
 
 VENDOR
     Added: Slim library (PHP dependency)
-    Review: idna-convert library is now installed through composer (PHP dependency)
-    Review: phpseclib library is now installed through composer (PHP dependency)
-    Review: Net_DNS2 library is now installed through composer (PHP dependency)
+    Review: idna-convert library is now installed through composer
+    Review: phpseclib library is now installed through composer
+    Review: Net_DNS2 library is now installed through composer
 
 YOUTRACK
-    IP-1801 Backend workflow for custom DNS records get bypassed on domain or alias change, leading to events not being triggered
-    IP-1815 Circular feature - Unexpected exception raised - `username' parameter is not defined or not a string
+    IP-1801 Backend workflow for custom DNS records get bypassed on domain or
+            alias change, leading to events not being triggered
+    IP-1815 Circular feature - Unexpected exception raised - `username'
+            parameter is not defined or not a string
     IP-1816 Cosmetic - Copyright date on i-MSCP sign-in screen not up-to-date
-    IP-1823 Autoresponder - Bad encoding
+    IP-1823 Auto-responder - Bad encoding
 
-------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 1.5.3 (build 2018120800)
-------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 2018-12-08: Laurent Declercq
     RELEASE i-MSCP 1.5.3 (build 2018120800)
 
 BACKEND
-    Fixed: Couldn't install composer packages on fresh installation nor switch them (regression fix)
-    Fixed: SysVinit provider not initialized when called from Debian Upstart init provider (regression fix)
-    Fixed: The iMSCP::Provider::Service::Debian::Upstart class must implement the stop() method (regression fix)
+    Fixed: Couldn't install composer packages on fresh installation nor switch
+           them (regression fix)
+    Fixed: SysVinit provider not initialized when called from Debian Upstart
+           init provider (regression fix)
+    Fixed: The iMSCP::Provider::Service::Debian::Upstart class must implement
+           the stop() method (regression fix)
 
 DAEMON
-    Fixed: Unknown 'stack-protector-strong' GCC option - option has been introduced in GCC 4.9 (regression fix)
+    Fixed: Unknown 'stack-protector-strong' GCC option - option has been
+           introduced in GCC 4.9 (regression fix)
 
 YOUTRACK
     IP-1813 FrontEnd - Update notifier - Missing build number handling
 
-------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 1.5.3 (build 2018120700)
-------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 2018-12-07: Laurent Declercq
     RELEASE i-MSCP 1.5.3 (build 2018120700)
@@ -150,276 +203,407 @@ ARTIFACTS
     Removed: latest.txt file (no longer used)
 
 BACKEND
-    Added: Netplan networking configuration provider (networkd renderer is assumed)
-    Fixed: Mask/Unmask units after/prior disabling/enabling them (Systemd init provider)
-    Fixed: Missing support for various systemd unit files such as device, mount point, swap file... (Systemd init provider)
-    Fixed: Resolve units before acting on them due to https://github.com/systemd/systemd/issues/7875 (Systemd init provider)
-    Fixed: SHA384 is not supported by your openssl extension, could not verify the phar file integrity (Composer)
-    Fixed: Use of uninitialized value in bitwise or ( |) (PHP memory_limit, Subdomain module)
-    Fixed: Virtual (aliased) interfaces (interface:integer) is an IFCONFIG(8) specific concept. IFCONFIG(8) is deprecated in favor of IP(8).
+    Added: Netplan networking configuration provider (networkd renderer is
+           assumed)
+    Fixed: Mask/Unmask units after/prior disabling/enabling them (Systemd init
+           provider)
+    Fixed: Missing support for various systemd unit files such as device, mount
+           point, swap file... (Systemd init provider)
+    Fixed: Resolve units before acting on them due to
+           https://github.com/systemd/systemd/issues/7875 (Systemd init
+           provider)
+    Fixed: SHA384 is not supported by your openssl extension, could not verify
+           the phar file integrity (Composer)
+    Fixed: Use of uninitialized value in bitwise or ( |) (PHP memory_limit,
+           Subdomain module)
+    Fixed: Virtual (aliased) interfaces (interface:integer) is an IFCONFIG(8)
+           specific concept. IFCONFIG(8) is deprecated in favor of IP(8).
     Review: Make use of a well-known (fixed) composer.phar version (1.8.0)
     Rewritten: Ifupdown networking configuration provider
 
 CONFIG
     Fixed: Bad value for X-Forward-* headers (Proxy feature / Apache2 ssl vhosts)
-    Fixed: Do not discard paths other than '/errors/' and '/.well-known/acme-challenge/' on redirect/proxy (Apache2)
-    Fixed: Paths must be quoted in Apache2 configuration files to prevent spaces being interpreted as end of argument
+    Fixed: Do not discard paths other than '/errors/' and
+           '/.well-known/acme-challenge/' on redirect/proxy (Apache2)
+    Fixed: Paths must be quoted in Apache2 configuration files to prevent spaces
+           being interpreted as end of argument
     Renamed: 'BuildDate' main configuration parameter to 'Build'
 
 CONTRIB
-    Fixed: Prevent uninstallation of the 'libsasl2-modules' distribution package (10_postfix_smarthost.pl listener file)
+    Fixed: Prevent uninstallation of the 'libsasl2-modules' distribution package
+           (10_postfix_smarthost.pl listener file)
 
 DATABASE
-    Review: domain_traffic table schema (removed PK (dtraff_id), removed UK (traff_time), added compound PK (domain_id, dtraff_time))
-    Review: server_traffic table schema (removed PK (straff_id), removed UK (traff_time), added PK (traff_time))
+    Review: domain_traffic table schema (removed PK (dtraff_id), removed UK
+            (traff_time), added compound PK (domain_id, dtraff_time))
+    Review: server_traffic table schema (removed PK (straff_id), removed UK
+            (traff_time), added PK (traff_time))
 
 DAEMON
     Fixed: Comparison between signed and unsigned integer expressions
-    Fixed: FTBFS with GCC from Ubuntu 18.04 - Undeclared identifiers: SIGCHLD, SIGPIPE
+    Fixed: FTBFS with GCC from Ubuntu 18.04 - Undeclared identifiers: SIGCHLD,
+           SIGPIPE
 
 DISTRIBUTIONS
     Added: 'dirmngr' distribution package (all distributions)
     Added: Support for Ubuntu Bionic Beaver (18.04)
-    Added: 'ntp' package (all distributions) - Clock synchronization is an important factor for i-MSCP
-    Added: 'unzip' distribution package (all distributions) - required by composer
+    Added: 'ntp' package (all distributions) - Clock synchronization is an
+           important factor for i-MSCP
+    Added: 'unzip' distribution package (all distributions) - required by
+           composer
     Fixed: Encoding issues with setup dialog (LANG=C vs LANG=C.UTF8)
 
 FRONTEND
-    Fixed: Always display IDNA in their punycode representation (custom DNS record add/edit UI)
+    Fixed: Always display IDNA in their punycode representation (custom DNS
+           record add/edit UI)
     Fixed: $ORIGIN value is empty (custom DNS records edit UI)
-    Fixed: Closing button being removed in all dialog UI while it must be removed only in alert and confirmation dialogs
-    Fixed: Couldn't execute /usr/local/lib/imscp_panel/imscp_panel_reopenlogs logrotate script
-    Fixed: Parameter is not mapped to any conversion specification (reseller/index.php, client/index)
-    Fixed: Prevent edition of custom DNS records which are not owned by the custom DNS feature
+    Fixed: Closing button being removed in all dialog UI while it must be
+           removed only in alert and confirmation dialogs
+    Fixed: Couldn't execute /usr/local/lib/imscp_panel/imscp_panel_reopenlogs
+           logrotate script
+    Fixed: Parameter is not mapped to any conversion specification
+           (reseller/index.php, client/index)
+    Fixed: Prevent edition of custom DNS records which are not owned by the
+           custom DNS feature
 
 INSTALLER
-    Enhancement: Optimize the SQL database upon setup process but not if the last optimization date is less than 24 hours
-    Fixed: Build only mode is broken on fresh installation: Couldn't find the 'PHP' command in search path...
-    Fixed: 'CLIENT_DOMAIN_ALT_URLS' configuration parameter resetted to 0 (disabled) while running installer
+    Enhancement: Optimize the SQL database upon setup process but not if the last
+                 optimization date is less than 24 hours
+    Fixed: Build only mode is broken on fresh installation: Couldn't find the
+           'PHP' command in search path...
+    Fixed: 'CLIENT_DOMAIN_ALT_URLS' configuration parameter resetted to 0
+           (disabled) while running installer
     Fixed: 'CLIENT_DOMAIN_ALT_URLS' parameter is not set on fresh installations
-    Fixed: DIRMNGR(8) daemon not being terminated when expected (APT key management)
-    Fixed: Inconsistency with other parameters (CLIENT_DOMAIN_ALT_URLS parameter -- yes/no vs 1/0)
-    Fixed: Keep any installed PHP packages as those can have been installed manually or by 3rd-party software
-    Fixed: Missing or bad entry found in your preseed file due to unhandled space separator (Slave DNS server)
-    Fixed: Setup dialog for the alternative URLs feature is not shown on fresh installations
-    Renamed: 'CLIENT_DOMAIN_ALT_URLS' configuration parameter to 'CLIENT_WEBSITES_ALT_URLS'
+    Fixed: DIRMNGR(8) daemon not being terminated when expected (APT key
+           management)
+    Fixed: Inconsistency with other parameters (CLIENT_DOMAIN_ALT_URLS parameter
+           -- yes/no vs 1/0)
+    Fixed: Keep any installed PHP packages as those can have been installed
+           manually or by 3rd-party software
+    Fixed: Missing or bad entry found in your preseed file due to unhandled
+           space separator (Slave DNS server)
+    Fixed: Setup dialog for the alternative URLs feature is not shown on fresh
+           installations
+    Renamed: 'CLIENT_DOMAIN_ALT_URLS' configuration parameter to
+             'CLIENT_WEBSITES_ALT_URLS'
 
 YOUTRACK
     IP-1689 Password reset conflict with PanelRedirect
     IP-1770 Contrib - 10_backup_storage_outsourcing.pl - Operation not permitted
     IP-1786 Customer assignment (to reseller) not showing all clients
     IP-1787 Typo in external mail feature activation
-    IP-1791 Error message when calculating disk quota - Cannot start new SQL transaction on an automatic reconnect
-    IP-1792 When changing the document root of a domain with a folder that holds a space in its name, the Apache2 server is crashing
+    IP-1791 Error message when calculating disk quota - Cannot start new SQL
+            transaction on an automatic reconnect
+    IP-1792 When changing the document root of a domain with a folder that holds
+            a space in its name, the Apache2 server is crashing
     IP-1793 CLIENT_DOMAIN_ALT_URLS Value in preseed file
-    IP-1795 When editing a mailbox, the quota value is reset to 10 MiB while it should stay to it current quota value
+    IP-1795 When editing a mailbox, the quota value is reset to 10 MiB while it
+            should stay to it current quota value
     IP-1802 Traffic logger should wait for the xtables lock
-    IP-1803 Wrong SQL query in SSLcertificate.pm module
-    IP-1804 Cannot add catchall for subdomains - Call to a member function fetchRow on string
-    IP-1806 Client - Domain Edit - Document Root Edit - FTP (VFS) - Could not retrieve directories - ASCII username expected
+    IP-1803 Wrong SQL query in SSLCertificate.pm module
+    IP-1804 Cannot add catchall for subdomains - Call to a member function
+            fetchRow on string
+    IP-1806 Client - Domain Edit - Document Root Edit - FTP (VFS) - Could not
+            retrieve directories - ASCII username expected
     IP-1809 Missing logrotate in LXC container
     IP-1811 APT pinning conflict with libssl-dev
     IP-1812 Missing support for Ubuntu Bionic Beaver (18.04)
 
-------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 1.5.3 (build 2018051600)
-------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 2017-09-08: Laurent Declercq
     RELEASE i-MSCP 1.5.3 (build 2018051600)
 
 BACKEND
-    Backport: Fix for #IP-1758 (Could not remove HTTPD log directory -- The immutable bit is removed too late) from 1.6.x branch
-    Fixed: Couldn't restore backup archive - Can't locate object method "selectall_array" via package "DBI::db" (restore backup feature)
+    Backport: Fix for #IP-1758 (Could not remove HTTPD log directory -- The
+              immutable bit is removed too late) from 1.6.x branch
+    Fixed: Couldn't restore backup archive - Can't locate object method
+           "selectall_array" via package "DBI::db" (restore backup feature)
     Fixed: Default PHP INI values (PHP Editor)
 
 DATABASE
-    Backport: Fix for #IP-1742 (i-MSCP upgrade error - Unknown 'mail_user' database table in database update r254) from 1.6.x branch
+    Backport: Fix for #IP-1742 (i-MSCP upgrade error - Unknown 'mail_user'
+              database table in database update r254) from 1.6.x branch
 
 FRONTEND
-    Backport: Fix for #IP-1749 (User profile fields validation too strict from 1.6.x branch)
+    Backport: Fix for #IP-1749 (User profile fields validation too strict from
+              1.6.x branch)
     Cosmetic: Remove borders in table header/footer (layout)
-    Fixed: Couldn't generate self-signed SSL certificate - Couldn't write in temporary SSL configuration file
+    Fixed: Couldn't generate self-signed SSL certificate - Couldn't write in
+           temporary SSL configuration file
     Fixed: Couldn't access support section when logged as reseller
-    Fixed: Couldn't update customer password when logged in as administrator or reseller
+    Fixed: Couldn't update customer password when logged in as administrator or
+           reseller
     Fixed: IDE inspections (PhpStorm)
     Fixed: Localization routing
     Fixed: Possible double POST request submission in restore backup interface
-    Fixed: Unhandled 'torestore' status leading to cosmetic issues in GUI when a domain is being restored
+    Fixed: Unhandled 'torestore' status leading to cosmetic issues in GUI when
+           a domain is being restored
     Fixed: Wrong usage of strstr() function (SystemInfo class)
 
 PLUGINS
     Fixed: Local plugin configuration files are not merged as expected
 
 SCRIPTS
-    Fixed: maillogconvert.pl script is broken leading to un-processing of SMTP logs
-    Fixed: Unexpected warning (FALSE warning) when running imscp-backup-all backup script in verbose mode
+    Fixed: maillogconvert.pl script is broken leading to un-processing of SMTP
+           logs
+    Fixed: Unexpected warning (FALSE warning) when running imscp-backup-all
+           backup script in verbose mode
 
-------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 1.5.2
-------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
     Canceled release
 
-------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 1.5.1 (build 2017090800)
-------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 2017-09-08: Laurent Declercq
     RELEASE i-MSCP 1.5.1 (build 2017090800)
 
 BACKEND
-    Fixed: Can't call method "isEmpty" on an undefined value when a listener self un-register (iMSCP::EventManager)
+    Fixed: Can't call method "isEmpty" on an undefined value when a listener
+           self un-register (iMSCP::EventManager)
 
 FRONTEND
-    Added: `onMoveCustomer' event -- Event triggered when a customer is moved to another reseller
-    Added: `onMoveReseller' event -- Event triggered when a reseller is moved to another administrator
-    Enhancement: Adjust target reseller limits/permissions instead of throwing error (Customer assignments feature)
-    Enhancement: Allows to synchronize PHP permissions of specific client (iMSCP_PHPini)
-    Fixed: Several inconsistencies in displaying of statistics data (domain edit interface -- reseller UI level)
+    Added: `onMoveCustomer' event -- Event triggered when a customer is moved to
+            another reseller
+    Added: `onMoveReseller' event -- Event triggered when a reseller is moved to
+            another administrator
+    Enhancement: Adjust target reseller limits/permissions instead of throwing
+                 error (Customer assignments feature)
+    Enhancement: Allows to synchronize PHP permissions of specific client
+                 (iMSCP_PHPini)
+    Fixed: Several inconsistencies in displaying of statistics data (domain edit
+           interface -- reseller UI level)
     Fixed: Several layout issues regarding statistics (all UI levels)
-    Fixed: Statistics badly calculated due to mixing between assigned and consumed values (admin UI level)
+    Fixed: Statistics badly calculated due to mixing between assigned and
+           consumed values (admin UI level)
     Fixed: Exception raised due to wrong SQL query (Customer assignments)
     Rewritten: Customer and reseller assignments features (admin UI level)
 
-------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 1.5.0 (build 2017090500)
-------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 2017-09-05: Laurent Declercq
     RELEASE i-MSCP 1.5.0 (build 2017090500)
 
 BACKEND
-    Added: `apcu', `apc', `gmp' and `Zend Opcache' PHP modules to the list of required PHP module (iMSCP::Requirements)
+    Added: `apcu', `apc', `gmp' and `Zend Opcache' PHP modules to the list of
+           required PHP module (iMSCP::Requirements)
     Added: Flag allowing to ignore mount operation failures (iMSCP::Mount)
-    Added: iMSCP::EventManager::hasListener method -- Allow to check whether or not a listener is registered for an event
-    Added: Support for multiple <character-string>s in TXT/SPF DNS resource records (Modules::CustomDNS)
-    Deprecated: iMSCP::Database::mysql::doQuery() method -- Will be removed in a later version
-    Deprecated: iMSCP::Database::mysql::endTransaction() method -- Will be removed in a later version
-    Deprecated: iMSCP::Database::mysql::startTransaction() method -- Will be removed in a later version
-    Fixed: Can't use an undefined value as a HASH reference (iMSCP::EventManager)
-    Fixed: Couldn't remove IP address: Unknown action requested for server IP (Modules::ServerIP)
-    Fixed: Don't set permissions on parent directories as this can lead to several permission issues (iMSCP::Dir::make)
-    Fixed: Permissions on files are always preserved when copying directory recursively
-    Fixed: Routines for Perl/PHP modules requirements checking are broken (iMSCP::Requirements)
+    Added: iMSCP::EventManager::hasListener method -- Allow to check whether or
+           not a listener is registered for an event
+    Added: Support for multiple <character-string>s in TXT/SPF DNS resource
+           records (Modules::CustomDNS)
+    Deprecated: iMSCP::Database::mysql::doQuery() method -- Will be removed in a
+                later version
+    Deprecated: iMSCP::Database::mysql::endTransaction() method -- Will be
+                removed in a later version
+    Deprecated: iMSCP::Database::mysql::startTransaction() method -- Will be
+                removed in a later version
+    Fixed: Can't use an undefined value as a HASH reference
+           (iMSCP::EventManager)
+    Fixed: Couldn't remove IP address: Unknown action requested for server IP
+           (Modules::ServerIP)
+    Fixed: Don't set permissions on parent directories as this can lead to
+           several permission issues (iMSCP::Dir::make)
+    Fixed: Permissions on files are always preserved when copying directory
+           recursively
+    Fixed: Routines for Perl/PHP modules requirements checking are broken
+           (iMSCP::Requirements)
     Fixed: Sets the SQL `group_concat_max_len' variable on a per session basis
-    Fixed: Sets the SQL modes on a per session basis to `NO_AUTO_CREATE_USER' (backward compatibility with plugins)
+    Fixed: Sets the SQL modes on a per session basis to `NO_AUTO_CREATE_USER'
+           (backward compatibility with plugins)
     Removed: `FETCH_MODE' option from iMSCP::Database::mysql
 
 CONFIG
     Added: `APPLICATION_ENV' environment variable (Nginx)
-    Removed: `.htgroup' and `.htpasswd' files from the skeleton directory; These files are now created only when needed
+    Removed: `.htgroup' and `.htpasswd' files from the skeleton directory; These
+             files are now created only when needed
 
 CONTRIB
-    Fixed: 10_backup_storage_outsourcing.pl: Couldn't move XXX directory to XXX -- filesystem boundaries
-    Fixed: 10_backup_storage_outsourcing.pl: Outsourced backup directory not created on new customer account creation
+    Fixed: 10_backup_storage_outsourcing.pl: Couldn't move XXX directory to XXX
+           -- filesystem boundaries
+    Fixed: 10_backup_storage_outsourcing.pl: Outsourced backup directory not
+           created on new customer account creation
 
 DISTRIBUTIONS
-    Added: Support for Percona DB 5.7 -- Debian 9/Stretch (amd64 architecture only)
+    Added: Support for Percona DB 5.7 -- Debian 9/Stretch (amd64 architecture
+           only)
     Added: ca-certificates package in list of pre-required packages
-    Fixed: Install openssl and libssl-dev packages from Debian/Ubuntu repositories, not from Ondřej Surý repository
-    Fixed: MariaDB client library from MariaDB 10.2 repository isn't compatible with the DBD::mysql Perl module (Debian 9/Stretch)
+    Fixed: Install openssl and libssl-dev packages from Debian/Ubuntu
+           repositories, not from Ondřej Surý repository
+    Fixed: MariaDB client library from MariaDB 10.2 repository isn't compatible
+           with the DBD::mysql Perl module (Debian 9/Stretch)
 
 FRONTEND
-    Added: `onPageMessages event' --  Event that is triggered when page messages are being generated
-    Added: Button to force refresh of service statuses as they are now cached for 20 minutes
+    Added: `onPageMessages event' --  Event that is triggered when page messages
+           are being generated
+    Added: Button to force refresh of service statuses as they are now cached
+           for 20 minutes
     Added: iMSCP_Database::inTransaction() method
-    Added: Routing for languages without territory information: eg. `de' will be routed to `de_DE' (auto-detection)
-    Added: Setting that allows administrator to protect/unprotect default mail accounts against both edition and deletion
-    Added: Support for multiple <character-string>s in TXT/SPF DNS resource records (Custom DNS interface)
+    Added: Routing for languages without territory information: eg. `de' will be
+           routed to `de_DE' (auto-detection)
+    Added: Setting that allows administrator to protect/unprotect default mail
+           accounts against both edition and deletion
+    Added: Support for multiple <character-string>s in TXT/SPF DNS resource
+           records (Custom DNS interface)
     Added: Translation resources for Zend validators
-    Cosmetics: Make use of the mathematical infinity symbol (∞) in place of the `Unlimited' translation string
-    Deprecated: iMSCP_Database::getRawInstance() method -- will be removed in a later release
+    Cosmetics: Make use of the mathematical infinity symbol (∞) in place of the
+               `Unlimited' translation string
+    Deprecated: iMSCP_Database::getRawInstance() method -- will be removed in a
+                later release
     Deprecated: Usage of customer ID field -- will be removed in a later release
-    Enhancement: Make use of application cache for caching of configuration data (lifetime: indefinitely till change)
-    Enhancement: Make use of application cache for caching of rootkit logs (lifetime: 24 hours)
-    Enhancement: Make use of application cache for caching of service statuses (lifetime: 20 minutes)
-    Enhancement: Make use of Zend APC cache backend; fallback to Zend File backend if APC extension isn't available
-    Enhancement: Make customers able to delete their subdomains without first having to delete FTP and mail accounts
-    Enhancement: Make customers able to edit mail auto-responder message even if the auto-responder is not activated yet
-    Enhancement: Make customers able to select more than one catch-all address in catch-all addresses drop-down list
+    Enhancement: Make use of application cache for caching of configuration data
+                 (lifetime: indefinitely till change)
+    Enhancement: Make use of application cache for caching of rootkit logs
+                 (lifetime: 24 hours)
+    Enhancement: Make use of application cache for caching of service statuses
+                 (lifetime: 20 minutes)
+    Enhancement: Make use of Zend APC cache backend; fallback to Zend File
+                 backend if APC extension isn't available
+    Enhancement: Make customers able to delete their subdomains without first
+                 having to delete FTP and mail accounts
+    Enhancement: Make customers able to edit mail auto-responder message even if
+                 the auto-responder is not activated yet
+    Enhancement: Make customers able to select more than one catch-all address
+                 in catch-all addresses drop-down list
     Enhancement: Make customers able to show/hide default mail accounts
-    Enhancement: Protect default mail accounts against change and deletion (default)
-    Enhancement: Show a warning when the DEBUG mode is enabled (administrators only)
-    Enhancement: Show Catch-all accounts in client mail accounts overview interface
-    Fixed: Action links for FTP accounts must be hidden when they have a status other than 'ok'
-    Fixed: All SQL queries must be compatible with the `ONLY_FULL_GROUP_BY' SQL mode
+    Enhancement: Protect default mail accounts against change and deletion
+                 (default)
+    Enhancement: Show a warning when the DEBUG mode is enabled (administrators
+                 only)
+    Enhancement: Show Catch-all accounts in client mail accounts overview
+                 interface
+    Fixed: Action links for FTP accounts must be hidden when they have a status
+           other than 'ok'
+    Fixed: All SQL queries must be compatible with the `ONLY_FULL_GROUP_BY' SQL
+           mode
     Fixed: A user must not be able to clear his email address
     Fixed: Couldn't edit mailbox quota due to integer type casting (i386 arch)
-    Fixed: Couldn't set value bigger than 2GB for mailbox quota due to integer type casting (i386 arch)
-    Fixed: Couldn't generate self-signed SSL certificate (string passed as serial number while integer is expected)
-    Fixed: Customers must stay able to login when their password or their main domain are being modified
-    Fixed: Don't decode IDNA names in list of DNS resource records (Client UI level)
-    Fixed: Erroneous ftp_group.members field (Subsequent FTP accounts members are never added)
+    Fixed: Couldn't set value bigger than 2GB for mailbox quota due to integer
+           type casting (i386 arch)
+    Fixed: Couldn't generate self-signed SSL certificate (string passed as
+           serial number while integer is expected)
+    Fixed: Customers must stay able to login when their password or their main
+           domain are being modified
+    Fixed: Don't decode IDNA names in list of DNS resource records (Client UI
+           level)
+    Fixed: Erroneous ftp_group.members field (Subsequent FTP accounts members
+           are never added)
     Fixed: Login check must be done prior triggering starting script event
     Fixed: Missing creation of default `webmaster' mail account for subdomains
-    Fixed: PHP ini entries that belong to subdomains of an alias being removed are not removed
+    Fixed: PHP ini entries that belong to subdomains of an alias being removed
+           are not removed
     Fixed: Sets the SQL `group_concat_max_len' variable on a per session basis
-    Fixed: Sets the SQL modes on a per session basis to 'NO_AUTO_CREATE_USER' (backward compatibility with plugins)
+    Fixed: Sets the SQL modes on a per session basis to 'NO_AUTO_CREATE_USER'
+           (backward compatibility with plugins)
     Fixed: Several integer type casting issues
-    Fixed: Uncaught SyntaxError: missing ) after argument list (user_add2.tpl, hosting_plan_edit.tpl -- reseller UI level)
-    Fixed: When an user personal email is being modified, the user identity must be updated as well (session)
-    Fixed: Wrong default mail accounts accounting (missing hostmaster email, wrong SQL queries...)
+    Fixed: Uncaught SyntaxError: missing ) after argument list (user_add2.tpl,
+           hosting_plan_edit.tpl -- reseller UI level)
+    Fixed: When an user personal email is being modified, the user identity must
+           be updated as well (session)
+    Fixed: Wrong default mail accounts accounting (missing hostmaster email,
+           wrong SQL queries...)
     Merged: Server statistics interfaces (admin UI)
-    Removed: Administrator database update interface; Database update are executed by installer
-    Removed: Cached versions of navigation files; Make use of application cache instead
+    Removed: Administrator database update interface; Database update are
+             executed by installer
+    Removed: Cached versions of navigation files; Make use of application cache
+             instead
     Removed: iMSCP_Initializer class (replaced by iMSCP\Application class)
-    Removed: Information about total items/limits assigned - People don't understand their meaning (statistics)
-    Removed: Output compression, including related parameters -- Compression is done at Nginx Web server level
-    Review: abuse, hostmaster and postmaster default mail accounts are now forwarded to customer email
-    Review: Always show fully-qualified names in list of DNS resource records (client UI level)
+    Removed: Information about total items/limits assigned - People don't
+             understand their meaning (statistics)
+    Removed: Output compression, including related parameters -- Compression is
+             done at Nginx Web server level
+    Review: abuse, hostmaster and postmaster default mail accounts are now
+            forwarded to customer email
+    Review: Always show fully-qualified names in list of DNS resource records
+            (client UI level)
     Review: Catchall mail accounts are now counted in mail accounts limit
-    Review: Default mail accounts are not longer counted for the mail accounts limit (default)
-    Review: Default mail accounts are now hidden in the client mail accounts overview interface (default)
+    Review: Default mail accounts are not longer counted for the mail accounts
+            limit (default)
+    Review: Default mail accounts are now hidden in the client mail accounts
+            overview interface (default)
     Review: Extend Zend_Registry class instead of reinventing the wheel
-    Review: Hide PHP E_STRICT, E_NOTICE, ~E_USER_NOTICE, E_DEPRECATED and E_USER_DEPRECATED on production
-    Review: Hide the i-MSCP update interface when Git version is in use (admin UI level)
+    Review: Hide PHP E_STRICT, E_NOTICE, ~E_USER_NOTICE, E_DEPRECATED and
+            E_USER_DEPRECATED on production
+    Review: Hide the i-MSCP update interface when Git version is in use (admin
+            UI level)
     Review: Make use of short syntax for arrays
-    Review: Make use of Zend_Controller_Action_Helper_FlashMessenger for page messages
-    Review: Show an explicit warning when the legacy and un-secure telnet server is running (service statuses)
-    Review: Skip the intermediate edit page when mail auto-responder is being enabled and that the message is already set
+    Review: Make use of Zend_Controller_Action_Helper_FlashMessenger for page
+            messages
+    Review: Show an explicit warning when the legacy and un-secure telnet server
+            is running (service statuses)
+    Review: Skip the intermediate edit page when mail auto-responder is being
+            enabled and that the message is already set
     Rewritten: Add administrator interface (admin level)
     Rewritten: Edit user and personal data interfaces (all UI levels)
     Rewritten: Password update interface (all UI levels)
-    Security: Input for personal user data not filtered nor validated (all UI levels)
+    Security: Input for personal user data not filtered nor validated (all UI
+              levels)
 
 INSTALLER
-    Enhancement: Support for APT pinning: per section and per package APT pinning (Debian adapter)
-    Fixed: Don't remove unused PHP variants configuration directories; PHP packages install INI files for all variants
+    Enhancement: Support for APT pinning: per section and per package APT
+                 pinning (Debian adapter)
+    Fixed: Don't remove unused PHP variants configuration directories; PHP
+           packages install INI files for all variants
     Fixed: Hide notice about user/group changes (Courier)
-    Fixed: Missing LOGROTATE(8) configuration file for RSYSLOGD(8) (Debian 9/Stretch; Ubuntu 16.04/Xenial)
-    Fixed: Removal of obsolete files must be done before saving the persistent data, else some files won't be deleted
+    Fixed: Missing LOGROTATE(8) configuration file for RSYSLOGD(8) (Debian
+           9/Stretch; Ubuntu 16.04/Xenial)
+    Fixed: Removal of obsolete files must be done before saving the persistent
+           data, else some files won't be deleted
     Review: Raise GNU Wget timeout for slow DNS resolvers (Debian adapter)
-    Securiry: Permissions hardening - Files and folders are now copied with UMASK(2) 027 instead of 022
+    Securiry: Permissions hardening - Files and folders are now copied with
+              UMASK(2) 027 instead of 022
 
 PACKAGES
-    Fixed: Can't locate Package/FileManager/Net2FTP/Net2FTP.pm when upgrading from some older versions (Package::FileManager)
-    Fixed: Missing configuration snippet for AWStats in Apache2 vhosts: Event listener badly registered
+    Fixed: Can't locate Package/FileManager/Net2FTP/Net2FTP.pm when upgrading
+           from some older versions (Package::FileManager)
+    Fixed: Missing configuration snippet for AWStats in Apache2 vhosts: Event
+           listener badly registered
 
 PLUGINS
     Updated: Plugin API to version 1.5.0
 
 SCRIPTS
-    Removed: Explicit unlocking of locked files -- Files are automatically unlocked
+    Removed: Explicit unlocking of locked files -- Files are automatically
+             unlocked
     Fixed: logresolvemerge.pl: Script is broken
 
 SERVERS
-    Changed: Mount courier-authdaemon rundir on var/run/courier/authdaemon instead of private/authdaemon (Postfix/Cyrus-SASL)
-    Changed: The `postfix' user is now added in the `mail' group instead of the `daemon' group (Postfix/Cyrus-SASL)
-    Changed: The ownership for the /var/run/courier/authdaemon directory is now `daemon:mail' (courier-authdaemon)
-    Fixed: `.htgroup' and `.htpasswd' files are resetted when the main domain is being changed (Httpd servers)
+    Changed: Mount courier-authdaemon rundir on var/run/courier/authdaemon
+             instead of private/authdaemon (Postfix/Cyrus-SASL)
+    Changed: The `postfix' user is now added in the `mail' group instead of the
+             `daemon' group (Postfix/Cyrus-SASL)
+    Changed: The ownership for the /var/run/courier/authdaemon directory is now
+             `daemon:mail' (courier-authdaemon)
+    Fixed: `.htgroup' and `.htpasswd' files are resetted when the main domain is
+            being changed (Httpd servers)
     Fixed: Couldn't connect to FTP server through IPv6 (vsftpd)
-    Fixed: Couldn't generate /etc/courier/dhparams.pem file: Unknown security parameter string: 2048 (Courier)
-    Fixed: Postfix parameters are not removed when using Regexp (Servers::mta::postfix::postconf -- Regression fix)
-    Fixed: SASL authentication failure: cannot connect to courier-authdaemon: No such file or directory (Postfix/Cyrus-SASL)
-    Fixed: Several warnings raised by POSTFIX(1) when files located inside its directories are not owned by the `postfix' user (Postfix)
-    Fixed: Unwanted leading character in server alias names - Alternative URLs feature (Httpd servers)
-    Removed: sql_mode parameter from the mysql/imscp.cnf configuration file; it is now set on a per session basis) (SQL servers)
+    Fixed: Couldn't generate /etc/courier/dhparams.pem file: Unknown security
+           parameter string: 2048 (Courier)
+    Fixed: Postfix parameters are not removed when using Regexp
+           (Servers::mta::postfix::postconf -- Regression fix)
+    Fixed: SASL authentication failure: cannot connect to courier-authdaemon:
+           No such file or directory (Postfix/Cyrus-SASL)
+    Fixed: Several warnings raised by POSTFIX(1) when files located inside its
+           directories are not owned by the `postfix' user (Postfix)
+    Fixed: Unwanted leading character in server alias names - Alternative URLs
+           feature (Httpd servers)
+    Removed: sql_mode parameter from the mysql/imscp.cnf configuration file; it
+             is now set on a per session basis) (SQL servers)
     Review: Disallow recursive directory listing (ProFTPD)
 
 SERVICES
     Fixed: MOUNT(2) operation failures are ignored (imscp_mountall)
-    Review: Rotate log files on a daily basis instead of a weekly basis for faster processing (Mail service log files)
+    Review: Rotate log files on a daily basis instead of a weekly basis for
+            faster processing (Mail service log files)
 
 TRANSLATIONS
     Review: Make use of fuzzy entries in machine object files
@@ -428,15 +612,19 @@ VENDOR
     Updated: Zend Framework libraries to version 1.12.20
     
 YOUTRACK
-    IP-0749 Protected areas under a mount point of a domain alias or subdomain that is being deleted are not removed
+    IP-0749 Protected areas under a mount point of a domain alias or subdomain
+            that is being deleted are not removed
     IP-1729 Couldn't generate self-signed SSL certificates with OpenSSL 1.1.x
     IP-1730 Couldn't delete support tickets that are closed
-    IP-1733 Default mail accounts in client mail accounts overview should be hidden by default
-    IP-1737 Circular feature - A circular must not be send twice to the same email address
-    IP-1740 Empty body content when trying to create new SQL user and when SQL users limit has been reached
+    IP-1733 Default mail accounts in client mail accounts overview should be
+            hidden by default
+    IP-1737 Circular feature - A circular must not be send twice to the same
+            email address
+    IP-1740 Empty body content when trying to create new SQL user and when SQL
+            users limit has been reached
 
-------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 Older release series
-------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 See ./docs/Changelog-x.x.x files

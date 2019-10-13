@@ -262,23 +262,6 @@ return [
                 'uri'         => '/admin/settings_ports.php',
                 'title_class' => 'general'
             ],
-            'software'          => [
-                'label'       => tr('Software'),
-                'uri'         => '/admin/software_manage.php',
-                'title_class' => 'apps_installer',
-                'pages'       => [
-                    'software_permissions' => [
-                        'label'       => tr('Software permissions'),
-                        'uri'         => '/admin/software_rights.php',
-                        'title_class' => 'apps_installer'
-                    ]
-                ]
-            ],
-            'software_options'  => [
-                'label'       => tr('Software options'),
-                'uri'         => '/admin/software_options.php',
-                'title_class' => 'apps_installer'
-            ],
             'welcome_mail'      => [
                 'label'       => tr('Welcome email'),
                 'uri'         => '/admin/settings_welcome_mail.php',

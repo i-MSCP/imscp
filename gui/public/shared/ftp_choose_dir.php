@@ -25,6 +25,8 @@
  * PhpIncludeInspection
  */
 
+declare(strict_types=1);
+
 use iMSCP\Event\EventAggregator;
 use iMSCP\Event\Events;
 use iMSCP\TemplateEngine;
@@ -36,14 +38,17 @@ use iMSCP\VirtualFileSystem;
  * @param string $directory Directory path
  * @return bool
  */
-function isHiddenDir($directory)
+function isHiddenDir(string $directory): bool
 {
-    global $vftpHiddenDirs, $mountPoints;
+    global $vfsHiddenDirs, $mountPoints;
 
-    if ($vftpHiddenDirs == '')
+    if ($vfsHiddenDirs === '') {
         return false;
-    if (preg_match("%^(?:$mountPoints)(?:$vftpHiddenDirs)$%", $directory))
+    }
+
+    if (preg_match("%^(?:$mountPoints)(?:$vfsHiddenDirs)$%", $directory)) {
         return true;
+    }
 
     return false;
 }
@@ -54,14 +59,19 @@ function isHiddenDir($directory)
  * @param string $directory Directory path
  * @return bool
  */
-function isUnselectable($directory)
+function isUnselectable(string $directory): bool
 {
-    global $vftpUnselectableDirs, $mountPoints;
+    global $vfsUnselectableDirs, $mountPoints;
 
-    if ($vftpUnselectableDirs === '')
+    if ($vfsUnselectableDirs === '') {
         return false;
-    if (preg_match("%^(?:$mountPoints)(?:$vftpUnselectableDirs)$%", $directory))
+    }
+
+    if (preg_match(
+        "%^(?:$mountPoints)(?:$vfsUnselectableDirs)$%", $directory
+    )) {
         return true;
+    }
 
     return false;
 }
@@ -72,73 +82,80 @@ function isUnselectable($directory)
  * @param TemplateEngine $tpl Template engine instance
  * @return void
  */
-function generateDirectoryList(TemplateEngine $tpl)
+function generateDirectoryList(TemplateEngine $tpl): void
 {
-    global $vftpUser, $vftpRootDir;
+    global $vfsUser, $vfsRootDir;
 
-    $path = isset($_GET['cur_dir']) ? utils_normalizePath(clean_input($_GET['cur_dir'] ?: '/')) : '/';
-    $vfs = new VirtualFileSystem($vftpUser, $vftpRootDir);
-    $list = $vfs->ls($path);
-
-    if (!$list) {
-        set_page_message(tr('Could not retrieve directories.'), 'error');
-        $tpl->assign('FTP_CHOOSER', '');
-        return;
-    }
-
-    if ($path != '/') {
-        $parent = dirname($path);
-    } else {
-        $parent = '/';
-    }
-
-    $tpl->assign([
-        'ICON'     => 'parent',
-        'DIR_NAME' => tr('Parent directory'),
-        'LINK'     => tohtml("/shared/ftp_choose_dir.php?cur_dir=$parent", 'htmlAttr')
-    ]);
-
-    if (substr_count($parent, '/') < 2 // Only check for unselectable parent directory when needed
-        && isUnselectable($parent)
-    ) {
-        $tpl->assign('ACTION_LINK', '');
-    } else {
-        $tpl->assign('DIRECTORY', tohtml($parent, 'htmlAttr'));
-    }
-
-    $tpl->parse('DIR_ITEM', '.dir_item');
-
-    foreach ($list as $entry) {
-        if ($entry['type'] != VirtualFileSystem::VFS_TYPE_DIR || $entry['file'] == '.' || $entry['file'] == '..')
-            continue;
-
-        $directory = utils_normalizePath('/' . $path . '/' . $entry['file']);
-
-        if (substr_count($directory, '/') < 3) { // Only check for hidden/unselectable directories when needed
-            if (isHiddenDir($directory))
-                continue;
-
-            if (isUnselectable($directory)) {
-                $tpl->assign([
-                    'ICON'      => 'locked',
-                    'DIR_NAME'  => tohtml($entry['file']),
-                    'DIRECTORY' => tohtml($directory, 'htmlAttr'),
-                    'LINK'      => tohtml('/shared/ftp_choose_dir.php?cur_dir=' . $directory, 'htmlAttr')
-                ]);
-                $tpl->assign('ACTION_LINK', '');
-                $tpl->parse('DIR_ITEM', '.dir_item');
-                continue;
-            }
-        }
+    try {
+        $curDir = isset($_GET['cur_dir']) ? clean_input($_GET['cur_dir'] ?: '/') : '/';
+        
+        $vfs = new VirtualFileSystem($vfsUser, $vfsRootDir);
+        $list = $vfs->ls($curDir);
+        $parentDir = $curDir != '/' ? dirname($curDir) : $curDir;
 
         $tpl->assign([
-            'ICON'      => 'folder',
-            'DIR_NAME'  => tohtml($entry['file']),
-            'DIRECTORY' => tohtml($directory, 'htmlAttr'),
-            'LINK'      => tohtml('/shared/ftp_choose_dir.php?cur_dir=' . $directory, 'htmlAttr')
+            'LINK'  => tohtml(
+                "/shared/ftp_choose_dir.php?cur_dir=$parentDir", 'htmlAttr'
+            ),
+            'ICON'     => 'parent',
+            'DIR_NAME' => tr('Parent directory')
         ]);
-        $tpl->parse('ACTION_LINK', 'action_link');
+
+        // Only check for unselectable parent directory when needed
+        if (substr_count($parentDir, '/') < 2 && isUnselectable($parentDir)) {
+            $tpl->assign('ACTION_LINK', '');
+        } else {
+            $tpl->assign('DIRECTORY', tohtml($parentDir, 'htmlAttr'));
+        }
+
         $tpl->parse('DIR_ITEM', '.dir_item');
+        
+        foreach ($list as $entry) {
+            if ($entry['type'] != VirtualFileSystem::VFS_TYPE_DIR) {
+                continue;
+            }
+
+            $directory = utils_normalizePath(
+                '/' . $curDir . '/' . $entry['basename']
+            );
+
+            // Only check for hidden/unselectable directories when needed
+            if (substr_count($directory, '/') < 3) {
+                if (isHiddenDir($directory)) {
+                    continue;
+                }
+
+                if (isUnselectable($directory)) {
+                    $tpl->assign([
+                        'ICON'      => 'locked',
+                        'DIR_NAME'  => tohtml($entry['basename']),
+                        'LINK'      => tohtml(
+                            '/shared/ftp_choose_dir.php?cur_dir=' . $directory,
+                            'htmlAttr'
+                        ),
+                        'DIRECTORY' => tohtml($directory, 'htmlAttr'),
+                    ]);
+                    $tpl->assign('ACTION_LINK', '');
+                    $tpl->parse('DIR_ITEM', '.dir_item');
+                    continue;
+                }
+            }
+
+            $tpl->assign([
+                'ICON'      => 'folder',
+                'DIR_NAME'  => tohtml($entry['basename']),
+                'LINK'      => tohtml(
+                    '/shared/ftp_choose_dir.php?cur_dir=' . $directory,
+                    'htmlAttr'
+                ),
+                'DIRECTORY' => tohtml($directory, 'htmlAttr'),
+            ]);
+            $tpl->parse('ACTION_LINK', 'action_link');
+            $tpl->parse('DIR_ITEM', '.dir_item');
+        }
+    } catch (Throwable $exception) {
+        set_page_message(tr('Could not retrieve directories: %s', $exception->getMessage()), 'error');
+        $tpl->assign('FTP_CHOOSER', '');
     }
 }
 
@@ -162,26 +179,32 @@ $tpl->assign([
     'layout'         => ''
 ]);
 
-if (!isset($_SESSION['ftp_chooser_user']) || !isset($_SESSION['ftp_chooser_domain_id'])) {
+if (!isset($_SESSION['ftp_chooser_user'])
+    || !isset($_SESSION['ftp_chooser_domain_id'])
+) {
     $tpl->assign('FTP_CHOOSER', '');
-    set_page_message(tr('Could not retrieve directories.'), 'error');
+    throw new LogicException('Missing parameters for the FTP chooser.');
 } else {
     $vftpDomainId = $_SESSION['ftp_chooser_domain_id'];
-    $vftpUser = $_SESSION['ftp_chooser_user'];
-    $vftpRootDir = !empty($_SESSION['ftp_chooser_root_dir']) ? $_SESSION['ftp_chooser_root_dir'] : '/';
-    $vftpHiddenDirs = !empty($_SESSION['ftp_chooser_hidden_dirs'])
+    $vfsUser = $_SESSION['ftp_chooser_user'];
+    $vfsRootDir = !empty($_SESSION['ftp_chooser_root_dir'])
+        ? $_SESSION['ftp_chooser_root_dir'] : '/';
+    $vfsHiddenDirs = !empty($_SESSION['ftp_chooser_hidden_dirs'])
         ? implode('|', array_map(function ($dir) {
             return quotemeta(utils_normalizePath('/' . $dir));
         }, (array)$_SESSION['ftp_chooser_hidden_dirs']))
         : '';
-    $vftpUnselectableDirs = !empty($_SESSION['ftp_chooser_unselectable_dirs'])
+    $vfsUnselectableDirs = !empty($_SESSION['ftp_chooser_unselectable_dirs'])
         ? implode('|', array_map(function ($dir) {
             return quotemeta(utils_normalizePath('/' . $dir));
         }, (array)$_SESSION['ftp_chooser_unselectable_dirs']))
         : '';
     $mountPoints = implode('|', array_map(function ($dir) {
         $path = utils_normalizePath('/' . $dir);
-        if ($path == '/') return '';
+        if ($path == '/') {
+            return '';
+        }
+
         return quotemeta($path);
     }, getMountpoints($vftpDomainId)));
 

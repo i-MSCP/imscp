@@ -16,23 +16,6 @@
 
             $mailQuotaField.attr("min", 0).removeAttr("max");
         });
-
-        // Ensure that PHP is enabled when software installer is enabled
-        $("#softwares_installer_yes").on('change', function() {
-            if($(this).is(":checked")) {
-                var $el = $("#php_yes");
-                if(!$el.is(":checked")) {
-                    $el.prop("checked", true).button("refresh").trigger("change");
-                }
-            }
-        });
-
-        // Ensure that software installer is disabled when PHP is disabled
-        $("#php_no").on("change", function() {
-            if($(this).is(":checked")) {
-                $("#softwares_installer_no").prop("checked", true).button("refresh");
-            }
-        });
     });
 </script>
 <form method="post" action="hosting_plan_edit.php?id={ID}">
@@ -272,19 +255,6 @@
             </td>
         </tr>
         <!-- EDP: custom_dns_records_feature -->
-        <!-- BDP: aps_feature -->
-        <tr>
-            <td>{TR_SOFTWARE_SUPP}</td>
-            <td>
-                <div class="radio">
-                    <input type="radio" name="softwares_installer" value="_yes_" id="softwares_installer_yes"{SOFTWARE_YES}>
-                    <label for="softwares_installer_yes">{TR_YES}</label>
-                    <input type="radio" name="softwares_installer" value="_no_" id="softwares_installer_no"{SOFTWARE_NO}>
-                    <label for="softwares_installer_no">{TR_NO}</label>
-                </div>
-            </td>
-        </tr>
-        <!-- EDP: aps_feature -->
         <!-- BDP: ext_mail_feature -->
         <tr>
             <td>{TR_EXTMAIL}</td>

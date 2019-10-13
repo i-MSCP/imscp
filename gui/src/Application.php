@@ -37,6 +37,7 @@ use iMSCP\Event\Events;
 use iMSCP\Exception\Exception;
 use iMSCP\Exception\ExceptionHandler;
 use iMSCP\Plugin\PluginManager;
+use iMSCP\Plugin\PluginServiceProvidersInjector;
 use PDOException;
 use Slim\App as SlimApplication;
 use Slim\Container;
@@ -584,11 +585,7 @@ class Application
                         /** @var Zend_Controller_Action_Helper_FlashMessenger $flashMessenger */
                         $flashMessenger = $e->getParam('flashMessenger');
                         $flashMessenger->addMessage(
-                            tr("The DEBUG mode is currently enabled, making resources caching unavailable."),
-                            'static_warning'
-                        );
-                        $flashMessenger->addMessage(
-                            tr("You can disable the DEBUG mode in the /etc/imscp/imscp.conf file."),
+                            tr("The debug mode is currently enabled. Don't forget to disable it on production."),
                             'static_warning'
                         );
                     }
@@ -1006,10 +1003,6 @@ class Application
      */
     protected function loadPlugins()
     {
-        #if (PHP_SAPI == 'cli') {
-        #    return;
-        #}
-
         $pm = $this->getPluginManager();
 
         foreach ($pm->pluginGetList() as $pluginName) {
@@ -1027,13 +1020,9 @@ class Application
         // We must always inject the plugins' service providers, even when an
         // HTTP request does not target a plugin, because sometime, a plugin
         // will listen to events only, such as the demo plugin.
-
-        $this->getEventsManager()->dispatch(
-            Events::onBeforeInjectPluginServiceProviders,
-            ['pluginManager' => $pm]
+        (new PluginServiceProvidersInjector())(
+            $this->getContainer(), $this->getEventsManager(), $pm
         );
-
-        //(new PluginServiceProvidersInjector())($this->getContainer(), $pm);
     }
 
     /**

@@ -33,7 +33,9 @@
                     {
                         text: imscp_i18n.core.force_retry,
                         click: function () {
-                            window.location.replace("?retry=" + pluginName)
+                            window.location.replace(
+                                "?action=retry&plugin="+pluginName
+                            )
                         }
                     },
                     {

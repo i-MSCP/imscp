@@ -25,23 +25,6 @@
 
             $mailQuotaField.attr("min", 0).removeAttr("max");
         });
-
-        // Ensure that PHP is enabled when software installer is enabled
-        $("#domain_software_allowed_yes").on('change', function() {
-            if($(this).is(':checked')) {
-                var $el = $("#php_yes");
-                if(!$el.is(":checked")) {
-                    $el.prop("checked", true).button("refresh").trigger("change");
-                }
-            }
-        });
-
-        // Ensure that software installer is disabled when PHP is disabled
-        $("#php_no").on('change', function() {
-            if($(this).is(":checked")) {
-                $("#domain_software_allowed_no").prop("checked", true).button("refresh");
-            }
-        });
     });
 </script>
 <form method="post" action="domain_edit.php?edit_id={EDIT_ID}">
@@ -317,19 +300,6 @@
             </td>
         </tr>
         <!-- EDP: custom_dns_records_feature -->
-        <!-- BDP: aps_block -->
-        <tr>
-            <td>{TR_APS}</td>
-            <td>
-                <div class="radio">
-                    <input type="radio" name="domain_software_allowed" value="yes" id="domain_software_allowed_yes"{APS_YES}>
-                    <label for="domain_software_allowed_yes">{TR_YES}</label>
-                    <input type="radio" name="domain_software_allowed" value="no" id="domain_software_allowed_no"{APS_NO}>
-                    <label for="domain_software_allowed_no">{TR_NO}</label>
-                </div>
-            </td>
-        </tr>
-        <!-- EDP: aps_block -->
         <!-- BDP: ext_mail_block -->
         <tr>
             <td>{TR_EXTMAIL}</td>

@@ -168,7 +168,6 @@ function client_generateFeatureStatus(TemplateEngine $tpl)
             'CGI_FEATURE_STATUS'                   => customerHasFeature('cgi') ? $trYes : $trNo,
             'CUSTOM_DNS_RECORDS_FEATURE_STATUS'    => customerHasFeature('custom_dns_records') ? $trYes : $trNo,
             'EXTERNAL_MAIL_SERVERS_FEATURE_STATUS' => customerHasFeature('external_mail') ? $trYes : $trNo,
-            'APP_INSTALLER_FEATURE_STATUS'         => customerHasFeature('aps') ? $trYes : $trNo,
             'WEBSTATS_FEATURE_STATUS'              => customerHasFeature('webstats') ? $trYes : $trNo
         ]
     );
@@ -373,7 +372,6 @@ $tpl->assign([
     'TR_CGI_SUPPORT_FEATURE'                   => tr('CGI'),
     'TR_CUSTOM_DNS_RECORDS_FEATURE'            => tr('Custom DNS records'),
     'TR_EXTERNAL_MAIL_SERVER_FEATURE'          => tr('External mail feature'),
-    'TR_APP_INSTALLER_FEATURE'                 => tr('Software installer'),
     'TR_BACKUP_FEATURE'                        => tr('Backup'),
     'TR_WEBSTATS_FEATURE'                      => tr('Web statistics'),
     'TR_TRAFFIC_USAGE'                         => tr('Monthly traffic usage'),

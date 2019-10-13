@@ -42,34 +42,34 @@ class PhpEditor
     /**
      * @var PhpEditor
      */
-    static protected $instance;
+    static private $instance;
 
     /**
-     * @var array Reseller PHP permissions (including limits for configuration
-     *            options)
+     * @var array Reseller PHP permissions, including limits for configuration
+     *            options
      */
-    protected $rp = [];
+    private $rp = [];
 
     /**
      * @var array Client PHP permissions
      */
-    protected $cp = [];
+    private $cp = [];
 
     /**
      * @var array Domain configuration options
      */
-    protected $ini = [];
+    private $ini = [];
 
     /**
      * @var bool Tells whether or not domain INI values are set with default
      *           values
      */
-    protected $isDefaultIni = true;
+    private $isDefaultIni = true;
 
     /**
      * @var string PHP INI level
      */
-    protected $iniLevel;
+    private $iniLevel;
 
     /**
      * Singleton object - Make new unavailable
@@ -97,39 +97,37 @@ class PhpEditor
     /**
      * Saves reseller PHP permissions
      *
-     * @param int $id Reseller unique identifier
+     * @param string $resellerId Reseller unique identifier
      * @return void
      */
-    public function saveResellerPermissions($id)
+    public function saveResellerPermissions(string $resellerId): void
     {
         exec_query(
             '
-                UPDATE reseller_props
-                SET php_ini_system = ?,
-                    php_ini_al_disable_functions = ?,
-                    php_ini_al_mail_function = ?,
-                    php_ini_al_mail_function = ?,
-                    php_ini_al_allow_url_fopen = ?,
-                    php_ini_al_display_errors = ?,
-                    php_ini_max_post_max_size = ?,
-                    php_ini_max_upload_max_filesize = ?,
-                    php_ini_max_max_execution_time = ?,
-                    php_ini_max_max_input_time = ?,
-                    php_ini_max_memory_limit = ?
-                WHERE reseller_id = ?
+                UPDATE `reseller_props`
+                SET `php_ini_system` = ?,
+                    `php_ini_al_disable_functions` = ?,
+                    `php_ini_al_mail_function` = ?,
+                    `php_ini_al_mail_function` = ?,
+                    `php_ini_al_allow_url_fopen` = ?,
+                    `php_ini_al_display_errors` = ?,
+                    `php_ini_max_post_max_size` = ?,
+                    `php_ini_max_upload_max_filesize` = ?,
+                    `php_ini_max_max_execution_time` = ?,
+                    `php_ini_max_max_input_time` = ?,
+                    `php_ini_max_memory_limit` = ?
+                WHERE `reseller_id` = ?
             ',
             [
-                $this->rp['phpiniSystem'],
-                $this->rp['phpiniAllowUrlFopen'],
+                $this->rp['phpiniSystem'], $this->rp['phpiniAllowUrlFopen'],
                 $this->rp['phpiniDisplayErrors'],
                 $this->rp['phpiniDisableFunctions'],
                 $this->rp['phpiniMailFunction'],
                 $this->rp['phpiniPostMaxSize'],
                 $this->rp['phpiniUploadMaxFileSize'],
                 $this->rp['phpiniMaxExecutionTime'],
-                $this->rp['phpiniMaxInputTime'],
-                $this->rp['phpiniMemoryLimit'],
-                $id
+                $this->rp['phpiniMaxInputTime'], $this->rp['phpiniMemoryLimit'],
+                $resellerId
             ]
         );
     }
@@ -139,60 +137,55 @@ class PhpEditor
      *
      * We are safe here. New value is set only if valid.
      *
-     * @param string $perm Permission name
-     * @param string $val Permission value
+     * @param string $permission Permission name
+     * @param int|string $value Permission value
      * @return void
      */
-    public function setResellerPermission($perm, $val)
+    public function setResellerPermission(string $permission, $value): void
     {
-        switch ($perm) {
+        switch ($permission) {
             case 'phpiniSystem':
             case 'phpiniAllowUrlFopen':
             case 'phpiniDisplayErrors':
             case 'phpiniMailFunction':
             case 'phpiniDisableFunctions':
-                if ($this->validatePermission($perm, $val)) {
-                    $this->rp[$perm] = $val;
+                if ($this->validatePermission($permission, $value)) {
+                    $this->rp[$permission] = $value;
                 }
                 break;
             case 'phpiniMemoryLimit':
             case 'phpiniMaxInputTime':
             case 'phpiniMaxExecutionTime':
-                if (is_number($val)
-                    && $val >= 1
-                    && $val <= 10000
-                ) {
-                    $this->rp[$perm] = $val;
+                if (is_number($value) && $value >= 1 && $value <= 10000) {
+                    $this->rp[$permission] = $value;
                 }
                 break;
             case 'phpiniPostMaxSize':
                 // According PHP doc, post_max_size value *should* be lower than
                 // memory_limit value
                 // Limit released since i-MSCP 1.4.4
-                if (is_number($val)
+                if (is_number($value)
                     //&& $value < $this->resellerPermissions['phpiniMemoryLimit']
-                    && $val >= 1
-                    && $val <= 10000
+                    && $value >= 1 && $value <= 10000
                 ) {
-                    $this->rp[$perm] = $val;
+                    $this->rp[$permission] = $value;
                 }
                 break;
             case 'phpiniUploadMaxFileSize':
                 // According PHP doc, max_upload_filesize value *must* be lower
                 // than post_max_size value
                 // Equality accepted since i-MSCP 1.4.4
-                if (is_number($val)
+                if (is_number($value)
                     //&& $value < $this->resellerPermissions['phpiniPostMaxSize']
-                    && $val <= $this->rp['phpiniPostMaxSize']
-                    && $val >= 1
-                    && $val <= 10000
+                    && $value <= $this->rp['phpiniPostMaxSize']
+                    && $value >= 1 && $value <= 10000
                 ) {
-                    $this->rp[$perm] = $val;
+                    $this->rp[$permission] = $value;
                 }
                 break;
             default:
                 throw new Exception(sprintf(
-                    'Unknown reseller PHP permission: %s', $perm
+                    'Unknown reseller PHP permission: %s', $permission
                 ));
         }
     }
@@ -200,25 +193,24 @@ class PhpEditor
     /**
      * Validate value for the given PHP permission.
      *
-     * @param string $perm Permission name
-     * @param string $val Permission value
+     * @param string $permission Permission name
+     * @param string $value Permission value
      * @return bool TRUE if $permission is valid, FALSE otherwise
-     *
      * @throws Exception if $permission is unknown
      */
-    public function validatePermission($perm, $val)
+    public function validatePermission(string $permission, string $value): bool
     {
-        switch ($perm) {
+        switch ($permission) {
             case 'phpiniSystem':
             case 'phpiniAllowUrlFopen':
             case 'phpiniDisplayErrors':
             case 'phpiniMailFunction':
-                return $val === 'yes' || $val === 'no';
+                return $value == 'yes' || $value == 'no';
             case 'phpiniDisableFunctions':
-                return $val === 'yes' || $val === 'no' || $val === 'exec';
+                return $value == 'yes' || $value == 'no' || $value == 'exec';
             default:
                 throw new Exception(sprintf(
-                    'Unknown PHP permission: %s', $perm
+                    'Unknown PHP permission: %s', $permission
                 ));
         }
     }
@@ -227,33 +219,33 @@ class PhpEditor
      * Sets client permission value
      *
      * We are safe here. New value is set only if valid and if client' reseller
-     * has the needed permission.
+     * has the required permission.
      *
-     * @param string $perm Permission name
-     * @param string $val Permission value
+     * @param string $permission Permission name
+     * @param string $value Permission value
      * @return void
      * @throws Exception
      */
-    public function setClientPermission($perm, $val)
+    public function setClientPermission(string $permission, string $value): void
     {
-        if (!$this->validatePermission($perm, $val)
-            || !$this->resellerHasPermission($perm)
+        if (!$this->validatePermission($permission, $value)
+            || !$this->resellerHasPermission($permission)
         ) {
             return;
         }
 
-        $this->cp[$perm] = $val;
+        $this->cp[$permission] = $value;
 
-        if ($perm == 'phpiniAllowUrlFopen' && $val != 'yes') {
+        if ($permission == 'phpiniAllowUrlFopen' && $value != 'yes') {
             $this->ini['phpiniAllowUrlFopen'] = 'off';
         }
 
-        if ($perm == 'phpiniDisplayErrors' && $val != 'yes') {
+        if ($permission == 'phpiniDisplayErrors' && $value != 'yes') {
             $this->ini['phpiniDisplayErrors'] = 'off';
         }
 
-        if ($perm == 'phpiniDisableFunctions' && $val != 'yes') {
-            if ($val == 'no') {
+        if ($permission == 'phpiniDisableFunctions' && $value != 'yes') {
+            if ($value == 'no') {
                 $this->ini['phpiniDisableFunctions'] = 'exec,passthru,'
                     . 'phpinfo,popen,proc_open,show_source,shell,shell_exec,'
                     . 'symlink,system';
@@ -276,7 +268,7 @@ class PhpEditor
             }
         }
 
-        if ($perm == 'phpiniMailFunction' && $val == 'no') {
+        if ($permission == 'phpiniMailFunction' && $value == 'no') {
             $disabledFunctions = explode(',', $this->getDomainIni(
                 'phpiniDisableFunctions')
             );
@@ -292,26 +284,26 @@ class PhpEditor
     /**
      * Does the reseller as the given PHP permission?
      *
-     * @param string $perm Permission
+     * @param string $permission Permission
      * @return bool TRUE if $key is a known and reseller has permission on it
      * @throws Exception if $permission is unknown
      */
-    public function resellerHasPermission($perm)
+    public function resellerHasPermission(string $permission): bool
     {
-        if ($this->rp['phpiniSystem'] !== 'yes') {
+        if ($this->rp['phpiniSystem'] != 'yes') {
             return false;
         }
 
-        switch ($perm) {
+        switch ($permission) {
             case 'phpiniSystem':
             case 'phpiniAllowUrlFopen':
             case 'phpiniDisplayErrors':
             case 'phpiniDisableFunctions':
             case 'phpiniMailFunction':
-                return $this->rp[$perm] === 'yes';
+                return $this->rp[$permission] == 'yes';
             default;
                 throw new Exception(sprintf(
-                    'Unknown reseller PHP permission: %s', $perm
+                    'Unknown reseller PHP permission: %s', $permission
                 ));
         }
     }
@@ -322,28 +314,28 @@ class PhpEditor
      * Be aware that in case of the phpiniDisableFunctions, true is returned
      * as long as the client has either 'exec' or 'full' permission.
      *
-     * @param string $perm Permission
+     * @param string $permission Permission
      * @return bool TRUE if $key is a known and client has permission on it
      * @throws Exception if $permission is unknown
      */
-    public function clientHasPermission($perm)
+    public function clientHasPermission(string $permission): bool
     {
         if ($this->rp['phpiniSystem'] != 'yes') {
             return false;
         }
 
-        switch ($perm) {
+        switch ($permission) {
             case 'phpiniSystem':
             case 'phpiniAllowUrlFopen':
             case 'phpiniDisplayErrors':
             case 'phpiniMailFunction':
-                return $this->cp[$perm] == 'yes';
+                return $this->cp[$permission] == 'yes';
             case 'phpiniDisableFunctions':
-                return $this->cp[$perm] == 'yes'
-                    || $this->cp[$perm] == 'exec';
+                return $this->cp[$permission] == 'yes'
+                    || $this->cp[$permission] == 'exec';
             default:
                 throw new Exception(sprintf(
-                    'Unknown client PHP permission: %s', $perm
+                    'Unknown client PHP permission: %s', $permission
                 ));
         }
     }
@@ -351,24 +343,23 @@ class PhpEditor
     /**
      * Gets domain INI option value(s)
      *
-     * @param string|null $var Domain configuration option name or null for
-     *                             all configuration options
-     * @return mixed
+     * @param string $varname Domain configuration option name
+     * @return string|int|array
      * @throws Exception if $varname is unknown
      */
-    public function getDomainIni($var = NULL)
+    public function getDomainIni(?string $varname = NULL)
     {
-        if (NULL === $var) {
+        if (NULL === $varname) {
             return $this->ini;
         }
 
-        if (!array_key_exists($var, $this->ini)) {
+        if (!array_key_exists($varname, $this->ini)) {
             throw new Exception(sprintf(
-                'Unknown domain configuration option: %s', $var
+                'Unknown domain configuration option: %s', $varname
             ));
         }
 
-        return $this->ini[$var];
+        return $this->ini[$varname];
     }
 
     /**
@@ -377,7 +368,7 @@ class PhpEditor
      * @param array $disabledFuncts List of disabled function
      * @return string
      */
-    public function assembleDisableFunctions(array $disabledFuncts)
+    public function assembleDisableFunctions(array $disabledFuncts): string
     {
         return implode(',', array_unique($disabledFuncts));
     }
@@ -386,15 +377,15 @@ class PhpEditor
      * Synchronise client PHP permissions (including domain INI options) with
      * reseller PHP permissions.
      *
-     * @param int $resellerId Reseller unique identifier
-     * @param int $clientId OPTIONAL client unique identifier (Client for which
-     *                      PHP permissions must be synchronized)
+     * @param string $resellerId Reseller unique identifier
+     * @param string $clientId Identifier of the client for which the PHP
+     *                         permissions must be synchronized.
      * @return bool Boolean indicating whether or not a backend request is
      *                      needed
      */
     public function syncClientPermissionsWithResellerPermissions(
-        $resellerId, $clientId = NULL
-    )
+        string $resellerId, ?string $clientId = NULL
+    ): bool
     {
         if (empty($this->rp)) {
             $this->loadResellerPermissions($resellerId);
@@ -451,7 +442,7 @@ class PhpEditor
             // when needed (client domain INI values cannot be greater than
             // reseller values)
             if ($this->updateClientDomainIni(
-                NULL, $row['admin_id'], $needChange
+                [], $row['admin_id'], $needChange
             )) {
                 $needBackendRequest = true;
             }
@@ -464,29 +455,35 @@ class PhpEditor
      * Loads reseller PHP permissions
      *
      * If a reseller identifier is given, try to load permissions from the
-     * database, else, loadthe default reseller permissions.
+     * database, else, load the default reseller permissions.
      *
      * Note: Reseller permissions also include limits for PHP configuration
      * options.
      *
-     * @param int|null $id Reseller unique identifier
+     * @param string|null $resellerId Reseller unique identifier
      * @return void
      */
-    public function loadResellerPermissions($id = NULL)
+    public function loadResellerPermissions(?string $resellerId = NULL): void
     {
-        if (NULL !== $id) {
+        if (NULL !== $resellerId) {
             $stmt = exec_query(
                 '
-                    SELECT php_ini_system, php_ini_al_disable_functions,
-                        php_ini_al_mail_function, php_ini_al_mail_function,
-                        php_ini_al_allow_url_fopen, php_ini_al_display_errors,
-                        php_ini_max_post_max_size,
-                        php_ini_max_upload_max_filesize,
-                        php_ini_max_max_execution_time,
-                        php_ini_max_max_input_time, php_ini_max_memory_limit
-                    FROM reseller_props WHERE reseller_id = ?
+                    SELECT
+                        `php_ini_system`,
+                        `php_ini_al_disable_functions`,
+                        `php_ini_al_mail_function`,
+                        `php_ini_al_mail_function`,
+                        `php_ini_al_allow_url_fopen`,
+                        `php_ini_al_display_errors`,
+                        `php_ini_max_post_max_size`,
+                        `php_ini_max_upload_max_filesize`,
+                        `php_ini_max_max_execution_time`,
+                        `php_ini_max_max_input_time`,
+                        `php_ini_max_memory_limit`
+                    FROM `reseller_props`
+                    WHERE `reseller_id` = ?
                 ',
-                $id
+                $resellerId
             );
 
             if ($stmt->rowCount()) {
@@ -494,17 +491,26 @@ class PhpEditor
 
                 // PHP permissions
                 $this->rp['phpiniSystem'] = $row['php_ini_system'];
-                $this->rp['phpiniAllowUrlFopen'] = $row['php_ini_al_allow_url_fopen'];
-                $this->rp['phpiniDisplayErrors'] = $row['php_ini_al_display_errors'];
-                $this->rp['phpiniDisableFunctions'] = $row['php_ini_al_disable_functions'];
-                $this->rp['phpiniMailFunction'] = $row['php_ini_al_mail_function'];
+                $this->rp['phpiniAllowUrlFopen'] =
+                    $row['php_ini_al_allow_url_fopen'];
+                $this->rp['phpiniDisplayErrors'] =
+                    $row['php_ini_al_display_errors'];
+                $this->rp['phpiniDisableFunctions'] =
+                    $row['php_ini_al_disable_functions'];
+                $this->rp['phpiniMailFunction'] =
+                    $row['php_ini_al_mail_function'];
 
                 // Limits for PHP configuration options
-                $this->rp['phpiniPostMaxSize'] = $row['php_ini_max_post_max_size'];
-                $this->rp['phpiniUploadMaxFileSize'] = $row['php_ini_max_upload_max_filesize'];
-                $this->rp['phpiniMaxExecutionTime'] = $row['php_ini_max_max_execution_time'];
-                $this->rp['phpiniMaxInputTime'] = $row['php_ini_max_max_input_time'];
-                $this->rp['phpiniMemoryLimit'] = $row['php_ini_max_memory_limit'];
+                $this->rp['phpiniPostMaxSize'] =
+                    $row['php_ini_max_post_max_size'];
+                $this->rp['phpiniUploadMaxFileSize'] =
+                    $row['php_ini_max_upload_max_filesize'];
+                $this->rp['phpiniMaxExecutionTime'] =
+                    $row['php_ini_max_max_execution_time'];
+                $this->rp['phpiniMaxInputTime'] =
+                    $row['php_ini_max_max_input_time'];
+                $this->rp['phpiniMemoryLimit'] =
+                    $row['php_ini_max_memory_limit'];
                 return;
             }
         }
@@ -530,36 +536,42 @@ class PhpEditor
      * If a client identifier is given, try to load permissions from
      * database, else, load default client permissions.
      *
-     * @param int|null $id Domain unique identifier
+     * @param string $clientId Client unique identifier
+     * @return void
      * @throws Exception
      */
-    public function loadClientPermissions($id = NULL)
+    public function loadClientPermissions(string $clientId = NULL): void
     {
         if (empty($this->rp)) {
-            throw new Exception('You must first load reseller permissions');
+            throw new Exception('You must first load the reseller permissions');
         }
 
-        if (NULL !== $id) {
+        if (NULL !== $clientId) {
             $stmt = exec_query(
                 '
-                    SELECT phpini_perm_system,
-                        phpini_perm_allow_url_fopen,
-                        phpini_perm_display_errors,
-                        phpini_perm_disable_functions,
-                        phpini_perm_mail_function
-                    FROM domain
-                    WHERE domain_admin_id = ?
+                    SELECT
+                        `phpini_perm_system`,
+                        `phpini_perm_allow_url_fopen`,
+                        `phpini_perm_display_errors`,
+                        `phpini_perm_disable_functions`,
+                        `phpini_perm_mail_function`
+                    FROM `domain`
+                    WHERE `domain_admin_id` = ?
                 ',
-                $id
+                $clientId
             );
 
             if ($stmt->rowCount()) {
                 $row = $stmt->fetchRow();
                 $this->cp['phpiniSystem'] = $row['phpini_perm_system'];
-                $this->cp['phpiniAllowUrlFopen'] = $row['phpini_perm_allow_url_fopen'];
-                $this->cp['phpiniDisplayErrors'] = $row['phpini_perm_display_errors'];
-                $this->cp['phpiniDisableFunctions'] = $row['phpini_perm_disable_functions'];
-                $this->cp['phpiniMailFunction'] = $row['phpini_perm_mail_function'];
+                $this->cp['phpiniAllowUrlFopen'] =
+                    $row['phpini_perm_allow_url_fopen'];
+                $this->cp['phpiniDisplayErrors'] =
+                    $row['phpini_perm_display_errors'];
+                $this->cp['phpiniDisableFunctions'] =
+                    $row['phpini_perm_disable_functions'];
+                $this->cp['phpiniMailFunction'] =
+                    $row['phpini_perm_mail_function'];
                 return;
             }
         }
@@ -579,19 +591,20 @@ class PhpEditor
     /**
      * Saves client PHP permissions
      *
-     * @param int $clientId Client unique identifier
-     * @return bool Boolean indicating whether or not a backend request is needed
+     * @param string $clientId Client unique identifier
+     * @return bool Boolean Whether or not a backend request is needed
      */
-    public function saveClientPermissions($clientId)
+    public function saveClientPermissions(string $clientId): bool
     {
         $stmt = exec_query(
             '
-                UPDATE domain SET phpini_perm_system = ?,
-                    phpini_perm_allow_url_fopen = ?,
-                    phpini_perm_display_errors = ?,
-                    phpini_perm_disable_functions = ?,
-                    phpini_perm_mail_function = ?
-                WHERE domain_admin_id = ?
+                UPDATE `domain`
+                SET `phpini_perm_system` = ?,
+                    `phpini_perm_allow_url_fopen` = ?,
+                    `phpini_perm_display_errors` = ?,
+                    `phpini_perm_disable_functions` = ?,
+                    `phpini_perm_mail_function` = ?
+                WHERE `domain_admin_id` = ?
             ',
             [
                 $this->cp['phpiniSystem'],
@@ -607,15 +620,14 @@ class PhpEditor
     /**
      * Update client domain INI options for the given client
      *
-     * @param null|array $domainIni New Domain INI values
-     * @param int $clientId Client identifier
-     * @param bool $needChange OPTIONAL whether or not client domains must be
-     *                         updated
+     * @param array $domainIni New Domain INI values. Can be empty
+     * @param string $clientId Client identifier
+     * @param bool $needChange whether or not client domains must be updated
      * @return bool Whether or not a backend request is needed
      */
     public function updateClientDomainIni(
-        $domainIni, $clientId, $needChange = false
-    )
+        array $domainIni, string $clientId, ?bool $needChange = false
+    ): bool
     {
         $needBackendRequest = false;
 
@@ -623,7 +635,11 @@ class PhpEditor
         $this->createMissingPhpIniEntries($clientId);
 
         $stmt = exec_query(
-            'SELECT id, domain_id, domain_type FROM php_ini WHERE admin_id = ?',
+            '
+                SELECT `id`, `domain_id`, `domain_type`
+                FROM `php_ini`
+                WHERE `admin_id` = ?
+            ',
             [$clientId]
         );
         while ($row = $stmt->fetchRow()) {
@@ -685,7 +701,7 @@ class PhpEditor
                         'phpiniMaxInputTime'
                     ] as $option
                 ) {
-                    if (NULL !== $domainIni) {
+                    if (isset($domainIni[$option])) {
                         // Set new INI value
                         $this->setDomainIni($option, $domainIni[$option]);
                     }
@@ -722,12 +738,13 @@ class PhpEditor
     /**
      * Create missing PHP INI entries
      *
-     * Handle case were an entry has been removed by mistake in the php_ini table
+     * Handle case were an entry has been removed by mistake in the php_ini
+     * table.
      *
-     * @param int $clientId Customer unique identifier
+     * @param string $clientId Customer unique identifier
      * @return void
      */
-    protected function createMissingPhpIniEntries($clientId)
+    protected function createMissingPhpIniEntries(string $clientId): void
     {
         $phpini = clone($this);
         $domain = exec_query(
@@ -744,9 +761,10 @@ class PhpEditor
 
         $subdomains = exec_query(
             '
-                SELECT subdomain_id
-                FROM subdomain
-                WHERE domain_id = ? AND subdomain_status <> ?
+                SELECT `subdomain_id`
+                FROM `subdomain`
+                WHERE `domain_id` = ?
+                AND `subdomain_status` <> ?
             ',
             [$domainId, 'todelete']
         );
@@ -766,10 +784,10 @@ class PhpEditor
 
         $domainAliases = exec_query(
             '
-                SELECT alias_id
-                FROM domain_aliasses
-                WHERE domain_id = ?
-                AND alias_status <> ?
+                SELECT `alias_id`
+                FROM `domain_aliasses`
+                WHERE `domain_id` = ?
+                AND `alias_status` <> ?
             ',
             [$domainId, 'todelete']
         );
@@ -787,11 +805,11 @@ class PhpEditor
 
         $subdomainAliases = exec_query(
             '
-                SELECT subdomain_alias_id
-                FROM subdomain_alias
-                JOIN domain_aliasses USING(alias_id)
-                WHERE domain_id = ?
-                AND subdomain_alias_status <> ?
+                SELECT `subdomain_alias_id`
+                FROM `subdomain_alias`
+                JOIN `domain_aliasses` USING(`alias_id`)
+                WHERE `domain_id` = ?
+                AND `subdomain_alias_status` <> ?
             ',
             [$domainId, 'todelete']
         );
@@ -813,30 +831,30 @@ class PhpEditor
     /**
      * Loads domain INI values
      *
-     * @param int|null $adminId Owner unique identifier
-     * @param int|null $domainId Domain unique identifier
-     * @param string|null $domainType Domain type (dmn|als|sub|subals)
+     * @param string $adminId Owner unique identifier
+     * @param string $domainId Domain unique identifier
+     * @param string $domainType Domain type (dmn|als|sub|subals)
+     * @reutrn void
      * @throws Exception
      */
     public function loadDomainIni(
-        $adminId = NULL, $domainId = NULL, $domainType = NULL
-    )
+        ?string $adminId = NULL,
+        ?string $domainId = NULL,
+        ?string $domainType = NULL
+    ): void
     {
         if (empty($this->cp)) {
             throw new Exception('You must first load client permissions.');
         }
 
-        if (NULL !== $adminId
-            && NULL !== $domainId
-            && NULL !== $domainType
-        ) {
+        if (NULL !== $adminId && NULL !== $domainId && NULL !== $domainType) {
             $stmt = exec_query(
                 '
                     SELECT *
-                    FROM php_ini
-                    WHERE admin_id = ?
-                    AND domain_id = ?
-                    AND domain_type = ?
+                    FROM `php_ini`
+                    WHERE `admin_id` = ?
+                    AND `domain_id` = ?
+                    AND `domain_type` = ?
                 ',
                 [$adminId, $domainId, $domainType]
             );
@@ -846,10 +864,13 @@ class PhpEditor
                 $this->ini['phpiniAllowUrlFopen'] = $row['allow_url_fopen'];
                 $this->ini['phpiniDisplayErrors'] = $row['display_errors'];
                 $this->ini['phpiniErrorReporting'] = $row['error_reporting'];
-                $this->ini['phpiniDisableFunctions'] = $row['disable_functions'];
+                $this->ini['phpiniDisableFunctions'] =
+                    $row['disable_functions'];
                 $this->ini['phpiniPostMaxSize'] = $row['post_max_size'];
-                $this->ini['phpiniUploadMaxFileSize'] = $row['upload_max_filesize'];
-                $this->ini['phpiniMaxExecutionTime'] = $row['max_execution_time'];
+                $this->ini['phpiniUploadMaxFileSize'] =
+                    $row['upload_max_filesize'];
+                $this->ini['phpiniMaxExecutionTime'] =
+                    $row['max_execution_time'];
                 $this->ini['phpiniMaxInputTime'] = $row['max_input_time'];
                 $this->ini['phpiniMemoryLimit'] = $row['memory_limit'];
 
@@ -871,11 +892,21 @@ class PhpEditor
         }
 
         // Value taken from Debian default php.ini file
-        $this->ini['phpiniMemoryLimit'] = min($this->rp['phpiniMemoryLimit'], 128);
-        $this->ini['phpiniPostMaxSize'] = min($this->rp['phpiniPostMaxSize'], 8);
-        $this->ini['phpiniUploadMaxFileSize'] = min($this->rp['phpiniUploadMaxFileSize'], 2);
-        $this->ini['phpiniMaxExecutionTime'] = min($this->rp['phpiniMaxExecutionTime'], 30);
-        $this->ini['phpiniMaxInputTime'] = min($this->rp['phpiniMaxInputTime'], 60);
+        $this->ini['phpiniMemoryLimit'] = min(
+            $this->rp['phpiniMemoryLimit'], 128
+        );
+        $this->ini['phpiniPostMaxSize'] = min(
+            $this->rp['phpiniPostMaxSize'], 8
+        );
+        $this->ini['phpiniUploadMaxFileSize'] = min(
+            $this->rp['phpiniUploadMaxFileSize'], 2
+        );
+        $this->ini['phpiniMaxExecutionTime'] = min(
+            $this->rp['phpiniMaxExecutionTime'], 30
+        );
+        $this->ini['phpiniMaxInputTime'] = min(
+            $this->rp['phpiniMaxInputTime'], 60
+        );
 
         $this->isDefaultIni = true;
     }
@@ -884,9 +915,9 @@ class PhpEditor
      * Whether or not domain INI option values are set with default option
      * values.
      *
-     * @return boolean
+     * @return bool
      */
-    public function isDefaultDomainIni()
+    public function isDefaultDomainIni(): bool
     {
         return $this->isDefaultIni;
     }
@@ -894,13 +925,15 @@ class PhpEditor
     /**
      * Saves domain INI values
      *
-     * @param int $adminId Owner unique identifier
-     * @param int $domainId Domain unique identifier
+     * @param string $adminId Owner unique identifier
+     * @param string $domainId Domain unique identifier
      * @param string $domainType Domain type (dmn|als|sub|subals)
-     * @return bool Boolean indicating whether or not a backend request is needed
+     * @return bool Boolean Whether or not a backend request is needed
      * @throws Exception if domain PHP configuration options were not loaded
      */
-    public function saveDomainIni($adminId, $domainId, $domainType)
+    public function saveDomainIni(
+        string $adminId, string $domainId, string $domainType
+    ): bool
     {
         if (!$this->ini) {
             throw new Exception('Domain PHP INI directives were not loaded.');
@@ -909,41 +942,25 @@ class PhpEditor
         $stmt = exec_query(
             '
                 INSERT INTO php_ini (
-                    admin_id, 
-                    domain_id,
-                    domain_type,
-                    disable_functions,
-                    allow_url_fopen,
-                    display_errors,
-                    error_reporting,
-                    post_max_size,
-                    upload_max_filesize,
-                    max_execution_time,
-                    max_input_time,
-                    memory_limit
+                    `admin_id`, `domain_id`, `domain_type`, `disable_functions`,
+                    `allow_url_fopen`, `display_errors`, `error_reporting`,
+                    `post_max_size`, `upload_max_filesize`, `max_execution_time`,
+                    `max_input_time`, `memory_limit`
                 ) VALUES (
-                    :admin_id,
-                    :domain_id,
-                    :domain_type,
-                    :disable_functions,
-                    :allow_url_fopen,
-                    :display_errors,
-                    :error_reporting,
-                    :post_max_size,
-                    :upload_max_file_size,
-                    :max_execution_time,
-                    :max_input_time,
-                    :memory_limit
+                    :admin_id, :domain_id, :domain_type, :disable_functions,
+                    :allow_url_fopen, :display_errors, :error_reporting,
+                    :post_max_size, :upload_max_file_size, :max_execution_time,
+                    :max_input_time, :memory_limit
                 ) ON DUPLICATE KEY UPDATE
-                    disable_functions = :disable_functions,
-                    allow_url_fopen = :allow_url_fopen,
-                    display_errors = :display_errors,
-                    error_reporting = :error_reporting,
-                    post_max_size = :post_max_size,
-                    upload_max_filesize = :upload_max_file_size,
-                    max_execution_time = :max_execution_time,
-                    max_input_time = :max_input_time,
-                    memory_limit = :memory_limit
+                    `disable_functions` = :disable_functions,
+                    `allow_url_fopen` = :allow_url_fopen,
+                    `display_errors` = :display_errors,
+                    `error_reporting` = :error_reporting,
+                    `post_max_size` = :post_max_size,
+                    `upload_max_filesize` = :upload_max_file_size,
+                    `max_execution_time` = :max_execution_time,
+                    `max_input_time` = :max_input_time,
+                    `memory_limit` = :memory_limit
             ',
             [
                 'admin_id'             => $adminId,
@@ -967,23 +984,23 @@ class PhpEditor
     /**
      * Gets client PHP permission(s)
      *
-     * @param string|null $perm Permission name or null for all permissions
-     * @return mixed
+     * @param string $permission Permission name
+     * @return string|int|array Client permissions
      * @throws Exception if $permission is unknown
      */
-    public function getClientPermission($perm = NULL)
+    public function getClientPermission(?string $permission = NULL)
     {
-        if (NULL === $perm) {
+        if (NULL === $permission) {
             return $this->cp;
         }
 
-        if (!array_key_exists($perm, $this->cp)) {
+        if (!array_key_exists($permission, $this->cp)) {
             throw new Exception(sprintf(
-                'Unknown client PHP permission: %s', $perm
+                'Unknown client PHP permission: %s', $permission
             ));
         }
 
-        return $this->cp[$perm];
+        return $this->cp[$permission];
     }
 
     /**
@@ -992,13 +1009,14 @@ class PhpEditor
      * We are safe here. New value is set only if valid.
      *
      * @param string $varname Configuration option name
-     * @param string $value Configuration option value
+     * @param int|string $value Configuration option value
+     * @reutrn void
      * @throws Exception
      */
-    public function setDomainIni($varname, $value)
+    public function setDomainIni(string $varname, $value): void
     {
         if (empty($this->cp)) {
-            throw new Exception('You must first load client permissions.');
+            throw new Exception('You must first load the client permissions.');
         }
 
         if (!$this->validateDomainIni($varname, $value)) {
@@ -1032,25 +1050,25 @@ class PhpEditor
      *
      * Be aware that we don't allow unlimited values. This is by design.
      *
-     * @param string $var Configuration option name
-     * @param string $val Configuration option value
+     * @param string $varname Configuration option name
+     * @param int|string $value Configuration option value
      * @return bool TRUE if $value is valid, FALSE otherwise
      * @throws Exception if $varname is unknown
      */
-    public function validateDomainIni($var, $val)
+    public function validateDomainIni(string $varname, $value): bool
     {
-        switch ($var) {
+        switch ($varname) {
             case 'phpiniAllowUrlFopen':
             case 'phpiniDisplayErrors':
-                return $val === 'on' || $val === 'off';
+                return $varname === 'on' || $value === 'off';
             case 'phpiniErrorReporting':
                 return
                     // Default value
-                    $val === 'E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED'
+                    $value === 'E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED'
                     // All error (development value)
-                    || $val === '-1'
+                    || $value === '-1'
                     // Production
-                    || $val === 'E_ALL & ~E_DEPRECATED & ~E_STRICT';
+                    || $value === 'E_ALL & ~E_DEPRECATED & ~E_STRICT';
             case 'phpiniDisableFunctions':
                 $allowedFunctionNames = [
                     'exec', 'mail', 'passthru', 'phpinfo', 'popen', 'proc_open',
@@ -1058,32 +1076,29 @@ class PhpEditor
                 ];
 
                 return array_diff(
-                    explode(',', $val), $allowedFunctionNames
+                    explode(',', $value), $allowedFunctionNames
                 ) ? false : true;
             case 'phpiniMemoryLimit':
             case 'phpiniMaxExecutionTime':
             case 'phpiniMaxInputTime':
-                return is_number($val)
-                    && $val >= 1
-                    && $val <= 10000;
+                return is_number($value) && $value >= 1 && $value <= 10000;
             case 'phpiniPostMaxSize':
                 // According PHP doc, post_max_size value *should* be lower than
                 // memory_limit value Limit released since i-MSCP 1.4.4
-                return is_number($val)
+                return is_number($value)
                     //&& $value < $this->domainIni['phpiniMemoryLimit']
-                    && $val >= 1
-                    && $val <= 10000;
+                    && $value >= 1 && $value <= 10000;
             case 'phpiniUploadMaxFileSize':
                 // According PHP doc, max_upload_filesize value *must* be lower
                 // than post_max_size value Equality accepted since i-MSCP 1.4.4
-                return is_number($val)
+                return is_number($value)
                     //&& $value < $this->domainIni['phpiniPostMaxSize']
-                    && $val <= $this->ini['phpiniPostMaxSize']
-                    && $val >= 1
-                    && $val <= 10000;
+                    && $value <= $this->ini['phpiniPostMaxSize']
+                    && $value >= 1
+                    && $value <= 10000;
             default:
                 throw new Exception(sprintf(
-                    'Unknown configuration option: %s', $var
+                    'Unknown configuration option: %s', $varname
                 ));
         }
     }
@@ -1091,23 +1106,23 @@ class PhpEditor
     /**
      * Gets reseller PHP permission(s)
      *
-     * @param string|null $perm Permission name or null for all permissions
-     * @return mixed
+     * @param string|null $permission Permission name or null for all permissions
+     * @return array|int|string Reseller permissions
      * @throws Exception if $permission is unknown
      */
-    public function getResellerPermission($perm = NULL)
+    public function getResellerPermission(string $permission = NULL)
     {
-        if (NULL === $perm) {
+        if (NULL === $permission) {
             return $this->rp;
         }
 
-        if (!array_key_exists($perm, $this->rp)) {
+        if (!array_key_exists($permission, $this->rp)) {
             throw new Exception(sprintf(
-                'Unknown reseller PHP permission: %s', $perm
+                'Unknown reseller PHP permission: %s', $permission
             ));
         }
 
-        return $this->rp[$perm];
+        return $this->rp[$permission];
     }
 
     /**
@@ -1115,31 +1130,35 @@ class PhpEditor
      *
      * @param string $configLevel PHP configuration level
      *                            (per_user|per_domain|per_site)
-     * @param int $adminId Owner unique identifier
-     * @param int $domainId Domain unique identifier
+     * @param string $adminId Owner unique identifier
+     * @param string $domainId Domain unique identifier
      * @param string $domainType Domain type (dmn|als|sub|subals)
+     * @return void
      */
     public function updateDomainStatuses(
-        $configLevel, $adminId, $domainId, $domainType
-    )
+        string $configLevel,
+        string $adminId,
+        string $domainId,
+        string $domainType
+    ): void
     {
         if ($configLevel == 'per_user') {
             $domainId = get_user_domain_id($adminId);
             exec_query(
                 "
-                    UPDATE domain
-                    SET domain_status = 'tochange'
-                    WHERE domain_id = ?
-                    AND domain_status NOT IN('disabled', 'todelete')
+                    UPDATE `domain`
+                    SET `domain_status` = 'tochange'
+                    WHERE `domain_id` = ?
+                    AND `domain_status` NOT IN('disabled', 'todelete')
                 ",
                 [$domainId]
             );
             exec_query(
                 "
-                    UPDATE domain_aliasses
-                    SET alias_status = 'tochange'
-                    WHERE domain_id = ?
-                    AND alias_status NOT IN ('disabled', 'todelete')
+                    UPDATE `domain_aliasses`
+                    SET `alias_status` = 'tochange'
+                    WHERE `domain_id` = ?
+                    AND `alias_status` NOT IN ('disabled', 'todelete')
                 ",
                 [$domainId]
             );
@@ -1147,42 +1166,42 @@ class PhpEditor
             switch ($domainType) {
                 case 'dmn':
                     $query = "
-                        UPDATE domain
-                        SET domain_status = 'tochange'
-                        WHERE domain_admin_id = ?
-                        AND domain_id = ?
-                        AND domain_status NOT IN ('disabled', 'todelete')
+                        UPDATE `domain`
+                        SET `domain_status` = 'tochange'
+                        WHERE `domain_admin_id` = ?
+                        AND `domain_id` = ?
+                        AND `domain_status` NOT IN ('disabled', 'todelete')
                     ";
                     break;
                 case 'sub':
                     $query = "
-                        UPDATE subdomain
-                        JOIN domain USING(domain_id)
-                        SET subdomain_status = 'tochange'
-                        WHERE domain_admin_id = ?
-                        AND subdomain_id = ?
-                        AND subdomain_status NOT IN ('disabled','todelete')
+                        UPDATE `subdomain`
+                        JOIN `domain` USING(domain_id)
+                        SET subdomain_status` = 'tochange'
+                        WHERE `domain_admin_id` = ?
+                        AND `subdomain_id` = ?
+                        AND `subdomain_status` NOT IN ('disabled','todelete')
                     ";
                     break;
                 case 'als';
                     $query = "
-                        UPDATE domain_aliasses
-                        JOIN domain USING(domain_id)
-                        SET alias_status = 'tochange'
-                        WHERE domain_admin_id = ?
-                        AND alias_id = ?
-                        AND alias_status NOT IN ('disabled','todelete')
+                        UPDATE `domain_aliasses`
+                        JOIN `domain` USING(`domain_id`)
+                        SET `alias_status` = 'tochange'
+                        WHERE `domain_admin_id` = ?
+                        AND `alias_id` = ?
+                        AND `alias_status` NOT IN ('disabled','todelete')
                     ";
                     break;
                 case 'subals':
                     $query = "
-                        UPDATE subdomain_alias
-                        JOIN domain_aliasses USING(alias_id)
-                        JOIN domain USING(domain_id)
-                        SET subdomain_alias_status = 'tochange'
-                        WHERE domain_admin_id = ?
-                        AND subdomain_alias_id = ?
-                        AND subdomain_alias_status NOT IN (
+                        UPDATE `subdomain_alias`
+                        JOIN `domain_aliasses` USING(`alias_id`)
+                        JOIN `domain` USING(`domain_id`)
+                        SET `subdomain_alias_status` = 'tochange'
+                        WHERE `domain_admin_id` = ?
+                        AND `subdomain_alias_id` = ?
+                        AND `subdomain_alias_status` NOT IN (
                             'disabled','todelete'
                         )
                     ";
@@ -1200,11 +1219,11 @@ class PhpEditor
      *
      * @return string
      */
-    protected function getIniLevel()
+    protected function getIniLevel(): string
     {
         if (NULL === $this->iniLevel) {
             $phpConfig = new FileConfig(utils_normalizePath(
-                Registry::get('config')->CONF_DIR . '/php/php.data'
+                Registry::get('config')['CONF_DIR'] . '/php/php.data'
             ));
             $this->iniLevel = $phpConfig['PHP_CONFIG_LEVEL'];
         }

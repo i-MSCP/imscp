@@ -22,6 +22,7 @@
  * PhpUnhandledExceptionInspection
  * PhpDocMissingThrowsInspection
  * PhpIncludeInspection
+ * PhpUnused
  */
 
 declare(strict_types=1);
@@ -34,6 +35,7 @@ use iMSCP\Event\EventManagerInterface;
 use iMSCP\ServiceProviderInterface;
 use iMSCP\Utility\OpcodeCache;
 use PDO;
+use Throwable;
 
 /**
  * Class AbstractPlugin
@@ -47,44 +49,44 @@ abstract class AbstractPlugin
     /**
      * @var string Plugin name
      */
-    protected $pluginName;
+    private $pluginName;
 
     /**
      * @var array Plugin info
      */
-    protected $info;
+    private $pluginInfo;
 
     /**
      * @var array Plugin configuration
      */
-    protected $config;
+    private $pluginConfig;
 
     /**
      * @var array Plugin previous configuration
      */
-    protected $configPrev;
+    private $pluginConfigPrev;
 
     /**
      * @var PluginManager
      */
-    protected $pm;
+    private $pluginManager;
 
     /**
      * Constructor
      *
-     * @param PluginManager $pm
+     * @param PluginManager $pluginManager
      */
-    public function __construct(PluginManager $pm)
+    public function __construct(PluginManager $pluginManager)
     {
-        $this->pm = $pm;
+        $this->pluginManager = $pluginManager;
         $this->init();
     }
 
     /**
      * Plugin initialization tasks.
      *
-     * This method allows to do some initialization tasks without overriding
-     * the constructor.
+     * This method allows to perform additional initialization tasks without
+     * overriding the constructor.
      *
      * @return void
      */
@@ -93,58 +95,10 @@ abstract class AbstractPlugin
     }
 
     /**
-     * Returns the given plugin configuration.
-     *
-     * @param string $param Configuration parameter name
-     * @param mixed $default Default value returned if $param is not found
-     * @return mixed Configuration parameter value or $default if $param not
-     *               found
-     */
-    public function getConfigParam(string $param, $default = NULL)
-    {
-        $config =& $this->getConfig();
-
-        return isset($config[$param]) ? $config[$param] : $default;
-    }
-
-    /**
-     * Return the plugin configuration from the database, or from the plugin
-     * config.php file if no data were found in the database.
-     *
-     * @return array
-     */
-    public function &getConfig(): array
-    {
-        if (NULL === $this->config) {
-            if (!$this->getPluginManager()->pluginIsKnown($this->getName())) {
-                $this->config = $this->getConfigFromFile();
-            } else {
-                $stmt = exec_query(
-                    'SELECT plugin_config FROM plugin WHERE plugin_name = ?',
-                    $this->getName()
-                );
-                $this->config = $stmt->rowCount()
-                    ? json_decode($stmt->fetchRow(PDO::FETCH_COLUMN), true)
-                    : $this->getConfigFromFile();
-            }
-        }
-        return $this->config;
-    }
-
-    /**
-     * Get plugin manager
-     *
-     * @return PluginManager
-     */
-    final public function getPluginManager(): PluginManager
-    {
-        return $this->pm;
-    }
-
-    /**
      * Returns plugin name
      *
      * @return string
+     * @throws PluginException on failure
      */
     public function getName(): string
     {
@@ -164,7 +118,87 @@ abstract class AbstractPlugin
 
         return $this->pluginName;
     }
+    
+    /**
+     * Return plugin info from the database, or from the plugin info.php file if
+     * no data were found in database.
+     *
+     * @return array
+     */
+    public function getInfo(): array
+    {
+        if (NULL === $this->pluginInfo) {
+            if (!$this->getPluginManager()->pluginIsKnown($this->getName())) {
+                $this->pluginInfo = $this->getInfoFromFile();
+            } else {
+                $stmt = exec_query(
+                    '
+                        SELECT `plugin_info`
+                        FROM `plugin`
+                        WHERE `plugin_name` = ?
+                    ',
+                    [$this->getName()]
+                );
+                $this->pluginInfo = $stmt->rowCount()
+                    ? json_decode($stmt->fetchRow(PDO::FETCH_COLUMN), true)
+                    : $this->getInfoFromFile();
+            }
+        }
 
+        return $this->pluginInfo;
+    }
+
+    /**
+     * Returns plugin info from the plugin info.php file.
+     *
+     * Plugin info.php file need to return an associative array with the
+     * following key-value pairs:
+     *  - name        : Plugin name (required)
+     *  - desc        : Plugin short description (required)
+     *  - url         : Plugin site (default: https://www.i-mscp.net)
+     *  - author      : Plugin author name(s) (default: i-MSCP Team)
+     *  - email       : Plugin author email (default: team@i-mscp.net)
+     *  - version     : Plugin version (required)
+     *  - build       : Last build of the plugin in YYYYMMDDNN format (required)
+     *  - require_api : Required i-MSCP plugin API version (required)
+     *  - priority    : Plugin processing priority (default: 0)
+     *
+     * A plugin can also provide other info for its own needs. However, the
+     * following keys are reserved for internal use:
+     *   - __nversion__      : Plugin newest version
+     *   - __nbuild__        : Plugin newest build
+     *   - __installable__   : Whether or not the plugin is installable
+     *   - __uninstallable__ : Whether or not the plugin can be uninstalled
+     *   - __migration__     : Last applied database migration if any
+     *
+     * @return array
+     */
+    public function getInfoFromFile(): array
+    {
+        $file = $this->getPluginManager()->pluginGetRootDir()
+            . DIRECTORY_SEPARATOR . $this->getName() . DIRECTORY_SEPARATOR
+            . 'info.php';
+
+        if (!@is_readable($file)) {
+            throw new PluginException(sprintf(
+                "Couldn't read the %s plugin info.php file.", $this->getName()
+            ));
+        }
+
+        // Be sure to load newest version on next call
+        OpcodeCache::clearAllActive($file);
+
+        return array_merge(
+            [
+                'url'      => 'https://www.i-mscp.net',
+                'author'   => 'i-MSCP Team',
+                'email'    => 'team@i-mscp.net',
+                'priority' => 0
+            ],
+            include $file
+        );
+    }
+    
     /**
      * Return the plugin configuration from the plugin config.php file, and
      * local configuration file if any.
@@ -173,36 +207,32 @@ abstract class AbstractPlugin
      */
     public function getConfigFromFile(): array
     {
-        $pm = $this->getPluginManager();
+        $pluginManager = $this->getPluginManager();
         $pluginName = $this->getName();
-        $file = $this->getPluginManager()->pluginGetRootDir()
-            . DIRECTORY_SEPARATOR
-            . $pluginName
-            . DIRECTORY_SEPARATOR
-            . 'config.php';
-        $config = [];
+        $pluginConfigFile = $this->getPluginManager()->pluginGetRootDir()
+            . DIRECTORY_SEPARATOR . $pluginName . DIRECTORY_SEPARATOR
+            . 'pluginConfig.php';
+        $pluginConfig = [];
 
-        if (!file_exists($file)) {
-            return $config;
+        if (!file_exists($pluginConfigFile)) {
+            return $pluginConfig;
         }
 
-        if (!@is_readable($file)) {
+        if (!@is_readable($pluginConfigFile)) {
             throw new PluginException(sprintf(
-                'Unable to read the plugin %s file. Please check file permissions',
-                $file
+                "Couldn't read read the plugin %s file. Please fix the file permissions",
+                $pluginConfigFile
             ));
         }
 
-        $config = include $file;
+        $pluginConfig = include $pluginConfigFile;
 
         // Be sure to load newest version on next call
-        OpcodeCache::clearAllActive($file);
+        OpcodeCache::clearAllActive($pluginConfigFile);
 
         # See https://wiki.i-mscp.net/doku.php?id=plugins:configuration
-        $file = $pm->pluginGetPersistentDataDir()
-            . DIRECTORY_SEPARATOR
-            . 'plugins'
-            . DIRECTORY_SEPARATOR
+        $file = $pluginManager->pluginGetPersistentDataDir()
+            . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR
             . "$pluginName.php";
 
         if (@is_readable($file)) {
@@ -213,18 +243,103 @@ abstract class AbstractPlugin
             // Remove item(s) first (if needed)
             if (array_key_exists('__REMOVE__', $localConfig)) {
                 if (is_array($localConfig['__REMOVE__'])) {
-                    $config = utils_arrayDiffRecursive(
-                        $config, $localConfig['__REMOVE__']
+                    $pluginConfig = utils_arrayDiffRecursive(
+                        $pluginConfig, $localConfig['__REMOVE__']
                     );
                 }
 
                 unset($localConfig['__REMOVE__']);
             }
 
-            $config = utils_arrayMergeRecursive($config, $localConfig);
+            $pluginConfig = utils_arrayMergeRecursive($pluginConfig, $localConfig);
         }
 
-        return $config;
+        return $pluginConfig;
+    }
+
+    /**
+     * Return the plugin configuration from the database, or from the plugin
+     * config.php file if no data were found in the database.
+     *
+     * @return array
+     * @throws PluginException on failure
+     */
+    public function getConfig(): array
+    {
+
+        if (NULL === $this->pluginConfig) {
+            try {
+                if ($this->getPluginManager()->pluginIsKnown($this->getName())) {
+                    $stmt = exec_query(
+                        'SELECT plugin_config FROM plugin WHERE plugin_name = ?',
+                        $this->getName()
+                    );
+                    $this->pluginConfig = $stmt->rowCount()
+                        ? json_decode($stmt->fetchRow(PDO::FETCH_COLUMN), true)
+                        : $this->getConfigFromFile();
+                } else {
+                    $this->pluginConfig = $this->getConfigFromFile();
+                }
+            } catch (Throwable $e) {
+                throw new PluginException(sprintf(
+                    "Couldn't get plugin configuration: %s", $e->getMessage()
+                ));
+            }
+        }
+        return $this->pluginConfig;
+    }
+
+    /**
+     * Returns the given plugin configuration parameter.
+     *
+     * @param string $param Configuration parameter name
+     * @param mixed $default Default value returned if $param is not found
+     * @return mixed Configuration parameter value or $default if $param not
+     *               found
+     * @throws PluginException on failure
+     */
+    public function getConfigParam(string $param, $default = NULL)
+    {
+        $pluginConfig = $this->getConfig();
+
+        return isset($pluginConfig[$param]) ? $pluginConfig[$param] : $default;
+    }
+
+    /**
+     * Return the plugin previous configuration from the database, or from the
+     * plugin configuration file if no data were found in the database.
+     *
+     * @return array
+     * @throws PluginException on failure
+     */
+    public function getConfigPrev(): array
+    {
+        if (NULL === $this->pluginConfigPrev) {
+            try {
+                if ($this->getPluginManager()->pluginIsKnown($this->getName())) {
+                    $stmt = exec_query(
+                        '
+                        SELECT `plugin_config_prev`
+                        FROM `plugin`
+                        WHERE `plugin_name` = ?
+                    ',
+                        [$this->getName()]
+                    );
+                    $this->pluginConfigPrev = $stmt->rowCount()
+                        ? json_decode($stmt->fetchRow(PDO::FETCH_COLUMN), true)
+                        : $this->getConfig();
+                } else {
+                    $this->pluginConfigPrev = $this->getConfig();
+                }
+            } catch (Throwable $e) {
+                throw new PluginException(sprintf(
+                    "Couldn't get plugin previous configuration: %s",
+                    $e->getMessage()
+                ));
+            }
+        }
+
+        return $this->pluginConfigPrev;
     }
 
     /**
@@ -233,40 +348,24 @@ abstract class AbstractPlugin
      * @param string $param Configuration parameter name
      * @param mixed $default Default value returned if $param is not found
      * @return mixed Configuration parameter value
+     * @throws PluginException on failure
      */
     public function getConfigPrevParam(string $param, $default = NULL)
     {
-        $configPrev =& $this->getConfigPrev();
-        return isset($configPrev[$param]) ? $configPrev[$param] : $default;
+        $pluginConfigPrev = $this->getConfigPrev();
+
+        return isset($pluginConfigPrev[$param])
+            ? $pluginConfigPrev[$param] : $default;
     }
 
     /**
-     * Return the plugin previous configuration from the database, or from the
-     * plugin configuration file if no data were found in the database.
+     * Get plugin manager
      *
-     * @return array
+     * @return PluginManager
      */
-    public function &getConfigPrev(): array
+    final public function getPluginManager(): PluginManager
     {
-        if (NULL === $this->configPrev) {
-            if (!$this->getPluginManager()->pluginIsKnown($this->getName())) {
-                $this->configPrev = $this->getConfig();
-            } else {
-                $stmt = exec_query(
-                    '
-                        SELECT `plugin_config_prev`
-                        FROM `plugin`
-                        WHERE `plugin_name` = ?
-                    ',
-                    [$this->getName()]
-                );
-                $this->configPrev = $stmt->rowCount()
-                    ? json_decode($stmt->fetchRow(PDO::FETCH_COLUMN), true)
-                    : $this->getConfig();
-            }
-        }
-
-        return $this->configPrev;
+        return $this->pluginManager;
     }
 
     /**
@@ -392,10 +491,10 @@ abstract class AbstractPlugin
      *
      * On failure, this method *MUST* throw an iMSCP\Plugin\PluginException
      *
-     * @param PluginManager $pm
+     * @param PluginManager $pluginManager
      * @return void
      */
-    public function install(PluginManager $pm)
+    public function install(PluginManager $pluginManager)
     {
     }
 
@@ -407,10 +506,10 @@ abstract class AbstractPlugin
      *
      * On failure, this method *MUST* throw an iMSCP\Plugin\PluginException
      *
-     * @param PluginManager $pm
+     * @param PluginManager $pluginManager
      * @return void
      */
-    public function uninstall(PluginManager $pm)
+    public function uninstall(PluginManager $pluginManager)
     {
     }
 
@@ -422,10 +521,10 @@ abstract class AbstractPlugin
      *
      * On failure, this method *MUST* throw an iMSCP\Plugin\PluginException
      *
-     * @param PluginManager $pm
+     * @param PluginManager $pluginManager
      * @return void
      */
-    public function delete(PluginManager $pm)
+    public function delete(PluginManager $pluginManager)
     {
     }
 
@@ -437,12 +536,14 @@ abstract class AbstractPlugin
      *
      * On failure, this method *MUST* throw an iMSCP\Plugin\PluginException
      *
-     * @param PluginManager $pm
+     * @param PluginManager $pluginManager
      * @param string $fromVersion Version from which plugin update is initiated
      * @param string $toVersion Version to which plugin is updated
      * @return void
      */
-    public function update(PluginManager $pm, $fromVersion, $toVersion)
+    public function update(
+        PluginManager $pluginManager, string $fromVersion, string $toVersion
+    )
     {
     }
 
@@ -457,7 +558,7 @@ abstract class AbstractPlugin
      * @param PluginManager $pm
      * @return void
      */
-    public function enable(PluginManager $pm)
+    public function enable(PluginManager $pm): void
     {
     }
 
@@ -472,7 +573,7 @@ abstract class AbstractPlugin
      * @param PluginManager $pm
      * @return void
      */
-    public function disable(PluginManager $pm)
+    public function disable(PluginManager $pm): void
     {
     }
 
@@ -484,7 +585,7 @@ abstract class AbstractPlugin
      *
      * @return array
      */
-    public function getItemWithErrorStatus()
+    public function getItemWithErrorStatus(): array
     {
         return [];
     }
@@ -498,10 +599,12 @@ abstract class AbstractPlugin
      *
      * @param string $table Table name
      * @param string $field Status field name
-     * @param int $itemId item unique identifier
+     * @param string $itemId item unique identifier
      * @return void
      */
-    public function changeItemStatus($table, $field, $itemId)
+    public function changeItemStatus(
+        string $table, string $field, string $itemId
+    ): void
     {
     }
 
@@ -608,10 +711,10 @@ abstract class AbstractPlugin
     )
     {
         $pluginName = $this->getName();
-        $pm = $this->getPluginManager();
+        $pluginManager = $this->getPluginManager();
         $migrationDir = is_string($migrationDir)
             ? $migrationDir
-            : $pm->pluginGetRootDir() . '/' . $pluginName . '/sql';
+            : $pluginManager->pluginGetRootDir() . '/' . $pluginName . '/sql';
         $pluginInfo = $this->getInfo();
         $dbSchemaVersion = isset($pluginInfo['db_schema_version'])
             ? $pluginInfo['db_schema_version'] : '000';
@@ -624,7 +727,7 @@ abstract class AbstractPlugin
                 // db_schema_version field from the plugin info.
                 if ($migrationMode == 'down') {
                     unset($pluginInfo['db_schema_version']);
-                    $pm->pluginUpdateInfo($pluginName, $pluginInfo);
+                    $pluginManager->pluginUpdateInfo($pluginName, $pluginInfo);
                     return;
                 }
 
@@ -691,94 +794,26 @@ abstract class AbstractPlugin
 
             $pluginInfo['db_schema_version'] = ($migrationMode == 'up')
                 ? $dbSchemaVersion : '000';
-            $pm->pluginUpdateInfo($pluginName, $pluginInfo);
+            $pluginManager->pluginUpdateInfo($pluginName, $pluginInfo);
         } catch (PluginException $e) {
             $pluginInfo['db_schema_version'] = $dbSchemaVersion;
-            $pm->pluginUpdateInfo($pluginName, $pluginInfo);
+            $pluginManager->pluginUpdateInfo($pluginName, $pluginInfo);
 
             throw new PluginException($e->getMessage(), $e->getCode(), $e);
         }
     }
 
-    /**
-     * Return plugin info from the database, or from the plugin info.php file if
-     * no data were found in database.
-     *
-     * @return array
-     */
-    public function &getInfo(): array
-    {
-        if (NULL === $this->info) {
-            if (!$this->getPluginManager()->pluginIsKnown($this->getName())) {
-                $this->info = $this->getInfoFromFile();
-            } else {
-                $stmt = exec_query(
-                    '
-                        SELECT `plugin_info`
-                        FROM `plugin`
-                        WHERE `plugin_name` = ?
-                    ',
-                    [$this->getName()]
-                );
-                $this->info = $stmt->rowCount()
-                    ? json_decode($stmt->fetchRow(PDO::FETCH_COLUMN), true)
-                    : $this->getInfoFromFile();
-            }
-        }
-
-        return $this->info;
-    }
 
     /**
-     * Returns plugin info from the plugin info.php file.
+     * Make sure that new plugin information and parameters will be reloaded
+     * when the object get cloned.
      *
-     * Plugin info.php file need to return an associative array with the
-     * following key-value pairs:
-     *  - name        : Plugin name (required)
-     *  - desc        : Plugin short description (required)
-     *  - url         : Plugin site (default: https://www.i-mscp.net)
-     *  - author      : Plugin author name(s) (default: i-MSCP Team)
-     *  - email       : Plugin author email (default: team@i-mscp.net)
-     *  - version     : Plugin version (required)
-     *  - build       : Last build of the plugin in YYYYMMDDNN format (required)
-     *  - require_api : Required i-MSCP plugin API version (required)
-     *  - priority    : Plugin processing priority (default: 0)
-     *
-     * A plugin can also provide other info for its own needs. However, the
-     * following keys are reserved for internal use:
-     *   - __nversion__      : Plugin newest version
-     *   - __nbuild__        : Plugin newest build
-     *   - __installable__   : Whether or not the plugin is installable
-     *   - __uninstallable__ : Whether or not the plugin can be uninstalled
-     *   - __migration__     : Last applied database migration if any
-     *
-     * @return array
+     * @return void
      */
-    public function getInfoFromFile(): array
+    final public function __clone()
     {
-        $file = $this->getPluginManager()->pluginGetRootDir()
-            . DIRECTORY_SEPARATOR
-            . $this->getName()
-            . DIRECTORY_SEPARATOR
-            . 'info.php';
-
-        if (!@is_readable($file)) {
-            throw new PluginException(sprintf(
-                "Couldn't read the %s plugin info.php file.", $this->getName()
-            ));
-        }
-
-        // Be sure to load newest version on next call
-        OpcodeCache::clearAllActive($file);
-
-        return array_merge(
-            [
-                'url'      => 'https://www.i-mscp.net',
-                'author'   => 'i-MSCP Team',
-                'email'    => 'team@i-mscp.net',
-                'priority' => 0
-            ],
-            include $file
-        );
+        $this->pluginInfo = null;
+        $this->pluginConfig = null;
+        $this->pluginConfigPrev = null;
     }
 }

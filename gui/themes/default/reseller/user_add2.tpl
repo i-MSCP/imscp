@@ -16,23 +16,6 @@
 
             $mailQuotaField.attr("min", 0).removeAttr("max");
         });
-
-        // Ensure that PHP is enabled when software installer is enabled
-        $("#software_allowed_yes").on("change", function() {
-            if($(this).is(":checked")) {
-                var $el = $("#php_yes");
-                if(!$el.is(":checked")) {
-                    $el.prop("checked", true).button("refresh").trigger("change");
-                }
-            }
-        });
-
-        // Ensure that software installer is disabled when PHP is disabled
-        $("#php_no").on("change", function() {
-            if($(this).is(":checked")) {
-                $("#software_allowed_no").prop("checked", true).button("refresh");
-            }
-        });
     });
 </script>
 <form method="post" action="user_add2.php">
@@ -274,19 +257,6 @@
             </td>
         </tr>
         <!-- EDP: ext_mail_feature -->
-        <!-- BDP: aps_feature -->
-        <tr>
-            <td>{TR_SOFTWARE_SUPP}</td>
-            <td>
-                <div class="radio">
-                    <input type="radio" name="software_allowed" value="_yes_" id="software_allowed_yes"{VL_SOFTWAREY}>
-                    <label for="software_allowed_yes">{TR_YES}</label>
-                    <input type="radio" name="software_allowed" value="_no_" id="software_allowed_no"{VL_SOFTWAREN}>
-                    <label for="software_allowed_no">{TR_NO}</label>
-                </div>
-            </td>
-        </tr>
-        <!-- EDP: aps_feature -->
         <!-- BDP: backup_feature -->
         <tr>
             <td>{TR_BACKUP}</td>

@@ -118,10 +118,6 @@ function customerHasFeature($featureNames, $forceReload = false)
                 && $dmnProps['allowbackup'] != '',
             'protected_areas'    => true,
             'custom_error_pages' => true,
-            'aps'                => (
-                $dmnProps['domain_software_allowed'] != 'no'
-                && $dmnProps['domain_ftpacc_limit'] != '-1'
-            ),
             'ssl'                => $cfg['ENABLE_SSL'] == 1
         ];
 

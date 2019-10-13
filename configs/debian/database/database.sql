@@ -84,7 +84,7 @@ insert ignore into `config` (`name`, `value`) values
   ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
   ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
   ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-  ('DATABASE_REVISION', '285');
+  ('DATABASE_REVISION', '287');
 
 -- --------------------------------------------------------
 
@@ -134,7 +134,6 @@ create table if not exists `domain` (
   `domain_cgi` varchar(15) not null,
   `allowbackup` varchar(12) not null default 'dmn|sql|mail',
   `domain_dns` varchar(15) not null default 'no',
-  `domain_software_allowed` varchar(15) not null default 'no',
   `phpini_perm_system` varchar(20) not null default 'no',
   `phpini_perm_allow_url_fopen` varchar(20) not null default 'no',
   `phpini_perm_display_errors` varchar(20) not null default 'no',
@@ -456,7 +455,6 @@ create table if not exists `php_ini` (
 create table if not exists `plugin` (
   `plugin_id` int(11) UNSIGNED not null auto_increment,
   `plugin_name` varchar(50) not null,
-  `plugin_type` varchar(20) not null,
   `plugin_info` text not null,
   `plugin_config` text default null,
   `plugin_config_prev` text default null,
@@ -539,9 +537,6 @@ create table if not exists `reseller_props` (
   `max_traff_amnt` int(11) not null default '0',
   `support_system` ENUM( 'yes', 'no' ) not null default 'yes',
   `reseller_ips` text ,
-  `software_allowed` varchar(15) not null default 'no',
-  `softwaredepot_allowed` varchar(15) not null default 'yes',
-  `websoftwaredepot_allowed` varchar(15) not null default 'yes',
   `php_ini_system` varchar(15) not null default 'no',
   `php_ini_al_disable_functions` varchar(15) not null default 'no',
   `php_ini_al_mail_function` varchar(15) not null default 'yes',
@@ -731,109 +726,3 @@ create table if not exists `user_gui_props` (
 ) engine=InnoDB default charset=utf8mb4 collate=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
-
---
--- Table structure for table `web_software`
---
-
-create table if not exists `web_software` (
-  `software_id` int(10) unsigned not null auto_increment,
-  `software_master_id` int(10) unsigned not null default '0',
-  `reseller_id` int(10) unsigned not null default '0',
-  `software_installtype` varchar(15) not null,
-  `software_name` varchar(100) not null,
-  `software_version` varchar(20) not null,
-  `software_language` varchar(15) not null,
-  `software_type` varchar(20) not null,
-  `software_db` tinyint(1) not null,
-  `software_archive` varchar(100) not null,
-  `software_installfile` varchar(100) not null,
-  `software_prefix` varchar(50) not null,
-  `software_link` varchar(100) not null,
-  `software_desc` mediumtext not null,
-  `software_active` int(1) not null,
-  `software_status` varchar(15) not null,
-  `rights_add_by` int(10) unsigned not null default '0',
-  `software_depot` varchar(15) not null not null default 'no',
-  primary key (`software_id`),
-  index `software_master_id` (`software_master_id`),
-  index `reseller_id` (`reseller_id`)
-) engine=InnoDB default charset=utf8mb4 collate=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `web_software_inst`
---
-
-create table if not exists `web_software_inst` (
-  `domain_id` int(10) unsigned not null,
-  `alias_id` int(10) unsigned not null default '0',
-  `subdomain_id` int(10) unsigned not null default '0',
-  `subdomain_alias_id` int(10) unsigned not null default '0',
-  `software_id` int(10) not null,
-  `software_master_id` int(10) unsigned not null default '0',
-  `software_res_del` int(1) not null default '0',
-  `software_name` varchar(100) not null,
-  `software_version` varchar(20) not null,
-  `software_language` varchar(15) not null,
-  `path` varchar(255) not null default '0',
-  `software_prefix` varchar(50) not null default '0',
-  `db` varchar(100) not null default '0',
-  `database_user` varchar(100) not null default '0',
-  `database_tmp_pwd` varchar(100) not null default '0',
-  `install_username` varchar(100) not null default '0',
-  `install_password` varchar(100) not null default '0',
-  `install_email` varchar(100) not null default '0',
-  `software_status` varchar(15) not null,
-  `software_depot` varchar(15) not null not null default 'no',
-  index `domain_id` (`domain_id`),
-  index `alias_id` (`alias_id`),
-  index `subdomain_id` (`subdomain_id`),
-  index `subdomain_alias_id` (`subdomain_alias_id`),
-  index `software_id` (`software_id`),
-  index `software_master_id` (`software_master_id`)
-) engine=InnoDB default charset=utf8mb4 collate=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `web_software_depot`
---
-
-create table if not exists `web_software_depot` (
-  `package_id` int(10) unsigned not null auto_increment,
-  `package_install_type` varchar(15) not null,
-  `package_title` varchar(100) not null,
-  `package_version` varchar(20) not null,
-  `package_language` varchar(15) not null,
-  `package_type` varchar(20) not null,
-  `package_description` mediumtext not null,
-  `package_vendor_hp` varchar(100) not null,
-  `package_download_link` varchar(100) not null,
-  `package_signature_link` varchar(100) not null,
-  primary key (`package_id`)
-) engine=InnoDB default charset=utf8mb4 collate=utf8mb4_unicode_ci auto_increment=1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `web_software_options`
---
-
-create table if not exists `web_software_options` (
-  `use_webdepot` tinyint(1) unsigned not null default '1',
-  `webdepot_xml_url` varchar(255) not null,
-  `webdepot_last_update` datetime not null,
-  unique key `use_webdepot` (`use_webdepot`)
-) engine=InnoDB default charset=utf8mb4 collate=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `web_software_options`
---
-
-insert ignore into `web_software_options` (
-    `use_webdepot`, `webdepot_xml_url`, `webdepot_last_update`
-) values (
-    1, 'http://app-pkg.i-mscp.net/imscp_webdepot_list.xml', '0000-00-00 00:00:00'
-);

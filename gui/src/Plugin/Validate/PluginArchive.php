@@ -91,9 +91,9 @@ class PluginArchive extends Zend_Validate_Abstract
     /**
      * PluginArchive constructor.
      *
-     * @param array $options
+     * @param mixed $options
      */
-    public function __construct(array $options = [])
+    public function __construct($options)
     {
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
@@ -276,10 +276,6 @@ class PluginArchive extends Zend_Validate_Abstract
      */
     public function _isValidPlugin(array $info)
     {
-        if (NULL === $info) {
-            return false;
-        }
-
         // Check for plugin info fields
 
         // Required fields

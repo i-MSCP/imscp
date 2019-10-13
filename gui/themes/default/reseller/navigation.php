@@ -34,13 +34,6 @@ return [
                 'label'       => tr('Overview'),
                 'uri'         => '/reseller/index.php',
                 'title_class' => 'general'
-            ],
-            'software_upload' => [
-                'label'       => tr('Software upload'),
-                'uri'         => '/reseller/software_upload.php',
-                'title_class' => 'apps_installer',
-                'resource'    => 'aps',
-                'assertion'   => ResellerHasApsFeatureAssertion::class
             ]
         ]
     ],

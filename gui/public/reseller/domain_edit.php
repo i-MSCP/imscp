@@ -78,8 +78,7 @@ function reseller_getResellerProps($resellerId)
         '
             SELECT reseller_id, current_sub_cnt, max_sub_cnt, current_als_cnt, max_als_cnt, current_mail_cnt,
                 max_mail_cnt, current_ftp_cnt, max_ftp_cnt, current_sql_db_cnt, max_sql_db_cnt, current_sql_user_cnt,
-                max_sql_user_cnt, current_disk_amnt, max_disk_amnt, current_traff_amnt, max_traff_amnt, reseller_ips,
-                software_allowed
+                max_sql_user_cnt, current_disk_amnt, max_disk_amnt, current_traff_amnt, max_traff_amnt, reseller_ips
             FROM reseller_props WHERE reseller_id = ?
         ',
         $resellerId
@@ -101,7 +100,7 @@ function reseller_getDomainProps($domainId)
             SELECT admin_id, domain_id, domain_name, domain_expires, domain_status, domain_ip_id, domain_subd_limit,
                 domain_alias_limit, domain_mailacc_limit, domain_ftpacc_limit, domain_sqld_limit,
                 domain_sqlu_limit, domain_disk_limit, domain_disk_usage, domain_traffic_limit, domain_php,
-                domain_cgi, domain_dns, domain_software_allowed, allowbackup, domain_external_mail,
+                domain_cgi, domain_dns, allowbackup, domain_external_mail,
                 web_folder_protection, mail_quota
             FROM domain
             JOIN admin ON(admin_id = domain_admin_id)
@@ -198,7 +197,6 @@ function &getData($domainId, $forUpdate = false)
     $data['fallback_domain_php'] = $data['domain_php'];
     $data['fallback_domain_cgi'] = $data['domain_cgi'];
     $data['fallback_domain_dns'] = $data['domain_dns'];
-    $data['fallback_domain_software_allowed'] = $data['domain_software_allowed'];
     $data['fallback_allowbackup'] = $data['allowbackup'] = explode('|', $data['allowbackup']);
     $data['fallback_domain_external_mail'] = $data['domain_external_mail'];
     $data['fallback_web_folder_protection'] = $data['web_folder_protection'];
@@ -241,13 +239,6 @@ function &getData($domainId, $forUpdate = false)
         $data['domain_php'] = isset($_POST['domain_php']) ? clean_input($_POST['domain_php']) : $data['domain_php'];
         $data['domain_cgi'] = isset($_POST['domain_cgi']) ? clean_input($_POST['domain_cgi']) : $data['domain_cgi'];
         $data['domain_dns'] = isset($_POST['domain_dns']) ? clean_input($_POST['domain_dns']) : $data['domain_dns'];
-
-        if ($data['software_allowed'] == 'yes') {
-            $data['domain_software_allowed'] = isset($_POST['domain_software_allowed'])
-                ? clean_input($_POST['domain_software_allowed']) : $data['domain_software_allowed'];
-        } else {
-            $data['domain_software_allowed'] = 'no';
-        }
 
         if (Registry::get('config')['BACKUP_DOMAINS'] == 'yes') {
             $data['allowbackup'] = isset($_POST['allowbackup']) && is_array($_POST['allowbackup'])
@@ -571,17 +562,6 @@ function generateFeaturesForm(TemplateEngine $tpl, &$data)
         $tpl->assign('CUSTOM_DNS_RECORDS_FEATURE', '');
     }
 
-    // APS support
-    if ($data['software_allowed'] == 'no') {
-        $tpl->assign('APS_BLOCK', '');
-    } else {
-        $tpl->assign([
-            'TR_APS'  => tr('Software installer'),
-            'APS_YES' => $data['domain_software_allowed'] == 'yes' ? ' checked' : '',
-            'APS_NO'  => $data['domain_software_allowed'] != 'yes' ? ' checked' : ''
-        ]);
-    }
-
     // External mail support
     if ($data['max_mail_cnt'] == '-1') {
         $tpl->assign('EXT_MAIL_BLOCK', '');
@@ -880,10 +860,6 @@ function reseller_checkAndUpdateData($domainId)
         $data['domain_dns'] = in_array($data['domain_dns'], ['no', 'yes'])
             ? $data['domain_dns'] : $data['fallback_domain_dns'];
 
-        // Check for APS support
-        $data['domain_software_allowed'] = in_array($data['domain_software_allowed'], ['no', 'yes'])
-            ? $data['domain_software_allowed'] : $data['fallback_domain_software_allowed'];
-
         // Check for External mail server support
         $data['domain_external_mail'] = in_array($data['domain_external_mail'], ['no', 'yes'])
             ? $data['domain_external_mail'] : $data['fallback_domain_external_mail'];
@@ -960,7 +936,7 @@ function reseller_checkAndUpdateData($domainId)
                         domain_expires = ?, domain_last_modified = ?, domain_mailacc_limit = ?, domain_ftpacc_limit = ?,
                         domain_traffic_limit = ?, domain_sqld_limit = ?, domain_sqlu_limit = ?, domain_status = ?,
                         domain_alias_limit = ?, domain_subd_limit = ?, domain_ip_id = ?, domain_disk_limit = ?,
-                        domain_php = ?, domain_cgi = ?, allowbackup = ?, domain_dns = ?,  domain_software_allowed = ?,
+                        domain_php = ?, domain_cgi = ?, allowbackup = ?, domain_dns = ?,
                         phpini_perm_system = ?, phpini_perm_allow_url_fopen = ?, phpini_perm_display_errors = ?,
                         phpini_perm_disable_functions = ?, phpini_perm_mail_function = ?, domain_external_mail = ?,
                         web_folder_protection = ?,
@@ -973,7 +949,7 @@ function reseller_checkAndUpdateData($domainId)
                     $data['domain_traffic_limit'], $data['domain_sqld_limit'], $data['domain_sqlu_limit'],
                     $needDaemonRequest ? 'tochange' : 'ok', $data['domain_alias_limit'], $data['domain_subd_limit'],
                     $data['domain_ip_id'], $data['domain_disk_limit'], $data['domain_php'], $data['domain_cgi'],
-                    implode('|', $data['allowbackup']), $data['domain_dns'], $data['domain_software_allowed'],
+                    implode('|', $data['allowbackup']), $data['domain_dns'],
                     $phpini->getClientPermission('phpiniSystem'),
                     $phpini->getClientPermission('phpiniAllowUrlFopen'),
                     $phpini->getClientPermission('phpiniDisplayErrors'),

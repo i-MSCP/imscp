@@ -272,7 +272,6 @@ function resellerHasFeature($featureName, $forceReload = false)
             'php_editor'         => $resellerProps['php_ini_system'] == 'yes',
             'cgi'                => true,
             'custom_dns_records' => $cfg['NAMED_PACKAGE'] != 'Servers::noserver',
-            'aps'                => $resellerProps['software_allowed'] != 'no',
             'external_mail'      => true,
             'backup'             => $cfg['BACKUP_DOMAINS'] != 'no',
             'support'            => $cfg['IMSCP_SUPPORT_SYSTEM']

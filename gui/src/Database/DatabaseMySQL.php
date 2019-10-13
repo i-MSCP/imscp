@@ -476,11 +476,15 @@ class DatabaseMySQL
      */
     public function rollBack(): void
     {
-        $this->transactionCounter--;
+        if ($this->transactionCounter > 0) {
+            $this->transactionCounter--;
+        }
 
         if ($this->transactionCounter == 0) {
             try {
-                $this->pdo->rollBack();
+                if($this->inTransaction()) {
+                    $this->pdo->rollBack();
+                }
             } catch (PDOException $e) {
                 // Ignore rollback exception
             }
