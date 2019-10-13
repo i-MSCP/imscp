@@ -49,27 +49,27 @@ abstract class AbstractPlugin
     /**
      * @var string Plugin name
      */
-    private $pluginName;
+    protected $pluginName;
 
     /**
      * @var array Plugin info
      */
-    private $pluginInfo;
+    protected $pluginInfo;
 
     /**
      * @var array Plugin configuration
      */
-    private $pluginConfig;
+    protected $pluginConfig;
 
     /**
      * @var array Plugin previous configuration
      */
-    private $pluginConfigPrev;
+    protected $pluginConfigPrev;
 
     /**
      * @var PluginManager
      */
-    private $pluginManager;
+    protected $pluginManager;
 
     /**
      * Constructor

@@ -108,11 +108,11 @@ class BruteForce extends AbstractPlugin
     /**
      * Constructor
      *
-     * @param PluginManager $pm
+     * @param PluginManager $pluginManager
      * @param string $targetForm Target form (login|captcha)
      * @çeturn void
      */
-    public function __construct(PluginManager $pm, $targetForm = 'login')
+    public function __construct(PluginManager $pluginManager, $targetForm = 'login')
     {
         $cfg = Registry::get('config');
 
@@ -143,7 +143,7 @@ class BruteForce extends AbstractPlugin
             [$this->blockingTime * 60, '__bruteforce__']
         );
 
-        parent::__construct($pm);
+        parent::__construct($pluginManager);
     }
 
     /**
@@ -153,8 +153,8 @@ class BruteForce extends AbstractPlugin
      */
     public function &getInfo(): array
     {
-        if (NULL === $this->info) {
-            $this->info = [
+        if (NULL === $this->pluginInfo) {
+            $this->pluginInfo = [
                 'name'        => 'Bruteforce',
                 'author'      => 'Laurent Declercq',
                 'email'       => 'l.declercq@nuxwin.com',
@@ -166,7 +166,7 @@ class BruteForce extends AbstractPlugin
             ];
         }
 
-        return $this->info;
+        return $this->pluginInfo;
     }
 
     /**
