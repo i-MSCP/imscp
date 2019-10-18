@@ -547,7 +547,7 @@ sub _init
 {
     my ( $self ) = @_;
 
-    $self->{'restart'} = FAKSE;
+    $self->{'restart'} = FALSE;
     $self->{'forceMailboxesQuotaRecalc'} = FALSE;
     $self->{'execMode'} = ( defined $::execmode && $::execmode eq 'setup' )
         ? 'setup' : 'backend';
