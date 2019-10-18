@@ -100,7 +100,7 @@ abstract class AbstractPlugin
      * @return string
      * @throws PluginException on failure
      */
-    public function getName(): string
+    public function getName()
     {
         if (NULL === $this->pluginName) {
             $class = get_class($this);
@@ -125,7 +125,7 @@ abstract class AbstractPlugin
      *
      * @return array
      */
-    public function getInfo(): array
+    public function getInfo()
     {
         if (NULL === $this->pluginInfo) {
             if (!$this->getPluginManager()->pluginIsKnown($this->getName())) {
@@ -173,7 +173,7 @@ abstract class AbstractPlugin
      *
      * @return array
      */
-    public function getInfoFromFile(): array
+    public function getInfoFromFile()
     {
         $file = $this->getPluginManager()->pluginGetRootDir()
             . DIRECTORY_SEPARATOR . $this->getName() . DIRECTORY_SEPARATOR
@@ -205,7 +205,7 @@ abstract class AbstractPlugin
      *
      * @return array
      */
-    public function getConfigFromFile(): array
+    public function getConfigFromFile()
     {
         $pluginManager = $this->getPluginManager();
         $pluginName = $this->getName();
@@ -264,7 +264,7 @@ abstract class AbstractPlugin
      * @return array
      * @throws PluginException on failure
      */
-    public function getConfig(): array
+    public function getConfig()
     {
 
         if (NULL === $this->pluginConfig) {
@@ -312,7 +312,7 @@ abstract class AbstractPlugin
      * @return array
      * @throws PluginException on failure
      */
-    public function getConfigPrev(): array
+    public function getConfigPrev()
     {
         if (NULL === $this->pluginConfigPrev) {
             try {
@@ -558,7 +558,7 @@ abstract class AbstractPlugin
      * @param PluginManager $pm
      * @return void
      */
-    public function enable(PluginManager $pm): void
+    public function enable(PluginManager $pm)
     {
     }
 
@@ -573,7 +573,7 @@ abstract class AbstractPlugin
      * @param PluginManager $pm
      * @return void
      */
-    public function disable(PluginManager $pm): void
+    public function disable(PluginManager $pm)
     {
     }
 
@@ -585,7 +585,7 @@ abstract class AbstractPlugin
      *
      * @return array
      */
-    public function getItemWithErrorStatus(): array
+    public function getItemWithErrorStatus()
     {
         return [];
     }
@@ -604,7 +604,7 @@ abstract class AbstractPlugin
      */
     public function changeItemStatus(
         string $table, string $field, string $itemId
-    ): void
+    )
     {
     }
 
