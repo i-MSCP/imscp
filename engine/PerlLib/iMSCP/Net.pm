@@ -95,7 +95,7 @@ sub addAddr
         ],
         \$stdout, \$stderr
     ) == 0 or die( sprintf(
-        "Couldn't add the %s IP address: %s",
+        "Couldn't add the %s IP address to the %s network interface: %s",
         $addr,
         $dev,
         $stderr || 'Unknown error'
