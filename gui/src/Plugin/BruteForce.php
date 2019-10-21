@@ -26,6 +26,7 @@
 
 namespace iMSCP\Plugin;
 
+use iMSCP\Event\Event;
 use iMSCP\Event\EventDescription;
 use iMSCP\Event\EventManagerInterface;
 use iMSCP\Event\Events;
@@ -151,7 +152,7 @@ class BruteForce extends AbstractPlugin
      *
      * @return array
      */
-    public function &getInfo(): array
+    public function getInfo()
     {
         if (NULL === $this->pluginInfo) {
             $this->pluginInfo = [
@@ -176,25 +177,12 @@ class BruteForce extends AbstractPlugin
     {
         // That plugin must acts early in the authentication process
         $events->registerListener(
-            Events::onBeforeAuthentication, $this, 100
+            Events::onBeforeAuthentication,
+            function(Event $event) {
+                $this->onBeforeAuthentication($event);
+            },
+            100
         );
-    }
-
-    /**
-     * onBeforeAuthentication event listener
-     *
-     * @param EventDescription $event
-     * @return null|string
-     */
-    public function onBeforeAuthentication(EventDescription $event)
-    {
-        if ($this->isWaiting() || $this->isBlocked()) {
-            $event->stopPropagation();
-            return $this->getLastMessage();
-        }
-
-        $this->logAttempt();
-        return NULL;
     }
 
     /**
@@ -270,45 +258,6 @@ class BruteForce extends AbstractPlugin
     }
 
     /**
-     * Create bruteforce detection record
-     *
-     * @return void
-     */
-    protected function createRecord()
-    {
-        exec_query(
-            "
-                REPLACE INTO `login` (
-                    `session_id`, `ipaddr`, `{$this->targetForm}_count`,
-                    `lastaccess`, `user_name` 
-                ) VALUES (
-                    ?, ?, 1, UNIX_TIMESTAMP(), ?
-                )
-            ",
-            [$this->sessionId, $this->clientIpAddr, '__bruteforce__']
-        );
-    }
-
-    /**
-     * Increase login|captcha attempts by 1 for $_ipAddr
-     *
-     * @return void
-     */
-    protected function updateRecord()
-    {
-        exec_query(
-            "
-                UPDATE `login`
-                SET `lastaccess` = UNIX_TIMESTAMP(),
-                    {$this->targetForm}_count = {$this->targetForm}_count + 1
-                WHERE `ipaddr` = ?
-                AND `user_name` ?
-            ",
-            [$this->clientIpAddr, '__bruteforce__']
-        );
-    }
-
-    /**
      * Initialization
      *
      * @return void
@@ -320,7 +269,7 @@ class BruteForce extends AbstractPlugin
                 SELECT `lastaccess`, `login_count`, `captcha_count`
                 FROM `login`
                 WHERE `ipaddr` = ?
-                AND user_name = ?
+                AND `user_name` = ?
             ',
             [$this->clientIpAddr, '__bruteforce__']
         );
@@ -344,5 +293,61 @@ class BruteForce extends AbstractPlugin
             $this->isWaitingFor = $row['lastaccess'] + $this->waitingTime;
             return;
         }
+    }
+
+    /**
+     * onBeforeAuthentication event listener
+     *
+     * @param EventDescription $event
+     * @return null|string
+     */
+    private function onBeforeAuthentication(EventDescription $event)
+    {
+        if ($this->isWaiting() || $this->isBlocked()) {
+            $event->stopPropagation();
+            return $this->getLastMessage();
+        }
+
+        $this->logAttempt();
+        return NULL;
+    }
+
+    /**
+     * Create bruteforce detection record
+     *
+     * @return void
+     */
+    private function createRecord()
+    {
+        exec_query(
+            "
+                REPLACE INTO `login` (
+                    `session_id`, `ipaddr`, `{$this->targetForm}_count`,
+                    `lastaccess`, `user_name` 
+                ) VALUES (
+                    ?, ?, 1, UNIX_TIMESTAMP(), ?
+                )
+            ",
+            [$this->sessionId, $this->clientIpAddr, '__bruteforce__']
+        );
+    }
+
+    /**
+     * Increase login|captcha attempts by 1 for $_ipAddr
+     *
+     * @return void
+     */
+    private function updateRecord()
+    {
+        exec_query(
+            "
+                UPDATE `login`
+                SET `lastaccess` = UNIX_TIMESTAMP(),
+                    `{$this->targetForm}_count` = `{$this->targetForm}_count` + 1
+                WHERE `ipaddr` = ?
+                AND `user_name` = ?
+            ",
+            [$this->clientIpAddr, '__bruteforce__']
+        );
     }
 }
