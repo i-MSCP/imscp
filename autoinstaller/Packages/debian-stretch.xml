@@ -502,13 +502,7 @@
                 repository_key_id="0xF1656F24C74CD1D8"
                 repository_key_srv="keyserver.ubuntu.com"
         >
-            <package
-                    pinning_package="libmariadbclient18"
-                    pinning_pin="release o=Debian"
-                    pinning_pin_priority="1002"
-            >
-                libmariadbclient18
-            </package>
+            <package>libmariadbclient18</package>
             <package>mariadb-client-10.2</package>
             <package>mariadb-common</package>
             <package
