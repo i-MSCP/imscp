@@ -401,7 +401,7 @@ sub _buildMainCfFile
             # smtpd TLS parameters (opportunistic)
             smtpd_tls_security_level         => {
                 action => 'replace',
-                values => [ 'may' ]
+                values => [ 'encrypt' ]
             },
             smtpd_tls_ciphers                => {
                 action => 'replace',
@@ -429,7 +429,7 @@ sub _buildMainCfFile
             },
             smtpd_tls_auth_only              => {
                 action => 'replace',
-                values => [ 'no' ]
+                values => [ 'yes' ]
             },
             smtpd_tls_received_header        => {
                 action => 'replace',
