@@ -19,8 +19,8 @@ Vagrant boxes are pulled from [Vagrant Cloud](https://app.vagrantup.com/).
 
 The following Vagrant boxes are made available
 
-- Debian 8.x (Jessie): `imscp_debian_jessie` (VirtualBox, LXC)
 - Debian 9.x (Stretch): `imscp_debian_stretch` (VirtualBox, LXC)
+- Debian 10.x (Buster): `imscp_debian_buster` (VirtualBox, LXC)
 - Ubuntu 16.04 (Xenial Xerus): `imscp_ubuntu_xenial` (VirtualBox only)
 - Ubuntu 18.04 (Bionic Beaver): `imscp_ubuntu_bionic` (VirtualBox only)
 
@@ -92,11 +92,11 @@ vagrant up <vagrant_box_name>
 where `<vagrant_box_name>` must be one of names listed in the `Vagrant boxes`
 section above.
 
-For instance, to create a `Debian Jessie` Vagrant box, you must run:
+For instance, to create a `Debian Buster` Vagrant box, you must run:
 
 ```shell
 cd <imscp_archive_dir>/Vagrant
-vagrant up imscp_debian_jessie
+vagrant up imscp_debian_Buster
 ```
 
 Note that if you don't pass a name, a `Debian Stretch` Vagrant box will be

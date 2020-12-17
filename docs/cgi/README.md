@@ -6,7 +6,7 @@ In order, to work with CGI scripts, a customer must have CGI privileges, given b
 uploaded into the `cgi-bin` folder with correct permissions and ownership. For instance:
 
 ```
-root@jessie:/var/www/virtual/domain.tld/cgi-bin# ls -la
+root@buster:/var/www/virtual/domain.tld/cgi-bin# ls -la
 total 20
 drwxr-x---  2 vu2004 vu2004 4096 janv. 25 07:16 .
 drwxr-x--- 14 vu2004 vu2004 4096 janv. 25 05:43 ..
