@@ -28,27 +28,6 @@ Vagrant.configure("2") do |config|
 
   ## Vagrant boxes definitions
 
-  # Debian 8.x/Jessie
-  config.vm.define "imscp_debian_jessie", autostart: false do |node|
-      node.vm.box = "debian/jessie64"
-
-      # VirtualBox provider configuration
-      node.vm.provider :virtualbox do |vb|
-          vb.customize ["modifyvm", :id,
-            "--memory", "1024",
-            "--name", "imscp_debian_jessie",
-            #"--natdnshostresolver1", "on"
-          ]
-      end
-
-      # LXC provider configuration
-      node.vm.provider :lxc do |lxc, override|
-          lxc.customize "cgroup.memory.limit_in_bytes", "1024M"
-          lxc.container_name = "imscp_debian_jessie"
-          override.vm.network = ""
-      end
-  end
-
   # Debian 9.x/Stretch (default if no box name passed-in to vagrant CLI)
   config.vm.define 'imscp_debian_stretch', autostart: true do |node|
       node.vm.box = "debian/stretch64"
@@ -66,6 +45,27 @@ Vagrant.configure("2") do |config|
       node.vm.provider :lxc do |lxc, override|
           lxc.customize "cgroup.memory.limit_in_bytes", "1024M"
           lxc.container_name = "imscp_debian_stretch"
+          override.vm.network = ""
+      end
+  end
+
+  # Debian 10.x/Buster
+  config.vm.define "imscp_debian_buster", autostart: false do |node|
+      node.vm.box = "debian/buster64"
+
+      # VirtualBox provider configuration
+      node.vm.provider :virtualbox do |vb|
+          vb.customize ["modifyvm", :id,
+            "--memory", "1024",
+            "--name", "imscp_debian_buster",
+            #"--natdnshostresolver1", "on"
+          ]
+      end
+
+      # LXC provider configuration
+      node.vm.provider :lxc do |lxc, override|
+          lxc.customize "cgroup.memory.limit_in_bytes", "1024M"
+          lxc.container_name = "imscp_debian_buster"
           override.vm.network = ""
       end
   end
