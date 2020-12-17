@@ -27,7 +27,7 @@ Unless otherwise stated all source code is licensed under LGPL 2.1 and has the
 following copyright:
 
 ```
-    © 2010-2019, Laurent Declercq (i-MSCP™)
+    © 2010-2020, Laurent Declercq (i-MSCP™)
     All rights reserved
 ```
 
