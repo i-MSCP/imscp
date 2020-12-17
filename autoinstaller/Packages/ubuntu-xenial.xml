@@ -325,6 +325,42 @@
             <package>php7.4-zip</package>
             <package>libapache2-mod-php7.4</package>
         </php7.4>
+        <php8.0
+                always_installed="1"
+                class="Servers::php"
+                description="PHP 8.0"
+        >
+            <package
+                    post_install_tasks="
+                        /usr/sbin/phpenmod -v 8.0 -s ALL ctype fileinfo ftp
+                        gettext iconv pdo phar posix sockets bcmath bz2 curl gd
+                        gmp imap intl json mbstring mysqlnd mysqli pdo_mysql
+                        opcache pspell dom xml xmlreader xmlwriter zip apcu
+                        apcu_bc
+                    "
+            >
+                php8.0
+            </package>
+            <package>php8.0-cli</package>
+            <package>php8.0-cgi</package>
+            <package>php8.0-fpm</package>
+            <package>php8.0-common</package>
+            <package>php8.0-bcmath</package>
+            <package>php8.0-bz2</package>
+            <package>php8.0-curl</package>
+            <package>php8.0-gd</package>
+            <package>php8.0-gmp</package>
+            <package>php8.0-imap</package>
+            <package>php8.0-intl</package>
+            <package>php8.0-mbstring</package>
+            <package>php8.0-mysql</package>
+            <package>php8.0-opcache</package>
+            <package>php8.0-phar</package>
+            <package>php8.0-pspell</package>
+            <package>php8.0-xml</package>
+            <package>php8.0-zip</package>
+            <package>libapache2-mod-php8.0</package>
+        </php8.0>
         <package>php-apcu</package>
         <package>php-apcu-bc</package>
         <package>php-pear</package>
