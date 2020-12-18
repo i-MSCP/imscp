@@ -542,6 +542,27 @@ sub _addAwstatsSection
 
     return 0 if $tplName ne 'domain.tpl' || $data->{'FORWARD'} ne 'no';
 
+    # VHost with HSTS is redirected anyway to HTTPS
+    return 0 if $data->{'VHOST_TYPE'} eq 'domain_fwd' && $data->{'HSTS_SUPPORT'};
+
+    # Redirect to HTTPS if VHost with SSL is available
+    if ( $data->{'VHOST_TYPE'} eq 'domain' && $data->{'SSL_SUPPORT'} ) {
+        ${ $cfgTpl } = replaceBloc(
+            "# SECTION addons BEGIN.\n",
+            "# SECTION addons END.\n",
+            "    # SECTION addons BEGIN.\n"
+                    . getBloc(
+                    "# SECTION addons BEGIN.\n",
+                    "# SECTION addons END.\n",
+                    ${ $cfgTpl }
+                )
+                . "    RedirectMatch 301 ^/stats\/?\$ https://$data->{'DOMAIN_NAME'}/stats/\n"
+                . "    # SECTION addons END.\n",
+            ${ $cfgTpl }
+        );
+        return 0;
+    }
+
     ${ $cfgTpl } = replaceBloc(
         "# SECTION addons BEGIN.\n",
         "# SECTION addons END.\n",
