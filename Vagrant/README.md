@@ -23,6 +23,7 @@ The following Vagrant boxes are made available
 - Debian 10.x (Buster): `imscp_debian_buster` (VirtualBox, LXC)
 - Ubuntu 16.04 (Xenial Xerus): `imscp_ubuntu_xenial` (VirtualBox only)
 - Ubuntu 18.04 (Bionic Beaver): `imscp_ubuntu_bionic` (VirtualBox only)
+- Ubuntu 20.04 (Focal Fossa): `imscp_ubuntu_focal` (VirtualBox only)
 
 ## Getting started
 
