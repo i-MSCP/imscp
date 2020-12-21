@@ -620,7 +620,7 @@ sub _buildConf
 
                 # Fixme: Find a better way to guess libssl version
                 if ( $ssl eq 'yes' ) {
-                    unless ( `ldd /usr/lib/dovecot/libdovecot-login.so | grep libssl.so` =~ /libssl.so.(\d.\d)/ ) {
+                    unless ( `ldd /usr/lib/dovecot/libdcrypt_openssl.so | grep libssl.so` =~ /libssl.so.(\d.\d)/ ) {
                         error( "Couldn't guess libssl version against which Dovecot has been built" );
                         return 1;
                     }
