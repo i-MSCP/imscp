@@ -11,7 +11,7 @@ BIND_DB_MASTER_DIR = /var/cache/bind/imscp/master
 BIND_DB_SLAVE_DIR = /var/cache/bind/imscp/slave
 NAMED = /usr/sbin/named
 NAMED_COMPILEZONE = /usr/sbin/named-compilezone
-NAMED_SERVICE = bind9
+NAMED_SERVICE =
 
 # Format for compiled zone files
 # Possible values: text, raw or raw=N where N can be 0 or 1
