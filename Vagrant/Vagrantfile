@@ -83,20 +83,34 @@ Vagrant.configure("2") do |config|
           ]
       end
   end
-  
-    # Ubuntu Bionic Beaver (18.04)
-    config.vm.define "imscp_ubuntu_bionic", autostart: false do |node|
-        node.vm.box = "bento/ubuntu-18.04"
-  
-        # VirtualBox provider configuration
-        node.vm.provider :virtualbox do |vb|
-            vb.customize ["modifyvm", :id,
-              "--memory", "1024",
-              "--name", "imscp_ubuntu_bionic",
-              #"--natdnshostresolver1", "on"
-            ]
-        end
-    end
+
+  # Ubuntu Bionic Beaver (18.04)
+  config.vm.define "imscp_ubuntu_bionic", autostart: false do |node|
+      node.vm.box = "bento/ubuntu-18.04"
+
+      # VirtualBox provider configuration
+      node.vm.provider :virtualbox do |vb|
+          vb.customize ["modifyvm", :id,
+            "--memory", "1024",
+            "--name", "imscp_ubuntu_bionic",
+            #"--natdnshostresolver1", "on"
+          ]
+      end
+  end
+
+  # Ubuntu Focal Fossa (20.04)
+  config.vm.define "imscp_ubuntu_focal", autostart: false do |node|
+      node.vm.box = "bento/ubuntu-20.04"
+
+      # VirtualBox provider configuration
+      node.vm.provider :virtualbox do |vb|
+          vb.customize ["modifyvm", :id,
+            "--memory", "1024",
+            "--name", "imscp_ubuntu_focal",
+            #"--natdnshostresolver1", "on"
+          ]
+      end
+  end
 
   ## Vagrant box upgrade
 
