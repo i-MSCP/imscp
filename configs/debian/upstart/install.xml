@@ -10,5 +10,7 @@
     <copy_config if="-f '/etc/init/php7.1-fpm.conf'" mode="0644">${ROOT_CONF}/init/php7.1-fpm.override</copy_config>
     <copy_config if="-f '/etc/init/php7.2-fpm.conf'" mode="0644">${ROOT_CONF}/init/php7.2-fpm.override</copy_config>
     <copy_config if="-f '/etc/init/php7.3-fpm.conf'" mode="0644">${ROOT_CONF}/init/php7.3-fpm.override</copy_config>
+    <copy_config if="-f '/etc/init/php7.4-fpm.conf'" mode="0644">${ROOT_CONF}/init/php7.4-fpm.override</copy_config>
+    <copy_config if="-f '/etc/init/php8.0-fpm.conf'" mode="0644">${ROOT_CONF}/init/php8.0-fpm.override</copy_config>
     <copy_config mode="0644">${ROOT_CONF}/init/imscp_traffic.conf</copy_config>
 </install>
