@@ -406,7 +406,7 @@ sub _buildPhpConfFiles
     $rs = $self->{'httpd'}->disableModules(
         'actions', 'fastcgi', 'fcgid', 'fcgid_imscp', 'suexec', 'php5',
         'php5_cgi', 'php5filter',
-        'php5.6', 'php7.0', 'php7.1', 'php7.2', 'php7.3',
+        'php5.6', 'php7.0', 'php7.1', 'php7.2', 'php7.3', 'php7.4', 'php8.0',
         'proxy_fcgi', 'proxy_handler', 'mpm_itk', 'mpm_event', 'mpm_prefork',
         'mpm_worker'
     );
@@ -501,6 +501,8 @@ sub _buildApacheConfFiles
         'php7.1-cgi.conf', 'php7.1-fpm.conf',
         'php7.3-cgi.conf', 'php7.2-fpm.conf',
         'php7.3-cgi.conf', 'php7.3-fpm.conf',
+        'php7.4-cgi.conf', 'php7.4-fpm.conf',
+        'php8.0-cgi.conf', 'php8.0-fpm.conf',
         'serve-cgi-bin.conf'
     );
     $rs ||= $self->{'httpd'}->disableSites( 'default', 'default-ssl', '000-default.conf', 'default-ssl.conf' );
