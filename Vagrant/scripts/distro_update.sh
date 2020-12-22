@@ -23,4 +23,13 @@ dpkg --remove-architecture i386 2>/dev/null
 
 apt-get update
 apt-get --assume-yes dist-upgrade
-apt-get --assume-yes install ca-certificates perl
+apt-get --assume-yes install \
+  ca-certificates            \
+  perl                       \
+  virt-what                  \
+  linux-headers-generic
+
+# Fix problem with Debian Buster (Grub not cleanly installed)
+if virt-what | grep virtualbox &> /dev/null ; then
+  grub-install /dev/sda
+fi
