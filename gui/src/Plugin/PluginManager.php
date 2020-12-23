@@ -148,9 +148,9 @@ class PluginManager
         );
         while ($plugin = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
             $this->pluginData[$plugin['plugin_name']] = [
-                'status'         => $plugin['plugin_status'],
-                'error'          => $plugin['plugin_error'],
-                'backend'        => $plugin['plugin_backend'],
+                'status'  => $plugin['plugin_status'],
+                'error'   => $plugin['plugin_error'],
+                'backend' => $plugin['plugin_backend'],
                 'lockers' => new LazyDecoder($plugin['plugin_lockers'])
             ];
         }
