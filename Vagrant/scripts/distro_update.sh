@@ -26,8 +26,7 @@ apt-get --assume-yes dist-upgrade
 apt-get --assume-yes install \
   ca-certificates            \
   perl                       \
-  virt-what                  \
-  linux-headers-generic
+  virt-what
 
 # Fix problem with Debian Buster (Grub not cleanly installed)
 if virt-what | grep virtualbox &> /dev/null ; then
