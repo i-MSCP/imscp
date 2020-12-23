@@ -473,10 +473,10 @@ class PluginManager
     {
         $plugin = $this->pluginGet($pluginName);
 
-        $pluginInfoNew = $plugin->getConfigFromFile();
+        $pluginInfoNew = $plugin->getInfoFromFile();
         $pluginConfigNew = $plugin->getConfigFromFile();
         $pluginIsKnown = $this->pluginIsKnown($pluginName);
-        
+
         if($pluginIsKnown) {
             $pluginInfoOld = $plugin->getInfo();
             $pluginConfigOld = $plugin->getConfig();
@@ -487,7 +487,7 @@ class PluginManager
 
         $pluginInfoNew['__nversion__'] = $pluginInfoNew['version'];
         $pluginInfoNew['version'] = $pluginInfoOld['version'];
- 
+
         $pluginInfoNew['__nbuild__'] = isset($pluginInfoNew['build']) ? $pluginInfoNew['build'] : '0000000000';
         $pluginInfoNew['build'] = isset($pluginInfoOld['build']) ? $pluginInfoOld['build'] : '0000000000';
 
@@ -531,7 +531,7 @@ class PluginManager
 
         if ($pluginIsKnown) {
             $pluginStatus = $this->pluginGetStatus($pluginName);
-            $pluginLockers = $this->pluginData[$pluginName]['pluginLockers'];
+            $pluginLockers = $this->pluginData[$pluginName]['lockers'];
 
             // Plugin has changes, either info or config
             if (!$this->pluginCompareData($pluginInfoNew, $pluginInfoOld)
@@ -600,12 +600,12 @@ class PluginManager
                 ? array_merge_recursive($pluginConfigNew, $pluginConfigOld)
                 : $pluginConfigNew),
             'priority'      => $pluginInfoNew['priority'],
-            'pluginStatus'  => $pluginStatus,
+            'status'        => $pluginStatus,
             'backend'       => file_exists($this->pluginGetRootDir()
                 . DIRECTORY_SEPARATOR . $pluginName . DIRECTORY_SEPARATOR
                 . 'backend' . DIRECTORY_SEPARATOR . "$pluginName.pm"
             ) ? 'yes' : 'no',
-            'pluginLockers' => json_encode(
+            'lockers' => json_encode(
                 $pluginLockers->toArray(), JSON_FORCE_OBJECT
             )
         ]);
@@ -1294,8 +1294,8 @@ class PluginManager
                 return;
             }
 
-            $lockers = $this->pluginData[$pluginName]['lockers'];
-            $lockers[$lockerName] = 1;
+            $pluginLockers = $this->pluginData[$pluginName]['lockers'];
+            $pluginLockers[$lockerName] = 1;
 
             exec_query(
                 '
@@ -1303,7 +1303,7 @@ class PluginManager
                     SET `plugin_lockers` = ?
                     WHERE `plugin_name` = ?
                 ',
-                [json_encode($lockers->toArray(), JSON_FORCE_OBJECT), $pluginName]
+                [json_encode($pluginLockers->toArray(), JSON_FORCE_OBJECT), $pluginName]
             );
 
             $this->events->dispatch(Events::onAfterLockPlugin, [
@@ -1360,13 +1360,13 @@ class PluginManager
                 return;
             }
 
-            /** @var LazyDecoder $lockers */
-            $lockers = $this->pluginData[$pluginName]['lockers'];
-            unset($lockers[$lockerName]);
+            /** @var LazyDecoder $pluginLockers */
+            $pluginLockers = $this->pluginData[$pluginName]['lockers'];
+            unset($pluginLockers[$lockerName]);
 
             exec_query(
                 'UPDATE `plugin` SET `plugin_lockers` = ? WHERE `plugin_name` = ?',
-                [json_encode($lockers->toArray(), JSON_FORCE_OBJECT), $pluginName]
+                [json_encode($pluginLockers->toArray(), JSON_FORCE_OBJECT), $pluginName]
             );
 
             $this->events->dispatch(Events::onAfterUnlockPlugin, [
