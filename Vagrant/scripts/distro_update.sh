@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # i-MSCP - internet Multi Server Control Panel
 # Copyright 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
@@ -20,6 +20,13 @@ export LANG=C.UTF-8
 # Remove unwanted foreign i386 architecture which is enabled in
 # some Vagrant boxes
 dpkg --remove-architecture i386 2>/dev/null
+
+. /etc/os-release
+
+if [ "$ID" == 'debian' ] ; then
+  # Fix problem with grub installation
+  echo "set grub-pc/install_devices $(grub-probe -t device /boot/grub)" | debconf-communicate
+fi
 
 apt-get update
 apt-get --assume-yes dist-upgrade
