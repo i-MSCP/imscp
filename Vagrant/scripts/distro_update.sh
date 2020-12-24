@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # i-MSCP - internet Multi Server Control Panel
 # Copyright 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
@@ -21,6 +21,21 @@ export LANG=C.UTF-8
 # some Vagrant boxes
 dpkg --remove-architecture i386 2>/dev/null
 
+. /etc/os-release
+
+if [ "$ID" == 'debian' ] ; then
+  # Fix problem with grub installation
+  echo "set grub-pc/install_devices $(grub-probe -t device /boot/grub)" | debconf-communicate
+fi
+
 apt-get update
 apt-get --assume-yes dist-upgrade
-apt-get --assume-yes install ca-certificates perl
+apt-get --assume-yes install \
+  ca-certificates            \
+  perl                       \
+  virt-what
+
+# Fix problem with Debian Buster (Grub not cleanly installed)
+if virt-what | grep virtualbox &> /dev/null ; then
+  grub-install /dev/sda
+fi

@@ -6,7 +6,8 @@
         <nginx
                 class="Package::FrontEnd"
                 default="1"
-                description="Nginx server"
+                description="Nginx"
+                repository_conflict="http://nginx.org/packages/ubuntu"
         >
             <package>nginx-full</package>
         </nginx>
@@ -75,11 +76,13 @@
             description="PHP version for customers"
             has_alternatives="1"
             pinning_package="*"
-            pinning_pin="origin packages.sury.org"
+            pinning_pin="release o=LP-PPA-ondrej-php"
             pinning_pin_priority="1001"
-            repository="https://packages.sury.org/php/ stretch main"
+            repository="http://ppa.launchpad.net/ondrej/php/ubuntu focal main"
             repository_conflict="http://packages.dotdeb.org"
-            repository_key_uri="https://packages.sury.org/php/apt.gpg"
+            repository_key_id="0x4F4EA0AAE5267A6C"
+            repository_key_srv="keyserver.ubuntu.com"
+
     >
         <php5.6
                 always_installed="1"
@@ -92,7 +95,7 @@
                         gettext iconv pdo phar posix sockets bcmath bz2 curl gd
                         gmp imap intl json mbstring mcrypt mysqlnd mysqli
                         pdo_mysql opcache pspell dom xml xmlreader xmlwriter
-                        zip
+                        zip apcu
                     "
             >
                 php5.6
@@ -301,8 +304,7 @@
             >
                 php7.4
             </package>
-            <package>php7.4-cli
-            </package>
+            <package>php7.4-cli</package>
             <package>php7.4-cgi</package>
             <package>php7.4-fpm</package>
             <package>php7.4-common</package>
@@ -399,9 +401,9 @@
             has_alternatives="1"
     >
         <postfix
-                default="1"
-                description="Postfix server"
                 class="Servers::mta::postfix"
+                default="1"
+                description="Postfix"
         >
             <package>postfix</package>
             <package_conflict>procmail</package_conflict>
@@ -429,7 +431,13 @@
                 class="Servers::ftpd::vsftpd"
                 description="VsFTPD"
         >
-            <package>libpam-mysql</package>
+            <package
+                    rebuild_with_patches="libpam-mysql/patches/dpatch"
+                    patch_sys_type="dpatch"
+                    pkg_src_name="pam-mysql"
+            >
+                libpam-mysql
+            </package>
             <package>vsftpd</package>
             <package_conflict>proftpd-basic</package_conflict>
         </vsftpd>
@@ -456,133 +464,41 @@
             description="SQL server"
             has_alternatives="1"
     >
-        <mysql_5.6
-                allow_upgrade_from="remote_server,mysql_5.5"
-                class="Servers::sqld::mysql"
-                description="MySQL 5.6"
-                pinning_package="*"
-                pinning_pin="origin repo.mysql.com"
-                pinning_pin_priority="1001"
-                repository="
-                    http://repo.mysql.com/apt/debian/ stretch mysql-5.6
-                "
-                repository_key_id="5072E1F5"
-                repository_key_srv="keyserver.ubuntu.com"
-        >
-            <package>libmariadbclient18</package>
-            <package>libmysqlclient18</package>
-            <package>mysql-community-client</package>
-            <package>mysql-community-server</package>
-        </mysql_5.6>
-        <mysql_5.7
-                allow_upgrade_from="remote_server,mysql_5.5,mysql_5.6"
-                class="Servers::sqld::mysql"
-                description="MySQL 5.7"
-                pinning_package="*"
-                pinning_pin="origin repo.mysql.com"
-                pinning_pin_priority="1001"
-                repository="
-                    http://repo.mysql.com/apt/debian/ stretch mysql-5.7
-                "
-                repository_key_id="5072E1F5"
-                repository_key_srv="keyserver.ubuntu.com"
-        >
-            <package>libmariadbclient18</package>
-            <package>libmysqlclient20</package>
-            <package>mysql-community-client</package>
-            <package>mysql-community-server</package>
-        </mysql_5.7>
-        <mariadb_10.1
+        <mariadb_10.3
                 allow_upgrade_from="
-                    remote_server,mariadb_5.3,mariadb_5.5,mariadb_10.0
+                    remote_server,mariadb_10.0,mariadb_10.1,mariadb_10.2
                 "
+                class="Servers::sqld::mariadb"
                 default="1"
-                description="MariaDB 10.1"
-                class="Servers::sqld::mariadb"
+                description="MariaDB 10.3"
                 pinning_package="
-                    libmariadbclient18 mariadb-client-10.1 mariadb-common
-                    mariadb-server-core-10.1 mysql-common
-                "
-                pinning_pin="release o=Devuan"
-                pinning_pin_priority="1001"
-        >
-            <package>libmariadbclient18</package>
-            <package>mariadb-client-10.1</package>
-            <package>mariadb-common</package>
-            <package
-                    pre_install_tasks="/bin/mkdir -p /etc/mysql/mariadb.conf.d"
-            >
-                mariadb-server-10.1
-            </package>
-        </mariadb_10.1>
-        <mariadb_10.2
-                allow_upgrade_from="
-                    remote_server,mariadb_5.3,mariadb_5.5,mariadb_10.0,mariadb_10.1
-                "
-                class="Servers::sqld::mariadb"
-                description="MariaDB 10.2"
-                pinning_package="*"
-                pinning_pin="release o=MariaDB"
-                pinning_pin_priority="1001"
-                repository="
-                    http://mirror.netcologne.de/mariadb/repo/10.2/debian
-                    stretch main
-                "
-                repository_key_id="0xF1656F24C74CD1D8"
-                repository_key_srv="keyserver.ubuntu.com"
-        >
-            <package
-                    pinning_package="libmariadbclient18"
-                    pinning_pin="release o=Debian"
-                    pinning_pin_priority="1002"
-            >
-                libmariadbclient18
-            </package>
-            <package>mariadb-client-10.2</package>
-            <package>mariadb-common</package>
-            <package
-                    pre_install_tasks="
-                        /bin/mkdir -p /etc/mysql/mariadb.conf.d
-                    "
-            >
-                mariadb-server-10.2
-            </package>
-        </mariadb_10.2>
-        <percona_5.7
-                allow_upgrade_from="remote_server,perconna_5.5,percona_5.6"
-                class="Servers::sqld::percona"
-                description="Percona 5.7"
-                pinning_package="
-                    libperconaserverclient20 libperconaserverclient20-dev
-                    percona-server-client-5.7 percona-server-common-5.7
-                    percona-server-server-5.7
-                "
-                pinning_pin="origin repo.percona.com"
-                pinning_pin_priority="1001"
-                repository="http://repo.percona.com/apt stretch main"
-                repository_key_id="0x9334A25F8507EFA5"
-                repository_key_srv="keyserver.ubuntu.com"
-                required_arch="amd64"
-        >
-            <package>libmariadbclient18</package>
-            <package>libperconaserverclient20</package>
-            <package>percona-server-client-5.7</package>
-            <package>percona-server-common-5.7</package>
-            <package>percona-server-server-5.7</package>
-        </percona_5.7>
-        <remote_server
-                description="Remote SQL server"
-                class="Servers::sqld::remote"
-                pinning_package="
-                    libmariadbclient18 mariadb-client-10.1 mariadb-common
-                    mysql-common
+                    libmariadb3 mariadb-client-10.3 mariadb-common
+                    mariadb-server-core-10.3 mysql-common
                 "
                 pinning_pin="release o=Debian"
                 pinning_pin_priority="1001"
         >
-            <package>libmariadbclient18</package>
+            <package>libmariadb3</package>
+            <package>mariadb-client-10.3</package>
             <package>mariadb-common</package>
-            <package>mariadb-client-10.1</package>
+            <package
+                    pre_install_tasks="/bin/mkdir -p /etc/mysql/mariadb.conf.d"
+            >
+                mariadb-server-10.3
+            </package>
+        </mariadb_10.3>
+        <remote_server
+                class="Servers::sqld::remote"
+                description="Remote SQL server"
+                pinning_package="
+                    libmariadb3 mariadb-client-10.3 mariadb-common mysql-common
+                "
+                pinning_pin="release o=Debian"
+                pinning_pin_priority="1001"
+        >
+            <package>libmariadb3</package>
+            <package>mariadb-common</package>
+            <package>mariadb-client-10.3</package>
         </remote_server>
         <package>mysql-common</package>
     </sql>
@@ -617,7 +533,6 @@
         <package>libdatetime-perl</package>
         <package>libdbd-mysql-perl</package>
         <package>libdbi-perl</package>
-        <package>libdigest-md5-perl</package>
         <package>libemail-valid-perl</package>
         <package>libfile-chmod-perl</package>
         <package>libfile-copy-recursive-perl</package>

@@ -445,8 +445,7 @@ sub _buildFastCgiConfFiles
 
     $rs = $self->{'httpd'}->disableModules(
         'actions', 'fastcgi', 'fcgid', 'fcgid_imscp', 'suexec',
-        'php5', 'php5_cgi', 'php5filter',
-        'php5.6', 'php7.0', 'php7.1', 'php7.2', 'php7.3', 'php7.4',
+        'php5.6', 'php7.0', 'php7.1', 'php7.2', 'php7.3', 'php7.4', 'php8.0',
         'proxy_fcgi', 'proxy_handler', 'mpm_itk', 'mpm_event', 'mpm_prefork',
         'mpm_worker'
     );
@@ -589,6 +588,7 @@ sub _buildApacheConfFiles
         'php7.2-cgi.conf', 'php7.2-fpm.conf',
         'php7.3-cgi.conf', 'php7.3-fpm.conf',
         'php7.4-cgi.conf', 'php7.4-fpm.conf',
+        'php8.0-cgi.conf', 'php8.0-fpm.conf',
         'serve-cgi-bin.conf'
     );
     $rs ||= $self->{'httpd'}->disableSites(
@@ -622,14 +622,6 @@ sub _installLogrotate
         destination => "$::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2"
     } );
     $rs ||= $self->{'events'}->trigger( 'afterHttpdInstallLogrotate', 'apache2' );
-
-    if ( !$rs && version->parse( "$self->{'phpConfig'}->{'PHP_VERSION'}" ) < version->parse( '7.0' ) ) {
-        $rs ||= $self->{'events'}->trigger( 'beforeHttpdInstallLogrotate', 'php5-fpm' );
-        $rs ||= $self->{'httpd'}->buildConfFile( "$self->{'phpCfgDir'}/fpm/logrotate.tpl", {}, {
-            destination => "$::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm"
-        } );
-        $rs ||= $self->{'events'}->trigger( 'afterHttpdInstallLogrotate', 'php5-fpm' );
-    }
 
     $rs;
 }
@@ -834,17 +826,6 @@ sub _cleanup
             return $rs if $rs;
         }
 
-        if ( -d $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'} ) {
-            $rs = execute(
-                "rm -f $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}/*/php5-fastcgi-starter",
-                \my $stdout,
-                \my $stderr
-            );
-            debug( $stdout ) if $stdout;
-            error( $stderr || 'Unknown error' ) if $rs;
-            return $rs if $rs;
-        }
-
         for my $dir (
             '/var/log/apache2/backup',
             '/var/log/apache2/users',
@@ -873,14 +854,6 @@ sub _cleanup
         ## Cleanup and disable unused PHP versions/SAPIs
         #
 
-        if ( -f "$::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm" ) {
-            $rs = iMSCP::File->new(
-                filename => "$::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm"
-            )->delFile();
-            return $rs if $rs;
-        }
-
-        iMSCP::Dir->new( dirname => '/etc/php5' )->remove();
         iMSCP::Dir->new(
             dirname => $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}
         )->remove();

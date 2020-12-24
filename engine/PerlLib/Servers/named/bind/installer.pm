@@ -91,6 +91,9 @@ sub preinstall
         $self->{'config'}->{$configVar} = ::setupGetQuestion( $configVar );
     }
 
+    # Ubuntu 20.04 has renamed service unit from bind9 to named
+    $self->{'config'}->{'NAMED_SERVICE'} = ( $::imscpConfig{'DISTRO_CODENAME'} eq 'focal' ) ? 'named' : 'bind9';
+
     0;
 }
 

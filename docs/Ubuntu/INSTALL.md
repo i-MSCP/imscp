@@ -4,6 +4,7 @@
 
 - Ubuntu Xenial Xerus 16.04
 - Ubuntu Bionic Beaver 18.04
+- Ubuntu Focal Fossa 20.04
 
 ## Installation
 
