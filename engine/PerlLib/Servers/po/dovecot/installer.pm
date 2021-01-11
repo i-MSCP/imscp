@@ -626,7 +626,7 @@ sub _buildConf
                     }
 
                     $cfgTpl .= <<"EOF";
-ssl_protocols = @{[ version->parse( $1 ) >= version->parse( '1.1' ) ? '!SSLv3' : '!SSLv2 !SSLv3' ]}
+ssl_protocols = @{[ version->parse( $1 ) >= version->parse( '1.1' ) ? '!SSLv3 !TLSv1 !TLSv1.1' : '!SSLv2 !SSLv3 !TLSv1 !TLSv1.1' ]}
 ssl_cert = <$::imscpConfig{'CONF_DIR'}/imscp_services.pem
 ssl_key = <$::imscpConfig{'CONF_DIR'}/imscp_services.pem
 EOF
