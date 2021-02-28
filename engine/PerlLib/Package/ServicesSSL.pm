@@ -84,7 +84,7 @@ sub registerSetupListeners
 
 sub preinstall
 {
-    my $sslEnabled = ::setupGetQuestion( 'SERVICE_SSL_ENABLED' );
+    my $sslEnabled = ::setupGetQuestion( 'SERVICES_SSL_ENABLED' );
 
     # SSL is disabled. We need remove the SSL certificate if any and
     # return early
