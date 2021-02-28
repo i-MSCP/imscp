@@ -2508,7 +2508,7 @@ class DatabaseUpdate extends AbstractUpdate
             $this->changeColumn(
                 'server_traffic',
                 'traff_time',
-                '`traff_time INT(10) UNSIGNED NOT NULL`'
+                '`traff_time` INT(10) UNSIGNED NOT NULL'
             ),
             $this->addIndex('server_traffic', 'traff_time')
         ];
