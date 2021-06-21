@@ -43,7 +43,7 @@ use subs qw/
 /;
 
 my $packageVersionConstraint = $ENV{'IMSCP_PKG_DEVELOPMENT'}
-    ? '1.3.x-dev' : '^1.0';
+    ? '1.3.x-dev' : '1.3.x-dev';
 
 =head1 DESCRIPTION
 
