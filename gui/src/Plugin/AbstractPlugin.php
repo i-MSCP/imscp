@@ -118,7 +118,7 @@ abstract class AbstractPlugin
 
         return $this->pluginName;
     }
-    
+
     /**
      * Return plugin info from the database, or from the plugin info.php file if
      * no data were found in database.
@@ -198,7 +198,7 @@ abstract class AbstractPlugin
             include $file
         );
     }
-    
+
     /**
      * Return the plugin configuration from the plugin config.php file, and
      * local configuration file if any.
@@ -211,7 +211,7 @@ abstract class AbstractPlugin
         $pluginName = $this->getName();
         $pluginConfigFile = $this->getPluginManager()->pluginGetRootDir()
             . DIRECTORY_SEPARATOR . $pluginName . DIRECTORY_SEPARATOR
-            . 'pluginConfig.php';
+            . 'config.php';
         $pluginConfig = [];
 
         if (!file_exists($pluginConfigFile)) {
