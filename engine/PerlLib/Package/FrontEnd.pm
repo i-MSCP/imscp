@@ -2002,7 +2002,10 @@ sub _buildHttpdConfig
             HTTPD_PID_FILE           => $self->{'config'}->{'HTTPD_PID_FILE'},
             HTTPD_CONF_DIR           => $self->{'config'}->{'HTTPD_CONF_DIR'},
             HTTPD_LOG_DIR            => $self->{'config'}->{'HTTPD_LOG_DIR'},
-            HTTPD_SITES_ENABLED_DIR  => $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}
+            HTTPD_SITES_ENABLED_DIR  => $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'},
+            HTTPD_SSL_PROTOCOLS      => (
+                version->declare( $self->{'config'}->{'HTTPD_VERSION'} ) < version->declare( '1.13.0')
+              ) ? 'TLSv1.2' : 'TLSv1.2 TLSv1.3'
         },
         {
             destination => "$self->{'config'}->{'HTTPD_CONF_DIR'}/nginx.conf",

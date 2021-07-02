@@ -517,7 +517,7 @@ sub _buildMainCfFile
             },
             smtpd_tls_protocols              => {
                 action => 'replace',
-                values => [ '!SSLv2', '!SSLv3' ]
+                values => [ '!SSLv2', '!SSLv3', '!TLSv1', '!TLSv1.1' ]
             },
             smtpd_tls_loglevel               => {
                 action => 'replace',
@@ -562,7 +562,7 @@ sub _buildMainCfFile
             },
             smtp_tls_protocols               => {
                 action => 'replace',
-                values => [ '!SSLv2', '!SSLv3' ]
+                values => [ '!SSLv2', '!SSLv3', '!TLSv1', '!TLSv1.1' ]
             },
             smtp_tls_loglevel                => {
                 action => 'replace',
