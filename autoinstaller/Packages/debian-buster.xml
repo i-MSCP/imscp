@@ -157,6 +157,8 @@
             <package>php7.0-xml</package>
             <package>php7.0-zip</package>
             <package>libapache2-mod-php7.0</package>
+            <package>php7.0-apcu</package>
+            <package>php7.0-apcu-bc</package>
         </php7.0>
         <php7.1
                 always_installed="1"
@@ -195,6 +197,8 @@
             <package>php7.1-xml</package>
             <package>php7.1-zip</package>
             <package>libapache2-mod-php7.1</package>
+            <package>php7.1-apcu</package>
+            <package>php7.1-apcu-bc</package>
         </php7.1>
         <php7.2
                 always_installed="1"
@@ -232,6 +236,8 @@
             <package>php7.2-xml</package>
             <package>php7.2-zip</package>
             <package>libapache2-mod-php7.2</package>
+            <package>php7.2-apcu</package>
+            <package>php7.2-apcu-bc</package>
         </php7.2>
         <php7.3
                 always_installed="1"
@@ -285,6 +291,8 @@
             <package>php7.3-xml</package>
             <package>php7.3-zip</package>
             <package>libapache2-mod-php7.3</package>
+            <package>php7.3-apcu</package>
+            <package>php7.3-apcu-bc</package>
         </php7.3>
         <php7.4
                 always_installed="1"
@@ -322,9 +330,45 @@
             <package>php7.4-xml</package>
             <package>php7.4-zip</package>
             <package>libapache2-mod-php7.4</package>
+            <package>php7.4-apcu</package>
+            <package>php7.4-apcu-bc</package>
         </php7.4>
-        <package>php-apcu</package>
-        <package>php-apcu-bc</package>
+        <php8.0
+                always_installed="1"
+                class="Servers::php"
+                description="PHP 8.0"
+        >
+            <package
+                    post_install_tasks="
+                        /usr/sbin/phpenmod -v 8.0 -s ALL ctype fileinfo ftp
+                        gettext iconv pdo phar posix sockets bcmath bz2 curl gd
+                        gmp imap intl json mbstring mysqlnd mysqli pdo_mysql
+                        opcache pspell dom xml xmlreader xmlwriter zip apcu
+                    "
+            >
+                php8.0
+            </package>
+            <package>php8.0-cli</package>
+            <package>php8.0-cgi</package>
+            <package>php8.0-fpm</package>
+            <package>php8.0-common</package>
+            <package>php8.0-bcmath</package>
+            <package>php8.0-bz2</package>
+            <package>php8.0-curl</package>
+            <package>php8.0-gd</package>
+            <package>php8.0-gmp</package>
+            <package>php8.0-imap</package>
+            <package>php8.0-intl</package>
+            <package>php8.0-mbstring</package>
+            <package>php8.0-mysql</package>
+            <package>php8.0-opcache</package>
+            <package>php8.0-phar</package>
+            <package>php8.0-pspell</package>
+            <package>php8.0-xml</package>
+            <package>php8.0-zip</package>
+            <package>libapache2-mod-php8.0</package>
+            <package>php8.0-apcu</package>
+        </php8.0>
         <package>php-pear</package>
     </php>
     <po
@@ -489,7 +533,6 @@
         <package>libdatetime-perl</package>
         <package>libdbd-mariadb-perl</package>
         <package>libdbi-perl</package>
-        <package>libdigest-md5-perl</package>
         <package>libemail-valid-perl</package>
         <package>libfile-chmod-perl</package>
         <package>libfile-copy-recursive-perl</package>

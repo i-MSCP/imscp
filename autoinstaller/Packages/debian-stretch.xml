@@ -157,6 +157,8 @@
             <package>php7.0-xml</package>
             <package>php7.0-zip</package>
             <package>libapache2-mod-php7.0</package>
+            <package>php7.0-apcu</package>
+            <package>php7.0-apcu-bc</package>
         </php7.0>
         <php7.1
                 always_installed="1"
@@ -195,6 +197,8 @@
             <package>php7.1-xml</package>
             <package>php7.1-zip</package>
             <package>libapache2-mod-php7.1</package>
+            <package>php7.1-apcu</package>
+            <package>php7.1-apcu-bc</package>
         </php7.1>
         <php7.2
                 always_installed="1"
@@ -232,6 +236,8 @@
             <package>php7.2-xml</package>
             <package>php7.2-zip</package>
             <package>libapache2-mod-php7.2</package>
+            <package>php7.2-apcu</package>
+            <package>php7.2-apcu-bc</package>
         </php7.2>
         <php7.3
                 always_installed="1"
@@ -292,6 +298,8 @@
             <package>php7.3-xml</package>
             <package>php7.3-zip</package>
             <package>libapache2-mod-php7.3</package>
+            <package>php7.3-apcu</package>
+            <package>php7.3-apcu-bc</package>
         </php7.3>
         <php7.4
                 always_installed="1"
@@ -329,9 +337,9 @@
             <package>php7.4-xml</package>
             <package>php7.4-zip</package>
             <package>libapache2-mod-php7.4</package>
+            <package>php7.4-apcu</package>
+            <package>php7.4-apcu-bc</package>
         </php7.4>
-        <package>php-apcu</package>
-        <package>php-apcu-bc</package>
         <package>php-pear</package>
     </php>
     <po
