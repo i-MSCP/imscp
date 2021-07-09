@@ -473,7 +473,7 @@ class PluginManager
     {
         $plugin = $this->pluginGet($pluginName);
 
-        $pluginInfoNew = $plugin->getConfigFromFile();
+        $pluginInfoNew = $plugin->getInfoFromFile();
         $pluginConfigNew = $plugin->getConfigFromFile();
         $pluginIsKnown = $this->pluginIsKnown($pluginName);
         
@@ -600,7 +600,7 @@ class PluginManager
                 ? array_merge_recursive($pluginConfigNew, $pluginConfigOld)
                 : $pluginConfigNew),
             'priority'      => $pluginInfoNew['priority'],
-            'pluginStatus'  => $pluginStatus,
+            'status'        => $pluginStatus,
             'backend'       => file_exists($this->pluginGetRootDir()
                 . DIRECTORY_SEPARATOR . $pluginName . DIRECTORY_SEPARATOR
                 . 'backend' . DIRECTORY_SEPARATOR . "$pluginName.pm"
