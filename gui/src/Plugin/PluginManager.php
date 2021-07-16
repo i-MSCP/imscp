@@ -531,7 +531,7 @@ class PluginManager
 
         if ($pluginIsKnown) {
             $pluginStatus = $this->pluginGetStatus($pluginName);
-            $pluginLockers = $this->pluginData[$pluginName]['pluginLockers'];
+            $pluginLockers = $this->pluginData[$pluginName]['lockers'];
 
             // Plugin has changes, either info or config
             if (!$this->pluginCompareData($pluginInfoNew, $pluginInfoOld)
