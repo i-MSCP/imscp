@@ -605,7 +605,7 @@ class PluginManager
                 . DIRECTORY_SEPARATOR . $pluginName . DIRECTORY_SEPARATOR
                 . 'backend' . DIRECTORY_SEPARATOR . "$pluginName.pm"
             ) ? 'yes' : 'no',
-            'pluginLockers' => json_encode(
+            'lockers'       => json_encode(
                 $pluginLockers->toArray(), JSON_FORCE_OBJECT
             )
         ]);
