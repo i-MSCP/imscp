@@ -211,7 +211,7 @@ abstract class AbstractPlugin
         $pluginName = $this->getName();
         $pluginConfigFile = $this->getPluginManager()->pluginGetRootDir()
             . DIRECTORY_SEPARATOR . $pluginName . DIRECTORY_SEPARATOR
-            . 'pluginConfig.php';
+            . 'config.php';
         $pluginConfig = [];
 
         if (!file_exists($pluginConfigFile)) {
