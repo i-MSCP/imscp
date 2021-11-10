@@ -1177,7 +1177,7 @@ class PhpEditor
                     $query = "
                         UPDATE `subdomain`
                         JOIN `domain` USING(domain_id)
-                        SET subdomain_status` = 'tochange'
+                        SET `subdomain_status` = 'tochange'
                         WHERE `domain_admin_id` = ?
                         AND `subdomain_id` = ?
                         AND `subdomain_status` NOT IN ('disabled','todelete')
