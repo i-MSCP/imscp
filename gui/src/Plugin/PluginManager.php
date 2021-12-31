@@ -473,7 +473,7 @@ class PluginManager
     {
         $plugin = $this->pluginGet($pluginName);
 
-        $pluginInfoNew = $plugin->getConfigFromFile();
+        $pluginInfoNew = $plugin->getInfoFromFile();
         $pluginConfigNew = $plugin->getConfigFromFile();
         $pluginIsKnown = $this->pluginIsKnown($pluginName);
         
@@ -531,7 +531,7 @@ class PluginManager
 
         if ($pluginIsKnown) {
             $pluginStatus = $this->pluginGetStatus($pluginName);
-            $pluginLockers = $this->pluginData[$pluginName]['pluginLockers'];
+            $pluginLockers = $this->pluginData[$pluginName]['lockers'];
 
             // Plugin has changes, either info or config
             if (!$this->pluginCompareData($pluginInfoNew, $pluginInfoOld)
@@ -600,12 +600,12 @@ class PluginManager
                 ? array_merge_recursive($pluginConfigNew, $pluginConfigOld)
                 : $pluginConfigNew),
             'priority'      => $pluginInfoNew['priority'],
-            'pluginStatus'  => $pluginStatus,
+            'status'        => $pluginStatus,
             'backend'       => file_exists($this->pluginGetRootDir()
                 . DIRECTORY_SEPARATOR . $pluginName . DIRECTORY_SEPARATOR
                 . 'backend' . DIRECTORY_SEPARATOR . "$pluginName.pm"
             ) ? 'yes' : 'no',
-            'pluginLockers' => json_encode(
+            'lockers'       => json_encode(
                 $pluginLockers->toArray(), JSON_FORCE_OBJECT
             )
         ]);
