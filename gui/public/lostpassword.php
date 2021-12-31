@@ -33,7 +33,7 @@ use iMSCP\Registry;
 use iMSCP\TemplateEngine;
 
 require_once 'imscp-lib.php';
-require_once LIBRARY_PATH . '/Functions/LostPassword.php';
+require_once 'LostPassword.php';
 
 EventAggregator::getInstance()->dispatch(Events::onLostPasswordScriptStart);
 do_session_timeout();

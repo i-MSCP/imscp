@@ -26,6 +26,6 @@
  */
 
 require_once 'imscp-lib.php';
-require_once LIBRARY_PATH . '/Functions/LostPassword.php';
+require_once 'LostPassword.php';
 
 createImage('capcode');

@@ -62,7 +62,7 @@ function createImage($strSessionVar)
     );
 
     for ($i = 0; $i < $nbLetters; $i++) {
-        $fontFile = LIBRARY_PATH . '/Resources/Fonts/'
+        $fontFile = GUI_ROOT_DIR . '/resources/fonts/'
             . $cfg['LOSTPASSWORD_CAPTCHA_FONTS'][mt_rand(
                 0, count($cfg['LOSTPASSWORD_CAPTCHA_FONTS']) - 1
             )];
