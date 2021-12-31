@@ -289,7 +289,7 @@ class PluginArchive extends Zend_Validate_Abstract
             switch ($field) {
                 case 'name':
                     if (!is_string($info[$field])
-                        || !preg_match('/^[a-z]+$/i', $info[$field])
+                        || !preg_match('/^[a-z_]+$/i', $info[$field])
                     ) {
                         return $this->_throw(
                             $field, self::INVALID_PLUGIN_INFO_FIELD
