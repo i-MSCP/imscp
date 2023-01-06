@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<install>
+    <folders>${ROOT_CONF}/logrotate.d</folders>
+    <folders>${SYSTEM_CONF}/proftpd</folders>
+    <folders>${SYSTEM_CONF}/proftpd/backup</folders>
+    <folders>${SYSTEM_CONF}/proftpd/working</folders>
+    <copy_config>${SYSTEM_CONF}/proftpd/proftpd.conf</copy_config>
+    <copy_config>${SYSTEM_CONF}/proftpd/proftpd.data.dist</copy_config>
+    <copy_config if="'${FTPD_PACKAGE}' eq 'Servers::ftpd::proftpd'">${ROOT_CONF}/logrotate.d/proftpd-basic</copy_config>
+</install>

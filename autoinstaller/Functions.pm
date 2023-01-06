@@ -70,8 +70,8 @@ sub loadConfig
 {
     my $lsb = iMSCP::LsbRelease->getInstance();
     my $distConf = "$FindBin::Bin/configs/" . lc( $lsb->getId( TRUE ))
-        . '/imscp.conf';
-    my $defaultConf = "$FindBin::Bin/configs/debian/imscp.conf";
+        . '/default/imscp.conf';
+    my $defaultConf = "$FindBin::Bin/configs/debian/default/imscp.conf";
     my $newConf = -f $distConf ? $distConf : $defaultConf;
 
     # Load new configuration
@@ -427,8 +427,10 @@ sub _buildLayout
 
 sub _buildConfigFiles
 {
-    my $distroConfigDir = "$FindBin::Bin/configs/$::imscpConfig{'DISTRO_ID'}";
-    my $defaultConfigDir = "$FindBin::Bin/configs/debian";
+    my $distroConfigDir = -d "$FindBin::Bin/configs/$::imscpConfig{'DISTRO_ID'}/$::imscpConfig{'DISTRO_CODENAME'}"
+        ? "$FindBin::Bin/configs/$::imscpConfig{'DISTRO_ID'}/$::imscpConfig{'DISTRO_CODENAME'}"
+        : "$FindBin::Bin/configs/$::imscpConfig{'DISTRO_ID'}/default";
+    my $defaultConfigDir = "$FindBin::Bin/configs/debian/default";
     my $confDir = -d $distroConfigDir ? $distroConfigDir : $defaultConfigDir;
 
     local $CWD = $confDir;

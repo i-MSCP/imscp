@@ -9,3 +9,10 @@ nbproject
 /Vagrantfile
 .DS_Store
 _Deparsed_XSubs.pm
+
+.vscode/
+daemon/*.o
+daemon/imscp_daemon
+gui/data/*
+gui/vendor/
+gui/library/
