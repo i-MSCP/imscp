@@ -620,16 +620,24 @@ sub _buildConf
 
                 # Fixme: Find a better way to guess libssl version
                 if ( $ssl eq 'yes' ) {
-                    unless ( `ldd /usr/lib/dovecot/libdovecot-login.so | grep libssl.so` =~ /libssl.so.(\d.\d)/ ) {
+                    unless ( `ldd /usr/lib/dovecot/libdovecot-login.so /usr/lib/dovecot/libdcrypt_openssl.so | grep libssl.so` =~ /libssl.so.(\d.\d)/ ) {
                         error( "Couldn't guess libssl version against which Dovecot has been built" );
                         return 1;
                     }
 
-                    $cfgTpl .= <<"EOF";
+                    if ( version->parse($self->{'config'}->{'DOVECOT_VERSION'}) >= version->parse('2.3.0')) {
+                        $cfgTpl .= <<"EOF";
+ssl_min_protocol = TLSv1.2
+ssl_cert = <$::imscpConfig{'CONF_DIR'}/imscp_services.pem
+ssl_key = <$::imscpConfig{'CONF_DIR'}/imscp_services.pem
+EOF
+                    } else {
+                        $cfgTpl .= <<"EOF";
 ssl_protocols = @{[ version->parse( $1 ) >= version->parse( '1.1' ) ? '!SSLv3 !TLSv1 !TLSv1.1' : '!SSLv2 !SSLv3 !TLSv1 !TLSv1.1' ]}
 ssl_cert = <$::imscpConfig{'CONF_DIR'}/imscp_services.pem
 ssl_key = <$::imscpConfig{'CONF_DIR'}/imscp_services.pem
 EOF
+                    }
                 }
             }
 

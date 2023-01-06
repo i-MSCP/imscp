@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<install>
+    <folders>${SYSTEM_CONF}/bind</folders>
+    <folders>${SYSTEM_CONF}/bind/backup</folders>
+    <folders>${SYSTEM_CONF}/bind/working</folders>
+    <copy_config>${SYSTEM_CONF}/bind/parts</copy_config>
+    <copy_config>${SYSTEM_CONF}/bind/bind.data.dist</copy_config>
+    <copy_config>${SYSTEM_CONF}/bind/named.conf</copy_config>
+    <copy_config>${SYSTEM_CONF}/bind/named.conf.local</copy_config>
+    <copy_config>${SYSTEM_CONF}/bind/named.conf.options</copy_config>
+</install>

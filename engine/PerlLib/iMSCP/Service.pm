@@ -378,6 +378,7 @@ sub _init
 
     $self->{'init'} = _detectInit();
     $self->{'provider'} = $self->getProvider();
+    debug(sprintf('Service init type is %s with provider: %s', $self->{'init'}, $self->{'provider'}));
     $self;
 }
 

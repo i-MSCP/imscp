@@ -1,0 +1,40 @@
+options {
+        directory "/var/cache/bind";
+
+        // If there is a firewall between you and nameservers you want
+        // to talk to, you may need to fix the firewall to allow multiple
+        // ports to talk.  See http://www.kb.cert.org/vuls/id/800113
+
+        // If your ISP provided one or more IP addresses for stable
+        // nameservers, you probably want to use them as forwarders.
+        // Uncomment the following block, and insert the addresses replacing
+        // the all-0's placeholder.
+
+        // forwarders {
+        //      0.0.0.0;
+        // };
+
+        auth-nxdomain no;    # conform to RFC1035
+
+        dnssec-enable no;
+        dnssec-validation no;
+
+        // Listen to all IPv4 and IPv6 interfaces
+        listen-on { any; };
+        listen-on-v6 { any; };
+
+        // Improving server performances by reducing outgoing data volumes
+        minimal-responses yes;
+
+        // Protecting server against common attacks
+        allow-recursion { localhost; };
+        allow-query-cache { localhost; };
+        allow-transfer { none; };
+        version "i-MSCP DNS Server";
+
+        // As per RFC 7208, SPF DNS record are deprecated
+        // check-spf ignore;
+
+        // imscp [{ENTRY_ID}] entry BEGIN
+        // imscp [{ENTRY_ID}] entry ENDING
+};
