@@ -153,7 +153,7 @@ function client_validate_NAME($name, &$errorString)
         return false;
     }
 
-    // rg 2024-02-20: Allow hostnames to contain `_` and `*.`, therefore remove these strings.
+    // rg 2024-02-20: Allow hostnames to contain `_` and `*.`, so remove these strings for validation.
     $name = str_replace('_', '', $name);
     $name = str_replace('*.', '', $name);
 
