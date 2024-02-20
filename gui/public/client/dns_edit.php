@@ -153,14 +153,17 @@ function client_validate_NAME($name, &$errorString)
         return false;
     }
 
+    // rg 2024-02-20: Allow hostnames to contain `_` and `*.`, therefore remove these strings.
+    $name = str_replace('_', '', $name);
+    $name = str_replace('*.', '', $name);
 
-    if (strpos($name, '_') == 0) {
-        $name = substr($name, 1);
-    }
+    // if (strpos($name, '_') === 0) {
+    //     $name = substr($name, 1);
+    // }
 
-    if (strpos($name, '*.') == 0) {
-        $name = substr($name, 2);
-    }
+    // if (strpos($name, '*.') === 0) {
+    //     $name = substr($name, 2);
+    // }
 
     if (!isValidDomainName($name)) {
         $errorString .= tr('Invalid field: %s', tr('Name'));
