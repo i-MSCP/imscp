@@ -153,17 +153,13 @@ function client_validate_NAME($name, &$errorString)
         return false;
     }
 
-    // rg 2024-02-20: Allow hostnames to contain `_` and `*.`, so remove these strings for validation.
+    // Allow hostnames to contain `_`, e.g. `default._domainkey.example.com`
     $name = str_replace('_', '', $name);
-    $name = str_replace('*.', '', $name);
 
-    // if (strpos($name, '_') === 0) {
-    //     $name = substr($name, 1);
-    // }
-
-    // if (strpos($name, '*.') === 0) {
-    //     $name = substr($name, 2);
-    // }
+    // Allow wildcard hostnames at the beginning only.
+    if (strpos($name, '*.') === 0) {
+        $name = substr($name, 2);
+    }
 
     if (!isValidDomainName($name)) {
         $errorString .= tr('Invalid field: %s', tr('Name'));
