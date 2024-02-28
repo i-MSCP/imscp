@@ -889,13 +889,19 @@ sub _addDmnDb
         $tplFileC
     );
     my $net = iMSCP::Net->getInstance();
-    my $domainIP = $net->isRoutableAddr( $data->{'DOMAIN_IP'} )
+    my $domainIP = ($net->isRoutableAddr( $data->{'DOMAIN_IP'} ) && $net->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4')
         ? $data->{'DOMAIN_IP'}
         : $data->{'BASE_SERVER_PUBLIC_IP'};
+    my $domainIP6 = $net->getAddrVersion( $data->{'DOMAIN_IP'} ) eq 'ipv6'
+        ? $data->{'DOMAIN_IP'}
+        : "none";
 
     unless ( $nsRRb eq '' && $gRRb eq '' ) {
         my @nsIPs = (
             $domainIP,
+            ( $domainIP6 ne "none"
+                ? $domainIP6 : ()
+            ),
             ( $self->{'config'}->{'SECONDARY_DNS'} eq 'no'
                 ? () : split /(?:[;,]| )/, $self->{'config'}->{'SECONDARY_DNS'}
             )
