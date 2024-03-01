@@ -153,12 +153,11 @@ function client_validate_NAME($name, &$errorString)
         return false;
     }
 
+    // Allow hostnames to contain `_`, e.g. `default._domainkey.example.com`
+    $name = str_replace('_', '', $name);
 
-    if (strpos($name, '_') == 0) {
-        $name = substr($name, 1);
-    }
-
-    if (strpos($name, '*.') == 0) {
+    // Allow wildcard hostnames at the beginning only.
+    if (strpos($name, '*.') === 0) {
         $name = substr($name, 2);
     }
 
