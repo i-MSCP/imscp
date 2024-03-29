@@ -29,7 +29,7 @@ use iMSCP\Event\EventAggregator;
 use iMSCP\Event\Events;
 
 require_once 'imscp-lib.php';
-require_once LIBRARY_PATH . '/Functions/Tickets.php';
+require_once GUI_ROOT_DIR . '/include/Tickets.php';
 
 check_login('reseller');
 EventAggregator::getInstance()->dispatch(Events::onResellerScriptStart);

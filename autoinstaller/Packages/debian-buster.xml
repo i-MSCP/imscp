@@ -464,29 +464,29 @@
             description="SQL server"
             has_alternatives="1"
     >
-        <mariadb_10.3
+        <mariadb_10.4
                 allow_upgrade_from="
                     remote_server,mariadb_10.0,mariadb_10.1,mariadb_10.2
                 "
                 class="Servers::sqld::mariadb"
                 default="1"
-                description="MariaDB 10.3"
+                description="MariaDB 10.4"
                 pinning_package="
-                    libmariadb3 mariadb-client-10.3 mariadb-common
-                    mariadb-server-core-10.3 mysql-common
+                    libmariadb3 mariadb-client-10.4 mariadb-common
+                    mariadb-server-core-10.4 mysql-common
                 "
                 pinning_pin="release o=Debian"
                 pinning_pin_priority="1001"
         >
             <package>libmariadb3</package>
-            <package>mariadb-client-10.3</package>
+            <package>mariadb-client-10.4</package>
             <package>mariadb-common</package>
             <package
                     pre_install_tasks="/bin/mkdir -p /etc/mysql/mariadb.conf.d"
             >
-                mariadb-server-10.3
+                mariadb-server-10.4
             </package>
-        </mariadb_10.3>
+        </mariadb_10.4>
         <remote_server
                 class="Servers::sqld::remote"
                 description="Remote SQL server"

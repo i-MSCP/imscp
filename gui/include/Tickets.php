@@ -186,7 +186,7 @@ function updateTicket(
             $ticketTo = $row['ticket_from'];
             $ticketFrom = $row['ticket_to'];
         }
-
+        $ticketStatus = $row['ticket_status'];
         exec_query(
             '
                 INSERT INTO tickets (
@@ -197,7 +197,7 @@ function updateTicket(
                 )
              ',
             [
-                $ticketFrom, $ticketTo, NULL, $ticketId, $urgency, time(),
+                $ticketFrom, $ticketTo, $ticketStatus, $ticketId, $urgency, time(),
                 $subject, $userMessage
             ]
         );

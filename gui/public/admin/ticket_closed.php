@@ -31,7 +31,7 @@ use iMSCP\Registry;
 use iMSCP\TemplateEngine;
 
 require_once 'imscp-lib.php';
-require_once LIBRARY_PATH . '/Functions/Tickets.php';
+require_once GUI_ROOT_DIR . '/include/Tickets.php';
 
 check_login('admin');
 EventAggregator::getInstance()->dispatch(Events::onAdminScriptStart);
