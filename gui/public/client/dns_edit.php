@@ -154,11 +154,11 @@ function client_validate_NAME($name, &$errorString)
     }
 
 
-    if (strpos($name, '_') == 0) {
+    if (strpos($name, '_') === 0) {
         $name = substr($name, 1);
     }
 
-    if (strpos($name, '*.') == 0) {
+    if (strpos($name, '*.') === 0) {
         $name = substr($name, 2);
     }
 
